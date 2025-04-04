@@ -18,13 +18,13 @@
         name: 'Edward Kim',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/ed_kim.jpeg?updatedAt=1724277860376',
         title: 'Business Advisor',
-        description: "Experienced Executive with Entrepreneurial and Global Market Growth Experience.Proven, executive-level leadership experience across multiple sectors including Fortune 100 corporations, tech startups, venture capitals and research institutions.Excellent ability to foster solid working relationships with diverse constituencies including Board of Directors, cross-functional leadership teams, strategic partner organizations, universities and other key stakeholders",
+        description: "Test",
       },
       {
-        name: 'Tim Bates',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/tim_bates.jpeg?updatedAt=1724277860159',
-        title: 'Tech Advisor',
-        description: "Tim is a seasoned IT Professional with an inspiring, innovative thinking reputation. He is the Chief Technical Officer of Lenovo, a Fortune 500 company, and one of the top technology companies in the world. Tim brings a wealth of knowledge and success stories across security solutions, application development, virtual adoption, and infrastructure consulting. Tim is future-focused, leveraging next-gen technologies to exceed client expectations while maximizing productivity to deliver economic value to his partners. His previous experience with General Motors, Deloitte & Touché LLP, Price Waterhouse Coopers, Dow Chemical, the US Marshal’s Office, and the US Marine Corp enable Tim to draw upon 30 years of experience to solve the complex challenges facing large organizations today."
+        name: 'John Wolff',
+        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/john.jpg?updatedAt=1740244288777',
+        title: 'Game Advisor',
+        description: "Test"
       },
       {
         name: 'Terrell Thomas',
@@ -70,12 +70,13 @@
         <div class="w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
           <img 
             src={founder.photo} 
-            class="h-auto rounded mb-2" 
+            class="h-20 rounded mb-2" 
             alt="Flowbite Logo" 
           />
           <h1 class="text-2xl gold-header-text">{founder.name}</h1>
-          <p class="text-sm font-bold border-b-2 border-gray-200/30 pb-1 mb-2">{founder.title}</p>
-          <p class="text-xs lg:text-lg">{founder.description}</p>
+          <!-- border-b-2 border-gray-200/30 -->
+          <p class="text-sm font-bold  pb-1 mb-2">{founder.title}</p>
+          <!-- <p class="text-xs lg:text-lg">{founder.description}</p> -->
         </div>
       {/each}
     </div>
@@ -89,12 +90,12 @@
         <div class="w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
           <img 
             src={member.photo} 
-            class="h-auto rounded mb-2" 
+            class="h-20 rounded mb-2" 
             alt="Flowbite Logo" 
           />
           <h1 class="text-2xl gold-header-text">{member.name}</h1>
-          <p class="text-sm font-bold border-b-2 border-gray-200/30 pb-1 mb-2">{member.title}</p>
-          <p class="text-xs lg:text-lg">{member.description}</p>
+          <p class="text-sm font-bold pb-1 mb-2">{member.title}</p>
+          <!-- <p class="text-xs lg:text-lg">{member.description}</p> -->
         </div>
       {/each}
     </div>
@@ -108,12 +109,12 @@
         <div class="w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
           <img 
             src={advisor.photo} 
-            class="h-auto rounded mb-2" 
+            class="h-20 rounded mb-2" 
             alt="Flowbite Logo" 
           />
           <h1 class="text-2xl gold-header-text">{advisor.name}</h1>
-          <p class="text-sm font-bold border-b-2 border-gray-200/30 pb-1 mb-2">{advisor.title}</p>
-          <p class="text-xs lg:text-lg">{advisor.description}</p>
+          <p class="text-sm font-bold pb-1 mb-2">{advisor.title}</p>
+          <!-- <p class="text-xs lg:text-lg">{advisor.description}</p> -->
         </div>
       {/each}
     </div>
