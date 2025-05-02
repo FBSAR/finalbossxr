@@ -12,7 +12,7 @@
   --dark-purple: #330474;
   --dark-purple-gradient: linear-gradient(45deg, #27035a 5%, #111 25%, #111 75%, #27035a 100%);
   --gold-gradient: linear-gradient(145deg, #FFD700 5%, #DAA520 25%, #f1c043 75%, #FFD700 100%);
-  --green-gradient: linear-gradient(145deg, #00ff00 5%, #0e9f0e 25%, #0e9f0e 55%, #00ff00 100%);
+  --green-gradient: linear-gradient(145deg, #00ff00 5%, #07ba07 25%, #44d444 55%, #baa00c 100%);
   --bg-light-gray: #F3F3F3;
 }
 .page-header {
@@ -90,4 +90,24 @@ p {
 }
 ul {
   color: white;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #222;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#00ff00, #034703);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

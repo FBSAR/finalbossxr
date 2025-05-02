@@ -1,74 +1,291 @@
-<script>
-    import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
-    import { Button } from 'flowbite-svelte';
-    function testerLink() {
-        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
+<script lang='ts'>
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
+  import { Button, Badge, FloatingLabelInput, Textarea, Toast } from 'flowbite-svelte';
+  import { CheckCircleOutline, CloseCircleOutline, LinkedinSolid, AppleSolid, FacebookSolid, XSolid, QuoteSolid
+  } from 'flowbite-svelte-icons'
+  import { enhance } from '$app/forms';
+
+  // TailwindCSS Classes
+  const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
+  const successToastClass = 'w-full max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#00ff00] rounded gap-3'
+  const errorToastClass = 'w-full max-w-sm lg:max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#dd0000] rounded gap-3'
+  // Toasts
+  let successToast = false;
+  function showSuccessToast() {
+    successToast = true;
+    setTimeout(() => {
+      successToast = false;
+    }, 8000);
+  }
+
+  let errorToast = false;
+  let errorToastMessage = '';
+  function showErrorToast(message: string) {
+    errorToastMessage = message;
+    errorToast = true;
+    setTimeout(() => {
+      errorToast = false;
+      errorToastMessage = '';
+    }, 5000);
+  }
+
+  // Contact Form Submission
+  let contactInfo = {
+    name: '',
+    email: '',
+    message: '',
+  }
+  async function handleSubmit(event: SubmitEvent) {
+    console.log('Attempting to Submit Form...');
+    const form = event.currentTarget as HTMLFormElement; 
+
+    try {
+      // Check if User has filled out entire form
+      if( contactInfo.name == '' || 
+          contactInfo.email == '' || 
+          contactInfo.message == '' ) 
+        { return showErrorToast('Please fill out the entire form') }
+
+        // Fetch Slack API Request
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: new FormData(form)   
+        });
+
+        // Success Response
+        if (response.ok) {
+          const data = await response.json();
+          showSuccessToast();
+
+          // Failure Response
+        } else {
+          console.error('Error submitting form:', response.status);
+          showErrorToast('There was an error submitting your form. Please try again later.')
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      showErrorToast('There was an error submitting your form. Please try again later.')
     }
-
-    onMount(() => {
-      return;
-    })
+  }
+  function testerLink() {
+      window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
+  }
+  onMount(() => {
+    return;
+  })
 </script>
-<main style="">
-  <!-- Info -->
-  <div id="info" class="mx-auto p-5 rounded h-auto justify-center md:shadow-4xl w-11/12 md:w-5/6 lg:w-1/2 md:bg-[#FFFFFF05]">
-    <div class="mt-4 grid grid grid-rows-2 grid-flow-col gap-0 md:gap-2">
-            <div class="md:row-span-3 md:col-span-1">
-                <div class="col-span-1 text-center">
-                    <div 
-                    style="background-image: url('https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Draft_2%20(2).png?updatedAt=1721968909845')"
-                    class="hidden lg:block p-2 mr-2 h-32 w-32 rounded bg-no-repeat bg-cover text-black text-xs flex text-center items-center">
-                    </div>
+<main>
 
-                    <div 
-                    style="background-image: url('https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Draft_2%20(2).png?updatedAt=1721968909845')"
-                    class="block lg:hidden mx-auto mt-4 h-60 w-60 rounded bg-no-repeat bg-cover text-black">
-                    </div>
-                    <img class="block lg:hidden w-full mt-4" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Draft_1%20(2).png?updatedAt=1721969242405" alt="Cosmic Collisions Text Logo">
-                </div>
-            </div>
-            <div class="md:row-span-3 md:col-span-11">
-                <!-- svelte-ignore a11y-media-has-caption -->
-                <video class="w-full block md:hidden relative bottom-12" controls>
-                    <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/Screen_Recording_20240806_200843_Cosmic%20Collisions.mp4?updatedAt=1722990197464" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <div>
-                    <img class="hidden md:inline h-12 relative right-3" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Draft_1%20(2).png?updatedAt=1721969242405" alt="Cosmic Collisions Text Logo">
-                    <Button on:click={testerLink} style="background: var(--green-gradient);"  class="hidden md:inline float-right hover:bg-[var(--red)] duration-200">Tester Waitlist</Button>
-                </div>
-                <p class="text-white text-xs lg:text-lg">
-                    <span class="block">
-                        <ion-icon class="text-xl relative top-0.5 text-[var(--green)] md:text-[var(--green)]" name="logo-apple"></ion-icon>
-                        <ion-icon class="text-xl relative top-0.5 text-[var(--green)] md:text-[var(--green)]" name="logo-android"></ion-icon>
-                        <span class="text-lg gold-header-text font-bold ml-2">Demo Release -  Winter 2024</span>
-                    </span>
-                    <br class="md:hidden">
-                    Get ready to shoot some aliens and asteroids in space, in an AR environment!
-                    Inspired by classics like <b>Galaga</b> and <b>Space Invaders</b>, we aim to add another dimension 
-                    - and story - to the traditional space shooter. Join our heroes from the SSDF (Solar System Defense Force), as they protect the Earth, the Sun, and their neighbors from an oncoming enemy attack.
-                    <br>
-                    <br>
-                </p>
-                <Button on:click={testerLink} style="background: var(--green-gradient);" class="block w-full md:hidden float-right hover:bg-[var(--red)] duration-200">Tester Waitlist</Button>
-            </div>
+  <!-- Header -->
+  <div class="relative z-10 h-screen overflow-hidden">
+    <video
+      class="absolute inset-0 w-full h-full object-cover  bg-black opacity-15"
+      src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/FlightMission01.mp4?updatedAt=1746125092231"
+      autoplay
+      loop
+      muted
+    ></video>
+    <div class="relative z-20 w-full lg:w-3/4 pl-0 pt-0 lg:pl-20 lg:pt-10">
+      <img class="w-40 h-40" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="Cosmic Collisions Logo">
+      <h1 class="text-4xl lg:text-7xl jersey-font green-header-text">Get a Taste of the Future</h1>
+      <p class="text-md lg:text-xl">Blast into a new reality. Command your ship, defend Earth, and explore a universe under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
+      <div class="flex bg-[#88888800] my-4">
+        <h3 class="relative top-1 text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
+        <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
+        <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+          <g id="b75708d097f2188dff6617b0f00f7c43">
+            <path display="inline" d="M120.606,169h270.788v220.663c0,13.109-10.628,23.737-23.721,23.737h-27.123v67.203
+		          c0,17.066-13.612,30.897-30.415,30.897c-16.846,0-30.438-13.831-30.438-30.897v-67.203h-47.371v67.203
+		          c0,17.066-13.639,30.897-30.441,30.897c-16.799,0-30.437-13.831-30.437-30.897v-67.203h-27.099
+		          c-13.096,0-23.744-10.628-23.744-23.737V169z M67.541,167.199c-16.974,0-30.723,13.963-30.723,31.2v121.937
+		          c0,17.217,13.749,31.204,30.723,31.204c16.977,0,30.723-13.987,30.723-31.204V198.399
+		          C98.264,181.162,84.518,167.199,67.541,167.199z M391.395,146.764H120.606c3.342-38.578,28.367-71.776,64.392-90.998
+		          l-25.746-37.804c-3.472-5.098-2.162-12.054,2.946-15.525c5.102-3.471,12.044-2.151,15.533,2.943l28.061,41.232
+		          c15.558-5.38,32.446-8.469,50.208-8.469c17.783,0,34.672,3.089,50.229,8.476L334.29,5.395c3.446-5.108,10.41-6.428,15.512-2.957
+		          c5.108,3.471,6.418,10.427,2.946,15.525l-25.725,37.804C363.047,74.977,388.055,108.175,391.395,146.764z M213.865,94.345
+		          c0-8.273-6.699-14.983-14.969-14.983c-8.291,0-14.99,6.71-14.99,14.983c0,8.269,6.721,14.976,14.99,14.976
+		          S213.865,102.614,213.865,94.345z M329.992,94.345c0-8.273-6.722-14.983-14.99-14.983c-8.291,0-14.97,6.71-14.97,14.983
+		          c0,8.269,6.679,14.976,14.97,14.976C323.271,109.321,329.992,102.614,329.992,94.345z M444.48,167.156
+		          c-16.956,0-30.744,13.984-30.744,31.222v121.98c0,17.238,13.788,31.226,30.744,31.226c16.978,0,30.701-13.987,30.701-31.226
+		          v-121.98C475.182,181.14,461.458,167.156,444.48,167.156z">
+            </path>
+          </g>
+        </svg>
+      </div>
+      <Button color="green" class="mt-4 w-full lg:w-52">Cosmic Collisions Demo</Button>
+      <br>
+      <Button href="#testers" color="light" class="mt-4 w-full lg:w-52">Become a Tester</Button>
     </div>
-    <!-- svelte-ignore a11y-media-has-caption -->
-    <video class="w-full hidden md:block" controls>
-        <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/Screen_Recording_20240806_200843_Cosmic%20Collisions.mp4?updatedAt=1722990197464" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
 </div>
+
+  <!-- Who is Final Boss? -->
+  <div id="made-with" class="flex mx-auto my-16 rounded h-[500px] justify-center md:shadow-4xl w-11/12 md:w-5/6 lg:w-3/4 md:bg-[#]">
+    <div class="w-1/2 bg-[#] content-center">
+      <img class="h-48 mx-auto" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset="">
+    </div>
+    <div class="w-1/2 h-auto bg-[#] content-center">
+      <h1 class="text-5xl green-header-text">Our Goal? Evolutionize Gaming</h1>
+      <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid>
+      <p class="text-xl">
+        Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
+      </p>
+      <h3 class="text-[#ffd24d] text-2xl mt-4">~ Eddie T. | CEO & Co-Founder</h3>
+    </div>
+  </div>
+
+  <!-- Cosmic -->
+  <div id="cosmic" class="flex mx-auto my-16 rounded h-[500px] justify-center md:shadow-4xl w-11/12 md:w-5/6 lg:w-3/4 md:bg-[#]">
+    <div class="w-1/2 h-auto bg-[#] content-center">
+      <h1 class="text-5xl green-header-text">Cosmic Collisions</h1>
+      <p class="text-xl">
+        Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
+      </p>
+      <a href="/cosmic" class="text-[#35a2f4] text-2xl mt-4 inline-block border-b-2 border-[#35a2f4]">More Info &rarr;</a>
+      <div class="flex bg-[#88888800] my-4">
+        <h3 class="relative top-1 text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
+        <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
+        <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+          <g id="b75708d097f2188dff6617b0f00f7c43">
+            <path display="inline" d="M120.606,169h270.788v220.663c0,13.109-10.628,23.737-23.721,23.737h-27.123v67.203
+		          c0,17.066-13.612,30.897-30.415,30.897c-16.846,0-30.438-13.831-30.438-30.897v-67.203h-47.371v67.203
+		          c0,17.066-13.639,30.897-30.441,30.897c-16.799,0-30.437-13.831-30.437-30.897v-67.203h-27.099
+		          c-13.096,0-23.744-10.628-23.744-23.737V169z M67.541,167.199c-16.974,0-30.723,13.963-30.723,31.2v121.937
+		          c0,17.217,13.749,31.204,30.723,31.204c16.977,0,30.723-13.987,30.723-31.204V198.399
+		          C98.264,181.162,84.518,167.199,67.541,167.199z M391.395,146.764H120.606c3.342-38.578,28.367-71.776,64.392-90.998
+		          l-25.746-37.804c-3.472-5.098-2.162-12.054,2.946-15.525c5.102-3.471,12.044-2.151,15.533,2.943l28.061,41.232
+		          c15.558-5.38,32.446-8.469,50.208-8.469c17.783,0,34.672,3.089,50.229,8.476L334.29,5.395c3.446-5.108,10.41-6.428,15.512-2.957
+		          c5.108,3.471,6.418,10.427,2.946,15.525l-25.725,37.804C363.047,74.977,388.055,108.175,391.395,146.764z M213.865,94.345
+		          c0-8.273-6.699-14.983-14.969-14.983c-8.291,0-14.99,6.71-14.99,14.983c0,8.269,6.721,14.976,14.99,14.976
+		          S213.865,102.614,213.865,94.345z M329.992,94.345c0-8.273-6.722-14.983-14.99-14.983c-8.291,0-14.97,6.71-14.97,14.983
+		          c0,8.269,6.679,14.976,14.97,14.976C323.271,109.321,329.992,102.614,329.992,94.345z M444.48,167.156
+		          c-16.956,0-30.744,13.984-30.744,31.222v121.98c0,17.238,13.788,31.226,30.744,31.226c16.978,0,30.701-13.987,30.701-31.226
+		          v-121.98C475.182,181.14,461.458,167.156,444.48,167.156z">
+            </path>
+          </g>
+        </svg>
+      </div>
+      <div class=" bg-[#88888800] my-4">
+        <a href="https://www.unrealengine.com" target="_blank">
+          <h3 class="relative inline-block top-1 text-2xl gold-header-text mr-4">Made with Unreal Engine 5
+
+            <!-- Unreal Icon -->
+          <svg class="inline" fill="#00c400" width="32px" height="32px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="m12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12c0-6.627-5.373-12-12-12zm0 1.846c5.595.007 10.128 4.545 10.128 10.141 0 5.601-4.54 10.141-10.141 10.141s-10.141-4.54-10.141-10.141c0-2.8 1.135-5.335 2.97-7.17 1.837-1.835 4.374-2.97 7.176-2.97h.007zm0 2.77c-4.392.774-8.308 4.824-8.308 9.23 2.149-3.794 3.584-4.067 3.981-4.067s.606.206.606.663v5.654c0 .703-1.366.588-1.818.519 1.67 2.485 5.539 2.77 5.539 2.77l1.846-1.846 1.846.923c2.914-1.334 4.615-4.19 4.615-4.615-.701.868-1.646 1.515-2.731 1.836l-.039.01c-.245 0-.923-.126-.923-.462v-6.693c0-.581 1.342-2.354 1.846-3-3.332.873-4.298 2.394-4.298 2.394s-.253-.548-1.24-.548c.501.473.838 1.114.922 1.832l.001.014v5.654c-.525.373-1.144.653-1.813.801l-.034.006c-.64 0-.952-.26-.952-.75s.029-6.634.029-6.634-.923.339-.923-1.558c0-.949 1.846-2.135 1.846-2.135z"/>
+          </svg>
+          </h3>
+          
+        </a>
+      </div>
+    </div>
+    <div class="w-1/2 bg-[#] content-center">
+      <img class="h-48 mx-auto" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
+    </div>
+  </div>
+
+  <!-- Beta Testers / Discord -->
+  <div id="testers" class="flex mx-auto my-16 rounded h-[500px] justify-center md:shadow-4xl w-11/12 md:w-5/6 lg:w-3/4 md:bg-[#]">
+    <div class="w-1/2 bg-[#] content-center">
+      <img class="h-48 mx-auto" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset="">
+    </div>
+    <div class="w-1/2 h-auto bg-[#] content-center">
+      <h1 class="text-5xl green-header-text">We need Testers (You).</h1>
+      <p class="text-xl">
+        Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
+      </p>
+      <h3 class="text-[#ffd24d] text-2xl mt-4">Testers get a free Final Boss T-Shirt (limted time)</h3>
+      <Button on:click={testerLink} color="green" class="mt-4 w-full lg:w-48">Become a Tester</Button>
+    </div>
+
+  </div>
+   
+  <!-- Form & Social Media -->
+  <div class="flex w-full mx-auto my-8 lg:w-1/2 bg-[#88888800] justify-center">
+    <!-- Flowbite InstagramSolid icon didnt work -->
+    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="#00c400"/>
+      <path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="#00c400"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="#00c400"/>
+    </svg>    
+    <FacebookSolid size="xl" class="mx-2" color="#00c400"></FacebookSolid>
+    <XSolid size="xl" class="mx-2" color="#00c400"></XSolid>
+    <LinkedinSolid size="xl" class="mx-2" color="#00c400"></LinkedinSolid>
+  </div>
+
+  <div class="w-full mx-auto lg:w-1/2 bg-white/10 p-4">
+    <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
+    <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
+      <FloatingLabelInput 
+        maxlength="100"
+        bind:value={contactInfo.name}
+        name="name"
+        classInput={inputClass}
+        defaultClass={"mb-2 bg-red-900"} style="filled" type="text">
+        First & Last Name
+      </FloatingLabelInput>
+      <!-- Spacer -->
+      <div class="h-4"></div>
+      <FloatingLabelInput
+        maxlength="100"
+        bind:value={contactInfo.email}
+        name="email"
+        classInput={inputClass}
+        defaultClass={"mb-2"} style="filled" color="base" type="email">
+        Email
+      </FloatingLabelInput>
+
+      <!-- Spacer -->
+      <div class="h-4"></div>
+      <Textarea 
+        maxlength="500"
+        bind:value={contactInfo.message}
+        name="message"
+        class={inputClass}
+        placeholder="Your message" rows="6"  
+      />
+      <button
+        type="submit"
+        disabled={contactInfo.name === '' || contactInfo.email === '' || contactInfo.message === '' }
+        class="block w-full h-10 rounded text-white text-lg mt-2 disabled:opacity-50 disabled:bg-white/20 bg-[#0e9f0e] hover:bg-[var(--red)] duration-200">
+          Submit
+      </button>
+    </form>
+  </div>
+
+  <!-- Toasts -->
+  {#if successToast}
+    <Toast 
+      position={'top-right'}
+      divClass={successToastClass} 
+      contentClass={'w-full text-sm lg:text-lg font-normal'} 
+      dismissable={true} 
+      align={true}>
+        <span><CheckCircleOutline size="xl" color="#00ff00"></CheckCircleOutline></span>
+        <span>Your message has been submitted! We will get back to you soon! 🙏🏾</span>
+    </Toast>
+  {/if}
+  {#if errorToast}
+    <Toast 
+      position={'top-right'}
+      divClass={errorToastClass} 
+      contentClass={'w-full text-sm lg:text-lg font-normal'} 
+      dismissable={true} 
+      align={true}>
+        <span><CloseCircleOutline size="xl" color="#dd0000"></CloseCircleOutline></span>
+        <span>{errorToastMessage}</span>
+    </Toast>
+  {/if}
+  
 </main>
 <style>
     #logo {
         opacity: 0;
         animation: fade-in-hor 600ms ease 500ms forwards;
     }
-    #info {
-        opacity: 0;
-        animation: fade-in-ver 600ms ease 1000ms forwards;
+    #quote{
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      color:#78C0A8;
+      font-size:4em;
     }
     @keyframes fade-in-hor {
         0% {
