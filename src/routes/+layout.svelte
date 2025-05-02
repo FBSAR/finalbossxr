@@ -5,8 +5,8 @@
   $: activeUrl = $page.url.pathname;
 
   // Navbar Link Classes
-  const nonActiveNavLink = 'text-[#fff]/60 text-xl lg:text-lg  my-1 duration-100 raleway';
-  const activeNavLink = 'text-[#fff] text-xl lg:text-lg lg:bg-transparent my-1 font-bold duration-100 raleway-700';
+  const nonActiveNavLink = 'text-[#fff]/60 text-xl lg:text-sm  my-1 duration-100 raleway';
+  const activeNavLink = 'text-[#fff] text-xl lg:text-sm lg:bg-transparent my-1 font-bold duration-100 raleway-700';
 
   // Should hide Navbar on mobile when a link is clicked
   let hideNavMenu = true;
@@ -41,12 +41,12 @@
         <NavLi href="/cosmic" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>COSMIC</NavLi>
         <NavLi href="/about" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>ABOUT US</NavLi>
         <!-- <NavLi href="/education" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>EDUCATION</NavLi> -->
-        <NavLi href="/crowdfunding" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CROWDFUNDING</NavLi>
+        <!-- <NavLi href="/crowdfunding" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CROWDFUNDING</NavLi> -->
         <NavLi href="/contact" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CONTACT</NavLi>
       </NavUl>
   </Navbar>
 
-  <main class="min-h-screen py-14 lg:py-24" style="background: var(--dark-purple-gradient);">
+  <main class="scrollbar min-h-screen py-14 lg:py-20" style="background: var(--dark-purple-gradient);">
     <slot></slot>
   </main>
 
@@ -62,5 +62,23 @@
 
 </main>
 <style>
-    
+    /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: red;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 </style>

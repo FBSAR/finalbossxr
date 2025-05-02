@@ -1,58 +1,59 @@
 <script lang="ts">
-    let founders = [
+  import { LinkedinSolid } from 'flowbite-svelte-icons'
+  let founders = [
       {
         name: 'Eddie Taliaferro II',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/eddie.jpg?updatedAt=1724278131402',
         title: 'CEO / Co-Founder / Software Developer',
-        description: "I am a driven entrepreneur, Founder and CEO of Final Boss Studios, a dynamic startup attempting to 'evolutionize' the world of gaming and interactive entertainment. With a diverse background as a Tech Educator for five years and extensive experience as a skilled software developer, I combine my passion for technology and education to lead my team in creating innovative and immersive gaming experiences.",
+        linkedin: 'https://www.linkedin.com/in/eddie-taliaferro-ii',
       },
       {
         name: 'Keith Dunklin',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/fbs-keith.jpg?updatedAt=1724277860597',
         title: 'COO / Co-Founder / Game Developer',
-        description: "As COO and co-founder of Final Boss Studios, I lead the charge in delivering innovative AR gaming experiences. With over a decade in software development, I guide our team's efforts from concept to launch, ensuring quality and creativity. Alongside this, I co-own an industrial maintenance recruiting company, blending my passion for technology and business into impactful ventures.",
+        linkedin: 'https://www.linkedin.com/in/keith-dunklin-9a838543/',
       }
-    ]
-    let advisors = [
+  ]
+  let advisors = [
       {
         name: 'Edward Kim',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/ed_kim.jpeg?updatedAt=1724277860376',
         title: 'Business Advisor',
-        description: "Test",
+        linkedin: "https://www.linkedin.com/in/edwardkim1/",
       },
       {
         name: 'John Wolff',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/john.jpg?updatedAt=1740244288777',
         title: 'Game Advisor',
-        description: "Test"
+        linkedin: "https://www.linkedin.com/in/johnwolff89/"
       },
       {
         name: 'Terrell Thomas',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/terrel_pic.png?updatedAt=1724277860626',
         title: 'Legal Advisor',
-        description: "Terrell is a highly accomplished legal counsel with a diverse background rooted in a passion for law and entrepreneurship. Having obtained his education at the prestigious University of Michigan and University of Detroit Mercy, he embarked on a successful career practicing law. Beyond his legal expertise, Terrell's enterprising spirit led him to establish and operate businesses in the fitness and energy sectors. With a keen eye for emerging trends, Terrell also delves into the world of cryptocurrency, investing and actively engaging with the ever-evolving digital currency landscape. Through his multifaceted pursuits, Terrell combines his legal acumen, business acuity, and technological curiosity to provide comprehensive guidance and strategic counsel to his clients.",
+        linkedin: 'https://www.linkedin.com/in/terrell-thomas-927a0123/'
       }
-    ]
-    let team = [
+  ]
+  let team = [
       {
         name: 'Aaron Goodson',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/fbs-aaron.png?updatedAt=1724277860357',
         title: 'Senior Software Developer',
-        description: "Aaron passionate in many aspects of technology, whether it's programming, gaming, or just tinkering with computers. For me, it's always been exciting to learn about new technologies. My goal is to build my software development skills so that I can make great contributions to the world of technology.<br><br>Aaron has experience as a Backend Engineer & Instructor with the educational Non profit Journi, where we worked with Eddie on various classes and web development projects.",
+        linkedin: 'https://www.linkedin.com/in/aaron-goodson-a14187153/'
       },
       {
         name: 'Richard Davis III',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/fbs-richard.png?updatedAt=1724277860494',
         title: 'Sound Design / 3D Modeling & Printing',
-        description: "Richard Davis is a multi-talented creative professional at Final Boss. He specializes in 3D design using programs such as Blender, and also produces music and sound effects using Fruity Loops Studios. With years of experience in the industry, Richard is a highly skilled and valued member of the team. Originally from Detroit, Michigan, Richard now resides in Florida. He attended the Charlotte Technical Center to learn game development, and in his spare time, he enjoys indulging in a variety of hobbies, including music, gaming, paintball, 3D printing, and making YouTube videos.",
+        linkedin: 'https://www.linkedin.com/in/richard-davis-iii-300703240/'
       },
       {
         name: 'Rowan Christerfield',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/rowan.png?updatedAt=1724278119089',
-        title: 'Social Media Handler / Creative Writer',
-        description: "Rowan has recently joined the Cosmic Collisions team as a Social Media Handler & Creative Writer, bringing their passion for interactive media and storytelling to our platform. A soon-to-be Michigan State University student, Rowan is pursuing a degree in Games & Interactive Media. Having witnessed their exceptional talent and dedication during their time with JOURNi, we're confident that Rowan's early experience in video game and augmented reality development will make them an invaluable asset to our team and a rising star in the industry.",
+        title: 'Social Media',
+        linkedin: 'https://www.linkedin.com/in/rowanchristerfield/'
       }
-    ]
+  ]
 </script>
 <main>
 
@@ -74,9 +75,8 @@
             alt="Flowbite Logo" 
           />
           <h1 class="text-2xl gold-header-text">{founder.name}</h1>
-          <!-- border-b-2 border-gray-200/30 -->
           <p class="text-sm font-bold  pb-1 mb-2">{founder.title}</p>
-          <!-- <p class="text-xs lg:text-lg">{founder.description}</p> -->
+          <a href="{founder.linkedin}" target="_blank"><LinkedinSolid color="#00c400"></LinkedinSolid></a>
         </div>
       {/each}
     </div>
@@ -95,8 +95,7 @@
           />
           <h1 class="text-2xl gold-header-text">{member.name}</h1>
           <p class="text-sm font-bold pb-1 mb-2">{member.title}</p>
-          <!-- <p class="text-xs lg:text-lg">{member.description}</p> -->
-        </div>
+          <a href="{member.linkedin}" target="_blank"><LinkedinSolid color="#00c400"></LinkedinSolid></a>        </div>
       {/each}
     </div>
   </div>
@@ -114,8 +113,7 @@
           />
           <h1 class="text-2xl gold-header-text">{advisor.name}</h1>
           <p class="text-sm font-bold pb-1 mb-2">{advisor.title}</p>
-          <!-- <p class="text-xs lg:text-lg">{advisor.description}</p> -->
-        </div>
+          <a href="{advisor.linkedin}" target="_blank"><LinkedinSolid color="#00c400"></LinkedinSolid></a>        </div>
       {/each}
     </div>
   </div>
