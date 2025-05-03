@@ -110,7 +110,6 @@
         <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/Screen_Recording_20240806_200843_Cosmic%20Collisions.mp4?updatedAt=1722990197464" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-
     </div>
   </div>
 
