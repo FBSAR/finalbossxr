@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import { Button, Badge, FloatingLabelInput, Textarea, Toast } from 'flowbite-svelte';
-  import { CheckCircleOutline, CloseCircleOutline, LinkedinSolid, AppleSolid, FacebookSolid, XSolid, QuoteSolid
+  import { CheckCircleOutline, CloseCircleOutline, LinkedinSolid, AppleSolid, DiscordSolid, FacebookSolid, XSolid, QuoteSolid
   } from 'flowbite-svelte-icons'
   import { enhance } from '$app/forms';
 
@@ -71,6 +71,9 @@
   function testerLink() {
       window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
   }
+  function discordLink() {
+      window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
+  }
   onMount(() => {
     return;
   })
@@ -78,20 +81,20 @@
 <main>
 
   <!-- Header -->
-  <div class="relative z-10 h-screen overflow-hidden">
+  <div class="relative z-10 h-auto lg:h-screen overflow-hidden">
     <video
-      class="absolute inset-0 w-full h-full object-cover  bg-black opacity-15"
+      class="hidden lg:block absolute inset-0 w-full h-full object-cover bg-black opacity-15"
       src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/FlightMission01.mp4?updatedAt=1746125092231"
       autoplay
       loop
       muted>
     </video>
-    <div class="relative z-20 mx-auto lg:mx-0 w-11/12 lg:w-[700px] pl-0 pt-0 lg:pl-20 lg:pt-10">
+    <div class="relative z-20 mx-auto lg:mx-0 w-11/12 lg:w-[800px] pl-0 pt-0 lg:pl-20 lg:pt-10">
       <img class="w-40 h-40" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="Cosmic Collisions Logo">
       <h1 class="text-4xl lg:text-7xl jersey-font green-header-text">Get a Taste of the Future</h1>
       <p class="text-md lg:text-xl">Blast into a new reality. Command your ship, defend Earth, and explore a universe under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
       <div class="flex bg-[#88888800] my-4">
-        <h3 class="relative top-1 text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
+        <h3 class="relative top-1 text-lg lg:text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
         <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
         <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
           <g id="b75708d097f2188dff6617b0f00f7c43">
@@ -113,14 +116,21 @@
           </g>
         </svg>
       </div>
-      <Button color="green" class="mt-4 w-full lg:w-52">Cosmic Collisions Demo</Button>
-      <br>
-      <Button href="#testers" color="light" class="mt-4 w-full lg:w-52">Become a Tester</Button>
+      <Button color="green" class="mt-4 mr-2 w-full lg:w-52">Cosmic Collisions Demo</Button>
+      <Button on:click={discordLink} color="purple" class="mt-4 mr-2 w-full lg:w-52 relative lg:top-1">
+        <DiscordSolid class="mr-2"></DiscordSolid>Join our Discord
+      </Button>
+      <Button href="#testers" color="light" class="mt-4 mr-2 w-full lg:w-52">Become a Tester</Button>
+      <video class="block lg:hidden w-full mt-8" autoplay muted controls playsinline>
+        <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <h2 class="block lg:hidden gold-header-text">Development Footage / Story Mode</h2>
     </div>
   </div>
 
   <!-- Spacer -->
-  <div class="h-10 lg:h-32"></div>
+  <div class="h-24 lg:h-32"></div>
 
   <!-- Who is Final Boss? -->
   <div id="made-with" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
@@ -186,15 +196,17 @@
         </a>
       </div>
     </div>
-    <div class="w-full lg:w-1/2 bg-[#] pl-0 lg:pl-10 content-center">
-      <video
-      class="w-full h-full object-cover"
-      src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663"
-      autoplay
-      loop
-      muted
-      ></video>
-      <h2 class="gold-header-text">Development Footage</h2>
+    <div class="w-full lg:w-1/2 object-cover bg-[#] pl-0 lg:pl-10 content-center">
+      <video class="block lg:hidden w-full h-full object-cover" autoplay muted controls playsinline>
+        <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/FlightMission01.mp4?updatedAt=1746125092231" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <video class="hidden lg:block w-full h-full object-cover" autoplay muted controls playsinline>
+        <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <h2 class="block lg:hidden gold-header-text">Development Footage / Flight Mission</h2>
+      <h2 class="hidden lg:block gold-header-text">Development Footage / Story Mission</h2>
     </div>
   </div>
 
@@ -206,7 +218,7 @@
     <div class="w-full lg:w-1/2 bg-[#] content-center">
       <img class="w-full h-full pb-10 lg:pb-0 lg:pr-10 object-cover" src="https://ik.imagekit.io/lgpq0vloy/Photos/IMG_4302.jpg?updatedAt=1746243009214" alt="" srcset="">
     </div>
-    <div class="w-11/12 lg:w-1/2 bg-[#] content-center">
+    <div class="w-full lg:w-1/2 bg-[#] content-center">
       <h1 class="text-5xl green-header-text">We need Testers (You).</h1>
       <p class="text-xl">
         Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
@@ -220,7 +232,7 @@
   <div class="h-10 lg:h-32"></div>
    
   <!-- Form & Social Media -->
-  <div class="flex w-full mx-auto my-4 lg:w-1/2 bg-[#88888800] justify-center">
+  <div class="flex w-11/12 lg:w-1/2 mx-auto my-4 bg-[#88888800] justify-center">
     <!-- Flowbite InstagramSolid icon didnt work -->
     <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="#00c400"/>
@@ -230,7 +242,15 @@
     <FacebookSolid size="xl" class="mx-2" color="#00c400"></FacebookSolid>
     <XSolid size="xl" class="mx-2" color="#00c400"></XSolid>
     <LinkedinSolid size="xl" class="mx-2" color="#00c400"></LinkedinSolid>
+    <br>
   </div>
+  <div class="text-center my-8">
+    <Button on:click={discordLink} color="purple" class="w-48">
+      <DiscordSolid class="mr-2"></DiscordSolid>
+      Join our Discord
+    </Button>
+  </div>
+
 
   <div class="w-full mx-auto lg:w-1/2 bg-white/10 p-4">
     <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
