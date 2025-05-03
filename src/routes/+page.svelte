@@ -84,9 +84,9 @@
       src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/FlightMission01.mp4?updatedAt=1746125092231"
       autoplay
       loop
-      muted
-    ></video>
-    <div class="relative z-20 w-full lg:w-3/4 pl-0 pt-0 lg:pl-20 lg:pt-10">
+      muted>
+    </video>
+    <div class="relative z-20 mx-auto lg:mx-0 w-11/12 lg:w-[700px] pl-0 pt-0 lg:pl-20 lg:pt-10">
       <img class="w-40 h-40" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="Cosmic Collisions Logo">
       <h1 class="text-4xl lg:text-7xl jersey-font green-header-text">Get a Taste of the Future</h1>
       <p class="text-md lg:text-xl">Blast into a new reality. Command your ship, defend Earth, and explore a universe under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
@@ -117,14 +117,18 @@
       <br>
       <Button href="#testers" color="light" class="mt-4 w-full lg:w-52">Become a Tester</Button>
     </div>
-</div>
+  </div>
+
+  <!-- Spacer -->
+  <div class="h-10 lg:h-32"></div>
 
   <!-- Who is Final Boss? -->
-  <div id="made-with" class="flex mx-auto my-16 rounded h-[500px] justify-center md:shadow-4xl w-11/12 md:w-5/6 lg:w-3/4 md:bg-[#]">
-    <div class="w-1/2 bg-[#] content-center">
-      <img class="h-48 mx-auto" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset="">
+  <div id="made-with" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
+    <div class="w-full lg:w-1/2 bg-[#] content-center">
+      <!-- <img class="h-48 mx-auto" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset=""> -->
+      <img class="w-full h-full pb-10 lg:pb-0 lg:pr-10 object-cover" src="https://ik.imagekit.io/lgpq0vloy/Photos/IMG_1089.jpeg?updatedAt=1746243453355" alt="" srcset="">
     </div>
-    <div class="w-1/2 h-auto bg-[#] content-center">
+    <div class="w-11/12 lg:w-1/2 bg-[#] content-center">
       <h1 class="text-5xl green-header-text">Our Goal? Evolutionize Gaming</h1>
       <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid>
       <p class="text-xl">
@@ -134,9 +138,13 @@
     </div>
   </div>
 
+  <!-- Spacer -->
+  <div class="h-10 lg:h-32"></div>
+
   <!-- Cosmic -->
-  <div id="cosmic" class="flex mx-auto my-16 rounded h-[500px] justify-center md:shadow-4xl w-11/12 md:w-5/6 lg:w-3/4 md:bg-[#]">
-    <div class="w-1/2 h-auto bg-[#] content-center">
+  <div id="cosmic" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
+    <div class="w-11/12 lg:w-1/2 h-auto bg-[#] content-center">
+      <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
       <h1 class="text-5xl green-header-text">Cosmic Collisions</h1>
       <p class="text-xl">
         Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
@@ -178,17 +186,27 @@
         </a>
       </div>
     </div>
-    <div class="w-1/2 bg-[#] content-center">
-      <img class="h-48 mx-auto" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
+    <div class="w-full lg:w-1/2 bg-[#] pl-0 lg:pl-10 content-center">
+      <video
+      class="w-full h-full object-cover"
+      src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663"
+      autoplay
+      loop
+      muted
+      ></video>
+      <h2 class="gold-header-text">Development Footage</h2>
     </div>
   </div>
 
+  <!-- Spacer -->
+  <div class="h-10 lg:h-32"></div>
+   
   <!-- Beta Testers / Discord -->
-  <div id="testers" class="flex mx-auto my-16 rounded h-[500px] justify-center md:shadow-4xl w-11/12 md:w-5/6 lg:w-3/4 md:bg-[#]">
-    <div class="w-1/2 bg-[#] content-center">
-      <img class="h-48 mx-auto" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset="">
+  <div id="testers" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
+    <div class="w-full lg:w-1/2 bg-[#] content-center">
+      <img class="w-full h-full pb-10 lg:pb-0 lg:pr-10 object-cover" src="https://ik.imagekit.io/lgpq0vloy/Photos/IMG_4302.jpg?updatedAt=1746243009214" alt="" srcset="">
     </div>
-    <div class="w-1/2 h-auto bg-[#] content-center">
+    <div class="w-11/12 lg:w-1/2 bg-[#] content-center">
       <h1 class="text-5xl green-header-text">We need Testers (You).</h1>
       <p class="text-xl">
         Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
@@ -196,11 +214,13 @@
       <h3 class="text-[#ffd24d] text-2xl mt-4">Testers get a free Final Boss T-Shirt (limted time)</h3>
       <Button on:click={testerLink} color="green" class="mt-4 w-full lg:w-48">Become a Tester</Button>
     </div>
-
   </div>
+
+  <!-- Spacer -->
+  <div class="h-10 lg:h-32"></div>
    
   <!-- Form & Social Media -->
-  <div class="flex w-full mx-auto my-8 lg:w-1/2 bg-[#88888800] justify-center">
+  <div class="flex w-full mx-auto my-4 lg:w-1/2 bg-[#88888800] justify-center">
     <!-- Flowbite InstagramSolid icon didnt work -->
     <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="#00c400"/>
@@ -278,15 +298,6 @@
   
 </main>
 <style>
-    #logo {
-        opacity: 0;
-        animation: fade-in-hor 600ms ease 500ms forwards;
-    }
-    #quote{
-      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-      color:#78C0A8;
-      font-size:4em;
-    }
     @keyframes fade-in-hor {
         0% {
             transform: translateX(-1.25rem);
