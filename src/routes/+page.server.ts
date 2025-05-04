@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import type { Action } from '@sveltejs/kit';
 
 
-export const prerender = true;
+export const prerender = false;
 const formattedDate = format(new Date(), 'MMMM do, yyyy');
 
 // Tracking state to ensure only 1 message is sent to slack at a time.
