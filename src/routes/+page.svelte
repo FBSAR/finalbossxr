@@ -251,7 +251,6 @@
     </Button>
   </div>
 
-
   <div class="w-full mx-auto lg:w-1/2 bg-white/10 p-4">
     <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
     <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
