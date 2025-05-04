@@ -135,16 +135,17 @@
   <!-- Who is Final Boss? -->
   <div id="made-with" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
     <div class="w-full lg:w-1/2 bg-[#] content-center">
-      <!-- <img class="h-48 mx-auto" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset=""> -->
       <img class="w-full h-full pb-10 lg:pb-0 lg:pr-10 object-cover" src="https://ik.imagekit.io/lgpq0vloy/Photos/IMG_1089.jpeg?updatedAt=1746243453355" alt="" srcset="">
     </div>
     <div class="w-11/12 lg:w-1/2 bg-[#] content-center">
+      <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset="">
       <h1 class="text-5xl green-header-text">Our Goal? Evolutionize Gaming</h1>
       <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid>
       <p class="text-xl">
         Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
       </p>
       <h3 class="text-[#ffd24d] text-2xl mt-4">~ Eddie T. | CEO & Co-Founder</h3>
+      <a href="/about" class="text-[#35a2f4] text-sm mt-4 inline-block border-b-2 border-[#35a2f4]">More info about our Team &rarr;</a>
     </div>
   </div>
 
