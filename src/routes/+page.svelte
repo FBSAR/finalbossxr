@@ -72,7 +72,22 @@
       window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
   }
   function discordLink() {
-      window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
+      window.open('https://discord.gg/UvRHXpgd', '_blank');
+  }
+  function gotoCosmicPage() {
+    goto('cosmic');
+  }
+  function gotoFacebookPage() {
+    window.open('https://www.facebook.com/FinalBossStudios', '_blank');
+  }
+  function gotoInstagramPage() {
+    window.open('https://discord.gg/UvRHXpgd', '_blank');
+  }
+  function gotoXPage() {
+    window.open('https://discord.gg/UvRHXpgd', '_blank');
+  }
+  function gotoLinkedInPage() {
+    window.open('https://discord.gg/UvRHXpgd', '_blank');
   }
   onMount(() => {
     return;
@@ -92,7 +107,7 @@
     <div class="relative z-20 mx-auto lg:mx-0 w-11/12 lg:w-[800px] pl-0 pt-0 lg:pl-20 lg:pt-10">
       <img class="w-40 h-40" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="Cosmic Collisions Logo">
       <h1 class="text-4xl lg:text-7xl jersey-font page-header green-header-text">Get a Taste of the Future</h1>
-      <p class="text-md lg:text-xl">Blast into a new reality. Command your ship, defend Earth, and explore a universe under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
+      <p class="text-md lg:text-xl">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
       <div class="flex bg-[#88888800] my-4">
         <h3 class="relative top-1 text-lg lg:text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
         <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
@@ -116,7 +131,7 @@
           </g>
         </svg>
       </div>
-      <Button color="green" class="mt-4 mr-2 w-full lg:w-52">Cosmic Collisions Demo</Button>
+      <Button on:click={gotoCosmicPage} color="green" class="mt-4 mr-2 w-full lg:w-52">Cosmic Collisions Demo</Button>
       <Button on:click={discordLink} color="purple" class="mt-4 mr-2 w-full lg:w-52 relative lg:top-1">
         <DiscordSolid class="mr-2"></DiscordSolid>Join our Discord
       </Button>
@@ -141,10 +156,13 @@
       <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset="">
       <h1 class="text-5xl green-header-text">Our Goal? Evolutionize Gaming</h1>
       <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid>
-      <p class="text-xl">
-        Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
+      <p class="text-md">
+        Remember the electric energy of a room packed with friends, controllers in hand, battling it out in Smash Bros., Halo, Madden, and more?
+        <br><span class="jersey-font gold-header-text text-2xl">We do</span>.<br>
+        Our mission is to recapture that magic, reimagining the spirit of couch multiplayer for the modern era through the innovative possibilities of augmented and mixed reality (AR/MR). 
+        <br><span class="jersey-font green-header-text text-2xl">We're building new ways to play together, in the same space, and beyond.</span>
       </p>
-      <h3 class="text-[#ffd24d] text-2xl mt-4">~ Eddie T. | CEO & Co-Founder</h3>
+      <!-- <h3 class="text-[#ffd24d] text-2xl mt-4">~ Eddie T. | CEO & Co-Founder</h3> -->
       <a href="/about" class="text-[#35a2f4] text-sm mt-4 inline-block border-b-2 border-[#35a2f4]">More info about our Team &rarr;</a>
     </div>
   </div>
@@ -155,10 +173,15 @@
   <!-- Cosmic -->
   <div id="cosmic" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
     <div class="w-11/12 lg:w-1/2 h-auto bg-[#] content-center">
-      <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
-      <h1 class="text-5xl green-header-text">Cosmic Collisions</h1>
-      <p class="text-xl">
-        Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
+      <img class="h-32 lg:mb-4" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
+      <p class="text-sm">
+        Born from our 2023 Metaverse Creators VR Hackathon project, Cosmic Collisions, this game captured the simple yet addictive fun of shooting down incoming asteroids in VR. That core gameplay loop resonated with us, inspiring us the following year to reimagine the concept as a more accessible Mobile AR experience. 
+        <br>
+        <br>
+        Now, we're expanding on that foundation with RPG elements reminiscent of Dynasty Warriors; Players will unlock unique abilities for diverse characters as they progress through their individual stories and perspectives on the unfolding alien invasion.
+        <br>
+        <br>
+        This experience utilizes spacial awareness, it a way that is similar to the game of Pool. Find your position, aim your shot, fire on the target.
       </p>
       <a href="/cosmic" class="text-[#35a2f4] text-2xl mt-4 inline-block border-b-2 border-[#35a2f4]">More Info &rarr;</a>
       <div class="flex bg-[#88888800] my-4">
@@ -221,9 +244,8 @@
     </div>
     <div class="w-full lg:w-1/2 bg-[#] content-center">
       <h1 class="text-5xl green-header-text">We need Testers (You).</h1>
-      <p class="text-xl">
-        Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while. That's because they were able to connect experiences they've had and synthesize new things.
-      </p>
+      <p class="text-md">
+        Join the Final Boss team as a Beta Tester and be among the first to experience Cosmic Collisions and shape our future games! We're seeking 25-30 dedicated players to help us test, provide valuable feedback, and even spread the word. Your insights will be instrumental in making our games the best they can be!      </p>
       <h3 class="text-[#ffd24d] text-2xl mt-4">Testers get a free Final Boss T-Shirt (limted time)</h3>
       <Button on:click={testerLink} color="green" class="mt-4 w-full lg:w-48">Become a Tester</Button>
     </div>
@@ -235,14 +257,26 @@
   <!-- Form & Social Media -->
   <div class="flex w-11/12 lg:w-1/2 mx-auto my-4 bg-[#88888800] justify-center">
     <!-- Flowbite InstagramSolid icon didnt work -->
-    <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Button class="mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoInstagramPage}>
+      <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="#00c400"/>
       <path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="#00c400"/>
       <path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="#00c400"/>
-    </svg>    
-    <FacebookSolid size="xl" class="mx-2" color="#00c400"></FacebookSolid>
-    <XSolid size="xl" class="mx-2" color="#00c400"></XSolid>
-    <LinkedinSolid size="xl" class="mx-2" color="#00c400"></LinkedinSolid>
+      </svg>
+    </Button>    
+    <Button class="mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoFacebookPage}>
+      <XSolid size="xl" class="mx-2" color="#00c400"></XSolid>
+    </Button>    
+    <Button class="mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoLinkedInPage}>
+      <LinkedinSolid size="xl" class="mx-2" color="#00c400"></LinkedinSolid>
+    </Button>    
+    <Button class="mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoFacebookPage}>
+      <FacebookSolid  size="xl" class="mx-2" color="#00c400"></FacebookSolid>
+    </Button>
+    <Button class="mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoFacebookPage}> 
+      <svg fill="#00c400" width="32px" height="32px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/>
+      </svg>
+    </Button>
     <br>
   </div>
   <div class="text-center my-8">
