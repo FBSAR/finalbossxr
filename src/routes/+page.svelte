@@ -147,7 +147,7 @@
   <div class="my-8 lg:my-52">
     <video
       class="mx-auto w-full lg:w-[600px]" autoplay muted loop playsinline
-      src="src\lib\videos\FBS_Intro  w_Custom Music.mp4">
+      src="src\lib\videos\FBSIntro.mp4">
     </video>
   </div>
 
