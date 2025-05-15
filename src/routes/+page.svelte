@@ -144,8 +144,12 @@
     </div>
   </div>
 
-  <!-- Spacer -->
-  <div class="h-24 lg:h-32"></div>
+  <div class="my-8 lg:my-52">
+    <video
+      class="mx-auto w-full lg:w-[600px]" autoplay muted loop playsinline
+      src="src\lib\videos\FBS_Intro  w_Custom Music.mp4">
+    </video>
+  </div>
 
   <!-- Who is Final Boss? -->
   <div id="made-with" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
