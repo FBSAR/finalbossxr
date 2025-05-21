@@ -149,7 +149,7 @@
     <div class="w-full lg:w-1/2 bg-[#] p-0 lg:pr-8 content-center">
       <video
         class="w-full lg:w-[600px]" autoplay muted loop playsinline
-        src="src\lib\videos\FBSIntro.mp4">
+        src="https://ik.imagekit.io/k8qym6wh0/FBSIntro.mp4?updatedAt=1747791672391">
       </video>    
     </div>
     <div class="w-11/12 lg:w-1/2 bg-[#] content-center">
