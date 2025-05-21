@@ -8,6 +8,7 @@
    const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
    const successToastClass = 'w-full max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#00ff00] rounded gap-3'
    const errorToastClass = 'w-full max-w-sm lg:max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#dd0000] rounded gap-3'
+   
    // Toasts
    let successToast = false;
    function showSuccessToast() {
@@ -81,30 +82,35 @@
         name: 'Captain Phoenix',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/DALL_E%202024-04-09%2021.17.57%20-%20In%20a%20universe%20where%20advanced%20technology%20and%20interstellar%20warfare%20collide,%20Captain%20Aurora%20_Phoenix.jpg?updatedAt=1724781653546',
         title: 'The Captain',
+        special: 'Piercing Shots - These shots continue their momentum after hitting 1 object.',
         description: "A battle-hardened SSDF veteran, driven by the loss of her family in the alien attack. A brilliant tactician, she defends the solar system with unmatched skill, but her inner turmoil risks overwhelming her, as she battles between vengeance and hope.",
       },
       {
         name: 'Riley',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/DALLE2024-04-1008.58.35-LieutenantRiley_MacGyver_McKayknownasTheEngineerstandsoutwiththeirred-themedengineeringgearembodyinginno-ezgif.com-webp-to-jpg-co.jpg?updatedAt=1724391506293',
         title: 'The Engineer',
+        special: 'Repair Portal - Fix portals simply by flying through it.',
         description: "A young, improvisational genius who can turn scraps into solutions, from asteroid defenses to alien tech. Their rebellious nature and unconventional methods often clash with Phoenix's strict command, challenging them to find common ground and work as a team.",
       },
       {
         name: 'Johnny Sparks',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/DALLE2024-04-1009.02.32-CadetJohnny_Sparky_SparksknownasTheRookieembodiesthevibrantenergyanduntestedvalorofanewrecruit.Dressed-ezgif.com-webp-to-jpg-conv.jpg?updatedAt=1724391506509',
         title: 'The Rookie',
+        special: 'Health Regeneration - Player Ship’s Shield regenerates every [X amount of time]',
         description: "A newly minted graduate, Sparky is naive but full of courage and optimism. Despite their inexperience, they bring a fresh perspective and a contagious positive spirit, which could be the spark the resistance needs. An exceptional VR/AR gamer with a determination reminiscent of a young Leon Kennedy.",
       },
       {
         name: 'Xylo',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/DALLE2024-04-1008.55.44-EnhancingXyloshumanlikenessfurthertheynowexhibitamorepronouncedblendofhumanandetherealavianfeatures.The-ezgif.com-webp-to-jpg-con.jpg?updatedAt=1724391506584',
         title: 'The Alien',
+        special: 'Defense - Can destroy asteroids colliding into them, with no damage to the ship.',
         description: "An ethereal avian species with shimmering iridescent wings, hailing from a solar system bathed in twilight. With an innate grasp of astrophysics, Xylo navigates space with unmatched precision. Discovered after crash-landing on Earth, Xylo's gentle nature and otherworldly beauty quickly transformed initial fear into awe.",
       },
       {
         name: 'Wraith',
         photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/85ce716b-cbed-4d90-b72c-981c6eecdedc.png?updatedAt=1724391761183',
         title: 'The AI',
+        special: 'Speed Increase - Temporary Speed Increase under certain conditions (still working on this design)',
         description: "Wraith, once a counterpart to Reaper, remains loyal to humanity. Operating in the shadows, Wraith uses its cyber capabilities to protect the solar system, quietly neutralizing threats and countering Reaper's plans. A silent guardian, it provides vital intelligence to the SSDF, ensuring the galaxy's survival.",
       },
     ]
@@ -121,8 +127,8 @@
     <!-- Photo -->
     <div class="w-1/2 mb-5 lg:mr-6 md:w-1/4">
       <img 
-      src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Draft_2%20(2).png?updatedAt=1721968909845" 
-      class="w-full" 
+      src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" 
+      class="w-3/4 mx-auto pt-8" 
       alt="Cosmic Collisions Logo"
       >
     </div>
@@ -229,16 +235,17 @@
             src={character.photo} 
             class="h-auto rounded mb-2" 
             alt="Flowbite Logo" 
-          />
-          <h2 class="text-2xl lg:text-lg green-header-text">{character.name}</h2>
-          <h1 class="text-3xl lg:text-xl gold-header-text pb-1 mb-2">{character.title}</h1>
+            />
+            <h2 class="text-2xl lg:text-xl green-header-text">{character.name}</h2>
+            <h1 class="text-3xl lg:text-3xl gold-header-text mb-2">{character.title}</h1>
+            <p class="text-md lg:text-[0.85em] h-16 mb-2 pb-4 border-b-2 border-[#999]"><b>Special</b>: {character.special}</p>
           <p class="text-md lg:text-[0.85em]">{character.description}</p>
+          <br>
         </div>
-      {/each}
+    {/each}
   </div>
-
   <div class="flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto container">
-    <span class="text-gray-500">[Disclaimer] AI-Generated concept images</span>
+    <span class="text-gray-500">[Disclaimer] AI-Generated concept images, final concepts in development.</span>
   </div>
 
   <!-- Spacer -->

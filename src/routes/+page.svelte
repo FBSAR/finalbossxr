@@ -144,25 +144,21 @@
     </div>
   </div>
 
-  <div class="my-8 lg:my-52">
-    <video
-      class="mx-auto w-full lg:w-[600px]" autoplay muted loop playsinline
-      src="src\lib\videos\FBSIntro.mp4">
-    </video>
-  </div>
-
   <!-- Who is Final Boss? -->
   <div id="made-with" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
-    <div class="w-full lg:w-1/2 bg-[#] content-center">
-      <img class="w-full h-full pb-10 lg:pb-0 lg:pr-10 object-cover" src="https://ik.imagekit.io/lgpq0vloy/Photos/IMG_1089.jpeg?updatedAt=1746243453355" alt="" srcset="">
+    <div class="w-full lg:w-1/2 bg-[#] p-0 lg:pr-8 content-center">
+      <video
+        class="w-full lg:w-[600px]" autoplay muted loop playsinline
+        src="src\lib\videos\FBSIntro.mp4">
+      </video>    
     </div>
     <div class="w-11/12 lg:w-1/2 bg-[#] content-center">
-      <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset="">
+      <!-- <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset=""> -->
       <h1 class="text-5xl green-header-text">Our Goal? Evolutionize Gaming</h1>
-      <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid>
+      <!-- <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid> -->
       <p class="text-md">
         Remember the electric energy of a room packed with friends, controllers in hand, battling it out in Smash Bros., Halo, Madden, and more?
-        <br><span class="jersey-font gold-header-text text-2xl">We do</span>.<br>
+        <br><span class="jersey-font gold-header-text text-4xl">We do</span>.<br>
         Our mission is to recapture that magic, reimagining the spirit of couch multiplayer for the modern era through the innovative possibilities of augmented and mixed reality (AR/MR). 
         <br><span class="jersey-font green-header-text text-2xl">We're building new ways to play together, in the same space, and beyond.</span>
       </p>
@@ -175,10 +171,10 @@
   <div class="h-10 lg:h-32"></div>
 
   <!-- Cosmic -->
-  <div id="cosmic" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
+  <div id="cosmic" class="block lg:flex mx-auto my-10 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
     <div class="w-11/12 lg:w-1/2 h-auto bg-[#] content-center">
       <img class="h-32 lg:mb-4" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
-      <p class="text-sm">
+      <p class="text-md">
         Born from our 2023 Metaverse Creators VR Hackathon project, Cosmic Collisions, this game captured the simple yet addictive fun of shooting down incoming asteroids in VR. That core gameplay loop resonated with us, inspiring us the following year to reimagine the concept as a more accessible Mobile AR experience. 
         <br>
         <br>
