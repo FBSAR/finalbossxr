@@ -104,7 +104,7 @@
       loop
       muted>
     </video>
-    <div class="relative z-20 mx-auto lg:mx-0 w-11/12 lg:w-[800px] pl-0 pt-0 lg:pl-20 lg:pt-10">
+    <div class="relative z-20 mx-auto lg:mx-0 w-11/12 lg:w-[800px] xl:w-3/4 xl:pt-40 xl:mx-auto pl-0 pt-0 lg:pl-20 lg:pt-10">
       <img class="w-40 h-40" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="Cosmic Collisions Logo">
       <h1 class="text-4xl lg:text-7xl jersey-font page-header green-header-text">Get a Taste of the Future</h1>
       <p class="text-md lg:text-xl">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { Badge, FloatingLabelInput, Textarea, Toast } from 'flowbite-svelte';
   import { CheckCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons'
   import { enhance } from '$app/forms';
