@@ -52,7 +52,7 @@
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <NavBrand href="/">
         <img 
-          src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" 
+          src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo.svg?updatedAt=1721187102011" 
           class="h-9 sm:h-12" 
           alt="Final Boss Studios Logo" />
         <img 
