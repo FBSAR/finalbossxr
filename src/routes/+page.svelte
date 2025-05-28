@@ -286,8 +286,18 @@
     </Button>
   </div>
 
-  <div class="w-full mx-auto lg:w-1/2 bg-white/10 p-4">
+  <div class="mx-auto px-4 w-11/12">
     <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
+  <p class="text-xs lg:text-lg sm:w-1/2 lg:w-1/2">
+    Have a question? Have a comment? Want to work with, or invest in Final Boss?
+    Please reach out, and we will contact you are our earliest convenience!
+  </p>
+  <Badge color="yellow">Please fill out entire form</Badge>
+  <!-- Spacer -->
+  <div class="h-4"></div>
+   
+  <!-- Form -->
+  <div class="w-full lg:w-1/2 bg-white/10 p-4">
     <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
       <FloatingLabelInput 
         maxlength="100"
@@ -317,6 +327,8 @@
         class={inputClass}
         placeholder="Your message" rows="6"  
       />
+      <!--         style="background: var(--green-gradient);" 
+ -->
       <button
         type="submit"
         disabled={contactInfo.name === '' || contactInfo.email === '' || contactInfo.message === '' }
@@ -324,6 +336,31 @@
           Submit
       </button>
     </form>
+  </div>
+
+    <!-- Toasts -->
+    {#if successToast}
+    <Toast 
+      position={'top-right'}
+      divClass={successToastClass} 
+      contentClass={'w-full text-sm lg:text-lg font-normal'} 
+      dismissable={true} 
+      align={true}>
+        <span><CheckCircleOutline size="xl" color="#00ff00"></CheckCircleOutline></span>
+        <span>Your message has been submitted! We will get back to you soon! 🙏🏾</span>
+    </Toast>
+    {/if}
+    {#if errorToast}
+    <Toast 
+      position={'top-right'}
+      divClass={errorToastClass} 
+      contentClass={'w-full text-sm lg:text-lg font-normal'} 
+      dismissable={true} 
+      align={true}>
+        <span><CloseCircleOutline size="xl" color="#dd0000"></CloseCircleOutline></span>
+        <span>{errorToastMessage}</span>
+    </Toast>
+    {/if}
   </div>
 
   <!-- Toasts -->

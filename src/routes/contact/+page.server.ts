@@ -1,8 +1,7 @@
 import { format } from 'date-fns';
+import { env } from '$env/dynamic/private';
 
-// TODO: DO Vite & PreRendering research
 export const prerender = false;
-const SLACK_CONTACT_FORM_HOOK_URL = 'https://hooks.slack.com/services/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';
 const formattedDate = format(new Date(), 'MMMM do, yyyy');
 
 // Tracking state to ensure only 1 message is sent to slack at a time.
@@ -19,7 +18,7 @@ async function submitFormData(name: string, email: string, message: string) {
         
         if(!formSubmitted) {
         formSubmitted = true;
-        const response = await fetch(SLACK_CONTACT_FORM_HOOK_URL, { 
+        const response = await fetch(env.SLACK_CONTACT_FORM_HOOK_URL, { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
