@@ -70,13 +70,21 @@
    function testerLink() {
        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
    }
-   function discordLink() {
-       window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
-   }
-     onMount(() => {
-      return;
-     })
-
+  function discordLink() {
+      window.open('https://discord.gg/UvRHXpgd', '_blank');
+  }
+   function gotoFacebookPage() {
+    window.open('https://www.facebook.com/FinalBossStudios', '_blank');
+  }
+  function gotoInstagramPage() {
+    window.open('https://discord.gg/UvRHXpgd', '_blank');
+  }
+  function gotoXPage() {
+    window.open('https://discord.gg/UvRHXpgd', '_blank');
+  }
+  function gotoLinkedInPage() {
+    window.open('https://discord.gg/UvRHXpgd', '_blank');
+  }
      let characters = [
       {
         name: 'Captain Phoenix',
@@ -107,8 +115,8 @@
         description: "An ethereal avian species with shimmering iridescent wings, hailing from a solar system bathed in twilight. With an innate grasp of astrophysics, Xylo navigates space with unmatched precision. Discovered after crash-landing on Earth, Xylo's gentle nature and otherworldly beauty quickly transformed initial fear into awe.",
       },
       {
-        name: 'Wraith',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/85ce716b-cbed-4d90-b72c-981c6eecdedc.png?updatedAt=1724391761183',
+        name: 'AI Wraith',
+        photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/AI%20Wraith?updatedAt=1748462083566',
         title: 'The AI',
         special: 'Speed Increase - Temporary Speed Increase under certain conditions (still working on this design)',
         description: "Wraith, once a counterpart to Reaper, remains loyal to humanity. Operating in the shadows, Wraith uses its cyber capabilities to protect the solar system, quietly neutralizing threats and countering Reaper's plans. A silent guardian, it provides vital intelligence to the SSDF, ensuring the galaxy's survival.",
@@ -117,12 +125,12 @@
 </script>
 <main>
   <!-- Header Text -->
-  <div class="mx-auto container px-4 lg:p-0">
+  <div class="mx-auto w-11/12 px-4 lg:p-0">
     <h1 class="jersey-font page-header green-header-text">COSMIC COLLISIONS</h1>
   </div>
 
   <!-- Header Content -->
-  <div class="flex flex-col p-4 lg:p-0 md:flex-row mx-auto h-auto lg:h-40 container"> 
+  <div class="w-11/12 flex flex-col p-4 lg:p-0 md:flex-row mx-auto h-auto lg:h-40"> 
     
     <!-- Photo -->
     <div class="w-1/2 mb-5 lg:mr-6 md:w-1/4">
@@ -191,7 +199,7 @@
   <div class="h-12 lg:h-40"></div>
 
   <!-- Game Play Video -->
-  <div class="flex flex-col md:flex-row mx-auto mt-4 lg:mt-24 h-[500px] container content-center">
+  <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-4 lg:mt-24 h-[500px] content-center">
     <!-- Description -->
     <div class="w-full mb-5 lg:mr-6 md:w-1/2">
       <h1 class="text-3xl gold-header-text">Game Update [05/06]</h1>
@@ -221,14 +229,14 @@
   <div class="h-2 lg:h-32 my-20 lg:my-10 border-b-2 border-gray-800"></div>
 
   <!-- Characters -->
-  <div class="mx-auto container">
+  <div class="mx-auto w-11/12">
     <h1 class="jersey-font text-4xl gold-header-text">Characters</h1>
     <p class="w-full lg:w-1/2 mb-4 text-md lg:text-xl">
       The unit from the <span class="green-header-text jersey-font text-2xl">Solar System Defense Force (SSDF)</span>, 
       tasked with defending the solar system.
     </p>
   </div>
-  <div class="flex flex-col md:flex-row mx-auto h-auto lg:h-auto container"> 
+  <div class="w-11/12 flex flex-col md:flex-row mx-auto h-auto lg:h-auto"> 
     {#each characters as character}
         <div class="w-full my-2 lg:mx-1 rounded sm:w-1/2 lg:w-1/5 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
           <img 
@@ -244,7 +252,7 @@
         </div>
     {/each}
   </div>
-  <div class="flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto container">
+  <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto">
     <span class="text-gray-500">[Disclaimer] AI-Generated concept images, final concepts in development.</span>
   </div>
 
@@ -252,7 +260,7 @@
   <div class="h-2 my-4 lg:my-32 border-b-2 border-gray-800"></div>
 
   <!-- Lore -->
-  <div class="flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto container"> 
+  <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto"> 
 
     <!-- Photo -->
     <div class="w-full mb-5 lg:mr-6 md:w-1/2">
@@ -292,18 +300,30 @@
     <div class="h-10 lg:h-32"></div>
    
     <!-- Form & Social Media -->
-    <div class="flex w-11/12 lg:w-1/2 mx-auto my-4 bg-[#88888800] justify-center">
-      <!-- Flowbite InstagramSolid icon didnt work -->
+    <div class="sm:inline lg:flex w-1/3 mx-auto my-4 bg-[#88888800] justify-center text-center">
+    <!-- Flowbite InstagramSolid icon didnt work -->
+    <Button class="w-20 my-2 lg:my-0 lg:mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoInstagramPage}>
       <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="#00c400"/>
-        <path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="#00c400"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="#00c400"/>
-      </svg>    
-      <FacebookSolid size="xl" class="mx-2" color="#00c400"></FacebookSolid>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="#00c400"/>
+      <path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="#00c400"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="#00c400"/>
+      </svg>
+    </Button>    
+    <Button class="w-20 my-2 lg:my-0 lg:mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoFacebookPage}>
       <XSolid size="xl" class="mx-2" color="#00c400"></XSolid>
+    </Button>    
+    <Button class="w-20 my-2 lg:my-0 lg:mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoLinkedInPage}>
       <LinkedinSolid size="xl" class="mx-2" color="#00c400"></LinkedinSolid>
-      <br>
-    </div>
+    </Button>    
+    <Button class="w-20 my-2 lg:my-0 lg:mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoFacebookPage}>
+      <FacebookSolid  size="xl" class="mx-2" color="#00c400"></FacebookSolid>
+    </Button>
+    <Button class="w-20 my-2 lg:my-0 lg:mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoFacebookPage}> 
+      <svg fill="#00c400" width="32px" height="32px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/>
+      </svg>
+    </Button>
+    <br>
+  </div>
     <div class="text-center my-8">
       <Button on:click={discordLink} color="purple" class="w-48">
         <DiscordSolid class="mr-2"></DiscordSolid>

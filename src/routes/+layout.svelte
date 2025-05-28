@@ -24,6 +24,7 @@
 </script>
 <main>
   <Navbar let:toggle class="fixed w-full top-0 z-50 backdrop-blur-lg bg-[#1b023d]/80 shadow-md" color="none">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
       <NavBrand href="/">
         <img 
           src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" 
@@ -44,6 +45,8 @@
         <!-- <NavLi href="/crowdfunding" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CROWDFUNDING</NavLi> -->
         <NavLi href="/contact" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CONTACT</NavLi>
       </NavUl>
+    </div>
+      
   </Navbar>
 
   <main class="scrollbar min-h-screen py-14 lg:py-20" style="background: var(--dark-purple-gradient);">
