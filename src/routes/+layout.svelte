@@ -1,12 +1,18 @@
 <script lang="ts">
   import "../app.css";
   import { page } from '$app/stores';
-  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Footer, FooterBrand, FooterCopyright, FooterIcon, FooterLink, FooterLinkGroup  } from 'flowbite-svelte';
+  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Footer, FooterBrand, FooterCopyright, FooterIcon, FooterLink, FooterLinkGroup, Toast  } from 'flowbite-svelte';
+  import { toast } from '$lib/stores/toastStore'; // Adjust path based on your project structure
+  import { CheckCircleOutline, CloseCircleOutline } from "flowbite-svelte-icons";
   $: activeUrl = $page.url.pathname;
+
 
   // Navbar Link Classes
   const nonActiveNavLink = 'text-[#fff]/60 text-xl lg:text-sm  my-1 duration-100 raleway';
   const activeNavLink = 'text-[#fff] text-xl lg:text-sm green-header-text lg:bg-transparent my-1 font-bold duration-100 raleway-700';
+  const successToastClass = 'fixed top-4 right-4 w-full max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#00ff00] rounded gap-3';
+  const errorToastClass = 'fixed top-4 right-4 w-full max-w-sm lg:max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#dd0000] rounded gap-3';
+  $: errorToastMessage = $toast.errorMessage; // Reactive for store
 
   // Should hide Navbar on mobile when a link is clicked
   let hideNavMenu = true;
@@ -75,6 +81,27 @@
 
   <main class="scrollbar min-h-screen py-14 lg:py-20" style="background: var(--dark-purple-gradient);">
     <slot></slot>
+     {#if $toast.success}
+    <Toast 
+      
+      divClass={successToastClass} 
+      contentClass={'w-full text-sm lg:text-lg font-normal'} 
+      dismissable={true} 
+      align={true}>
+        <span><CheckCircleOutline size="xl" color="#00ff00"></CheckCircleOutline></span>
+        <span>Your message has been submitted! We will get back to you soon! 🙏🏾</span>
+    </Toast>
+    {/if}
+    {#if $toast.error}
+    <Toast 
+      divClass={errorToastClass} 
+      contentClass={'w-full text-sm lg:text-lg font-normal'} 
+      dismissable={true} 
+      align={true}>
+        <span><CloseCircleOutline size="xl" color="#dd0000"></CloseCircleOutline></span>
+        <span>{errorToastMessage}</span>
+    </Toast>
+    {/if}
   </main>
 
   <Footer class="h-20 bg-black p-10">

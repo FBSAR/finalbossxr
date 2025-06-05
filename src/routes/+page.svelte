@@ -1,34 +1,14 @@
 <script lang='ts'>
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  import { Button, Badge, FloatingLabelInput, Textarea, Toast } from 'flowbite-svelte';
-  import { CheckCircleOutline, CloseCircleOutline, LinkedinSolid, AppleSolid, DiscordSolid, FacebookSolid, XSolid, QuoteSolid
-  } from 'flowbite-svelte-icons'
+  import { Button, Badge, FloatingLabelInput, Textarea } from 'flowbite-svelte';
+  import { LinkedinSolid, AppleSolid, DiscordSolid, FacebookSolid, XSolid} from 'flowbite-svelte-icons'
   import { enhance } from '$app/forms';
+  import { showSuccessToast ,showErrorToast } from '$lib/stores/toastStore';
+
 
   // TailwindCSS Classes
   const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
-  const successToastClass = 'w-full max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#00ff00] rounded gap-3'
-  const errorToastClass = 'w-full max-w-sm lg:max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#dd0000] rounded gap-3'
-  // Toasts
-  let successToast = false;
-  function showSuccessToast() {
-    successToast = true;
-    setTimeout(() => {
-      successToast = false;
-    }, 8000);
-  }
-
-  let errorToast = false;
-  let errorToastMessage = '';
-  function showErrorToast(message: string) {
-    errorToastMessage = message;
-    errorToast = true;
-    setTimeout(() => {
-      errorToast = false;
-      errorToastMessage = '';
-    }, 5000);
-  }
 
   // Contact Form Submission
   let contactInfo = {
@@ -337,55 +317,7 @@
       </button>
     </form>
   </div>
-
-    <!-- Toasts -->
-    {#if successToast}
-    <Toast 
-      position={'top-right'}
-      divClass={successToastClass} 
-      contentClass={'w-full text-sm lg:text-lg font-normal'} 
-      dismissable={true} 
-      align={true}>
-        <span><CheckCircleOutline size="xl" color="#00ff00"></CheckCircleOutline></span>
-        <span>Your message has been submitted! We will get back to you soon! 🙏🏾</span>
-    </Toast>
-    {/if}
-    {#if errorToast}
-    <Toast 
-      position={'top-right'}
-      divClass={errorToastClass} 
-      contentClass={'w-full text-sm lg:text-lg font-normal'} 
-      dismissable={true} 
-      align={true}>
-        <span><CloseCircleOutline size="xl" color="#dd0000"></CloseCircleOutline></span>
-        <span>{errorToastMessage}</span>
-    </Toast>
-    {/if}
   </div>
-
-  <!-- Toasts -->
-  {#if successToast}
-    <Toast 
-      position={'top-right'}
-      divClass={successToastClass} 
-      contentClass={'w-full text-sm lg:text-lg font-normal'} 
-      dismissable={true} 
-      align={true}>
-        <span><CheckCircleOutline size="xl" color="#00ff00"></CheckCircleOutline></span>
-        <span>Your message has been submitted! We will get back to you soon! 🙏🏾</span>
-    </Toast>
-  {/if}
-  {#if errorToast}
-    <Toast 
-      position={'top-right'}
-      divClass={errorToastClass} 
-      contentClass={'w-full text-sm lg:text-lg font-normal'} 
-      dismissable={true} 
-      align={true}>
-        <span><CloseCircleOutline size="xl" color="#dd0000"></CloseCircleOutline></span>
-        <span>{errorToastMessage}</span>
-    </Toast>
-  {/if}
   
 </main>
 <style>

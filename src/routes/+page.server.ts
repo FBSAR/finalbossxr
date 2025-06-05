@@ -1,7 +1,5 @@
-import { SLACK_CONTACT_FORM_HOOK_URL } from '$env/static/private';
 import { format } from 'date-fns';
-import type { Action } from '@sveltejs/kit';
-
+import { env } from '$env/dynamic/private';
 
 export const prerender = false;
 const formattedDate = format(new Date(), 'MMMM do, yyyy');
@@ -20,7 +18,7 @@ async function submitFormData(name: string, email: string, message: string) {
         
         if(!formSubmitted) {
         formSubmitted = true;
-        const response = await fetch(SLACK_CONTACT_FORM_HOOK_URL, { 
+        const response = await fetch(env.SLACK_CONTACT_FORM_HOOK_URL, { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,10 +48,10 @@ async function submitFormData(name: string, email: string, message: string) {
     }
 }
 
-export const actions: {default: Action} = {
-    default: async ({ request }) => {  
-      console.clear();
-      console.log('Sending Contact Message:');
+export const actions = {
+	default: async ({ request }) => {  
+	  console.clear();
+	  console.log('Sending Contact Message:');
 
       try {
         const data = await request.formData();
@@ -73,6 +71,5 @@ export const actions: {default: Action} = {
       } catch (error) {
         throw error;
       }
-    }
+	}
 }
-
