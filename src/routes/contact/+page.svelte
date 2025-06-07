@@ -48,13 +48,13 @@
 </script>
 <main>
 <!-- Header -->
-<div class="mx-auto px-4 w-11/12">
+<div class="mx-auto w-11/12">
   <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
-  <p class="text-xs lg:text-lg sm:w-1/2 lg:w-1/2">
+  <Badge color="yellow">Please fill out entire form</Badge>
+  <p class="text-sm lg:text-lg sm:w-1/2 lg:w-1/2 mt-2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
     Please reach out, and we will contact you are our earliest convenience!
   </p>
-  <Badge color="yellow">Please fill out entire form</Badge>
   <!-- Spacer -->
   <div class="h-4"></div>
    

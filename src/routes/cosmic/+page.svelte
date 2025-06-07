@@ -103,26 +103,25 @@
 </script>
 <main>
   <!-- Header Text -->
-  <div class="mx-auto w-11/12 px-4 lg:p-0">
+  <div class="mx-auto px-4 w-full">
     <h1 class="jersey-font page-header green-header-text">COSMIC COLLISIONS</h1>
   </div>
 
   <!-- Header Content -->
-  <div class="w-11/12 flex flex-col p-4 lg:p-0 md:flex-row mx-auto h-auto lg:h-40"> 
+  <div class="w-full px-4 flex flex-col pb-10 lg:pb-20 md:flex-row mx-auto h-auto border-b-8 border-[#00c40030]"> 
     
     <!-- Photo -->
-    <div class="w-1/2 mb-5 lg:mr-6 md:w-1/4">
+    <div class="w-full lg:w-[300px] lg:mr-4">
       <img 
       src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" 
-      class="w-3/4 mx-auto pt-8" 
+      class="w-full lg:mx-auto" 
       alt="Cosmic Collisions Logo"
       >
     </div>
     
     <!-- Text and Link -->
-    <div class="w-full md:w-3/4">
-
-    <div class="flex bg-[#88888800] mb-4">
+    <div class="w-full md:w-1/2 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">
+      <div class="flex bg-[#88888800] mb-4">
       <h3 class="text-lg lg:text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
       <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
       <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -144,67 +143,65 @@
           </path>
         </g>
       </svg>
-    </div>
-    <div class="italic">
+      </div>
+      <div class="italic">
       <h1 class="text-3xl green-header-text inline">Genre:</h1>
       <span class="text-[#999]">Arcade, Space Shooter, RPG, Augmented Reality (AR) </span>
-    </div>
-    <p class="text-white opacity-80 text-md lg:text-xl md:text-white my-4 sm:w-1/2 lg:w-3/4">
+      </div>
+      <p class="text-white text-md lg:text-md md:text-white my-4 sm:w-1/2 lg:w-3/4">
       Get ready to shoot some aliens and asteroids in space, in an AR environment!
       Inspired by classics like <b>Galaga</b> and <b>Space Invaders</b>, we aim to add another dimension 
       - and story - to the traditional space shooter. Join our heroes from the SSDF (Solar System Defense Force), as they protect the Earth, the Sun, and their neighbors from an oncoming enemy attack.
-    </p>
-    <h1 class="text-4xl mt-20 lg:mt-0 lg:text-2xl gold-header-text">
-      Want to play the Demo?
-    </h1>
-    <!-- <Button on:click={testerLink} color="none" class="text-white text-md mt-2 w-full lg:w-40" style="background: var(--green-gradient);">Tester Sign Up</Button> -->
-    <Button on:click={testerLink} disabled color="purple" class="text-white text-md mt-2 w-full lg:w-40">
-      iOS Testflight
-    </Button>
-    <Button on:click={testerLink} disabled color="purple" class="text-white text-md mt-2 w-full lg:w-40">
-      Android .APK
-    </Button>
-    <Button on:click={testerLink} color="purple" class="text-white text-md mt-2 w-full lg:w-40">
-      Tester Sign Up
-    </Button>
-    <br>
-    <span class="text-white text-xs">Please open on Mobile Browsers (iOS/Android)</span>
+      </p>
+    </div>
   </div>
 
-  </div>
-
-  <!-- Spacer -->
-  <div class="h-12 lg:h-40"></div>
-
-  <!-- Game Play Video -->
-  <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-4 lg:mt-24 h-[500px] content-center">
+  <!-- Game Play Update & Video -->
+  <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-4 lg:mt-8 h-auto content-center">
     <!-- Description -->
-    <div class="w-full mb-5 lg:mr-6 md:w-1/2">
+    <div class="w-full mb-5 lg:mr-6 md:w-1/2 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
       <h1 class="text-3xl gold-header-text">Game Update [05/06]</h1>
       <p class="text-md lg:text-xl">
         We are currently working towards an iOS/Android release for an official demo. 
         This demo will be specifially designed to highlight the gameplay design
       </p>
-      <ul class="list-disc pl-8 mt-2 green-header-text jersey-font text-2xl">
+      <ul class="list-disc pl-8 mt-2 jersey-font text-2xl">
         <li>Tutorial Mission</li>
         <li>Flight Mission #01</li>
         <li>Story Mode - Earth</li>
       </ul>
+      <br>
+      <h1 class="text-4xl lg:mt-0 lg:text-2xl green-header-text">
+      Want to play the Demo?
+      </h1>
+      <!-- <Button on:click={testerLink} color="none" class="text-white text-md mt-2 w-full lg:w-40" style="background: var(--green-gradient);">Tester Sign Up</Button> -->
+      <Button on:click={testerLink} disabled color="purple" class="text-white text-md mt-2 w-full lg:w-40">
+      iOS Testflight
+      </Button>
+      <Button on:click={testerLink} disabled color="purple" class="text-white text-md mt-2 w-full lg:w-40">
+      Android .APK
+      </Button>
+      <Button on:click={testerLink} color="purple" class="text-white text-md mt-2 w-full lg:w-40">
+      Tester Sign Up
+      </Button>
+      <br>
+      <span class="text-white text-xs">Please open on Mobile Browsers (iOS/Android)</span>
     </div>
+
     <!-- Video -->
-    <div class="mb-5 lg:mr-6 md:w-1/2">
+    <div class="my-10 lg:mr-6 md:w-1/2">
       <!-- svelte-ignore a11y-media-has-caption -->
       <video class="w-full h-full object-cover" autoplay muted controls playsinline>
         <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      <h2 class="gold-header-text">Development Footage / Story Mode</h2>
+      <h2>Development Footage / Story Mode</h2>
     </div>
 
   </div>
 
   <!-- Spacer -->
-  <div class="h-2 lg:h-32 my-20 lg:my-10 border-b-2 border-gray-800"></div>
+  <div class="h-2 lg:h-32 my-10 lg:my-10 border-b-8 border-[#00c40030]"></div>
 
   <!-- Characters -->
   <div class="mx-auto w-11/12">
@@ -219,12 +216,12 @@
         <div class="w-full my-2 lg:mx-1 rounded sm:w-1/2 lg:w-1/5 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
           <img 
             src={character.photo} 
-            class="h-auto rounded mb-2" 
+            class="h-20 lg:h-auto rounded mb-2" 
             alt="Flowbite Logo" 
             />
-            <h2 class="text-2xl lg:text-xl green-header-text">{character.name}</h2>
-            <h1 class="text-3xl lg:text-3xl gold-header-text mb-2">{character.title}</h1>
-            <p class="text-md lg:text-[0.85em] h-16 mb-2 pb-4 border-b-2 border-[#999]"><b>Special</b>: {character.special}</p>
+            <h1 class="text-3xl lg:text-3xl gold-header-text mb-2">{character.name}</h1>
+            <h2 class="text-2xl lg:text-xl green-header-text">{character.title}</h2>
+            <p class="text-md lg:text-[0.85em] h-auto lg:h-16 mb-2 pb-4 border-b-2 border-[#999]"><b>Special</b>: {character.special}</p>
           <p class="text-md lg:text-[0.85em]">{character.description}</p>
           <br>
         </div>
@@ -235,7 +232,7 @@
   </div>
 
   <!-- Spacer -->
-  <div class="h-2 my-4 lg:my-32 border-b-2 border-gray-800"></div>
+  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#00c40030]"></div>
 
   <!-- Lore -->
   <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto"> 
@@ -250,7 +247,7 @@
     </div>
 
     <!-- Text and Link -->
-    <div class="w-full md:w-1/2 p-4 lg:p-0">
+    <div class="w-full md:w-1/2 lg:p-0">
       <h1 class="text-3xl jersey-font gold-header-text">Lore</h1>
       <p class="text-md lg:text-xl">In 2157, an alien force targets the Sun as a vital resource, intending to destroy each planet to eliminate resistance. Earth’s <b>Solar System Defense Force (SSDF)</b> discovers the enemy has destabilized the asteroid belt, threatening every planet. 
         The SSDF must protect the solar system and its colonies to ensure survival, as the Sun is essential to all life.
@@ -309,7 +306,7 @@
       </Button>
   </div>
   
-  <div class="mx-auto px-4 w-11/12">
+  <div class="mx-auto w-11/12">
     <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
   <p class="text-xs lg:text-lg sm:w-1/2 lg:w-1/2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?

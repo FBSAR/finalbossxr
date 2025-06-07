@@ -76,20 +76,37 @@
 <main>
 
   <!-- Header -->
-  <div class="relative z-10 h-auto lg:h-screen overflow-hidden">
+   <!-- 
+    Desktop - Has screen sized background video
+    Mobile - No background video, show video directly after text
+   -->
+  <div class="relative z-10 h-auto lg:h-screen pb-20 lg:pb-0 mb-8 overflow-hidden border-b-8 border-[#00c40030]">
+    <!-- Desktop Background Video -->
     <video
       class="hidden lg:block absolute inset-0 w-full h-full object-cover bg-black opacity-15"
+      style="transform: scaleX(-1) translateY(-20%);"
       src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/FlightMission01.mp4?updatedAt=1746125092231"
       autoplay
       loop
       muted>
     </video>
-    <div class="relative z-20 mx-auto lg:mx-0 w-11/12 lg:w-[800px] pl-0 pt-0 lg:pl-20 lg:pt-10">
+    <!-- Header Content -->
+    <div class="relative z-20 mx-auto lg:m-8 lg:p-8 w-11/12 lg:w-[800px] pl-0 pt-0 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
       <img class="w-40 h-40" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="Cosmic Collisions Logo">
-      <h1 class="text-4xl lg:text-7xl jersey-font page-header green-header-text">Get a Taste of the Future</h1>
-      <p class="text-md lg:text-xl">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
-      <div class="flex bg-[#88888800] my-4">
-        <h3 class="relative top-1 text-lg lg:text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
+      <h1 class="text-3xl lg:text-5xl jersey-font green-header-text">Get a Taste of the Future</h1>
+      <p class="text-sm lg:text-md">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
+      <!-- Mobile Video -->
+      <video
+      class="w-full lg:w-[600px] my-8 lg:hidden"
+      src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/FlightMission01.mp4?updatedAt=1746125092231"
+      autoplay
+      loop
+      playsinline
+      muted>
+    </video>
+      <!-- Upcoming Platforms message -->
+      <div class="flex">
+        <h3 class="relative top-1 text-xl lg:text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
         <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
         <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
           <g id="b75708d097f2188dff6617b0f00f7c43">
@@ -116,45 +133,47 @@
         <DiscordSolid class="mr-2"></DiscordSolid>Join our Discord
       </Button>
       <Button href="#testers" color="light" class="mt-4 mr-2 w-full lg:w-52">Become a Tester</Button>
-      <video class="block lg:hidden w-full mt-8" autoplay muted controls playsinline>
-        <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <h2 class="block lg:hidden gold-header-text">Development Footage / Story Mode</h2>
+      <!-- <h2 class="block lg:hidden">Development Footage / Story Mode</h2> -->
     </div>
   </div>
 
   <!-- Who is Final Boss? -->
-  <div id="made-with" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
+  <div id="made-with" class="block lg:flex pb-20 lg:pb-0 mx-auto h-auto lg:h-[500px] md:shadow-4xl w-full border-b-8 border-[#00c40030]">
     <div class="w-full lg:w-1/2 bg-[#] p-0 lg:pr-8 content-center">
+      <!-- Desktop FBS Intro Video -->
       <video
-        class="w-full lg:w-[600px]" autoplay muted loop playsinline
+        class="w-full lg:w-[600px] mx-auto hidden lg:block" autoplay muted loop playsinline
         src="https://ik.imagekit.io/k8qym6wh0/FBSIntro.mp4?updatedAt=1747791672391">
       </video>    
     </div>
     <div class="w-11/12 lg:w-1/2 bg-[#] content-center">
       <!-- <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset=""> -->
-      <h1 class="text-5xl green-header-text">Our Goal? Evolutionize Gaming</h1>
+      <h1 class="text-3xl lg:text-5xl gold-header-text">Our Goal? Evolutionize Gaming</h1>
       <!-- <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid> -->
-      <p class="text-md">
-        Remember the electric energy of a room packed with friends, controllers in hand, battling it out in Smash Bros., Halo, Madden, and more?
-        <br><span class="jersey-font gold-header-text text-4xl">We do</span>.<br>
-        Our mission is to recapture that magic, reimagining the spirit of couch multiplayer for the modern era through the innovative possibilities of augmented and mixed reality (AR/MR). 
-        <br><span class="jersey-font green-header-text text-2xl">We're building new ways to play together, in the same space, and beyond.</span>
+      <p class="text-lg">
+        Remember the electric energy of a room packed with friends, controllers in hand, battling it out in Smash Bros, Halo, Madden, Mortal Kambat, etc?
+        <br><br><span class="jersey-font green-header-text text-5xl">We do</span>.<br>
+        <br>Our mission is to recapture that magic, reimagining the spirit of couch multiplayer for the modern era through the innovative possibilities of augmented and mixed reality (AR/MR). 
+        <br><br><span class="jersey-font green-header-text text-2xl">We're building new ways to play together, in the same space, and beyond.</span>
       </p>
       <!-- <h3 class="text-[#ffd24d] text-2xl mt-4">~ Eddie T. | CEO & Co-Founder</h3> -->
       <a href="/about" class="text-[#35a2f4] text-sm mt-4 inline-block border-b-2 border-[#35a2f4]">More info about our Team &rarr;</a>
     </div>
+      <!-- Mobile FBS Intro Video -->
+      <video
+        class="w-full lg:w-[600px] block lg:hidden" autoplay muted loop playsinline
+        src="https://ik.imagekit.io/k8qym6wh0/FBSIntro.mp4?updatedAt=1747791672391">
+      </video>
   </div>
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
 
   <!-- Cosmic -->
-  <div id="cosmic" class="block lg:flex mx-auto my-10 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
-    <div class="w-11/12 lg:w-1/2 h-auto bg-[#] content-center">
-      <img class="h-32 lg:mb-4" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
-      <p class="text-md">
+  <div id="cosmic" class="block lg:flex mx-auto w-11/12 h-auto pb-20 border-b-8 border-[#00c40030]">
+    <div class="w-11/12 lg:w-1/2 mx-auto h-auto bg-[#] content-center">
+      <img class="h-32 mb-4" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
+      <p class="text-xs lg:text-md">
         Born from our 2023 Metaverse Creators VR Hackathon project, Cosmic Collisions, this game captured the simple yet addictive fun of shooting down incoming asteroids in VR. That core gameplay loop resonated with us, inspiring us the following year to reimagine the concept as a more accessible Mobile AR experience. 
         <br>
         <br>
@@ -163,9 +182,9 @@
         <br>
         This experience utilizes spacial awareness, it a way that is similar to the game of Pool. Find your position, aim your shot, fire on the target.
       </p>
-      <a href="/cosmic" class="text-[#35a2f4] text-2xl mt-4 inline-block border-b-2 border-[#35a2f4]">More Info &rarr;</a>
+      <a href="/cosmic" class="text-[#35a2f4] text-lg lg:text-2xl mt-4 inline-block border-b-2 border-[#35a2f4]">More Info About Cosmic Collisions &rarr;</a>
       <div class="flex bg-[#88888800] my-4">
-        <h3 class="relative top-1 text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
+        <h3 class="relative top-1 text-lg gold-header-text">Upcoming Platforms July 2025 [Demo]</h3>
         <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
         <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
           <g id="b75708d097f2188dff6617b0f00f7c43">
@@ -200,17 +219,17 @@
         </a>
       </div>
     </div>
-    <div class="w-full lg:w-1/2 object-cover bg-[#] pl-0 lg:pl-10 content-center">
+    <div class="w-11/12 lg:w-1/2 mx-auto object-cover bg-[#] pl-0 lg:pl-10 content-center">
       <video class="block lg:hidden w-full h-full object-cover" autoplay muted controls playsinline>
-        <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/FlightMission01.mp4?updatedAt=1746125092231" type="video/mp4">
+        <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663" type="video/mp4">
         Your browser does not support the video tag.
       </video>
       <video class="hidden lg:block w-full h-full object-cover" autoplay muted controls playsinline>
         <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      <h2 class="block lg:hidden gold-header-text">Development Footage / Flight Mission</h2>
-      <h2 class="hidden lg:block gold-header-text">Development Footage / Story Mission</h2>
+      <h2 class="block lg:hidden">Development Footage / Flight Mission</h2>
+      <h2 class="hidden lg:block">Development Footage / Story Mission</h2>
     </div>
   </div>
 
@@ -218,15 +237,15 @@
   <div class="h-10 lg:h-32"></div>
    
   <!-- Beta Testers / Discord -->
-  <div id="testers" class="block lg:flex mx-auto my-4 h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
+  <div id="testers" class="block lg:flex mx-auto h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
     <div class="w-full lg:w-1/2 bg-[#] content-center">
+      <h1 class="text-3xl my-2 green-header-text">We need Testers (You).</h1>
       <img class="w-full h-full pb-10 lg:pb-0 lg:pr-10 object-cover" src="https://ik.imagekit.io/lgpq0vloy/Photos/IMG_4302.jpg?updatedAt=1746243009214" alt="" srcset="">
     </div>
-    <div class="w-full lg:w-1/2 bg-[#] content-center">
-      <h1 class="text-5xl green-header-text">We need Testers (You).</h1>
-      <p class="text-md">
+    <div class="w-full lg:w-1/2 content-center">
+      <h3 class="text-[#ffd24d] text-3xl">Testers get a free Final Boss T-Shirt (limted time)</h3>
+      <p class="text-md lg:text-lg my-4">
         Join the Final Boss team as a Beta Tester and be among the first to experience Cosmic Collisions and shape our future games! We're seeking 25-30 dedicated players to help us test, provide valuable feedback, and even spread the word. Your insights will be instrumental in making our games the best they can be!      </p>
-      <h3 class="text-[#ffd24d] text-2xl mt-4">Testers get a free Final Boss T-Shirt (limted time)</h3>
       <Button on:click={testerLink} color="green" class="mt-4 w-full lg:w-48">Become a Tester</Button>
     </div>
   </div>
@@ -259,16 +278,20 @@
     </Button>
     <br>
   </div>
-  <div class="text-center my-8">
+  <div class="text-center my-8 pb-20 w-full border-b-8 border-[#00c40030]">
     <Button on:click={discordLink} color="purple" class="w-48">
       <DiscordSolid class="mr-2"></DiscordSolid>
       Join our Discord
     </Button>
   </div>
 
-  <div class="mx-auto px-4 w-11/12">
+  <!-- Spacer -->
+  <div class="h-10 lg:h-32"></div>
+
+  <!-- Contact Form -->
+  <div class="mx-auto w-11/12">
     <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
-  <p class="text-xs lg:text-lg sm:w-1/2 lg:w-1/2">
+  <p class="text-lg lg:text-lg sm:w-1/2 lg:w-1/2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
     Please reach out, and we will contact you are our earliest convenience!
   </p>

@@ -216,7 +216,7 @@
       </Button>
   </div>
   
-  <div class="mx-auto px-4 w-11/12">
+  <div class="mx-auto w-11/12">
     <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
   <p class="text-xs lg:text-lg sm:w-1/2 lg:w-1/2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
