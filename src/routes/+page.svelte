@@ -91,7 +91,7 @@
       muted>
     </video>
     <!-- Header Content -->
-    <div class="relative z-20 mx-auto lg:m-8 lg:p-8 w-11/12 lg:w-[800px] pl-0 pt-0 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
+    <div class="z-20 mx-auto lg:m-8 lg:p-8 lg:w-[800px] bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
       <img class="w-40 h-40" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="Cosmic Collisions Logo">
       <h1 class="text-3xl lg:text-5xl jersey-font green-header-text">Get a Taste of the Future</h1>
       <p class="text-sm lg:text-md">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
@@ -138,32 +138,32 @@
   </div>
 
   <!-- Who is Final Boss? -->
-  <div id="made-with" class="block lg:flex pb-20 lg:pb-0 mx-auto h-auto lg:h-[500px] md:shadow-4xl w-full border-b-8 border-[#00c40030]">
-    <div class="w-full lg:w-1/2 bg-[#] p-0 lg:pr-8 content-center">
+  <div id="made-with" class="block lg:flex pb-20 lg:py-20 mx-auto h-auto  md:shadow-4xl w-full border-b-8 border-[#00c40030]">
+    <div class="w-full lg:w-1/2 bg-[#] p-0 lg:pr-4 content-center">
       <!-- Desktop FBS Intro Video -->
       <video
         class="w-full lg:w-[600px] mx-auto hidden lg:block" autoplay muted loop playsinline
         src="https://ik.imagekit.io/k8qym6wh0/FBSIntro.mp4?updatedAt=1747791672391">
       </video>    
     </div>
-    <div class="w-11/12 lg:w-1/2 bg-[#] content-center">
+    <div class="w-11/12 lg:w-1/2 mx-auto mb-8 lg:mr-8 content-center bg-white/10 p-4 border-white/20 lg:border-2">
       <!-- <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset=""> -->
-      <h1 class="text-3xl lg:text-5xl gold-header-text">Our Goal? Evolutionize Gaming</h1>
+      <h1 class="text-3xl lg:text-4xl gold-header-text">Our Goal? Evolutionize Gaming</h1>
       <!-- <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid> -->
-      <p class="text-lg">
+      <p class="text-baseline">
         Remember the electric energy of a room packed with friends, controllers in hand, battling it out in Smash Bros, Halo, Madden, Mortal Kambat, etc?
-        <br><br><span class="jersey-font green-header-text text-5xl">We do</span>.<br>
+        <br><span class="jersey-font green-header-text text-5xl">We do</span>.
         <br>Our mission is to recapture that magic, reimagining the spirit of couch multiplayer for the modern era through the innovative possibilities of augmented and mixed reality (AR/MR). 
-        <br><br><span class="jersey-font green-header-text text-2xl">We're building new ways to play together, in the same space, and beyond.</span>
+        <span class="jersey-font green-header-text text-2xl">We're building new ways to play together, in the same space, and beyond.</span>
       </p>
       <!-- <h3 class="text-[#ffd24d] text-2xl mt-4">~ Eddie T. | CEO & Co-Founder</h3> -->
       <a href="/about" class="text-[#35a2f4] text-sm mt-4 inline-block border-b-2 border-[#35a2f4]">More info about our Team &rarr;</a>
     </div>
-      <!-- Mobile FBS Intro Video -->
-      <video
+    <!-- Mobile FBS Intro Video -->
+    <video
         class="w-full lg:w-[600px] block lg:hidden" autoplay muted loop playsinline
         src="https://ik.imagekit.io/k8qym6wh0/FBSIntro.mp4?updatedAt=1747791672391">
-      </video>
+    </video>
   </div>
 
   <!-- Spacer -->
@@ -171,9 +171,9 @@
 
   <!-- Cosmic -->
   <div id="cosmic" class="block lg:flex mx-auto w-11/12 h-auto pb-20 border-b-8 border-[#00c40030]">
-    <div class="w-11/12 lg:w-1/2 mx-auto h-auto bg-[#] content-center">
+    <div class="w-11/12 lg:w-1/2 mx-auto h-auto bg-white/10 p-4 border-white/20 lg:border-2 content-center">
       <img class="h-32 mb-4" src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" alt="" srcset="">
-      <p class="text-xs lg:text-md">
+      <p class="text-xs lg:text-lg">
         Born from our 2023 Metaverse Creators VR Hackathon project, Cosmic Collisions, this game captured the simple yet addictive fun of shooting down incoming asteroids in VR. That core gameplay loop resonated with us, inspiring us the following year to reimagine the concept as a more accessible Mobile AR experience. 
         <br>
         <br>
@@ -244,7 +244,7 @@
     </div>
     <div class="w-full lg:w-1/2 content-center">
       <h3 class="text-[#ffd24d] text-3xl">Testers get a free Final Boss T-Shirt (limted time)</h3>
-      <p class="text-md lg:text-lg my-4">
+      <p class="text-md lg:text-lg my-4 bg-white/10 p-4 border-white/20 lg:border-2">
         Join the Final Boss team as a Beta Tester and be among the first to experience Cosmic Collisions and shape our future games! We're seeking 25-30 dedicated players to help us test, provide valuable feedback, and even spread the word. Your insights will be instrumental in making our games the best they can be!      </p>
       <Button on:click={testerLink} color="green" class="mt-4 w-full lg:w-48">Become a Tester</Button>
     </div>
@@ -290,18 +290,16 @@
 
   <!-- Contact Form -->
   <div class="mx-auto w-11/12">
-    <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
-  <p class="text-lg lg:text-lg sm:w-1/2 lg:w-1/2">
+    <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text">CONTACT US</h1>
+    <p class="text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
     Please reach out, and we will contact you are our earliest convenience!
-  </p>
-  <Badge color="yellow">Please fill out entire form</Badge>
-  <!-- Spacer -->
-  <div class="h-4"></div>
-   
-  <!-- Form -->
-  <div class="w-full lg:w-1/2 bg-white/10 p-4">
-    <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
+    </p>
+
+    <!-- Form -->
+    <div class="w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
+      <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
+      <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
       <FloatingLabelInput 
         maxlength="100"
         bind:value={contactInfo.name}
@@ -339,8 +337,11 @@
           Submit
       </button>
     </form>
+    </div>
   </div>
-  </div>
+
+  <!-- Spacer -->
+  <div class="h-10 lg:h-32"></div>
   
 </main>
 <style>

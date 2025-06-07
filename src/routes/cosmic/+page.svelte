@@ -120,7 +120,7 @@
     </div>
     
     <!-- Text and Link -->
-    <div class="w-full md:w-1/2 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">
+    <div class="w-full md:w-1/3 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">
       <div class="flex bg-[#88888800] mb-4">
       <h3 class="text-lg lg:text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
       <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
@@ -306,19 +306,21 @@
       </Button>
   </div>
   
+  <!-- Spacer -->
+  <div class="h-10 lg:h-32"></div>
+
+  <!-- Contact Form -->
   <div class="mx-auto w-11/12">
-    <h1 class="jersey-font page-header green-header-text">CONTACT US</h1>
-  <p class="text-xs lg:text-lg sm:w-1/2 lg:w-1/2">
+    <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text">CONTACT US</h1>
+    <p class="text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
     Please reach out, and we will contact you are our earliest convenience!
-  </p>
-  <Badge color="yellow">Please fill out entire form</Badge>
-  <!-- Spacer -->
-  <div class="h-4"></div>
-   
-  <!-- Form -->
-  <div class="w-full lg:w-1/2 bg-white/10 p-4">
-    <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
+    </p>
+
+    <!-- Form -->
+    <div class="w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
+      <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
+      <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
       <FloatingLabelInput 
         maxlength="100"
         bind:value={contactInfo.name}
@@ -356,9 +358,11 @@
           Submit
       </button>
     </form>
-  </div>
+    </div>
   </div>
 
+  <!-- Spacer -->
+  <div class="h-10 lg:h-32"></div>
 </main>
 <style>
 
