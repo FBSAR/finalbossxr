@@ -66,13 +66,13 @@
   let founders = [
       {
         name: 'Eddie Taliaferro II',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/1746997608228.jpg?updatedAt=1748467188416',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/eddie-pic.jpeg',
         title: 'CEO / Co-Founder / Software Developer',
         linkedin: 'https://www.linkedin.com/in/eddie-taliaferro-ii',
       },
       {
         name: 'Keith Dunklin',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/fbs-keith.jpg?updatedAt=1724277860597',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/keith-pic.jpg',
         title: 'COO / Co-Founder / Game Developer',
         linkedin: 'https://www.linkedin.com/in/keith-dunklin-9a838543/',
       }
@@ -80,19 +80,19 @@
   let advisors = [
       {
         name: 'Edward Kim',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/ed_kim.jpeg?updatedAt=1724277860376',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/ed-pic-2.jpeg',
         title: 'Business Advisor',
         linkedin: "https://www.linkedin.com/in/edwardkim1/",
       },
       {
         name: 'John Wolff',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/1744214121606.jpg?updatedAt=1748467188424',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/john-pic-2.jpeg',
         title: 'Game Advisor',
         linkedin: "https://www.linkedin.com/in/johnwolff89/"
       },
       {
         name: 'Terrell Thomas',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/terrel_pic.png?updatedAt=1724277860626',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/terrel_pic.png',
         title: 'Legal Advisor',
         linkedin: 'https://www.linkedin.com/in/terrell-thomas-927a0123/'
       }
@@ -100,19 +100,19 @@
   let team = [
       {
         name: 'Aaron Goodson',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/fbs-aaron.png?updatedAt=1724277860357',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/fbs-aaron.png',
         title: 'Senior Software Developer',
         linkedin: 'https://www.linkedin.com/in/aaron-goodson-a14187153/'
       },
       {
         name: 'Richard Davis III',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/fbs-richard.png?updatedAt=1724277860494',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/fbs-richard.png',
         title: 'Sound Design / 3D Modeling & Printing',
         linkedin: 'https://www.linkedin.com/in/richard-davis-iii-300703240/'
       },
       {
         name: 'Rowan Christerfield',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Profile%20Pictures/rowan.png?updatedAt=1724278119089',
+        photo: '',
         title: 'Social Media',
         linkedin: 'https://www.linkedin.com/in/rowanchristerfield/'
       }
@@ -182,7 +182,7 @@
   </div>
 
   <!-- Spacer -->
-  <div class="h-10 lg:h-32"></div>
+  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#00c40030]"></div>
    
   <!-- Form & Social Media -->
   <div class="sm:inline-block lg:flex w-1/3 mx-auto my-4 bg-[#88888800] justify-center text-center">

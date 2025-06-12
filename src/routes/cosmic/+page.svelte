@@ -63,65 +63,65 @@
   function gotoLinkedInPage() {
     window.open('https://discord.gg/UvRHXpgd', '_blank');
   }
-     let characters = [
-      {
+  let characters = [
+    {
         name: 'Captain Phoenix',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/DALL_E%202024-04-09%2021.17.57%20-%20In%20a%20universe%20where%20advanced%20technology%20and%20interstellar%20warfare%20collide,%20Captain%20Aurora%20_Phoenix.jpg?updatedAt=1724781653546',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/phoenix_photo.PNG',
         title: 'The Captain',
         special: 'Piercing Shots - These shots continue their momentum after hitting 1 object.',
         description: "A battle-hardened SSDF veteran, driven by the loss of her family in the alien attack. A brilliant tactician, she defends the solar system with unmatched skill, but her inner turmoil risks overwhelming her, as she battles between vengeance and hope.",
-      },
-      {
+    },
+    {
         name: 'Riley',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/DALLE2024-04-1008.58.35-LieutenantRiley_MacGyver_McKayknownasTheEngineerstandsoutwiththeirred-themedengineeringgearembodyinginno-ezgif.com-webp-to-jpg-co.jpg?updatedAt=1724391506293',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/riley_photo.PNG',
         title: 'The Engineer',
         special: 'Repair Portal - Fix portals simply by flying through it.',
         description: "A young, improvisational genius who can turn scraps into solutions, from asteroid defenses to alien tech. Their rebellious nature and unconventional methods often clash with Phoenix's strict command, challenging them to find common ground and work as a team.",
-      },
-      {
+    },
+    {
         name: 'Johnny Sparks',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/DALLE2024-04-1009.02.32-CadetJohnny_Sparky_SparksknownasTheRookieembodiesthevibrantenergyanduntestedvalorofanewrecruit.Dressed-ezgif.com-webp-to-jpg-conv.jpg?updatedAt=1724391506509',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/johnny_photo.PNG',
         title: 'The Rookie',
         special: 'Health Regeneration - Player Ship’s Shield regenerates every [X amount of time]',
         description: "A newly minted graduate, Sparky is naive but full of courage and optimism. Despite their inexperience, they bring a fresh perspective and a contagious positive spirit, which could be the spark the resistance needs. An exceptional VR/AR gamer with a determination reminiscent of a young Leon Kennedy.",
-      },
-      {
+    },
+    {
         name: 'Xylo',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/DALLE2024-04-1008.55.44-EnhancingXyloshumanlikenessfurthertheynowexhibitamorepronouncedblendofhumanandetherealavianfeatures.The-ezgif.com-webp-to-jpg-con.jpg?updatedAt=1724391506584',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/xylo_photo.PNG',
         title: 'The Alien',
         special: 'Defense - Can destroy asteroids colliding into them, with no damage to the ship.',
         description: "An ethereal avian species with shimmering iridescent wings, hailing from a solar system bathed in twilight. With an innate grasp of astrophysics, Xylo navigates space with unmatched precision. Discovered after crash-landing on Earth, Xylo's gentle nature and otherworldly beauty quickly transformed initial fear into awe.",
-      },
-      {
+    },
+    {
         name: 'AI Wraith',
-        photo: 'https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Characters/AI%20Wraith?updatedAt=1748462083566',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/wraith_photo.PNG',
         title: 'The AI',
-        special: 'Speed Increase - Temporary Speed Increase under certain conditions (still working on this design)',
+        special: 'Speed Increase - Temporary Speed Increase',
         description: "Wraith, once a counterpart to Reaper, remains loyal to humanity. Operating in the shadows, Wraith uses its cyber capabilities to protect the solar system, quietly neutralizing threats and countering Reaper's plans. A silent guardian, it provides vital intelligence to the SSDF, ensuring the galaxy's survival.",
-      },
-    ]
+    },
+  ]
 </script>
 <main>
   <!-- Header Text -->
-  <div class="mx-auto px-4 w-full">
+  <div class="mx-auto px-4 w-full text-center hidden lg:block">
     <h1 class="jersey-font page-header green-header-text">COSMIC COLLISIONS</h1>
   </div>
 
   <!-- Header Content -->
-  <div class="w-full px-4 flex flex-col pb-10 lg:pb-20 md:flex-row mx-auto h-auto border-b-8 border-[#00c40030]"> 
+  <div class="w-full px-4 flex flex-col justify-center py-10 lg:pb-20 md:flex-row mx-auto h-auto border-b-8 border-[#00c40030]"> 
     
     <!-- Photo -->
     <div class="w-full lg:w-[300px] lg:mr-4">
       <img 
-      src="https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Coz_Logo_Final.png?updatedAt=1746148308153" 
-      class="w-full lg:mx-auto" 
+      src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
+      class="w-4/5 lg:mx-auto" 
       alt="Cosmic Collisions Logo"
       >
     </div>
     
     <!-- Text and Link -->
     <div class="w-full md:w-1/3 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">
-      <div class="flex bg-[#88888800] mb-4">
+      <div class="flex bg-[#88888800]">
       <h3 class="text-lg lg:text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
       <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
       <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -148,7 +148,7 @@
       <h1 class="text-3xl green-header-text inline">Genre:</h1>
       <span class="text-[#999]">Arcade, Space Shooter, RPG, Augmented Reality (AR) </span>
       </div>
-      <p class="text-white text-md lg:text-md md:text-white my-4 sm:w-1/2 lg:w-3/4">
+      <p class="text-white text-md lg:text-md">
       Get ready to shoot some aliens and asteroids in space, in an AR environment!
       Inspired by classics like <b>Galaga</b> and <b>Space Invaders</b>, we aim to add another dimension 
       - and story - to the traditional space shooter. Join our heroes from the SSDF (Solar System Defense Force), as they protect the Earth, the Sun, and their neighbors from an oncoming enemy attack.
@@ -157,21 +157,32 @@
   </div>
 
   <!-- Game Play Update & Video -->
-  <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-4 lg:mt-8 h-auto content-center">
-    <!-- Description -->
-    <div class="w-full mb-5 lg:mr-6 md:w-1/2 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
-      <h1 class="text-3xl gold-header-text">Game Update [05/06]</h1>
-      <p class="text-md lg:text-xl">
+  <div class="w-11/12 flex flex-col md:flex-row mx-auto my-10 lg:my-20 h-auto content-center">
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
+      
+      <!-- New Left Column -->
+      <div class="lg:col-span-1 hidden lg:block">
+        <!-- Your new left content here -->
+        <!-- <div class="bg-white/10 border-white/20 border-2 rounded-lg p-4">
+          <p>Left sidebar content</p>
+        </div> -->
+      </div>
+      
+      <!-- Middle Left Column - Your existing left content -->
+      <div class="p-4 lg:col-span-2 space-y-4 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
+        <h1 class="text-5xl gold-header-text">Demo</h1>
+      <p class="text-md">
         We are currently working towards an iOS/Android release for an official demo. 
         This demo will be specifially designed to highlight the gameplay design
       </p>
-      <ul class="list-disc pl-8 mt-2 jersey-font text-2xl">
+      <ul class="list-disc pl-8 mt-2 gold-header-text text-2xl">
         <li>Tutorial Mission</li>
         <li>Flight Mission #01</li>
-        <li>Story Mode - Earth</li>
+        <li>Horde Mode - Earth</li>
       </ul>
       <br>
-      <h1 class="text-4xl lg:mt-0 lg:text-2xl green-header-text">
+      <h1 class="text-4xl lg:mt-0 lg:text-4xl green-header-text">
       Want to play the Demo?
       </h1>
       <!-- <Button on:click={testerLink} color="none" class="text-white text-md mt-2 w-full lg:w-40" style="background: var(--green-gradient);">Tester Sign Up</Button> -->
@@ -186,48 +197,67 @@
       </Button>
       <br>
       <span class="text-white text-xs">Please open on Mobile Browsers (iOS/Android)</span>
-    </div>
+      </div>
 
-    <!-- Video -->
-    <div class="my-10 lg:mr-6 md:w-1/2">
-      <!-- svelte-ignore a11y-media-has-caption -->
-      <video class="w-full h-full object-cover" autoplay muted controls playsinline>
-        <source src="https://ik.imagekit.io/lgpq0vloy/FinalBossXR/StoryMission01.mp4?updatedAt=1746148790663" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <h2>Development Footage / Story Mode</h2>
+      <!-- Middle Right Column - Your existing right content -->
+      <div class="lg:col-span-1  content-center">
+        <video
+          class="phone-case-iphone14"
+          style=""
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/FlightMission01PortraitFinal+-+Made+with+Clipchamp+(2).mp4"
+          autoplay
+          loop
+          muted>
+        </video>
+      </div>
+
+      <!-- New Right Column -->
+      <div class="lg:col-span-1 hidden lg:block">
+        <!-- Your new right content here -->
+        <!-- <div class="bg-white/10 border-white/20 border-2 rounded-lg p-4">
+          <p>Right sidebar content</p>
+        </div> -->
+      </div>
+      
     </div>
 
   </div>
 
   <!-- Spacer -->
-  <div class="h-2 lg:h-32 my-10 lg:my-10 border-b-8 border-[#00c40030]"></div>
+  <div class="h-2 border-b-8 border-[#00c40030]"></div>
 
   <!-- Characters -->
-  <div class="mx-auto w-11/12">
+  <div class="mx-auto w-11/12 lg:w-1/2 mt-20">
     <h1 class="jersey-font text-4xl gold-header-text">Characters</h1>
-    <p class="w-full lg:w-1/2 mb-4 text-md lg:text-xl">
+    <p class="mb-4 text-md lg:text-lg">
       The unit from the <span class="green-header-text jersey-font text-2xl">Solar System Defense Force (SSDF)</span>, 
       tasked with defending the solar system.
     </p>
   </div>
-  <div class="w-11/12 flex flex-col md:flex-row mx-auto h-auto lg:h-auto"> 
+  <div class="w-11/12 lg:w-1/2 mx-auto h-auto lg:h-auto"> 
     {#each characters as character}
-        <div class="w-full my-2 lg:mx-1 rounded sm:w-1/2 lg:w-1/5 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
-          <img 
-            src={character.photo} 
-            class="h-20 lg:h-auto rounded mb-2" 
-            alt="Flowbite Logo" 
-            />
-            <h1 class="text-3xl lg:text-3xl gold-header-text mb-2">{character.name}</h1>
-            <h2 class="text-2xl lg:text-xl green-header-text">{character.title}</h2>
-            <p class="text-md lg:text-[0.85em] h-auto lg:h-16 mb-2 pb-4 border-b-2 border-[#999]"><b>Special</b>: {character.special}</p>
-          <p class="text-md lg:text-[0.85em]">{character.description}</p>
-          <br>
+      <div class="w-full my-2 lg:mx-1 rounded sm:w-1/2 lg:w-full p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white flex gap-4">
+        <!-- Left column - Image only -->
+        <div class="flex-shrink-0 lg:content-center">
+        <img 
+          src={character.photo} 
+          class="h-20 lg:h-40 rounded-full" 
+          alt="Flowbite Logo" 
+        />
         </div>
+      
+        <!-- Right column - Everything else -->
+        <div class="flex-1">
+        <h1 class="text-3xl lg:text-5xl gold-header-text">{character.name}</h1>
+        <h2 class="text-2xl lg:text-xl green-header-text">{character.title}</h2>
+        <p class="text-sm lg:text-[0.85em] h-auto lg:h-6 mb-2 pb-4 border-b-2 border-[#999]"><b>Special</b>: {character.special}</p>
+        <p class="text-md lg:text-md text-[#ffffff80]">{character.description}</p>
+        <br>
+        </div>
+      </div>
     {/each}
   </div>
-  <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto">
+  <div class="w-11/12 lg:w-1/2 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto">
     <span class="text-gray-500">[Disclaimer] AI-Generated concept images, final concepts in development.</span>
   </div>
 
@@ -239,7 +269,7 @@
 
     <!-- Photo -->
     <div class="w-full mb-5 lg:mr-6 md:w-1/2">
-      <div class="bg-blue-800 h-96 bg-no-repeat bg-cover bg-center lg:bg-cover" style="background-image: url('https://ik.imagekit.io/lgpq0vloy/Cosmic%20Collsions/Gemini_Generated_Image_3b4qfh3b4qfh3b4q%20(1).jpeg?updatedAt=1724392397795');">
+      <div class="bg-blue-800 h-96 bg-no-repeat bg-cover bg-center lg:bg-cover" style="background-image: url('https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/Cosmic+Concept+01.png');">
 
       </div>
       <span class="text-gray-500">[Disclaimer] AI-Generated concept image</span>
@@ -249,16 +279,14 @@
     <!-- Text and Link -->
     <div class="w-full md:w-1/2 lg:p-0">
       <h1 class="text-3xl jersey-font gold-header-text">Lore</h1>
-      <p class="text-md lg:text-xl">In 2157, an alien force targets the Sun as a vital resource, intending to destroy each planet to eliminate resistance. Earth’s <b>Solar System Defense Force (SSDF)</b> discovers the enemy has destabilized the asteroid belt, threatening every planet. 
+      <p class="text-md lg:text-xl p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">In 2157, an alien force targets the Sun as a vital resource, intending to destroy each planet to eliminate resistance. Earth’s <b>Solar System Defense Force (SSDF)</b> discovers the enemy has destabilized the asteroid belt, threatening every planet. 
         The SSDF must protect the solar system and its colonies to ensure survival, as the Sun is essential to all life.
       </p>
     </div>
-    
-
   </div>
 
   <!-- Spacer -->
-  <div class="h-10 lg:h-32"></div>
+  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#00c40030]"></div>
 
   <!-- KickStarer -->
   <!-- <div class="mx-auto p-8 rounded shadow-lg text-center bg-white/10 border-2 border-[#ffcb0a]/40 w-11/12 lg:w-1/3">
@@ -266,9 +294,9 @@
     <Button color="none" class="text-black text-lg mt-6 w-full lg:w-40" style="background: var(--gold-gradient);">Contribute</Button>
   </div> -->
 
-  <div class="mx-auto p-2 rounded shadow-lg text-center border-2 border-[#dd0000]/60 bg-[#dd0000]/20 w-11/12 lg:w-1/3">
-    <img class="h-32 mx-auto relative bottom-3" src="https://ik.imagekit.io/lgpq0vloy/logos/Kickstarter-Logo.png?updatedAt=1724604584415" alt="KickStarter">
-    <p class="text-xl text-white relative bottom-8">Coming Soon - Summer 2025</p>
+  <div class="mx-auto p-2 rounded shadow-lg text-center border-2 border-[#00c400]/60 bg-[#00c400]/10 w-11/12 lg:w-1/3">
+    <img class="h-32 mx-auto relative bottom-3" src="https://finalbossxr.s3.us-east-1.amazonaws.com/misc/Kickstarter-Logo.png" alt="KickStarter">
+    <p class="text-xl text-white relative bottom-8">Coming Soon - 2025</p>
   </div>
 
   <!-- Spacer -->
