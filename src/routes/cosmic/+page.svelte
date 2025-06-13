@@ -114,7 +114,7 @@
     <div class="w-full lg:w-[300px] lg:mr-4">
       <img 
       src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
-      class="w-4/5 lg:mx-auto" 
+      class="w-4/5 mx-auto" 
       alt="Cosmic Collisions Logo"
       >
     </div>

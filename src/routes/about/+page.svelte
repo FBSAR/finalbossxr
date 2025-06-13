@@ -112,7 +112,7 @@
       },
       {
         name: 'Rowan Christerfield',
-        photo: '',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/rowan_photo.png',
         title: 'Social Media',
         linkedin: 'https://www.linkedin.com/in/rowanchristerfield/'
       }
