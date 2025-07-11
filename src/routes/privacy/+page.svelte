@@ -274,46 +274,19 @@
             transform: translateY(0rem);
         }
   }
-  body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        h1, h2 {
-            color: #2c3e50;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        h2 {
-            margin-top: 25px;
-            margin-bottom: 15px;
-        }
-        ul {
-            list-style-type: disc;
-            margin-left: 20px;
-        }
-        li {
-            margin-bottom: 5px;
-        }
-        strong {
-            font-weight: bold;
-        }
-        .date-info {
-            font-size: 0.9em;
-            color: #666;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .disclaimer {
-            font-size: 0.85em;
-            color: #777;
-            margin-top: 30px;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
+
+        
+    ul {
+        list-style-type: disc;
+        margin-left: 20px;
+    }
+    li {
+        margin-bottom: 5px;
+    }
+    .date-info {
+        font-size: 0.9em;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+    }
 </style>
