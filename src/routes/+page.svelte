@@ -6,7 +6,6 @@
   import { enhance } from '$app/forms';
   import { showSuccessToast ,showErrorToast } from '$lib/stores/toastStore';
 
-
   // TailwindCSS Classes
   const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
 
@@ -82,14 +81,15 @@
    -->
   <div class="relative p-4 lg:p-0 lg:flex justify-center z-10 pb-20 lg:pb-0 mb-8 overflow-hidden border-b-8 border-[#00c40030]">
     <!-- Desktop Background Video -->
-    <!-- <video
-      class="hidden lg:block absolute inset-0 w-full h-full object-cover bg-black opacity-15"
-      style="transform: scaleX(-1) translateY(-20%);"
-      src=""
+    <video
+      id="background-video-desktop"
+      class="hidden lg:block absolute inset-0 w-full h-full object-cover bg-black opacity-90"
+      style="transform: scaleX(-1) translateY(0%);"
+      src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/space_rock_2.mp4"
       autoplay
       loop
       muted>
-    </video> -->
+    </video>
     <!-- Header Content -->
     <div class="z-20 mx-auto lg:m-4 lg:p-8">
     <!-- Two column grid container -->

@@ -33,7 +33,7 @@
   <Navbar let:toggle class="block lg:hidden fixed w-full top-0 z-50 backdrop-blur-lg bg-[#1b023d]/80 shadow-md" color="none">
     <NavBrand href="/">
         <img 
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" 
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" 
           class="h-9 sm:h-12" 
           alt="Final Boss Studios Logo" />
         <img 
@@ -58,7 +58,7 @@
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <NavBrand href="/">
         <img 
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" 
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" 
           class="h-9 sm:h-12" 
           alt="Final Boss Studios Logo" />
         <img 
