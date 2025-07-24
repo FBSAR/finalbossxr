@@ -45,9 +45,9 @@
       showErrorToast('There was an error submitting your form. Please try again later.')
     }
   }
-   function testerLink() {
+  function testerLink() {
        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
-   }
+  }
   function discordLink() {
       window.open('https://discord.gg/UvRHXpgd', '_blank');
   }
@@ -67,6 +67,7 @@
     {
         name: 'Captain Phoenix',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/phoenix_photo.PNG',
+        video: '',
         title: 'The Captain',
         special: 'Piercing Shots - These shots continue their momentum after hitting 1 object.',
         description: "A battle-hardened SSDF veteran, driven by the loss of her family in the alien attack. A brilliant tactician, she defends the solar system with unmatched skill, but her inner turmoil risks overwhelming her, as she battles between vengeance and hope.",
@@ -75,6 +76,7 @@
         name: 'Riley',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/riley_photo.PNG',
         title: 'The Engineer',
+        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/RileyGesture.mp4',
         special: 'Repair Portal - Fix portals simply by flying through it.',
         description: "A young, improvisational genius who can turn scraps into solutions, from asteroid defenses to alien tech. Their rebellious nature and unconventional methods often clash with Phoenix's strict command, challenging them to find common ground and work as a team.",
     },
@@ -82,6 +84,7 @@
         name: 'Johnny Sparks',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/johnny_photo.PNG',
         title: 'The Rookie',
+        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/JohnnySparksIntroGesture.mp4',
         special: 'Health Regeneration - Player Ship’s Shield regenerates every [X amount of time]',
         description: "A newly minted graduate, Sparky is naive but full of courage and optimism. Despite their inexperience, they bring a fresh perspective and a contagious positive spirit, which could be the spark the resistance needs. An exceptional VR/AR gamer with a determination reminiscent of a young Leon Kennedy.",
     },
@@ -89,6 +92,7 @@
         name: 'Xylo',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/xylo_photo.PNG',
         title: 'The Alien',
+        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/XyloGesture.mp4',
         special: 'Defense - Can destroy asteroids colliding into them, with no damage to the ship.',
         description: "An ethereal avian species with shimmering iridescent wings, hailing from a solar system bathed in twilight. With an innate grasp of astrophysics, Xylo navigates space with unmatched precision. Discovered after crash-landing on Earth, Xylo's gentle nature and otherworldly beauty quickly transformed initial fear into awe.",
     },
@@ -96,6 +100,7 @@
         name: 'AI Wraith',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/wraith_photo.PNG',
         title: 'The AI',
+        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/WraithGesture.mp4',
         special: 'Speed Increase - Temporary Speed Increase',
         description: "Wraith, once a counterpart to Reaper, remains loyal to humanity. Operating in the shadows, Wraith uses its cyber capabilities to protect the solar system, quietly neutralizing threats and countering Reaper's plans. A silent guardian, it provides vital intelligence to the SSDF, ensuring the galaxy's survival.",
     },
@@ -176,10 +181,10 @@
         We are currently working towards an iOS/Android release for an official demo. 
         This demo will be specifially designed to highlight the gameplay design
       </p>
-      <ul class="list-disc pl-8 mt-2 gold-header-text text-2xl">
+      <ul class="list-disc pl-8 mt-2 gold-header-text jersey-font text-2xl">
         <li>Tutorial Mission</li>
         <li>Flight Mission #01</li>
-        <li>Horde Mode - Earth</li>
+        <li>Survival Mode - Earth</li>
       </ul>
       <br>
       <h1 class="text-4xl lg:mt-0 lg:text-4xl green-header-text">
@@ -239,11 +244,21 @@
       <div class="w-full my-2 lg:mx-1 rounded sm:w-1/2 lg:w-full p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white flex gap-4">
         <!-- Left column - Image only -->
         <div class="flex-shrink-0 lg:content-center">
-        <img 
+        <!-- <img 
           src={character.photo} 
           class="h-20 lg:h-40 rounded-full" 
           alt="Flowbite Logo" 
-        />
+        /> -->
+        <video
+          autoplay
+          muted
+          loop
+          class="h-20 w-20 lg:h-40 lg:w-40 rounded-full object-cover"
+          poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
+            >
+         <source src="{character.video}" type="video/mp4">
+         Your browser does not support the video tag.
+        </video>
         </div>
       
         <!-- Right column - Everything else -->
