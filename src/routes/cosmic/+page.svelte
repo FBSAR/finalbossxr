@@ -108,22 +108,26 @@
 </script>
 <main>
   <!-- Header Text -->
-  <div class="mx-auto px-4 w-full text-center hidden lg:block">
-    <h1 class="jersey-font page-header green-header-text">COSMIC COLLISIONS</h1>
+  <div class="mx-auto w-2/3 lg:w-1/4 text-center">
+     <img 
+      src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
+      class="w-4/5 mx-auto" 
+      alt="Cosmic Collisions Logo"
+      >
   </div>
 
   <!-- Header Content -->
-  <div class="w-full px-4 flex flex-col justify-center py-10 lg:pb-20 md:flex-row mx-auto h-auto border-b-8 border-[#00c40030]"> 
+  <div class="w-full px-4 flex flex-col justify-center py-10 lg:pb-20 md:flex-row mx-auto h-auto border-b-8 border-[#ffffff10]"> 
     
     <!-- Photo -->
-    <div class="w-full lg:w-[300px] lg:mr-4">
+    <!-- <div class="w-full lg:w-[300px] lg:mr-4">
       <img 
       src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
       class="w-4/5 mx-auto" 
       alt="Cosmic Collisions Logo"
       >
     </div>
-    
+     -->
     <!-- Text and Link -->
     <div class="w-full md:w-1/3 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">
       <div class="flex bg-[#88888800]">
@@ -211,6 +215,7 @@
           style=""
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/FlightMission01PortraitFinal+-+Made+with+Clipchamp+(2).mp4"
           autoplay
+          playsinline 
           loop
           muted>
         </video>
@@ -229,7 +234,7 @@
   </div>
 
   <!-- Spacer -->
-  <div class="h-2 border-b-8 border-[#00c40030]"></div>
+  <div class="h-2 border-b-8 border-[#ffffff10]"></div>
 
   <!-- Characters -->
   <div class="mx-auto w-11/12 lg:w-1/2 mt-20">
@@ -251,6 +256,7 @@
         /> -->
         <video
           autoplay
+          playsinline 
           muted
           loop
           class="h-20 w-20 lg:h-40 lg:w-40 rounded-full object-cover"
@@ -266,42 +272,52 @@
         <h1 class="text-3xl lg:text-5xl gold-header-text">{character.name}</h1>
         <h2 class="text-2xl lg:text-xl green-header-text">{character.title}</h2>
         <p class="text-sm lg:text-[0.85em] h-auto lg:h-6 mb-2 pb-4 border-b-2 border-[#999]"><b>Special</b>: {character.special}</p>
-        <p class="text-md lg:text-md text-[#ffffff80]">{character.description}</p>
+        <p class="text-xs lg:text-md text-[#ffffff80]">{character.description}</p>
         <br>
         </div>
       </div>
     {/each}
   </div>
-  <div class="w-11/12 lg:w-1/2 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto">
+  <!-- <div class="w-11/12 lg:w-1/2 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto">
     <span class="text-gray-500">[Disclaimer] AI-Generated concept images, final concepts in development.</span>
-  </div>
+  </div> -->
 
   <!-- Spacer -->
-  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#00c40030]"></div>
+  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#ffffff10]"></div>
 
   <!-- Lore -->
   <div class="w-11/12 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto"> 
 
     <!-- Photo -->
     <div class="w-full mb-5 lg:mr-6 md:w-1/2">
-      <div class="bg-blue-800 h-96 bg-no-repeat bg-cover bg-center lg:bg-cover" style="background-image: url('https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/Cosmic+Concept+01.png');">
-
+      <div class="relative w-full h-96 overflow-hidden">
+        <video
+          autoplay
+          playsinline 
+          muted
+          loop
+          class="absolute inset-0 w-full h-full object-cover"
+          poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
+        >
+          <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/SpaceAnimatedVideo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
-      <span class="text-gray-500">[Disclaimer] AI-Generated concept image</span>
+      <!-- <span class="text-gray-500">[Disclaimer] AI-Generated concept image</span> -->
 
     </div>
 
     <!-- Text and Link -->
     <div class="w-full md:w-1/2 lg:p-0">
       <h1 class="text-3xl jersey-font gold-header-text">Lore</h1>
-      <p class="text-md lg:text-xl p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">In 2157, an alien force targets the Sun as a vital resource, intending to destroy each planet to eliminate resistance. Earth’s <b>Solar System Defense Force (SSDF)</b> discovers the enemy has destabilized the asteroid belt, threatening every planet. 
+      <p class="text-sm lg:text-md lg:p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">In 2157, an alien force targets the Sun as a vital resource, intending to destroy each planet to eliminate resistance. Earth’s <b>Solar System Defense Force (SSDF)</b> discovers the enemy has destabilized the asteroid belt, threatening every planet. 
         The SSDF must protect the solar system and its colonies to ensure survival, as the Sun is essential to all life.
       </p>
     </div>
   </div>
 
   <!-- Spacer -->
-  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#00c40030]"></div>
+  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#ffffff10]"></div>
 
   <!-- KickStarer -->
   <!-- <div class="mx-auto p-8 rounded shadow-lg text-center bg-white/10 border-2 border-[#ffcb0a]/40 w-11/12 lg:w-1/3">

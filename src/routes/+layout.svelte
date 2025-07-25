@@ -37,9 +37,9 @@
           class="h-9 sm:h-12" 
           alt="Final Boss Studios Logo" />
         <img 
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FB_Letter_No_BG.png" 
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/Text_Logo_White.png" 
           class="h-6 sm:h-7" 
-          alt="Final Boss Studios Logo" />
+          alt="Final Boss Studios Text Logo" />
       </NavBrand>
       <NavHamburger menuClass={'text-white inline'} onClick={() => onNavHamburgerClick()}  />
       <NavUl {activeUrl} hidden={hideNavMenu}
@@ -62,9 +62,9 @@
           class="h-9 sm:h-12" 
           alt="Final Boss Studios Logo" />
         <img 
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FB_Letter_No_BG.png" 
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/Text_Logo_White.png" 
           class="h-6 sm:h-7" 
-          alt="Final Boss Studios Logo" />
+          alt="Final Boss Studios Text Logo" />
       </NavBrand>
       <NavHamburger menuClass={'text-white inline'} onClick={() => onNavHamburgerClick()}  />
       <NavUl {activeUrl} hidden={hideNavMenu}

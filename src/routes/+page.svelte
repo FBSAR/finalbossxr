@@ -79,7 +79,7 @@
     Desktop - Has screen sized background video
     Mobile - No background video, show video directly after text
    -->
-  <div class="relative p-4 lg:p-0 lg:flex justify-center z-10 pb-20 lg:pb-0 mb-8 overflow-hidden border-b-8 border-[#00c40030]">
+  <div class="relative p-4 lg:p-0 lg:flex justify-center z-10 pb-20 lg:pb-0 mb-8 overflow-hidden border-b-8 border-[#ffffff10]">
     <!-- Desktop Background Video -->
     <video
       id="background-video-desktop"
@@ -88,6 +88,7 @@
       src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/space_rock_2.mp4"
       autoplay
       loop
+      playsinline 
       muted>
     </video>
     <!-- Header Content -->
@@ -152,6 +153,7 @@
           style=""
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/FlightMission01PortraitFinal+-+Made+with+Clipchamp+(2).mp4"
           autoplay
+          playsinline 
           loop
           muted>
         </video>
@@ -170,7 +172,7 @@
   </div>
 
   <!-- Who is Final Boss? -->
-  <div id="made-with" class="block pb-20 lg:py-20 mx-auto h-auto  md:shadow-4xl w-full border-b-8 border-[#00c40030]">
+  <div id="made-with" class="block pb-20 lg:py-20 mx-auto h-auto  md:shadow-4xl w-full border-b-8 border-[#ffffff10]">
     <div class="w-full mx-auto mb-10 lg:w-1/2 content-center">
       <!-- Desktop FBS Intro Video -->
       <video
@@ -270,6 +272,7 @@
           style=""
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/FlightMission01PortraitFinal+-+Made+with+Clipchamp+(2).mp4"
           autoplay
+          playsinline 
           loop
           muted>
         </video>
@@ -287,7 +290,7 @@
   </div>
 
   <!-- Spacer -->
-  <div class="h-10 lg:h-32 border-b-8 border-[#00c40030]"></div>
+  <div class="h-10 lg:h-32 border-b-8 border-[#ffffff10]"></div>
    
   <!-- Beta Testers / Discord -->
   <div id="testers" class="block lg:flex py-20 mx-auto h-auto lg:h-[500px] md:shadow-4xl w-11/12 lg:w-3/4">
@@ -304,7 +307,7 @@
   </div>
 
   <!-- Spacer -->
-  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#00c40030]"></div>
+  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#ffffff10]"></div>
    
   <!-- Form & Social Media -->
   <div class="sm:inline lg:flex w-1/3 mx-auto my-4 bg-[#88888800] justify-center text-center">
