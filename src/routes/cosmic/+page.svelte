@@ -67,7 +67,7 @@
     {
         name: 'Captain Phoenix',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/phoenix_photo.PNG',
-        video: '',
+        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/PhoenixGesture.mp4',
         title: 'The Captain',
         special: 'Piercing Shots - These shots continue their momentum after hitting 1 object.',
         description: "A battle-hardened SSDF veteran, driven by the loss of her family in the alien attack. A brilliant tactician, she defends the solar system with unmatched skill, but her inner turmoil risks overwhelming her, as she battles between vengeance and hope.",
