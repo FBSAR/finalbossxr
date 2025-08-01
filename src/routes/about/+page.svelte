@@ -127,11 +127,11 @@
   </div>
 
   <!-- Founders -->
-  <div class="mx-auto my-4 w-11/12">
+  <div class="fouders mx-auto my-4 w-11/12">
     <h1 class="gold-header-text mb-2 mt-8 text-4xl">Founders</h1>
     <div class="flex flex-wrap justify-start gap-2">
       {#each founders as founder}
-        <div class="w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
+        <div class="founder-card w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
           <img 
             src={founder.photo} 
             class="h-20 rounded mb-2" 
@@ -146,11 +146,11 @@
    </div>
 
   <!-- Team -->
-  <div class="mx-auto my-4 w-11/12">
+  <div class=" mx-auto my-4 w-11/12">
     <h1 class="gold-header-text mb-2 mt-8 text-4xl">Team</h1>
     <div class="flex flex-wrap justify-start gap-2">
       {#each team as member}
-        <div class="w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
+        <div class="team-card w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
           <img 
             src={member.photo} 
             class="h-20 rounded mb-2" 
@@ -168,7 +168,7 @@
     <h1  class="gold-header-text mb-2 mt-8 text-4xl">Advisors</h1>
     <div class="flex flex-wrap justify-start gap-2">
       {#each advisors as advisor}
-        <div class="w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
+        <div class="advisor-card w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
           <img 
             src={advisor.photo} 
             class="h-20 rounded mb-2" 
@@ -222,13 +222,13 @@
   <!-- Contact Form -->
   <div class="mx-auto w-11/12">
     <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text">CONTACT US</h1>
-    <p class="text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
+    <p class="contact-header-card text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
     Please reach out, and we will contact you are our earliest convenience!
     </p>
 
     <!-- Form -->
-    <div class="w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
+    <div class="contact-card w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
       <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
       <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
       <FloatingLabelInput 
@@ -276,5 +276,26 @@
 
 </main>
 <style>
-
+  .founder-card:hover, .team-card:hover, .advisor-card:hover {
+    transition: 200ms;
+    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+    transform: translateY(-10px);
+    border-color: #0fd8414d;
+    }
+    
+  .contact-card {
+    transition: 200ms;
+  }
+  .contact-header-card {
+    transition: 200ms;
+  }
+  .contact-header-card:hover {
+    font-size: 1.35em;
+  }
+  .contact-card:hover, .contact-header-card:hover{
+    transition: 200ms;
+    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+    transform: translateY(-10px);
+    border-color: #0fd8414d;
+  }
 </style>

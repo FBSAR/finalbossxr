@@ -107,7 +107,7 @@
   ]
 </script>
 <main>
-  <!-- Header Text -->
+  <!-- Header Logo -->
   <div class="mx-auto w-2/3 lg:w-1/4 text-center">
      <img 
       src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
@@ -129,7 +129,7 @@
     </div>
      -->
     <!-- Text and Link -->
-    <div class="w-full md:w-1/3 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">
+    <div class="header-card w-full md:w-1/3 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">
       <div class="flex bg-[#88888800]">
       <h3 class="text-lg lg:text-2xl gold-header-text">Upcoming Platforms June 2025 (Demo)</h3>
       <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
@@ -157,10 +157,10 @@
       <h1 class="text-3xl green-header-text inline">Genre:</h1>
       <span class="text-[#999]">Arcade, Space Shooter, RPG, Augmented Reality (AR) </span>
       </div>
-      <p class="text-white text-md lg:text-md">
-      Get ready to shoot some aliens and asteroids in space, in an AR environment!
-      Inspired by classics like <b>Galaga</b> and <b>Space Invaders</b>, we aim to add another dimension 
-      - and story - to the traditional space shooter. Join our heroes from the SSDF (Solar System Defense Force), as they protect the Earth, the Sun, and their neighbors from an oncoming enemy attack.
+      <p class="text-white text-md lg:text-[0.85em]">
+        Get ready to shoot some aliens and asteroids in space, in an AR environment!
+        Inspired by classics like <b>Galaga</b> and <b>Space Invaders</b>, we aim to add another dimension 
+        - and story - to the traditional space shooter. Join our heroes from the SSDF (Solar System Defense Force), as they protect the Earth, the Sun, and their neighbors from an oncoming enemy attack.
       </p>
     </div>
   </div>
@@ -179,33 +179,33 @@
       </div>
       
       <!-- Middle Left Column - Your existing left content -->
-      <div class="p-4 lg:col-span-2 space-y-4 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
+      <div class="demo-card p-4 lg:col-span-2 space-y-4 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
         <h1 class="text-5xl gold-header-text">Demo</h1>
-      <p class="text-md">
+        <p class="text-md">
         We are currently working towards an iOS/Android release for an official demo. 
         This demo will be specifially designed to highlight the gameplay design
-      </p>
-      <ul class="list-disc pl-8 mt-2 gold-header-text jersey-font text-2xl">
-        <li>Tutorial Mission</li>
-        <li>Flight Mission #01</li>
-        <li>Survival Mode - Earth</li>
-      </ul>
-      <br>
-      <h1 class="text-4xl lg:mt-0 lg:text-4xl green-header-text">
-      Want to play the Demo?
-      </h1>
-      <!-- <Button on:click={testerLink} color="none" class="text-white text-md mt-2 w-full lg:w-40" style="background: var(--green-gradient);">Tester Sign Up</Button> -->
-      <Button on:click={testerLink} disabled color="purple" class="text-white text-md mt-2 w-full lg:w-40">
-      iOS Testflight
-      </Button>
-      <Button on:click={testerLink} disabled color="purple" class="text-white text-md mt-2 w-full lg:w-40">
-      Android .APK
-      </Button>
-      <Button on:click={testerLink} color="purple" class="text-white text-md mt-2 w-full lg:w-40">
-      Tester Sign Up
-      </Button>
-      <br>
-      <span class="text-white text-xs">Please open on Mobile Browsers (iOS/Android)</span>
+        </p>
+        <ul class="list-disc pl-8 mt-2 purple-header-text jersey-font text-2xl">
+          <li>Tutorial Mission</li>
+          <li>Flight Mission #01</li>
+          <li>Survival Mode - Earth</li>
+        </ul>
+        <br>
+        <h2 class="text-4xl lg:mt-0 lg:text-4xl green-header-text">
+          Want to play the Demo?
+        </h2>
+        <!-- <Button on:click={testerLink} color="none" class="text-white text-md mt-2 w-full lg:w-40" style="background: var(--green-gradient);">Tester Sign Up</Button> -->
+        <Button on:click={testerLink} disabled color="purple" class="text-white text-md mt-2 w-full lg:w-40">
+          iOS Testflight
+        </Button>
+        <Button on:click={testerLink} disabled color="purple" class="text-white text-md mt-2 w-full lg:w-40">
+          Android .APK
+        </Button>
+        <Button on:click={testerLink} color="purple" class="text-white text-md mt-2 w-full lg:w-40">
+          Tester Sign Up
+        </Button>
+        <br>
+        <span class="text-white text-xs">Please open on Mobile Browsers (iOS/Android)</span>
       </div>
 
       <!-- Middle Right Column - Your existing right content -->
@@ -238,15 +238,16 @@
 
   <!-- Characters -->
   <div class="mx-auto w-11/12 lg:w-1/2 mt-20">
-    <h1 class="jersey-font text-4xl gold-header-text">Characters</h1>
-    <p class="mb-4 text-md lg:text-lg">
-      The unit from the <span class="green-header-text jersey-font text-2xl">Solar System Defense Force (SSDF)</span>, 
-      tasked with defending the solar system.
-    </p>
+    <h1 class="jersey-font text-4xl green-header-text">
+      <img 
+        src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
+        class="w-12 mx-auto inline"  />
+      Characters
+    </h1>
   </div>
   <div class="w-11/12 lg:w-1/2 mx-auto h-auto lg:h-auto"> 
     {#each characters as character}
-      <div class="w-full my-2 lg:mx-1 rounded sm:w-1/2 lg:w-full p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white flex gap-4">
+      <div class="pilot-card w-full my-2 lg:mx-1 rounded sm:w-1/2 lg:w-full p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white flex gap-4">
         <!-- Left column - Image only -->
         <div class="flex-shrink-0 lg:content-center">
         <!-- <img 
@@ -308,8 +309,8 @@
     </div>
 
     <!-- Text and Link -->
-    <div class="w-full md:w-1/2 lg:p-0">
-      <h1 class="text-3xl jersey-font gold-header-text">Lore</h1>
+    <div class="lore-card w-full md:w-1/2 lg:p-0">
+      <h1 class="text-3xl jersey-font green-header-text">Lore</h1>
       <p class="text-sm lg:text-md lg:p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">In 2157, an alien force targets the Sun as a vital resource, intending to destroy each planet to eliminate resistance. Earth’s <b>Solar System Defense Force (SSDF)</b> discovers the enemy has destabilized the asteroid belt, threatening every planet. 
         The SSDF must protect the solar system and its colonies to ensure survival, as the Sun is essential to all life.
       </p>
@@ -334,7 +335,7 @@
   <div class="h-10 lg:h-32"></div>
    
   <!-- Form & Social Media -->
-  <div class="sm:inline-block lg:flex w-1/3 mx-auto my-4 bg-[#88888800] justify-center text-center">
+  <div class="social-media-card sm:inline-block lg:flex w-1/3 mx-auto my-4 bg-[#88888800] justify-center text-center">
     <!-- Flowbite InstagramSolid icon didnt work -->
     <Button class="w-20 my-2 lg:my-0 lg:mx-2 border-[#99999930] hover:border-green-500 border-2 hover:border-2" on:click={gotoInstagramPage}>
       <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -371,13 +372,13 @@
   <!-- Contact Form -->
   <div class="mx-auto w-11/12">
     <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text">CONTACT US</h1>
-    <p class="text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
-    Have a question? Have a comment? Want to work with, or invest in Final Boss?
-    Please reach out, and we will contact you are our earliest convenience!
+    <p class="contact-header-card text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
+      Have a question? Have a comment? Want to work with, or invest in Final Boss?
+      Please reach out, and we will contact you are our earliest convenience!
     </p>
 
     <!-- Form -->
-    <div class="w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
+    <div class="contact-card w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
       <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
       <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
       <FloatingLabelInput 
@@ -424,5 +425,84 @@
   <div class="h-10 lg:h-32"></div>
 </main>
 <style>
-
+  .header-card, .demo-card, .lore-card, .contact-card {
+    transition: 200ms;
+  }
+  .contact-card {
+    transition: 200ms;
+  }
+  .contact-header-card {
+    transition: 200ms;
+  }
+  .contact-header-card:hover {
+    font-size: 1.35em;
+  }
+  .header-card:hover, .demo-card:hover,  .contact-card:hover, .contact-header-card:hover {
+    transition: 200ms;
+    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+    transform: translateY(-10px);
+    border-color: #0fd8414d;
+  }
+  .header-card p, .header-card h3 {
+    transition: 200ms;
+  }
+  .header-card:hover h3 {
+    font-size: 1.85em;
+  }
+  .header-card:hover p {
+    font-size: 1.25em;
+    line-height: 1.2em;
+  }
+  .demo-card p, .demo-card h1, .demo-card h2, .demo-card li {
+    transition: 200ms;
+  }
+  .demo-card:hover h1 {
+    font-size: 5em;
+  }
+  .demo-card:hover h2 {
+    font-size: 3em;
+  }
+  .demo-card:hover li {
+    font-size: 1.25em;
+  }
+  .demo-card:hover p {
+    font-size: 1.35em;
+  }
+  .lore-card:hover{
+    transition: 200ms;
+    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+    transform: translateY(-10px);
+    padding: 1em;
+    border-color: #0fd8414d;
+  }
+  .lore-card h1 {
+    transition: 200ms;
+  }
+  .lore-card:hover h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(145deg, #FFD700 5%, #DAA520 25%, #f1c043 75%, #FFD700 100%);
+    background-clip: text;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+  }
+  .lore-card:hover p {
+    transition: 200ms;
+    font-size: 1.2em;
+    line-height: 1.4em;
+  }
+  .pilot-card {
+    transition: transform 200ms ease-out, background 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
+    transform: translateY(-10px);
+  }
+  .pilot-card:hover {
+    transition: 200ms;
+    margin: 2em 0em 1em 0em;
+    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+    transform: translateY(-10px);
+    border-color: #0fd8414d;
+  }
+  .pilot-card:hover::after {
+    transition: 200ms;
+    margin: 0em;
+  }
 </style>

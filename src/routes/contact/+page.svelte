@@ -51,13 +51,13 @@
   <!-- Contact Form -->
   <div class="mx-auto w-11/12">
     <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text">CONTACT US</h1>
-    <p class="text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
+    <p class="contact-header-card text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
     Please reach out, and we will contact you are our earliest convenience!
     </p>
 
     <!-- Form -->
-    <div class="w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
+    <div class="contact-card w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
       <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
       <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
       <FloatingLabelInput 
@@ -105,4 +105,19 @@
 </main>
 <style>
 
+  .contact-card {
+    transition: 200ms;
+  }
+  .contact-header-card {
+    transition: 200ms;
+  }
+  .contact-header-card:hover {
+    font-size: 1.35em;
+  }
+  .contact-card:hover, .contact-header-card:hover{
+    transition: 200ms;
+    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+    transform: translateY(-10px);
+    border-color: #0fd8414d;
+  }
 </style>

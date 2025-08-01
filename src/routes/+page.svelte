@@ -105,12 +105,12 @@
       </div>
       
       <!-- Middle Left Column - Your existing left content -->
-      <div class="p-4 lg:col-span-1 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
-        <img class="w-full lg:w-48 lg:h-48 mx-auto" src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" alt="Cosmic Collisions Logo">
+      <div class="hero-card p-4 lg:col-span-1 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
+        <img class="w-full lg:w-36 lg:h-36 mx-auto" src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" alt="Cosmic Collisions Logo">
         
-        <h1 class="text-4xl lg:text-[1.6em] xl:text-6xl my-2 jersey-font green-header-text">Get a Taste of the Future</h1>
+        <h1 class="text-4xl lg:text-[1.6em] xl:text-4xl my-2 jersey-font green-header-text">Get a Taste of the Future</h1>
         
-        <p class="text-md xl:text:xl my-2">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
+        <p class="text-md xl:text:lg my-2">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
         
         <!-- Upcoming Platforms message -->
         <div class="flex">
@@ -173,14 +173,14 @@
 
   <!-- Who is Final Boss? -->
   <div id="made-with" class="block pb-20 lg:py-20 mx-auto h-auto  md:shadow-4xl w-full border-b-8 border-[#ffffff10]">
+    <!-- Desktop FBS Intro Video -->
     <div class="w-full mx-auto mb-10 lg:w-1/2 content-center">
-      <!-- Desktop FBS Intro Video -->
       <video
         class="w-full lg:w-[600px] mx-auto hidden lg:block" autoplay muted loop playsinline
         src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/FBSIntro.mp4">
       </video>    
     </div>
-    <div class="w-11/12 lg:w-1/2 mx-auto mb-8 content-center bg-white/10 p-4 border-white/20 lg:border-2">
+    <div class="intro-card w-11/12 lg:w-1/2 mx-auto mb-8 content-center bg-white/10 p-4 border-white/20 lg:border-2">
       <!-- <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset=""> -->
       <h1 class="text-3xl lg:text-4xl gold-header-text">Our Goal? Evolutionize Gaming</h1>
       <!-- <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid> -->
@@ -216,9 +216,9 @@
       </div>
       
       <!-- Middle Left Column - Your existing left content -->
-      <div class="p-4 lg:col-span-2 space-y-4 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
+      <div class="cosmic-card p-4 lg:col-span-2 space-y-4 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
         <img class="h-32 mb-4" src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" alt="" srcset="">
-      <p class="text-xs lg:text-[0.9em] leading-normal">
+        <p class="text-xs lg:text-[0.9em] leading-normal">
         Born from our 2023 Metaverse Creators VR Hackathon project, Cosmic Collisions, this game captured the simple yet addictive fun of shooting down incoming asteroids in VR. That core gameplay loop resonated with us, inspiring us the following year to reimagine the concept as a more accessible Mobile AR experience. 
         <br>
         <br>
@@ -226,9 +226,9 @@
         <br>
         <br>
         This experience utilizes spacial awareness, it a way that is similar to the game of Pool. Find your position, aim your shot, fire on the target.
-      </p>
-      <a href="/cosmic" class="text-[#35a2f4] text-lg lg:text-xl mt-4 inline-block border-b-2 border-[#35a2f4]">More Info About Cosmic Collisions &rarr;</a>
-      <div class="flex bg-[#88888800] my-4">
+        </p>
+        <a href="/cosmic" class="text-[#35a2f4] text-lg lg:text-xl mt-4 inline-block border-b-2 border-[#35a2f4]">More Info About Cosmic Collisions &rarr;</a>
+        <div class="flex bg-[#88888800] my-4">
         <h3 class="relative top-1 text-lg gold-header-text">Upcoming Platforms July 2025 [Demo]</h3>
         <AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid>
         <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -250,8 +250,8 @@
             </path>
           </g>
         </svg>
-      </div>
-      <div class=" bg-[#88888800] my-4">
+        </div>
+        <div class=" bg-[#88888800] my-4">
         <a href="https://www.unrealengine.com" target="_blank">
           <h3 class="relative inline-block top-1 text-xl gold-header-text mr-4">Made with Unreal Engine 5
 
@@ -262,7 +262,7 @@
           </h3>
           
         </a>
-      </div>
+        </div>
       </div>
 
       <!-- Middle Right Column - Your existing right content -->
@@ -298,9 +298,9 @@
       <h1 class="text-3xl my-2 green-header-text">We need Testers (You).</h1>
       <img class="w-full h-full pb-10 lg:pb-0 lg:pr-10 object-cover" src="https://finalbossxr.s3.us-east-1.amazonaws.com/misc/fbs_tshirt_1.jpg" alt="" srcset="">
     </div>
-    <div class="w-full lg:w-1/2 content-center">
+    <div class=" w-full lg:w-1/2 content-center">
       <h3 class="text-[#ffd24d] text-3xl">Testers get a free Final Boss T-Shirt (limted time)</h3>
-      <p class="text-md lg:text-lg my-4 bg-white/10 p-4 border-white/20 lg:border-2">
+      <p class="tester-card text-md lg:text-lg my-4 bg-white/10 p-4 border-white/20 lg:border-2">
         Join the Final Boss team as a Beta Tester and be among the first to experience Cosmic Collisions and shape our future games! We're seeking 25-30 dedicated players to help us test, provide valuable feedback, and even spread the word. Your insights will be instrumental in making our games the best they can be!      </p>
       <Button on:click={testerLink} color="green" class="mt-4 w-full lg:w-48">Become a Tester</Button>
     </div>
@@ -347,13 +347,13 @@
   <!-- Contact Form -->
   <div class="mx-auto w-11/12">
     <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text">CONTACT US</h1>
-    <p class="text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
+    <p class=" contact-header-card text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
     Please reach out, and we will contact you are our earliest convenience!
     </p>
 
     <!-- Form -->
-    <div class="w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
+    <div class="contact-card w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
       <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
       <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
       <FloatingLabelInput 
@@ -401,6 +401,60 @@
   
 </main>
 <style>
+  .hero-card, .intro-card, .cosmic-card {
+    transition: 200ms;
+  }
+  .hero-card:hover, .intro-card:hover, .cosmic-card:hover, .tester-card:hover {
+    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+    transform: translateY(-10px);
+    border-color: #0fd8414d;
+  }
+  .hero-card:hover img {
+    height: 250px;
+    width: 250px;
+  }
+  .hero-card *, .intro-card * {
+    transition: 200ms;
+  }
+  .hero-card:hover p {
+    font-size: 1.25em;
+  }
+  .hero-card:hover h1 {
+    font-size: 3.75em;
+  }
+  .intro-card:hover p {
+    font-size: 1.25em;
+  }
+  .cosmic-card img, .cosmic-card p {
+    transition: 200ms;
+  }
+  .cosmic-card:hover p {
+    font-size: 1.25em;
+  }
+  .cosmic-card:hover img {
+    height: 300px;
+  }
+  .contact-card {
+    transition: 200ms;
+  }
+  .contact-header-card {
+    transition: 200ms;
+  }
+  .contact-header-card:hover {
+    font-size: 1.35em;
+  }
+  .contact-card:hover, .contact-header-card:hover {
+    transition: 200ms;
+    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+    transform: translateY(-10px);
+    border-color: #0fd8414d;
+  }
+  .tester-card {
+    transition: 200ms;
+  }
+  .tester-card:hover {
+    font-size: 1.45em;
+  }
   @keyframes fade-in-hor {
         0% {
             transform: translateX(-1.25rem);
