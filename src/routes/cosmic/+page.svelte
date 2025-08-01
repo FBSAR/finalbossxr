@@ -309,9 +309,9 @@
     </div>
 
     <!-- Text and Link -->
-    <div class="lore-card w-full md:w-1/2 lg:p-0">
+    <div class="w-full md:w-1/2 lg:p-0">
       <h1 class="text-3xl jersey-font green-header-text">Lore</h1>
-      <p class="text-sm lg:text-md lg:p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">In 2157, an alien force targets the Sun as a vital resource, intending to destroy each planet to eliminate resistance. Earth’s <b>Solar System Defense Force (SSDF)</b> discovers the enemy has destabilized the asteroid belt, threatening every planet. 
+      <p class="lore-card text-sm lg:text-md lg:p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 text-white">In 2157, an alien force targets the Sun as a vital resource, intending to destroy each planet to eliminate resistance. Earth’s <b>Solar System Defense Force (SSDF)</b> discovers the enemy has destabilized the asteroid belt, threatening every planet. 
         The SSDF must protect the solar system and its colonies to ensure survival, as the Sun is essential to all life.
       </p>
     </div>
@@ -425,17 +425,10 @@
   <div class="h-10 lg:h-32"></div>
 </main>
 <style>
+
+  /* Header Card */
   .header-card, .demo-card, .lore-card, .contact-card {
     transition: 200ms;
-  }
-  .contact-card {
-    transition: 200ms;
-  }
-  .contact-header-card {
-    transition: 200ms;
-  }
-  .contact-header-card:hover {
-    font-size: 1.35em;
   }
   .header-card:hover, .demo-card:hover,  .contact-card:hover, .contact-header-card:hover {
     transition: 200ms;
@@ -453,6 +446,8 @@
     font-size: 1.25em;
     line-height: 1.2em;
   }
+
+  /* Demo Card */
   .demo-card p, .demo-card h1, .demo-card h2, .demo-card li {
     transition: 200ms;
   }
@@ -468,10 +463,11 @@
   .demo-card:hover p {
     font-size: 1.35em;
   }
+
+  /* Lore */
   .lore-card:hover{
     transition: 200ms;
     background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-    transform: translateY(-10px);
     padding: 1em;
     border-color: #0fd8414d;
   }
@@ -485,11 +481,13 @@
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent;
   }
-  .lore-card:hover p {
+  .lore-card:hover {
     transition: 200ms;
     font-size: 1.2em;
-    line-height: 1.4em;
+    line-height: 1.45em;
   }
+
+  /* Pilot Card */
   .pilot-card {
     transition: transform 200ms ease-out, background 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
     transform: translateY(-10px);
@@ -505,4 +503,16 @@
     transition: 200ms;
     margin: 0em;
   }
+
+   /* Contact */
+  .contact-card {
+    transition: 200ms;
+  }
+  .contact-header-card {
+    transition: 200ms;
+  }
+  .contact-header-card:hover {
+    font-size: 1.35em;
+  }
+
 </style>
