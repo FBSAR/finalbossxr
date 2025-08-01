@@ -94,10 +94,10 @@
     <!-- Header Content -->
     <div class="z-20 mx-auto lg:m-4 lg:p-8">
     <!-- Two column grid container -->
-    <div class="grid grid-cols-1 lg:grid-cols-6 gap-6 lg:gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
       
       <!-- New Left Column -->
-      <div class="lg:col-span-2 hidden lg:block">
+      <div class="lg:col-span-1 hidden lg:block">
         <!-- Your new left content here -->
         <!-- <div class="bg-white/10 border-white/20 border-2 rounded-lg p-4">
           <p>Left sidebar content</p>
@@ -108,9 +108,9 @@
       <div class="p-4 lg:col-span-1 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
         <img class="w-full lg:w-48 lg:h-48 mx-auto" src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" alt="Cosmic Collisions Logo">
         
-        <h1 class="text-4xl lg:text-[3.6em] my-2 jersey-font green-header-text">Get a Taste of the Future</h1>
+        <h1 class="text-4xl lg:text-[1.6em] xl:text-6xl my-2 jersey-font green-header-text">Get a Taste of the Future</h1>
         
-        <p class="text-md my-2">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
+        <p class="text-md xl:text:xl my-2">Blast into a new reality. Command your ship, defend Earth, and explore a solar-system under threat in the ultimate AR sci-fi battle. This is the future of mobile gaming.</p>
         
         <!-- Upcoming Platforms message -->
         <div class="flex">
@@ -160,7 +160,7 @@
       </div>
 
       <!-- New Right Column -->
-      <div class="lg:col-span-2 hidden lg:block">
+      <div class="lg:col-span-1 hidden lg:block">
         <!-- Your new right content here -->
         <!-- <div class="bg-white/10 border-white/20 border-2 rounded-lg p-4">
           <p>Right sidebar content</p>
