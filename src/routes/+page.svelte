@@ -401,60 +401,55 @@
   
 </main>
 <style>
-  .hero-card, .intro-card, .cosmic-card {
+  .hero-card, .intro-card, .cosmic-card, .contact-card, .contact-header-card, .tester-card {
     transition: 200ms;
   }
-  .hero-card:hover, .intro-card:hover, .cosmic-card:hover, .tester-card:hover {
+  @media (min-width: 1000px) {
+    .hero-card:hover, .intro-card:hover, .cosmic-card:hover, .tester-card:hover {
     background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
     transform: translateY(-10px);
     border-color: #0fd8414d;
-  }
-  .hero-card:hover img {
-    height: 250px;
-    width: 250px;
-  }
-  .hero-card *, .intro-card * {
-    transition: 200ms;
-  }
-  .hero-card:hover p {
+    }
+    .hero-card:hover img {
+      height: 250px;
+      width: 250px;
+    }
+    .hero-card *, .intro-card * {
+      transition: 200ms;
+    }
+    .hero-card:hover p {
+      font-size: 1.25em;
+    }
+    .hero-card:hover h1 {
+      font-size: 3.75em;
+    }
+    .intro-card:hover p {
     font-size: 1.25em;
+    }
+    .cosmic-card img, .cosmic-card p {
+      transition: 200ms;
+    }
+    .cosmic-card:hover p {
+      font-size: 1.25em;
+    }
+    .cosmic-card:hover img {
+      height: 300px;
+    }
+    .contact-header-card:hover {
+      font-size: 1.35em;
+    }
+    .contact-card:hover, .contact-header-card:hover {
+      transition: 200ms;
+      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+      transform: translateY(-10px);
+      border-color: #0fd8414d;
+    }
+    .tester-card:hover {
+      font-size: 1.45em;
+    }
   }
-  .hero-card:hover h1 {
-    font-size: 3.75em;
-  }
-  .intro-card:hover p {
-    font-size: 1.25em;
-  }
-  .cosmic-card img, .cosmic-card p {
-    transition: 200ms;
-  }
-  .cosmic-card:hover p {
-    font-size: 1.25em;
-  }
-  .cosmic-card:hover img {
-    height: 300px;
-  }
-  .contact-card {
-    transition: 200ms;
-  }
-  .contact-header-card {
-    transition: 200ms;
-  }
-  .contact-header-card:hover {
-    font-size: 1.35em;
-  }
-  .contact-card:hover, .contact-header-card:hover {
-    transition: 200ms;
-    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-    transform: translateY(-10px);
-    border-color: #0fd8414d;
-  }
-  .tester-card {
-    transition: 200ms;
-  }
-  .tester-card:hover {
-    font-size: 1.45em;
-  }
+  
+  
   @keyframes fade-in-hor {
         0% {
             transform: translateX(-1.25rem);

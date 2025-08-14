@@ -104,20 +104,18 @@
   <div class="h-10 lg:h-32"></div>
 </main>
 <style>
-
-  .contact-card {
+  .contact-card, .contact-header-card {
     transition: 200ms;
   }
-  .contact-header-card {
-    transition: 200ms;
-  }
-  .contact-header-card:hover {
-    font-size: 1.35em;
-  }
-  .contact-card:hover, .contact-header-card:hover{
-    transition: 200ms;
-    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-    transform: translateY(-10px);
-    border-color: #0fd8414d;
+  @media (min-width: 1000px) { 
+    .contact-header-card:hover {
+      font-size: 1.35em;
+    }
+    .contact-card:hover, .contact-header-card:hover{
+      transition: 200ms;
+      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+      transform: translateY(-10px);
+      border-color: #0fd8414d;
+    }
   }
 </style>

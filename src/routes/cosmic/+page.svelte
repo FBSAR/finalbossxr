@@ -426,93 +426,77 @@
 </main>
 <style>
 
-  /* Header Card */
-  .header-card, .demo-card, .lore-card, .contact-card {
+  .header-card, .demo-card, .lore-card, .contact-card, .header-card p, .header-card h3, .demo-card p, .demo-card h1, .demo-card h2, .demo-card li,
+  .contact-card, .contact-header-card
+  {
     transition: 200ms;
   }
-  .header-card:hover, .demo-card:hover,  .contact-card:hover, .contact-header-card:hover {
-    transition: 200ms;
-    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-    transform: translateY(-10px);
-    border-color: #0fd8414d;
-  }
-  .header-card p, .header-card h3 {
-    transition: 200ms;
-  }
-  .header-card:hover h3 {
-    font-size: 1.85em;
-  }
-  .header-card:hover p {
-    font-size: 1.25em;
-    line-height: 1.2em;
-  }
+  @media (min-width: 1000px) { 
+    /* Header Card */
+    .header-card:hover, .demo-card:hover,  .contact-card:hover, .contact-header-card:hover {
+      transition: 200ms;
+      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+      transform: translateY(-10px);
+      border-color: #0fd8414d;
+    } 
+    .header-card:hover {
+      padding: 1em;
+    }
+    .header-card:hover h3 {
+      font-size: 1.85em;
+    }
+    .header-card:hover p {
+      font-size: 1.1em;
+      line-height: 1.2em;
+    }
 
-  /* Demo Card */
-  .demo-card p, .demo-card h1, .demo-card h2, .demo-card li {
-    transition: 200ms;
-  }
-  .demo-card:hover h1 {
-    font-size: 5em;
-  }
-  .demo-card:hover h2 {
-    font-size: 3em;
-  }
-  .demo-card:hover li {
-    font-size: 1.25em;
-  }
-  .demo-card:hover p {
-    font-size: 1.35em;
-  }
+    /* Demo Card */
+    .demo-card:hover h1 {
+      font-size: 5em;
+    }
+    .demo-card:hover h2 {
+      font-size: 3em;
+    }
+    .demo-card:hover li {
+      font-size: 1.25em;
+    }
+    .demo-card:hover p {
+      font-size: 1.35em;
+    }
 
-  /* Lore */
-  .lore-card:hover{
+    /* Lore */
+    .lore-card:hover{
     transition: 200ms;
     background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
     padding: 1em;
     border-color: #0fd8414d;
-  }
-  .lore-card h1 {
-    transition: 200ms;
-  }
-  .lore-card:hover h1 {
-    font-size: 2.5rem;
-    background: linear-gradient(145deg, #FFD700 5%, #DAA520 25%, #f1c043 75%, #FFD700 100%);
-    background-clip: text;
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent;
-  }
-  .lore-card:hover {
+    }
+    .lore-card:hover {
     transition: 200ms;
     font-size: 1.2em;
     line-height: 1.45em;
-  }
+    }
 
-  /* Pilot Card */
-  .pilot-card {
-    transition: transform 200ms ease-out, background 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
-    transform: translateY(-10px);
-  }
-  .pilot-card:hover {
-    transition: 200ms;
-    margin: 2em 0em 1em 0em;
-    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-    transform: translateY(-10px);
-    border-color: #0fd8414d;
-  }
-  .pilot-card:hover::after {
-    transition: 200ms;
-    margin: 0em;
-  }
+    /* Pilot Card */
+    .pilot-card {
+      transition: transform 200ms ease-out, background 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
+      transform: translateY(-10px);
+    }
+    .pilot-card:hover {
+      transition: 200ms;
+      margin: 2em 0em 1em 0em;
+      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+      transform: translateY(-10px);
+      border-color: #0fd8414d;
+    }
+    .pilot-card:hover::after {
+      transition: 200ms;
+      margin: 0em;
+    }
 
-   /* Contact */
-  .contact-card {
-    transition: 200ms;
+    /* Contact */
+    .contact-header-card:hover {
+      font-size: 1.35em;
+    }
   }
-  .contact-header-card {
-    transition: 200ms;
-  }
-  .contact-header-card:hover {
-    font-size: 1.35em;
-  }
-
 </style>
