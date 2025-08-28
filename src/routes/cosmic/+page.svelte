@@ -3,6 +3,7 @@
   import { LinkedinSolid, AppleSolid, DiscordSolid, FacebookSolid, XSolid } from 'flowbite-svelte-icons'
   import { enhance } from '$app/forms';
   import { showSuccessToast ,showErrorToast } from '$lib/stores/toastStore';
+  import { onMount } from 'svelte';
 
    // TailwindCSS Classes
   const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
@@ -105,6 +106,27 @@
         description: "Wraith, once a counterpart to Reaper, remains loyal to humanity. Operating in the shadows, Wraith uses its cyber capabilities to protect the solar system, quietly neutralizing threats and countering Reaper's plans. A silent guardian, it provides vital intelligence to the SSDF, ensuring the galaxy's survival.",
     },
   ]
+  
+  let demoVideo: HTMLVideoElement;
+
+  onMount(() => {
+    if (demoVideo) {
+      // Ensure metadata is loaded
+      const startVideo = () => {
+        demoVideo.currentTime = 45; // start at 10s
+        demoVideo.play().catch((err) => {
+          console.warn('Autoplay failed:', err);
+        });
+      };
+
+      if (demoVideo.readyState >= 1) {
+        // Metadata already loaded
+        startVideo();
+      } else {
+        demoVideo.addEventListener('loadedmetadata', startVideo);
+      }
+    }
+  });
 </script>
 <main>
   <!-- Header Logo -->
@@ -211,6 +233,7 @@
       <!-- Middle Right Column - Your existing right content -->
       <div class="lg:col-span-1  content-center">
         <video
+          bind:this={demoVideo}
           class="phone-case-iphone14"
           style=""
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/FlightMission01PortraitFinal+-+Made+with+Clipchamp+(2).mp4"

@@ -68,9 +68,27 @@
   function gotoLinkedInPage() {
     window.open('https://discord.gg/UvRHXpgd', '_blank');
   }
+  
+  let heroVideo: HTMLVideoElement;
+
   onMount(() => {
-    return;
-  })
+    if (heroVideo) {
+      // Ensure metadata is loaded
+      const startVideo = () => {
+        heroVideo.currentTime = 45; // start at 10s
+        heroVideo.play().catch((err) => {
+          console.warn('Autoplay failed:', err);
+        });
+      };
+
+      if (heroVideo.readyState >= 1) {
+        // Metadata already loaded
+        startVideo();
+      } else {
+        heroVideo.addEventListener('loadedmetadata', startVideo);
+      }
+    }
+  });
 </script>
 <main>
 
@@ -149,14 +167,15 @@
       <!-- Middle Right Column - Your existing right content -->
       <div class="lg:col-span-1 content-center">
         <video
+          bind:this={heroVideo}
+          id="hero-video-mobile"
           class="phone-case-iphone14"
-          style=""
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/FlightMission01PortraitFinal+-+Made+with+Clipchamp+(2).mp4"
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/Screen_Recording_20250815_203453_Cosmic+Collisions.mp4"
           autoplay
-          playsinline 
+          playsinline
           loop
           muted>
-        </video>
+</video>
       </div>
 
       <!-- New Right Column -->
