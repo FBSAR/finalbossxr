@@ -90,11 +90,14 @@
 
   <!-- Survival Leaderboard -->
   {#if activeTab === "survival"}
-    <section>
+    <div class="w-full h-64 flex items-center justify-center border-2 border-[#00c400] bg-[#00c400]/5 rounded-lg">
+      <h1 class="gold-header-text text-4xl">Coming Soon!</h1>
+    </div>
+    <!-- <section>
       <table class="w-full border-collapse mb-6">
         <thead>
           <tr>
-            <th class="border gold-header-text jersey-font text-2xl px-2 py-1">Username</th>
+            <th style="background-color: #fff" class="border gold-header-text jersey-font text-2xl px-2 py-1">Username</th>
             <th class="border gold-header-text jersey-font text-2xl px-2 py-1">Points</th>
             <th class="border gold-header-text jersey-font text-2xl px-2 py-1">Wave</th>
             <th class="border gold-header-text jersey-font text-2xl px-2 py-1">Time</th>
@@ -113,12 +116,15 @@
           {/each}
         </tbody>
       </table>
-    </section>
+    </section> -->
   {/if}
 
   <!-- Flight Leaderboard -->
   {#if activeTab === "flight"}
-    <section>
+    <div class="w-full h-64 flex items-center justify-center border-2 border-[#00c400] bg-[#00c400]/5 rounded-lg">
+      <h1 class="gold-header-text text-4xl">Coming Soon!</h1>
+    </div>
+    <!-- <section>
       <table class="w-full border-collapse mb-6">
         <thead>
           <tr>
@@ -137,8 +143,9 @@
           {/each}
         </tbody>
       </table>
-    </section>
+    </section> -->
   {/if}
+  
 </div>
 
 <style>
