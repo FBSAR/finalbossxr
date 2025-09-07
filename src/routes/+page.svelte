@@ -111,8 +111,8 @@
     </video>
     <!-- Header Content -->
     <div class="z-20 mx-auto lg:m-4 lg:p-8">
-    <!-- Two column grid container -->
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+      <!-- Two column grid container -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
       
       <!-- New Left Column -->
       <div class="lg:col-span-1 hidden lg:block">
@@ -124,7 +124,7 @@
       
       <!-- Middle Left Column - Your existing left content -->
       <div class="hero-card p-4 lg:col-span-1 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
-        <img class="w-full lg:w-36 lg:h-36 mx-auto" src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" alt="Cosmic Collisions Logo">
+        <img class="w-[320px] lg:w-[225px] lg:h-[225px] mx-auto" src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" alt="Cosmic Collisions Logo">
         
         <h1 class="text-4xl lg:text-[1.6em] xl:text-4xl my-2 jersey-font green-header-text">Get a Taste of the Future</h1>
         
@@ -169,13 +169,13 @@
         <video
           bind:this={heroVideo}
           id="hero-video-mobile"
-          class="phone-case-iphone14"
+          class="phone-case-iphone14 mx-auto"
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/Screen_Recording_20250815_203453_Cosmic+Collisions.mp4"
           autoplay
           playsinline
           loop
           muted>
-</video>
+        </video>
       </div>
 
       <!-- New Right Column -->
@@ -186,36 +186,34 @@
         </div> -->
       </div>
       
-    </div>
+      </div>
     </div>
   </div>
 
   <!-- Who is Final Boss? -->
-  <div id="made-with" class="block pb-20 lg:py-20 mx-auto h-auto  md:shadow-4xl w-full border-b-8 border-[#ffffff10]">
-    <!-- Desktop FBS Intro Video -->
-    <div class="w-full mx-auto mb-10 lg:w-1/2 content-center">
-      <video
+  <div id="made-with" class="block pb-20 lg:py-20 mx-auto h-auto md:shadow-4xl w-11/12 border-b-8 border-[#ffffff10]">
+    <div class="flex flex-col lg:flex-row items-center justify-center w-full max-w-5xl mx-auto mb-10">
+      <div class="intro-card w-11/12 lg:w-1/2 mx-auto mb-8 lg:mb-0 lg:mr-4 content-center bg-white/10 p-4 border-white/20 lg:border-2">
+        <h1 class="text-3xl lg:text-4xl gold-header-text">Our Goal? Evolutionize Gaming</h1>
+        <p class="text-baseline">
+          Remember the electric energy of a room packed with friends, controllers in hand, battling it out in Smash Bros, Halo, Madden, Mortal Kambat, etc?
+          <br><span class="jersey-font green-header-text text-5xl">We do</span>.
+          <br>Our mission is to recapture that magic, reimagining the spirit of couch multiplayer for the modern era through the innovative possibilities of augmented and mixed reality (AR/MR).
+          <span class="jersey-font green-header-text text-2xl">We're building new ways to play together, in the same space, and beyond.</span>
+        </p>
+        <a href="/about" class="text-[#35a2f4] text-sm mt-4 inline-block border-b-2 border-[#35a2f4]">More info about our Team &rarr;</a>
+      </div>
+
+      <div class="w-full mx-auto lg:w-1/2 content-center">
+        <video
         class="w-full lg:w-[600px] mx-auto hidden lg:block" autoplay muted loop playsinline
         src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/FBSIntro.mp4">
-      </video>    
+        </video>
+      </div>
     </div>
-    <div class="intro-card w-11/12 lg:w-1/2 mx-auto mb-8 content-center bg-white/10 p-4 border-white/20 lg:border-2">
-      <!-- <img class="h-32" src="https://ik.imagekit.io/lgpq0vloy/logos/F_Logo_White.png?updatedAt=1721187101575" alt="" srcset=""> -->
-      <h1 class="text-3xl lg:text-4xl gold-header-text">Our Goal? Evolutionize Gaming</h1>
-      <!-- <QuoteSolid color="#ffd24d" size="xl"></QuoteSolid> -->
-      <p class="text-baseline">
-        Remember the electric energy of a room packed with friends, controllers in hand, battling it out in Smash Bros, Halo, Madden, Mortal Kambat, etc?
-        <br><span class="jersey-font green-header-text text-5xl">We do</span>.
-        <br>Our mission is to recapture that magic, reimagining the spirit of couch multiplayer for the modern era through the innovative possibilities of augmented and mixed reality (AR/MR). 
-        <span class="jersey-font green-header-text text-2xl">We're building new ways to play together, in the same space, and beyond.</span>
-      </p>
-      <!-- <h3 class="text-[#ffd24d] text-2xl mt-4">~ Eddie T. | CEO & Co-Founder</h3> -->
-      <a href="/about" class="text-[#35a2f4] text-sm mt-4 inline-block border-b-2 border-[#35a2f4]">More info about our Team &rarr;</a>
-    </div>
-    <!-- Mobile FBS Intro Video -->
     <video
-        class="w-full lg:w-[600px] block lg:hidden" autoplay muted loop playsinline
-        src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/FBSIntro.mp4">
+      class="w-full lg:w-[600px] block lg:hidden" autoplay muted loop playsinline
+      src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/FBSIntro.mp4">
     </video>
   </div>
 
@@ -237,7 +235,7 @@
       <!-- Middle Left Column - Your existing left content -->
       <div class="cosmic-card p-4 lg:col-span-2 space-y-4 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
         <img class="h-32 mb-4" src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" alt="" srcset="">
-        <p class="text-xs lg:text-[0.9em] leading-normal">
+        <p class="text-sm lg:text-[0.9em] leading-normal">
         Born from our 2023 Metaverse Creators VR Hackathon project, Cosmic Collisions, this game captured the simple yet addictive fun of shooting down incoming asteroids in VR. That core gameplay loop resonated with us, inspiring us the following year to reimagine the concept as a more accessible Mobile AR experience. 
         <br>
         <br>
@@ -420,14 +418,17 @@
   
 </main>
 <style>
+  .phone-case-iphone14 {
+    height: 600px;
+  }
   .hero-card, .intro-card, .cosmic-card, .contact-card, .contact-header-card, .tester-card {
     transition: 200ms;
   }
   @media (min-width: 1000px) {
     .hero-card:hover, .intro-card:hover, .cosmic-card:hover, .tester-card:hover {
-    background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-    transform: translateY(-10px);
-    border-color: #0fd8414d;
+      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
+      transform: translateY(-10px);
+      border-color: #0fd8414d;
     }
     .hero-card:hover img {
       height: 250px;
