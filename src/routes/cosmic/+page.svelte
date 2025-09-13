@@ -1,53 +1,10 @@
 <script lang="ts">
-  import { Badge, Button, FloatingLabelInput, Textarea } from 'flowbite-svelte';
-  import { LinkedinSolid, AppleSolid, DiscordSolid, FacebookSolid, XSolid } from 'flowbite-svelte-icons'
-  import { enhance } from '$app/forms';
-  import { showSuccessToast ,showErrorToast } from '$lib/stores/toastStore';
   import { onMount } from 'svelte';
   import SocialMedia from '$lib/components/SocialMedia.svelte';
-
-
-   // TailwindCSS Classes
-  const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
+  import ContactForm from '$lib/components/ContactForm.svelte';
+    import { Button } from 'flowbite-svelte';
 
   // Contact Form Submission
-  let contactInfo = {
-    name: '',
-    email: '',
-    message: '',
-  }
-  async function handleSubmit(event: SubmitEvent) {
-    console.log('Attempting to Submit Form...');
-    const form = event.currentTarget as HTMLFormElement; 
-
-    try {
-      // Check if User has filled out entire form
-      if( contactInfo.name == '' || 
-          contactInfo.email == '' || 
-          contactInfo.message == '' ) 
-        { return showErrorToast('Please fill out the entire form') }
-
-        // Fetch Slack API Request
-        const response = await fetch(form.action, {
-          method: form.method,
-          body: new FormData(form)   
-        });
-
-        // Success Response
-        if (response.ok) {
-          const data = await response.json();
-          showSuccessToast();
-
-          // Failure Response
-        } else {
-          console.error('Error submitting form:', response.status);
-          showErrorToast('There was an error submitting your form. Please try again later.')
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      showErrorToast('There was an error submitting your form. Please try again later.')
-    }
-  }
   function testerLink() {
        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
   }
@@ -260,7 +217,8 @@
   <!-- Characters -->
   <div class="mx-auto w-11/12 lg:w-1/2 mt-20">
     <h1 class="jersey-font text-4xl green-header-text">
-      <img 
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <img
         src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
         class="w-12 mx-auto inline"  />
       Characters
@@ -361,56 +319,7 @@
   <div class="h-10 lg:h-32"></div>
 
   <!-- Contact Form -->
-  <div class="mx-auto w-11/12">
-    <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text">CONTACT US</h1>
-    <p class="contact-header-card text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
-      Have a question? Have a comment? Want to work with, or invest in Final Boss?
-      Please reach out, and we will contact you are our earliest convenience!
-    </p>
-
-    <!-- Form -->
-    <div class="contact-card w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
-      <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
-      <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
-      <FloatingLabelInput 
-        maxlength="100"
-        bind:value={contactInfo.name}
-        name="name"
-        classInput={inputClass}
-        defaultClass={"mb-2 bg-red-900"} style="filled" type="text">
-        First & Last Name
-      </FloatingLabelInput>
-      <!-- Spacer -->
-      <div class="h-4"></div>
-      <FloatingLabelInput
-        maxlength="100"
-        bind:value={contactInfo.email}
-        name="email"
-        classInput={inputClass}
-        defaultClass={"mb-2"} style="filled" color="base" type="email">
-        Email
-      </FloatingLabelInput>
-
-      <!-- Spacer -->
-      <div class="h-4"></div>
-      <Textarea 
-        maxlength="500"
-        bind:value={contactInfo.message}
-        name="message"
-        class={inputClass}
-        placeholder="Your message" rows="6"  
-      />
-      <!--         style="background: var(--green-gradient);" 
- -->
-      <button
-        type="submit"
-        disabled={contactInfo.name === '' || contactInfo.email === '' || contactInfo.message === '' }
-        class="block w-full h-10 rounded text-white text-lg mt-2 disabled:opacity-50 disabled:bg-white/20 bg-[#0e9f0e] hover:bg-[var(--red)] duration-200">
-          Submit
-      </button>
-    </form>
-    </div>
-  </div>
+  <ContactForm />
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
