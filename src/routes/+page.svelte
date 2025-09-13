@@ -58,19 +58,6 @@
   function gotoCosmicPage() {
     goto('cosmic');
   }
-  function gotoFacebookPage() {
-    window.open('https://www.facebook.com/FinalBossStudios', '_blank');
-  }
-  function gotoInstagramPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-  function gotoXPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-  function gotoLinkedInPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-  
   let heroVideo: HTMLVideoElement;
 
   onMount(() => {

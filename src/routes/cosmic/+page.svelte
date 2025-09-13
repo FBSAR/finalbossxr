@@ -51,21 +51,6 @@
   function testerLink() {
        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
   }
-  function discordLink() {
-      window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-  function gotoFacebookPage() {
-    window.open('https://www.facebook.com/FinalBossStudios', '_blank');
-  }
-  function gotoInstagramPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-  function gotoXPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-  function gotoLinkedInPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
   let characters = [
     {
         name: 'Captain Phoenix',
@@ -108,7 +93,6 @@
         description: "Wraith, once a counterpart to Reaper, remains loyal to humanity. Operating in the shadows, Wraith uses its cyber capabilities to protect the solar system, quietly neutralizing threats and countering Reaper's plans. A silent guardian, it provides vital intelligence to the SSDF, ensuring the galaxy's survival.",
     },
   ]
-  
   let demoVideo: HTMLVideoElement;
 
   onMount(() => {

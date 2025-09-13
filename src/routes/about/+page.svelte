@@ -46,24 +46,6 @@
       showErrorToast('There was an error submitting your form. Please try again later.')
     }
   }
-  function testerLink() {
-       window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
-   }
-  function discordLink() {
-      window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-   function gotoFacebookPage() {
-    window.open('https://www.facebook.com/FinalBossStudios', '_blank');
-  }
-  function gotoInstagramPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-  function gotoXPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
-  function gotoLinkedInPage() {
-    window.open('https://discord.gg/UvRHXpgd', '_blank');
-  }
   let founders = [
       {
         name: 'Eddie Taliaferro II',

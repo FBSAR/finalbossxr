@@ -19,11 +19,6 @@
     createdAt: string;
   };
 
-  export let data: {
-    survivalLeaderboard: SurvivalEntry[];
-    flightLeaderboard: FlightEntry[];
-  };
-
   let activeTab: "survival" | "flight" = "survival";
 
   const selectTab = (tab: "survival" | "flight") => {
