@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import SocialMedia from '$lib/components/SocialMedia.svelte';
   import { get } from 'svelte/store';
 
   type SurvivalEntry = {
@@ -145,6 +146,10 @@
       </table>
     </section> -->
   {/if}
+
+  <!-- Spacer -->
+  <div class="h-10"></div>
+  <SocialMedia />
   
 </div>
 

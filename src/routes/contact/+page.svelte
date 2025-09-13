@@ -2,6 +2,7 @@
   import { Badge, FloatingLabelInput, Textarea, Toast } from 'flowbite-svelte';
   import { enhance } from '$app/forms';
   import { showSuccessToast ,showErrorToast } from '$lib/stores/toastStore'; // Adjust path based on your project structure
+  import SocialMedia from '$lib/components/SocialMedia.svelte';
 
   // TailwindCSS Classes
   const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
@@ -49,7 +50,7 @@
 <main>
 <!-- Header -->
   <!-- Contact Form -->
-  <div class="mx-auto w-11/12">
+  <div class="mx-auto mb-10 w-11/12">
     <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text">CONTACT US</h1>
     <p class="contact-header-card text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
     Have a question? Have a comment? Want to work with, or invest in Final Boss?
@@ -99,6 +100,8 @@
     </form>
     </div>
   </div>
+
+  <SocialMedia />
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
