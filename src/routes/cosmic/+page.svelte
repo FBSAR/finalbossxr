@@ -10,7 +10,7 @@
        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
   }
   function iosTesterLink() {
-       window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
+       window.open('https://testflight.apple.com/join/hMsKECbS', '_blank');
   }
   function androidTesterLink() {
        window.open('https://groups.google.com/g/cosmic-collisions-testers', '_blank');
