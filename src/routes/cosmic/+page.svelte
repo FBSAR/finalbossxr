@@ -355,29 +355,18 @@
 </main>
 <style>
 
-  .header-card, .demo-card, .lore-card, .contact-card, .header-card p, .header-card h3, .demo-card p, .demo-card h1, .demo-card h2, .demo-card li,
-  .contact-card, .contact-header-card
+  .demo-card, .lore-card, .demo-card p, .demo-card h1, .demo-card h2, .demo-card li
   {
     transition: 200ms;
   }
   @media (min-width: 1000px) { 
     /* Header Card */
-    .header-card:hover, .demo-card:hover,  .contact-card:hover, .contact-header-card:hover {
+    .demo-card:hover {
       transition: 200ms;
       background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
       transform: translateY(-10px);
       border-color: #0fd8414d;
     } 
-    .header-card:hover {
-      padding: 1em;
-    }
-    .header-card:hover h3 {
-      font-size: 1.85em;
-    }
-    .header-card:hover p {
-      font-size: 1.1em;
-      line-height: 1.4em;
-    }
 
     /* Demo Card */
     .demo-card:hover h1 {
@@ -421,11 +410,6 @@
     .pilot-card:hover::after {
       transition: 200ms;
       margin: 0em;
-    }
-
-    /* Contact */
-    .contact-header-card:hover {
-      font-size: 1.35em;
     }
   }
 </style>
