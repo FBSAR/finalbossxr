@@ -54,7 +54,7 @@
     <!-- Form -->
     <div class="contact-card w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2">
         <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
-        <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
+        <form method="POST" on:submit|preventDefault={handleSubmit}>
             <FloatingLabelInput 
         maxlength="100"
         bind:value={contactInfo.name}
