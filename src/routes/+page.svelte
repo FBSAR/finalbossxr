@@ -117,7 +117,7 @@
           bind:this={heroVideo}
           id="hero-video-mobile"
           class="phone-case-iphone14 mx-auto"
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/Screen_Recording_20250815_203453_Cosmic+Collisions.mp4"
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/Game-trailer-Attempt-3.mp4"
           autoplay
           playsinline
           loop
