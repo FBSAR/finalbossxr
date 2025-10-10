@@ -287,7 +287,7 @@
   .phone-case-iphone14 {
     height: 600px;
   }
-  .hero-card, .intro-card, .cosmic-card, .contact-card, .contact-header-card, .tester-card {
+  .hero-card, .intro-card, .cosmic-card, .tester-card {
     transition: 200ms;
   }
   @media (min-width: 1000px) {
@@ -320,15 +320,6 @@
     }
     .cosmic-card:hover img {
       height: 300px;
-    }
-    .contact-header-card:hover {
-      font-size: 1.35em;
-    }
-    .contact-card:hover, .contact-header-card:hover {
-      transition: 200ms;
-      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-      transform: translateY(-10px);
-      border-color: #0fd8414d;
     }
     .tester-card:hover {
       font-size: 1.45em;
