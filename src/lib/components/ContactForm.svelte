@@ -30,6 +30,9 @@
         // Success Response
         if (response.ok) {
           const data = await response.json();
+          form.reset();
+          contactInfo = { name: '', email: '', message: '' };
+          console.log('Form submitted successfully:', data);
           showSuccessToast();
 
           // Failure Response
