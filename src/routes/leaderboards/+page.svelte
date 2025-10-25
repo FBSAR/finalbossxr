@@ -123,10 +123,10 @@
 
   <!-- Flight Leaderboard -->
   {#if activeTab === "flight"}
-    <div class="w-full h-64 flex items-center justify-center border-2 border-[#00c400] bg-[#00c400]/5 rounded-lg">
+    <!-- <div class="w-full h-64 flex items-center justify-center border-2 border-[#00c400] bg-[#00c400]/5 rounded-lg">
       <h1 class="gold-header-text text-4xl">Coming Soon!</h1>
-    </div>
-    <!-- <section>
+    </div> -->
+    <section>
       <table class="w-full border-collapse mb-6">
         <thead>
           <tr>
@@ -145,7 +145,7 @@
           {/each}
         </tbody>
       </table>
-    </section> -->
+    </section>
   {/if}
 </div>
 
