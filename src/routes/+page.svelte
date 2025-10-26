@@ -11,7 +11,7 @@
       window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
   }
   function discordLink() {
-      window.open('https://discord.gg/UvRHXpgd', '_blank');
+      window.open('https://discord.gg/W2c5KHpy', '_blank');
   }
   function gotoCosmicPage() {
     goto('cosmic');

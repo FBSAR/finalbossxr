@@ -3,7 +3,7 @@
     import { LinkedinSolid, DiscordSolid, FacebookSolid, XSolid } from 'flowbite-svelte-icons'
 
     function discordLink() {
-        window.open('https://discord.gg/UvRHXpgd', '_blank');
+        window.open('https://discord.gg/W2c5KHpy', '_blank');
     }
     function gotoFacebookPage() {
       window.open('https://www.facebook.com/FinalBossStudios', '_blank');
