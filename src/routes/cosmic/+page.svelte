@@ -10,7 +10,7 @@
        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
   }
   function iosTesterLink() {
-       window.open('https://testflight.apple.com/join/hMsKECbS', '_blank');
+       window.open('https://testflight.apple.com/join/FYcWW7qk', '_blank');
   }
   function androidTesterLink() {
        window.open('https://groups.google.com/g/cosmic-collisions-testers', '_blank');
@@ -181,10 +181,13 @@
         
           
         <!-- <Button on:click={testerLink} color="none" class="text-white text-md mt-2 w-full lg:w-40" style="background: var(--green-gradient);">Tester Sign Up</Button> -->
+        <p class="text-white text-xs"><b class="text-[#FFD700]">iOS</b> - Follow Steps 1 & 2 in the Link. Must have Testflight Downloaded to play.</p>
         <Button on:click={iosTesterLink} class="text-white bg-[#555] hover:bg-[#776505] uppercase text-lg mt-2 w-full">
           <span><AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid></span>
           iOS Testflight
         </Button>
+
+        <p class="text-white text-xs"><b class="text-[#FFD700]">Android</b> - Join Group > Download Demo Link > Install App.</p>
         <Button on:click={androidTesterLink} class="text-white bg-[#555] hover:bg-[#776505] uppercase text-lg mt-2 w-full">
           <span>
             <!-- Android Icon -->
@@ -211,7 +214,7 @@
           Android .APK
         </Button>
         <br>
-        <span class="text-white text-xs">Please open on Mobile Browsers (iOS/Android)</span>
+        <!-- <span class="text-white text-xs">Please open on Mobile Browsers (iOS/Android)</span> -->
       </div>
 
       <!-- Middle Right Column - Your existing right content -->
@@ -379,7 +382,7 @@
       font-size: 1.25em;
     }
     .demo-card:hover p {
-      font-size: 1.35em;
+      font-size: 1.15em;
     }
 
     /* Lore */
