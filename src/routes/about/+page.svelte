@@ -6,7 +6,7 @@
   let founders = [
       {
         name: 'Eddie Taliaferro II',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/eddie-pro-pic-03.jpg',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/eddie-pro-pic-11-25.png',
         title: 'CEO / Co-Founder / Software Developer',
         linkedin: 'https://www.linkedin.com/in/eddie-taliaferro-ii',
       },
