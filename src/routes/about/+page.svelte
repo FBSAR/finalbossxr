@@ -6,7 +6,7 @@
   let founders = [
       {
         name: 'Eddie Taliaferro II',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/eddie-pic.jpeg',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/eddie-pro-pic-03.jpg',
         title: 'CEO / Co-Founder / Software Developer',
         linkedin: 'https://www.linkedin.com/in/eddie-taliaferro-ii',
       },
@@ -49,12 +49,6 @@
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/fbs-richard.png',
         title: 'Sound Design / 3D Modeling & Printing',
         linkedin: 'https://www.linkedin.com/in/richard-davis-iii-300703240/'
-      },
-      {
-        name: 'Rowan Christerfield',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/rowan_photo.png',
-        title: 'Social Media',
-        linkedin: 'https://www.linkedin.com/in/rowanchristerfield/'
       }
   ]
 </script>
