@@ -95,7 +95,7 @@
       <!-- Middle Left Column - Your existing left content -->
       <div class="lg:col-span-1  content-center ">        
        <img 
-         src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
+         src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
          class="w-full mx-auto" 
          alt="Cosmic Collisions Logo"
        >
@@ -223,7 +223,7 @@
           bind:this={demoVideo}
           class="phone-case-iphone14"
           style=""
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/FlightMission01PortraitFinal+-+Made+with+Clipchamp+(2).mp4"
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/Game-trailer-Attempt-3.mp4"
           autoplay
           playsinline 
           loop
