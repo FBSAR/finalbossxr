@@ -1,75 +1,80 @@
-import { format } from 'date-fns';
 import { env } from '$env/dynamic/private';
+import { fail } from '@sveltejs/kit';
 
 export const prerender = false;
-const formattedDate = format(new Date(), 'MMMM do, yyyy');
 
-// Tracking state to ensure only 1 message is sent to slack at a time.
-let formSubmitted = false;
+// NOTE: The DISCORD_CONTACT_FORM_HOOK_URL should be defined in your .env.private file.
+// For demonstration, we'll use the environment variable name provided.
+const DISCORD_WEBHOOK_URL = env.DISCORD_CONTACT_FORM_HOOK_URL;
+const DISCORD_EMBED_COLOR = 3066993; // A nice green color for Discord embeds
 
+/**
+ * Submits the form data to the Discord webhook using a rich embed structure.
+ * @param name The submitter's name.
+ * @param email The submitter's email.
+ * @param message The message body.
+ */
 async function submitFormData(name: string, email: string, message: string) {
-    
+    const timestamp = new Date().toISOString();
+
+    // Discord Payload using a structured Embed for clarity in the channel
+    const discordPayload = {
+        embeds: [
+            {
+                title: '✅ New FinalBossXR Contact Form',
+                description: `A new message was received from the website contact form.`,
+                color: DISCORD_EMBED_COLOR,
+                timestamp: timestamp,
+                fields: [
+                    { name: '👤 Name', value: name, inline: true },
+                    { name: '📧 Email', value: email, inline: true },
+                    // Truncate message if needed, Discord limits embed field value to 1024 chars
+                    { name: '💬 Message', value: message.substring(0, 1024), inline: false }, 
+                ],
+                footer: {
+                    text: 'Final Boss Contact System'
+                }
+            }
+        ]
+    };
+
     try {
-         // TODO: Sanitize Input
-        console.clear();
-        console.log(name);
-        console.log(email);
-        console.log(message);
-        
-        if(!formSubmitted) {
-        formSubmitted = true;
-        const response = await fetch(env.SLACK_CONTACT_FORM_HOOK_URL, { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    text: `
-                    ✉️ FinalBossXR Contact Message\n--- \nDate: ${formattedDate}\nName: ${name} \nEmail: ${email} \nMessage: \n\n"${message}"\n---`
-                  })
+        const response = await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(discordPayload)
         });
 
-    
+        // Discord webhooks return 204 No Content on success
         if (response.ok) {
-            const responseData = await response; // Parse the response if it's JSON
-            console.log('POST request successful:', responseData);
-                setTimeout(() => {
-                    return formSubmitted = false
-                }, 1000);
+            console.log('Discord webhook POST request successful (204 No Content).');
+            return { success: true };
         } else {
-                console.error('POST request failed:', response);
-                return;
-        }
-        } else {
-            // TODO: ???
+            // Log the error and fail the SvelteKit action
+            console.error(`Discord webhook failed (Status: ${response.status}):`, await response.text());
+            return fail(500, { message: 'Failed to send message due to a server error.' });
         }
     } catch (error) {
-        
+        console.error('Error during Discord webhook fetch:', error);
+        return fail(500, { message: 'An unexpected server error occurred.' });
     }
 }
 
 export const actions = {
-	default: async ({ request }) => {  
-	  console.clear();
-	  console.log('Sending Contact Message:');
-
-      try {
+    default: async ({ request }) => {
         const data = await request.formData();
         const name = data.get('name') as string;
         const email = data.get('email') as string;
         const message = data.get('message') as string;
-        console.log('Form data:', { name, email, message });
-  
-        if(name == '' || email == '' || message == '') {
-            // Toast
-            return console.log('Please fill out entire form');
+        
+        // Server-side validation is necessary as client-side checks can be bypassed
+        if (!name || !email || !message) {
+            return fail(400, { message: 'Please fill out the entire form.' });
         }
-        
-        submitFormData(name, email, message);
-        return { success: true };
-        
-      } catch (error) {
-        throw error;
-      }
-	}
+
+        // Await the submission to ensure the action only returns success if Discord accepts the message
+        return await submitFormData(name, email, message);
+    }
 }

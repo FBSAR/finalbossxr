@@ -1,19 +1,23 @@
 import type { PageServerLoad } from './$types';
 
+const API_BASE =
+  process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}` // when running on Vercel, prefer same origin
+    : (process.env.COSMIC_API_BASE ?? 'https://cosmic-server.vercel.app');
+
 export const load: PageServerLoad = async ({ fetch }) => {
   try {
-    // Server-side fetch to your Node API
     const [survivalRes, flightRes] = await Promise.all([
-      fetch('http://ec2-54-174-124-249.compute-1.amazonaws.com:3000/api/leaderboard/survival'),
-      fetch('http://ec2-54-174-124-249.compute-1.amazonaws.com:3000/api/leaderboard/flight')
+      fetch(`${API_BASE}/api/leaderboards/survival`, { cache: 'no-store' }),
+      fetch(`${API_BASE}/api/leaderboards/flight`,   { cache: 'no-store' })
     ]);
 
-    if (!survivalRes.ok || !flightRes.ok) {
-      throw new Error('Failed to fetch leaderboards');
-    }
+    if (!survivalRes.ok || !flightRes.ok) throw new Error('Failed to fetch leaderboards');
 
-    const survivalLeaderboard = await survivalRes.json();
-    const flightLeaderboard = await flightRes.json();
+    const [survivalLeaderboard, flightLeaderboard] = await Promise.all([
+      survivalRes.json(),
+      flightRes.json()
+    ]);
 
     return { survivalLeaderboard, flightLeaderboard };
   } catch (err) {
