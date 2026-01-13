@@ -42,11 +42,11 @@
 
   // Navigation links
   const navLinks = [
-    { href: '/', label: 'HOME', icon: '🏠' },
-    { href: '/cosmic', label: 'COSMIC', icon: '🌌' },
-    { href: '/leaderboards', label: 'LEADERBOARDS', icon: '🏆' },
-    { href: '/about', label: 'ABOUT US', icon: '👥' },
-    { href: '/contact', label: 'CONTACT', icon: '✉️' },
+    { href: '/', label: 'HOME', icon: '🏠', isImage: false },
+    { href: '/cosmic', label: 'COSMIC', icon: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CosmicCollisions_Logo_NoText_NoBG.png', isImage: true },
+    { href: '/leaderboards', label: 'LEADERBOARDS', icon: '🏆', isImage: false },
+    { href: '/about', label: 'ABOUT US', icon: '👥', isImage: false },
+    { href: '/contact', label: 'CONTACT', icon: '✉️', isImage: false },
   ];
  
 </script>
@@ -104,7 +104,13 @@
             on:click={closeDrawer}
             style="animation-delay: {i * 50}ms"
           >
-            <span class="drawer-link-icon">{link.icon}</span>
+            <span class="drawer-link-icon">
+              {#if link.isImage}
+                <img src={link.icon} alt={link.label} class="drawer-icon-img" />
+              {:else}
+                {link.icon}
+              {/if}
+            </span>
             <span class="drawer-link-label">{link.label}</span>
             {#if activeUrl === link.href}
               <span class="drawer-active-indicator"></span>
@@ -307,6 +313,15 @@
     font-size: 1.5rem;
     width: 2rem;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drawer-icon-img {
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
   }
 
   .drawer-link-label {
