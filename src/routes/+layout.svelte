@@ -52,7 +52,7 @@
 </script>
 <main>
   <!-- Mobile -->
-  <Navbar let:toggle class="block lg:hidden fixed w-full top-0 z-50 backdrop-blur-lg bg-[#1b023d]/80 shadow-md" color="none">
+  <Navbar let:toggle class="block lg:hidden fixed w-full bottom-0 z-50 backdrop-blur-lg bg-[#1b023d]/80 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]" color="none">
     <NavBrand href="/">
         <img 
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" 
@@ -121,6 +121,10 @@
       <div class="drawer-footer">
         <a href="/privacy" class="drawer-footer-link" on:click={closeDrawer}>Privacy Policy</a>
       </div>
+      <button class="drawer-close-btn" on:click={closeDrawer}>
+        <span class="close-icon">✕</span>
+        <span>Close</span>
+      </button>
     </div>
   {/if}
 
@@ -151,7 +155,7 @@
     </div> 
   </Navbar>
 
-  <main class="scrollbar min-h-screen py-14 lg:py-20" style="background: var(--dark-purple-gradient);">
+  <main class="scrollbar min-h-screen pt-4 pb-20 lg:py-20" style="background: var(--dark-purple-gradient);">
     <slot></slot>
      {#if $toast.success}
     <Toast 
@@ -358,6 +362,40 @@
 
   .drawer-footer-link:hover {
     color: white;
+  }
+
+  /* Drawer Close Button */
+  .drawer-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.875rem 1.5rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: "Raleway", sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .drawer-close-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .drawer-close-btn:active {
+    transform: scale(0.98);
+  }
+
+  .close-icon {
+    font-size: 1.1rem;
   }
 
   /* width */
