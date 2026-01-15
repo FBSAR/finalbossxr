@@ -93,8 +93,28 @@
       return showErrorToast('Please fill out all required fields');
     }
 
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(applicationData.email)) {
+      return showErrorToast('Please enter a valid email address');
+    }
+
+    // Minimum length validation for text areas
+    if (applicationData.experience.length < 50) {
+      return showErrorToast('Experience description should be at least 50 characters');
+    }
+
+    if (applicationData.whyJoin.length < 50) {
+      return showErrorToast('Please tell us more about why you want to join (at least 50 characters)');
+    }
+
     if (!applicationData.resume) {
       return showErrorToast('Please upload your resume');
+    }
+
+    // File size validation (5MB max)
+    if (applicationData.resume.size > 5 * 1024 * 1024) {
+      return showErrorToast('Resume file must be less than 5MB');
     }
 
     try {
@@ -320,7 +340,12 @@
                 <h3 class="form-section-title">Tell Us About Yourself</h3>
                 
                 <div class="form-field">
-                  <label for="experience" class="field-label">Describe your relevant experience *</label>
+                  <div class="label-row">
+                    <label for="experience" class="field-label">Describe your relevant experience *</label>
+                    <span class="char-count" class:warning={applicationData.experience.length > 800}>
+                      {applicationData.experience.length}/1000
+                    </span>
+                  </div>
                   <Textarea
                     id="experience"
                     maxlength={1000}
@@ -330,10 +355,16 @@
                     placeholder="Tell us about your background, skills, and relevant projects..."
                     rows={4}
                   />
+                  <span class="field-hint">Minimum 50 characters recommended</span>
                 </div>
 
                 <div class="form-field">
-                  <label for="whyJoin" class="field-label">Why do you want to join Final Boss Studios? *</label>
+                  <div class="label-row">
+                    <label for="whyJoin" class="field-label">Why do you want to join Final Boss Studios? *</label>
+                    <span class="char-count" class:warning={applicationData.whyJoin.length > 800}>
+                      {applicationData.whyJoin.length}/1000
+                    </span>
+                  </div>
                   <Textarea
                     id="whyJoin"
                     maxlength={1000}
@@ -343,6 +374,7 @@
                     placeholder="What excites you about working with us..."
                     rows={4}
                   />
+                  <span class="field-hint">Minimum 50 characters recommended</span>
                 </div>
               </div>
 
@@ -687,6 +719,46 @@
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  .char-count {
+    display: block;
+    text-align: right;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.25rem;
+    transition: color 0.2s ease;
+  }
+
+  .char-count.warning {
+    color: #ffa500;
+  }
+
+  .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .label-row .field-label {
+    margin-bottom: 0;
+  }
+
+  .label-row .char-count {
+    margin-top: 0;
+  }
+
+  .field-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 0.25rem;
+    font-style: italic;
   }
 
   .file-upload-wrapper {
