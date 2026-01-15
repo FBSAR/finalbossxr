@@ -1,1 +1,37 @@
-/f-e/node_modules
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Frontend (SvelteKit)
+f-e/.svelte-kit/
+f-e/package/
+f-e/vite.config.js.timestamp-*
+f-e/vite.config.ts.timestamp-*
+
+# Backend
+b-e/dist/
+
+# Vercel
+.vercel
+
+# Logs
+*.log
+npm-debug.log*
