@@ -1,37 +1,11 @@
-# Dependencies
-node_modules/
-
-# Build outputs
-dist/
-build/
-
-# Environment files
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
 .env
 .env.*
 !.env.example
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Frontend (SvelteKit)
-f-e/.svelte-kit/
-f-e/package/
-f-e/vite.config.js.timestamp-*
-f-e/vite.config.ts.timestamp-*
-
-# Backend
-b-e/dist/
-
-# Vercel
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 .vercel
-
-# Logs
-*.log
-npm-debug.log*
