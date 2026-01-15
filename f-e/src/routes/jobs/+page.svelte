@@ -98,9 +98,6 @@
     }
 
     try {
-      // Here you would typically send the form data to your backend
-      // For now, we'll simulate a successful submission
-      
       // Create FormData for file upload
       const formData = new FormData();
       formData.append('jobId', selectedJob?.id.toString() || '');
@@ -114,14 +111,18 @@
       formData.append('whyJoin', applicationData.whyJoin);
       formData.append('resume', applicationData.resume);
 
-      // TODO: Replace with actual API endpoint
-      // const response = await fetch('/api/apply', {
-      //   method: 'POST',
-      //   body: formData
-      // });
+      const response = await fetch('http://localhost:3000/jobs', {
+        method: 'POST',
+        body: formData
+      });
 
-      // Simulate success
-      console.log('Application submitted:', Object.fromEntries(formData));
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Failed to submit application');
+      }
+
+      console.log('Application submitted:', result);
       showSuccessToast();
       
       // Reset form
@@ -256,10 +257,10 @@
                 <h3 class="form-section-title">Personal Information</h3>
                 <div class="form-grid">
                   <FloatingLabelInput
-                    maxlength="100"
+                    maxlength={100}
                     bind:value={applicationData.name}
                     name="name"
-                    classInput={inputClass}
+                    class={inputClass}
                     style="filled"
                     type="text"
                   >
@@ -267,10 +268,10 @@
                   </FloatingLabelInput>
 
                   <FloatingLabelInput
-                    maxlength="100"
+                    maxlength={100}
                     bind:value={applicationData.email}
                     name="email"
-                    classInput={inputClass}
+                    class={inputClass}
                     style="filled"
                     type="email"
                   >
@@ -278,10 +279,10 @@
                   </FloatingLabelInput>
 
                   <FloatingLabelInput
-                    maxlength="20"
+                    maxlength={20}
                     bind:value={applicationData.phone}
                     name="phone"
-                    classInput={inputClass}
+                    class={inputClass}
                     style="filled"
                     type="tel"
                   >
@@ -289,10 +290,10 @@
                   </FloatingLabelInput>
 
                   <FloatingLabelInput
-                    maxlength="200"
+                    maxlength={200}
                     bind:value={applicationData.linkedin}
                     name="linkedin"
-                    classInput={inputClass}
+                    class={inputClass}
                     style="filled"
                     type="url"
                   >
@@ -302,10 +303,10 @@
 
                 <div class="mt-4">
                   <FloatingLabelInput
-                    maxlength="200"
+                    maxlength={200}
                     bind:value={applicationData.portfolio}
                     name="portfolio"
-                    classInput={inputClass}
+                    class={inputClass}
                     style="filled"
                     type="url"
                   >
@@ -319,26 +320,28 @@
                 <h3 class="form-section-title">Tell Us About Yourself</h3>
                 
                 <div class="form-field">
-                  <label class="field-label">Describe your relevant experience *</label>
+                  <label for="experience" class="field-label">Describe your relevant experience *</label>
                   <Textarea
-                    maxlength="1000"
+                    id="experience"
+                    maxlength={1000}
                     bind:value={applicationData.experience}
                     name="experience"
                     class={inputClass}
                     placeholder="Tell us about your background, skills, and relevant projects..."
-                    rows="4"
+                    rows={4}
                   />
                 </div>
 
                 <div class="form-field">
-                  <label class="field-label">Why do you want to join Final Boss Studios? *</label>
+                  <label for="whyJoin" class="field-label">Why do you want to join Final Boss Studios? *</label>
                   <Textarea
-                    maxlength="1000"
+                    id="whyJoin"
+                    maxlength={1000}
                     bind:value={applicationData.whyJoin}
                     name="whyJoin"
                     class={inputClass}
                     placeholder="What excites you about working with us..."
-                    rows="4"
+                    rows={4}
                   />
                 </div>
               </div>
@@ -535,48 +538,6 @@
     line-height: 1.5;
     margin-bottom: 1rem;
     flex-grow: 1;
-  }
-
-  .job-requirements {
-    margin-bottom: 1rem;
-  }
-
-  .requirements-label {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
-  }
-
-  .job-requirements ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .job-requirements li {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85rem;
-    padding: 0.25rem 0;
-    padding-left: 1rem;
-    position: relative;
-  }
-
-  .job-requirements li::before {
-    content: "•";
-    color: #00ff00;
-    position: absolute;
-    left: 0;
-  }
-
-  .job-requirements li.more {
-    color: #00ff00;
-    font-style: italic;
-  }
-
-  .job-requirements li.more::before {
-    content: "";
   }
 
   .job-cta {
