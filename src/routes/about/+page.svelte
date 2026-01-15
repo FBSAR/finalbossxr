@@ -25,12 +25,6 @@
         linkedin: "https://www.linkedin.com/in/edwardkim1/",
       },
       {
-        name: 'John Wolff',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/john-pic-2.jpeg',
-        title: 'Game Advisor',
-        linkedin: "https://www.linkedin.com/in/johnwolff89/"
-      },
-      {
         name: 'Terrell Thomas',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/terrel_pic.png',
         title: 'Legal Advisor',
