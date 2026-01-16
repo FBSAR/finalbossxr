@@ -6,6 +6,7 @@
   import { CheckCircleOutline, CloseCircleOutline } from "flowbite-svelte-icons";
   import { fly, fade } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
+  import NewsletterSignup from '$lib/components/NewsletterSignup.svelte';
   $: activeUrl = $page.url.pathname;
 
 
@@ -209,13 +210,29 @@
     {/if}
   </main>
 
-  <Footer class="h-20 bg-black p-10">
-    <div class="sm:flex sm:items-center sm:justify-between">
-    <FooterCopyright href="/" by="Final Boss Studios" year={2021} />
-    <FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
-      <FooterLink href="/jobs">Jobs</FooterLink>
-      <FooterLink href="/privacy">Privacy Policy</FooterLink>
-    </FooterLinkGroup>
+  <Footer class="bg-black py-8 px-6 lg:px-10">
+    <div class="max-w-7xl mx-auto">
+      <!-- Newsletter Section -->
+      <div class="mb-6 pb-6 border-b border-white/10">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h3 class="text-white font-semibold text-lg">Stay Updated</h3>
+            <p class="text-gray-400 text-sm">Get the latest news and updates from Final Boss Studios</p>
+          </div>
+          <div class="w-full sm:w-auto sm:min-w-[320px]">
+            <NewsletterSignup variant="expandable" triggerText="Sign up for newsletter" buttonText="Subscribe" />
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer Links -->
+      <div class="sm:flex sm:items-center sm:justify-between">
+        <FooterCopyright href="/" by="Final Boss Studios" year={2021} />
+        <FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+          <FooterLink href="/jobs">Jobs</FooterLink>
+          <FooterLink href="/privacy">Privacy Policy</FooterLink>
+        </FooterLinkGroup>
+      </div>
     </div>
   </Footer>
 

@@ -1,15 +1,24 @@
 <script lang="ts">
     import { showSuccessToast, showErrorToast } from '$lib/stores/toastStore';
     import { FloatingLabelInput } from 'flowbite-svelte';
+    import { slide } from 'svelte/transition';
 
-    export let variant: 'inline' | 'stacked' = 'inline';
+    export let variant: 'inline' | 'stacked' | 'expandable' = 'inline';
     export let placeholder = 'Enter your email for updates';
     export let buttonText = 'Subscribe';
+    export let triggerText = 'Sign up for newsletter';
 
     let email = '';
+    let name = '';
     let isSubmitting = false;
+    let isExpanded = false;
+    let isSubscribed = false;
 
     const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
+
+    function toggleExpand() {
+        isExpanded = !isExpanded;
+    }
 
     async function handleSubmit(event: SubmitEvent) {
         event.preventDefault();
@@ -31,7 +40,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email })
+                body: JSON.stringify({ email, name })
             });
 
             const data = await response.json();
@@ -39,6 +48,9 @@
             if (response.ok && data.success) {
                 showSuccessToast();
                 email = '';
+                name = '';
+                isExpanded = false;
+                isSubscribed = true;
             } else {
                 showErrorToast(data.message || 'Something went wrong. Please try again.');
             }
@@ -51,23 +63,118 @@
     }
 </script>
 
-<form 
-    class="newsletter-form {variant}" 
-    on:submit={handleSubmit}
->
+<div class="newsletter-wrapper">
     <!-- Honeypot field -->
     <div class="honeypot" aria-hidden="true">
         <label for="newsletter-website">Website</label>
         <input type="text" name="website" id="newsletter-website" tabindex="-1" autocomplete="off" />
     </div>
 
-    {#if variant === 'inline'}
-        <div class="inline-wrapper">
+    {#if variant === 'expandable'}
+        <!-- Expandable variant for footer -->
+        {#if isSubscribed}
+            <div class="subscribed-message" transition:slide={{ duration: 300 }}>
+                <span class="check-icon">✓</span>
+                <span>Thanks for subscribing!</span>
+            </div>
+        {:else if !isExpanded}
+            <div class="trigger-wrapper">
+                <button 
+                    type="button" 
+                    class="trigger-btn"
+                    on:click={toggleExpand}
+                >
+                    {triggerText}
+                </button>
+            </div>
+        {:else}
+            <form 
+                class="newsletter-form expandable" 
+                on:submit={handleSubmit}
+                transition:slide={{ duration: 300 }}
+            >
+                <div class="expandable-inputs">
+                    <FloatingLabelInput
+                        bind:value={name}
+                        name="name"
+                        type="text"
+                        class={inputClass}
+                        style="filled"
+                        maxlength={100}
+                    >
+                        Name (optional)
+                    </FloatingLabelInput>
+                    
+                    <FloatingLabelInput
+                        bind:value={email}
+                        name="email"
+                        type="email"
+                        class={inputClass}
+                        style="filled"
+                        maxlength={100}
+                    >
+                        Email *
+                    </FloatingLabelInput>
+                </div>
+                
+                <div class="expandable-actions">
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        on:click={toggleExpand}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        disabled={!email || isSubmitting}
+                        class="subscribe-btn"
+                    >
+                        {#if isSubmitting}
+                            <span class="spinner"></span>
+                        {:else}
+                            {buttonText}
+                        {/if}
+                    </button>
+                </div>
+            </form>
+        {/if}
+
+    {:else if variant === 'inline'}
+        <form class="newsletter-form inline" on:submit={handleSubmit}>
+            <div class="inline-wrapper">
+                <FloatingLabelInput
+                    bind:value={email}
+                    name="email"
+                    type="email"
+                    class={inputClass}
+                    style="filled"
+                    maxlength={100}
+                >
+                    {placeholder}
+                </FloatingLabelInput>
+                <button
+                    type="submit"
+                    disabled={!email || isSubmitting}
+                    class="subscribe-btn"
+                >
+                    {#if isSubmitting}
+                        <span class="spinner"></span>
+                    {:else}
+                        {buttonText}
+                    {/if}
+                </button>
+            </div>
+        </form>
+
+    {:else}
+        <!-- Stacked variant -->
+        <form class="newsletter-form stacked" on:submit={handleSubmit}>
             <FloatingLabelInput
                 bind:value={email}
                 name="email"
                 type="email"
-                class={inputClass}
+                class="{inputClass} mb-3"
                 style="filled"
                 maxlength={100}
             >
@@ -76,46 +183,122 @@
             <button
                 type="submit"
                 disabled={!email || isSubmitting}
-                class="subscribe-btn"
+                class="subscribe-btn full-width"
             >
                 {#if isSubmitting}
                     <span class="spinner"></span>
+                    <span>Subscribing...</span>
                 {:else}
                     {buttonText}
                 {/if}
             </button>
-        </div>
-    {:else}
-        <FloatingLabelInput
-            bind:value={email}
-            name="email"
-            type="email"
-            class="{inputClass} mb-3"
-            style="filled"
-            maxlength={100}
-        >
-            {placeholder}
-        </FloatingLabelInput>
-        <button
-            type="submit"
-            disabled={!email || isSubmitting}
-            class="subscribe-btn full-width"
-        >
-            {#if isSubmitting}
-                <span class="spinner"></span>
-                <span>Subscribing...</span>
-            {:else}
-                {buttonText}
-            {/if}
-        </button>
+        </form>
     {/if}
-</form>
+</div>
 
 <style>
+    .newsletter-wrapper {
+        width: 100%;
+    }
+
     .newsletter-form {
         width: 100%;
     }
 
+    /* Trigger Wrapper */
+    .trigger-wrapper {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    /* Trigger Button */
+    .trigger-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: transparent;
+        color: #00ff00;
+        font-weight: 600;
+        border: 2px solid #00ff00;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .trigger-btn:hover {
+        background: #00ff00;
+        color: #000;
+        transform: translateY(-1px);
+    }
+
+    /* Expandable Inputs */
+    .expandable-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    @media (min-width: 640px) {
+        .expandable-inputs {
+            flex-direction: row;
+            gap: 1rem;
+        }
+
+        .expandable-inputs :global(.floating-label-input) {
+            flex: 1;
+        }
+    }
+
+    /* Expandable Actions */
+    .expandable-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+
+    .cancel-btn {
+        padding: 0.75rem 1.5rem;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 500;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .cancel-btn:hover {
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Subscribed Message */
+    .subscribed-message {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #00ff00;
+        font-weight: 500;
+    }
+
+    .check-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        background: #00ff00;
+        color: #000;
+        border-radius: 50%;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    /* Inline Wrapper */
     .inline-wrapper {
         display: flex;
         gap: 0.5rem;
@@ -126,6 +309,7 @@
         flex: 1;
     }
 
+    /* Subscribe Button */
     .subscribe-btn {
         display: inline-flex;
         align-items: center;
@@ -157,6 +341,7 @@
         width: 100%;
     }
 
+    /* Spinner */
     .spinner {
         width: 16px;
         height: 16px;
@@ -188,6 +373,15 @@
         }
 
         .subscribe-btn {
+            width: 100%;
+        }
+
+        .expandable-actions {
+            flex-direction: column-reverse;
+        }
+
+        .cancel-btn,
+        .expandable-actions .subscribe-btn {
             width: 100%;
         }
     }
