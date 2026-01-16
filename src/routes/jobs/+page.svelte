@@ -180,17 +180,17 @@
   }
 </script>
 
-<main class="min-h-screen">
+<main class="jobs-page">
   <!-- Header Section -->
-  <div class="text-center py-8 px-4">
-    <h1 class="text-5xl md:text-7xl jersey-font green-header-text mb-4">JOIN OUR TEAM</h1>
-    <p class="text-white/70 text-lg max-w-2xl mx-auto">
+  <div class="header-section">
+    <h1 class="page-title jersey-font green-header-text">JOIN OUR TEAM</h1>
+    <p class="page-subtitle">
       Help us build the future of XR gaming. We're looking for passionate individuals who want to push the boundaries of immersive entertainment.
     </p>
   </div>
 
   <!-- Progress Indicator -->
-  <div class="flex justify-center gap-3 mb-8">
+  <div class="progress-container">
     <button 
       class="progress-dot" 
       class:active={currentSlide === 0}
@@ -217,12 +217,12 @@
   <div class="slider-viewport" bind:this={sliderContainer}>
     <div 
       class="slider-track"
-      style="transform: translateX(-{currentSlide * 100}%)"
+      style="transform: translateX(-{currentSlide * 50}%)"
     >
       <!-- Slide 1: Job Listings -->
       <div class="slide">
         <div class="slide-content">
-          <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center raleway-700">
+          <h2 class="section-title raleway-700">
             Open Positions
           </h2>
           
@@ -265,10 +265,10 @@
             <div class="application-header">
               <span class="job-icon-large">{selectedJob.icon}</span>
               <div>
-                <h2 class="text-2xl md:text-3xl font-bold text-white raleway-700">
+                <h2 class="font-bold text-white raleway-700">
                   Apply for {selectedJob.title}
                 </h2>
-                <p class="text-white/60">{selectedJob.department} · {selectedJob.location}</p>
+                <p>{selectedJob.department} · {selectedJob.location}</p>
               </div>
             </div>
 
@@ -448,40 +448,87 @@
 </main>
 
 <style>
-  /* Slider Styles */
-  .slider-viewport {
-    overflow: hidden;
-    width: 100%;
-    max-width: 100vw;
+  /* Header Styles */
+  .header-section {
+    text-align: center;
+    padding: 1.5rem 1rem;
   }
 
-  .slider-track {
-    display: flex;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  .page-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
   }
 
-  .slide {
-    min-width: 100%;
-    flex-shrink: 0;
-    padding: 0 1rem;
-  }
-
-  .slide-content {
-    max-width: 900px;
+  .page-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    max-width: 90%;
     margin: 0 auto;
-    padding-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 640px) {
+    .header-section {
+      padding: 2rem 1rem;
+    }
+
+    .page-title {
+      font-size: 3.5rem;
+    }
+
+    .page-subtitle {
+      font-size: 1rem;
+      max-width: 32rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .header-section {
+      padding: 2rem 1rem;
+    }
+
+    .page-title {
+      font-size: 4.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+      font-size: 1.125rem;
+      max-width: 42rem;
+    }
   }
 
   /* Progress Indicator */
+  .progress-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .progress-container {
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+  }
+
   .progress-dot {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.35rem;
     background: none;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .progress-dot {
+      gap: 0.5rem;
+    }
   }
 
   .progress-dot:disabled {
@@ -490,12 +537,19 @@
   }
 
   .progress-dot .dot {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.3);
     transition: all 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .progress-dot .dot {
+      width: 16px;
+      height: 16px;
+    }
   }
 
   .progress-dot.active .dot {
@@ -505,10 +559,16 @@
   }
 
   .progress-dot .label {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.5);
     font-family: "Raleway", sans-serif;
     transition: color 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .progress-dot .label {
+      font-size: 0.75rem;
+    }
   }
 
   .progress-dot.active .label {
@@ -516,23 +576,99 @@
   }
 
   .progress-line {
-    width: 60px;
+    width: 40px;
     height: 2px;
     background: rgba(255, 255, 255, 0.2);
     align-self: flex-start;
-    margin-top: 7px;
+    margin-top: 6px;
     transition: background 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .progress-line {
+      width: 60px;
+      margin-top: 7px;
+    }
   }
 
   .progress-line.active {
     background: linear-gradient(90deg, #00ff00, rgba(0, 255, 0, 0.3));
   }
 
+  /* Main Container */
+  .jobs-page {
+    min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  /* Slider Styles */
+  .slider-viewport {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  .slider-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 200%; /* Two slides */
+  }
+
+  .slide {
+    width: 50%; /* Each slide takes half of the track (which is 200% of viewport) */
+    flex-shrink: 0;
+    padding: 0 0.75rem;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 640px) {
+    .slide {
+      padding: 0 1rem;
+    }
+  }
+
+  .slide-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-family: "Raleway", sans-serif;
+  }
+
+  @media (min-width: 640px) {
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .section-title {
+      font-size: 1.875rem;
+    }
+  }
+
   /* Job Cards */
   .jobs-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .jobs-grid {
+      gap: 1.5rem;
+    }
   }
 
   @media (min-width: 768px) {
@@ -545,13 +681,20 @@
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.5rem;
-    padding: 1.5rem;
+    border-radius: 1rem;
+    padding: 1rem;
     text-align: left;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+  }
+
+  @media (min-width: 640px) {
+    .job-card {
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+    }
   }
 
   .job-card:hover {
@@ -561,54 +704,114 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   }
 
+  .job-card:active {
+    transform: translateY(-2px);
+  }
+
   .job-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .job-card-header {
+      margin-bottom: 1rem;
+    }
   }
 
   .job-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 640px) {
+    .job-icon {
+      font-size: 2.5rem;
+    }
   }
 
   .job-badges {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.35rem;
     flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  @media (min-width: 640px) {
+    .job-badges {
+      gap: 0.5rem;
+    }
   }
 
   .job-title {
     font-family: "Raleway", sans-serif;
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     color: white;
     margin-bottom: 0.25rem;
   }
 
+  @media (min-width: 640px) {
+    .job-title {
+      font-size: 1.5rem;
+    }
+  }
+
   .job-department {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 0.875rem;
-    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .job-department {
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
   }
 
   .job-description {
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     line-height: 1.5;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .job-description {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+    }
   }
 
   .job-cta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 1rem;
+    padding-top: 0.75rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: #00ff00;
     font-family: "Raleway", sans-serif;
     font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .job-cta {
+      padding-top: 1rem;
+      font-size: 1rem;
+    }
   }
 
   .job-cta .arrow {
@@ -624,12 +827,20 @@
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.875rem;
     color: white;
     font-family: "Raleway", sans-serif;
+    font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .back-button {
+      padding: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+    }
   }
 
   .back-button:hover {
@@ -638,17 +849,63 @@
 
   .application-header {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
+    text-align: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding: 1rem;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 1rem;
+    border-radius: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
+  @media (min-width: 640px) {
+    .application-header {
+      flex-direction: row;
+      text-align: left;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border-radius: 1rem;
+    }
+  }
+
+  .application-header h2 {
+    font-size: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .application-header h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .application-header h2 {
+      font-size: 1.875rem;
+    }
+  }
+
+  .application-header p {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  @media (min-width: 640px) {
+    .application-header p {
+      font-size: 1rem;
+    }
+  }
+
   .job-icon-large {
-    font-size: 3rem;
+    font-size: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .job-icon-large {
+      font-size: 3rem;
+    }
   }
 
   /* Requirements Section on Slide 2 */
@@ -656,26 +913,48 @@
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .requirements-section {
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
   }
 
   .requirements-title {
     font-family: "Raleway", sans-serif;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     color: #00ff00;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
+  @media (min-width: 640px) {
+    .requirements-title {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+  }
+
   .job-description-full {
     color: rgba(255, 255, 255, 0.8);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     line-height: 1.6;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .job-description-full {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
   }
 
   .requirements-list {
@@ -683,70 +962,127 @@
     padding: 0;
     margin: 0;
     display: grid;
-    gap: 0.5rem;
+    gap: 0.35rem;
+  }
+
+  @media (min-width: 640px) {
+    .requirements-list {
+      gap: 0.5rem;
+    }
   }
 
   .requirements-list li {
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
-    padding: 0.5rem 0.75rem;
-    padding-left: 1.75rem;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.5rem;
+    padding-left: 1.5rem;
     position: relative;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 0.5rem;
+    border-radius: 0.35rem;
+  }
+
+  @media (min-width: 640px) {
+    .requirements-list li {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.75rem;
+      padding-left: 1.75rem;
+      border-radius: 0.5rem;
+    }
   }
 
   .requirements-list li::before {
     content: "✓";
     color: #00ff00;
     position: absolute;
-    left: 0.75rem;
+    left: 0.5rem;
     font-weight: bold;
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .requirements-list li::before {
+      left: 0.75rem;
+      font-size: inherit;
+    }
   }
 
   .application-form {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.5rem;
-    padding: 1.5rem;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .application-form {
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+    }
   }
 
   .form-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .form-section {
+      margin-bottom: 2rem;
+    }
   }
 
   .form-section-title {
     font-family: "Raleway", sans-serif;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     color: white;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media (min-width: 640px) {
+    .form-section-title {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
   }
 
   .form-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   @media (min-width: 640px) {
     .form-grid {
       grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
     }
   }
 
   .form-field {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .form-field {
+      margin-bottom: 1rem;
+    }
   }
 
   .field-label {
     display: block;
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.35rem;
+  }
+
+  @media (min-width: 640px) {
+    .field-label {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
   }
 
   .input-wrapper {
@@ -756,10 +1092,17 @@
   .char-count {
     display: block;
     text-align: right;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.4);
-    margin-top: 0.25rem;
+    margin-top: 0.2rem;
     transition: color 0.2s ease;
+  }
+
+  @media (min-width: 640px) {
+    .char-count {
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
   }
 
   .char-count.warning {
@@ -768,9 +1111,18 @@
 
   .label-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.35rem;
+  }
+
+  @media (min-width: 640px) {
+    .label-row {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
   }
 
   .label-row .field-label {
@@ -779,47 +1131,91 @@
 
   .label-row .char-count {
     margin-top: 0;
+    text-align: left;
+  }
+
+  @media (min-width: 640px) {
+    .label-row .char-count {
+      text-align: right;
+    }
   }
 
   .field-hint {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: rgba(255, 255, 255, 0.4);
-    margin-top: 0.25rem;
+    margin-top: 0.2rem;
     font-style: italic;
   }
 
+  @media (min-width: 640px) {
+    .field-hint {
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+  }
+
   .file-upload-wrapper {
-    padding: 1rem;
+    padding: 0.75rem;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     border: 2px dashed rgba(255, 255, 255, 0.2);
+  }
+
+  @media (min-width: 640px) {
+    .file-upload-wrapper {
+      padding: 1rem;
+      border-radius: 0.75rem;
+    }
   }
 
   .file-hint {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    margin-top: 0.35rem;
+  }
+
+  @media (min-width: 640px) {
+    .file-hint {
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
   }
 
   .file-selected {
     color: #00ff00;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+    word-break: break-all;
+  }
+
+  @media (min-width: 640px) {
+    .file-selected {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
   }
 
   .submit-button {
     width: 100%;
-    padding: 1rem 2rem;
+    padding: 0.875rem 1.5rem;
     background: #0e9f0e;
     border: none;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     color: white;
     font-family: "Raleway", sans-serif;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
+  }
+
+  @media (min-width: 640px) {
+    .submit-button {
+      padding: 1rem 2rem;
+      border-radius: 0.75rem;
+      font-size: 1.1rem;
+    }
   }
 
   .submit-button:hover:not(:disabled) {
@@ -836,12 +1232,25 @@
 
   .no-job-selected {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 3rem 1.5rem;
     color: rgba(255, 255, 255, 0.6);
   }
 
+  @media (min-width: 640px) {
+    .no-job-selected {
+      padding: 4rem 2rem;
+    }
+  }
+
   .no-job-selected p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .no-job-selected p {
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+    }
   }
 </style>
