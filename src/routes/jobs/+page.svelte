@@ -1104,10 +1104,6 @@
     }
   }
 
-  .input-wrapper {
-    position: relative;
-  }
-
   .char-count {
     display: block;
     text-align: right;

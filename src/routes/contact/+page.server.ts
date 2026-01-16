@@ -39,7 +39,7 @@ async function submitFormData(name: string, email: string, message: string) {
     };
 
     try {
-        const response = await fetch(DISCORD_WEBHOOK_URL, {
+        const response = await fetch(env.DISCORD_WEBHOOK_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
