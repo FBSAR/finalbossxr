@@ -85,6 +85,27 @@
     goToSlide(0);
   }
 
+  // Format phone number as (xxx) xxx - xxxx
+  function formatPhoneNumber(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // Remove all non-digits
+    
+    if (value.length > 10) {
+      value = value.slice(0, 10); // Limit to 10 digits
+    }
+    
+    // Format the number
+    if (value.length >= 6) {
+      applicationData.phone = `(${value.slice(0, 3)}) ${value.slice(3, 6)} - ${value.slice(6)}`;
+    } else if (value.length >= 3) {
+      applicationData.phone = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+    } else if (value.length > 0) {
+      applicationData.phone = `(${value}`;
+    } else {
+      applicationData.phone = '';
+    }
+  }
+
   // Handle form submission
   let isSubmitting = false;
   
@@ -302,12 +323,15 @@
                   </FloatingLabelInput>
 
                   <FloatingLabelInput
-                    maxlength={20}
+                    maxlength={16}
                     bind:value={applicationData.phone}
                     name="phone"
                     class={inputClass}
                     style="filled"
                     type="tel"
+                    pattern="\\(\\d{3}\\) \\d{3} - \\d{4}"
+                    placeholder="(xxx) xxx - xxxx"
+                    on:input={formatPhoneNumber}
                   >
                     Phone Number
                   </FloatingLabelInput>
