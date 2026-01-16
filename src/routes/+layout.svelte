@@ -49,7 +49,6 @@
   const navLinks = [
     { href: '/', label: 'HOME', icon: '🏠', isImage: false },
     { href: '/cosmic', label: 'COSMIC', icon: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CosmicCollisions_Logo_NoText_NoBG.png', isImage: true },
-    { href: '/leaderboards', label: 'LEADERBOARDS', icon: '🏆', isImage: false },
     { href: '/about', label: 'ABOUT US', icon: '👥', isImage: false },
     { href: '/contact', label: 'CONTACT', icon: '✉️', isImage: false },
   ];
@@ -151,7 +150,6 @@
         on:click={() => onNavLinkClick()}>
         <NavLi href="/" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>HOME</NavLi>
         <NavLi href="/cosmic" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>COSMIC</NavLi>
-        <NavLi href="/leaderboards" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>LEADERBOARDS</NavLi>
         <NavLi href="/about" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>ABOUT US</NavLi>
         <!-- <NavLi href="/education" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>EDUCATION</NavLi> -->
         <!-- <NavLi href="/crowdfunding" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CROWDFUNDING</NavLi> -->

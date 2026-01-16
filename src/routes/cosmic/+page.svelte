@@ -143,6 +143,7 @@
         <p class="text-white text-sm lg:text-lg">
           Get ready to shoot some aliens and asteroids in space, in an AR environment! Inspired by classics like <b>Galaga</b> and <b>Space Invaders</b>, we aim to add another dimension - and story - to the traditional space shooter. Join our heroes from the SSDF (Solar System Defense Force), as they protect the Earth, the Sun, and their neighbors from an oncoming enemy attack.
         </p>
+        <Button href="/leaderboards" color="purple" class="w-full sm:w-auto">🏆 Leaderboards</Button>
       </div>
 
       <!-- New Right Column -->
@@ -390,6 +391,7 @@
     }
     .demo-card:hover p {
       font-size: 1.15em;
+      line-height: 1.35em;
     }
 
     /* Lore */
