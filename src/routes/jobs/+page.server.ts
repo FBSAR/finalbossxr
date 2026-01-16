@@ -1,0 +1,139 @@
+import { fail } from '@sveltejs/kit';
+import { getDb, initializeJobApplicationsTable } from '$lib/db';
+import type { Actions } from './$types';
+
+export const prerender = false;
+
+// Initialize the table on first import (only creates if doesn't exist)
+let tableInitialized = false;
+
+async function ensureTableExists() {
+    if (!tableInitialized) {
+        try {
+            await initializeJobApplicationsTable();
+            tableInitialized = true;
+        } catch (error) {
+            console.error('Failed to initialize job applications table:', error);
+            // Don't throw - the table might already exist
+        }
+    }
+}
+
+export const actions: Actions = {
+    default: async ({ request }) => {
+        // Ensure the table exists before inserting
+        await ensureTableExists();
+        
+        const formData = await request.formData();
+        
+        // Extract form fields
+        const jobId = formData.get('jobId') as string;
+        const jobTitle = formData.get('jobTitle') as string;
+        const name = formData.get('name') as string;
+        const email = formData.get('email') as string;
+        const phone = formData.get('phone') as string || null;
+        const linkedin = formData.get('linkedin') as string || null;
+        const portfolio = formData.get('portfolio') as string || null;
+        const experience = formData.get('experience') as string;
+        const whyJoin = formData.get('whyJoin') as string;
+        const resume = formData.get('resume') as File | null;
+        
+        // Server-side validation
+        if (!name || !email || !experience || !whyJoin) {
+            return fail(400, { 
+                success: false,
+                message: 'Please fill out all required fields.' 
+            });
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return fail(400, { 
+                success: false,
+                message: 'Please enter a valid email address.' 
+            });
+        }
+        
+        // Minimum length validation
+        if (experience.length < 50) {
+            return fail(400, { 
+                success: false,
+                message: 'Experience description should be at least 50 characters.' 
+            });
+        }
+        
+        if (whyJoin.length < 50) {
+            return fail(400, { 
+                success: false,
+                message: 'Please tell us more about why you want to join (at least 50 characters).' 
+            });
+        }
+        
+        // Resume validation
+        if (!resume || resume.size === 0) {
+            return fail(400, { 
+                success: false,
+                message: 'Please upload your resume.' 
+            });
+        }
+        
+        // File size validation (5MB max)
+        if (resume.size > 5 * 1024 * 1024) {
+            return fail(400, { 
+                success: false,
+                message: 'Resume file must be less than 5MB.' 
+            });
+        }
+        
+        try {
+            const sql = getDb();
+            
+            // Convert file to buffer for storage
+            const resumeBuffer = Buffer.from(await resume.arrayBuffer());
+            
+            // Insert application into database
+            await sql`
+                INSERT INTO job_applications (
+                    job_id,
+                    job_title,
+                    name,
+                    email,
+                    phone,
+                    linkedin,
+                    portfolio,
+                    experience,
+                    why_join,
+                    resume_filename,
+                    resume_data
+                ) VALUES (
+                    ${parseInt(jobId) || 0},
+                    ${jobTitle || 'Unknown Position'},
+                    ${name},
+                    ${email},
+                    ${phone},
+                    ${linkedin},
+                    ${portfolio},
+                    ${experience},
+                    ${whyJoin},
+                    ${resume.name},
+                    ${resumeBuffer}
+                )
+            `;
+            
+            console.log(`New job application submitted: ${name} for ${jobTitle}`);
+            
+            return { 
+                success: true,
+                message: 'Application submitted successfully!' 
+            };
+            
+        } catch (error) {
+            console.error('Error saving job application:', error);
+            return fail(500, { 
+                success: false,
+                message: 'An error occurred while submitting your application. Please try again later.' 
+            });
+        }
+    }
+};

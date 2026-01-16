@@ -3,6 +3,7 @@
   import { showSuccessToast, showErrorToast } from '$lib/stores/toastStore';
   import { fly } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
+  import { enhance } from '$app/forms';
 
   // Slider State
   let currentSlide = 0;
@@ -56,6 +57,14 @@
     whyJoin: '',
     resume: null as File | null
   };
+  
+  // File list for binding to Fileupload component
+  let resumeFiles: FileList | undefined;
+  
+  // Reactive statement to sync resumeFiles with applicationData.resume
+  $: if (resumeFiles && resumeFiles.length > 0) {
+    applicationData.resume = resumeFiles[0];
+  }
 
   // Input styling
   const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
@@ -76,93 +85,77 @@
     goToSlide(0);
   }
 
-  // Handle file upload
-  function handleFileChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      applicationData.resume = target.files[0];
-    }
+  // Handle form submission
+  let isSubmitting = false;
+  
+  function handleFormSubmit() {
+    return async ({ result, update }: { result: any; update: () => Promise<void> }) => {
+      isSubmitting = false;
+      
+      if (result.type === 'success' && result.data?.success) {
+        console.log('Application submitted:', result.data);
+        showSuccessToast();
+        
+        // Reset form
+        applicationData = {
+          name: '',
+          email: '',
+          phone: '',
+          linkedin: '',
+          portfolio: '',
+          experience: '',
+          whyJoin: '',
+          resume: null
+        };
+        resumeFiles = undefined;
+        selectedJob = null;
+        goToSlide(0);
+      } else if (result.type === 'failure') {
+        showErrorToast(result.data?.message || 'There was an error submitting your application.');
+      } else {
+        showErrorToast('There was an error submitting your application. Please try again later.');
+      }
+    };
   }
 
-  // Handle form submission
-  async function handleSubmit(event: SubmitEvent) {
-    console.log('Submitting application...');
-    
+  // Pre-submit validation
+  function validateBeforeSubmit(event: Event) {
     // Validation
     if (!applicationData.name || !applicationData.email || !applicationData.experience || !applicationData.whyJoin) {
+      event.preventDefault();
       return showErrorToast('Please fill out all required fields');
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(applicationData.email)) {
+      event.preventDefault();
       return showErrorToast('Please enter a valid email address');
     }
 
     // Minimum length validation for text areas
     if (applicationData.experience.length < 50) {
+      event.preventDefault();
       return showErrorToast('Experience description should be at least 50 characters');
     }
 
     if (applicationData.whyJoin.length < 50) {
+      event.preventDefault();
       return showErrorToast('Please tell us more about why you want to join (at least 50 characters)');
     }
 
     if (!applicationData.resume) {
+      event.preventDefault();
       return showErrorToast('Please upload your resume');
     }
 
     // File size validation (5MB max)
     if (applicationData.resume.size > 5 * 1024 * 1024) {
+      event.preventDefault();
       return showErrorToast('Resume file must be less than 5MB');
     }
-
-    try {
-      // Create FormData for file upload
-      const formData = new FormData();
-      formData.append('jobId', selectedJob?.id.toString() || '');
-      formData.append('jobTitle', selectedJob?.title || '');
-      formData.append('name', applicationData.name);
-      formData.append('email', applicationData.email);
-      formData.append('phone', applicationData.phone);
-      formData.append('linkedin', applicationData.linkedin);
-      formData.append('portfolio', applicationData.portfolio);
-      formData.append('experience', applicationData.experience);
-      formData.append('whyJoin', applicationData.whyJoin);
-      formData.append('resume', applicationData.resume);
-
-      const response = await fetch('http://localhost:3000/jobs', {
-        method: 'POST',
-        body: formData
-      });
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || 'Failed to submit application');
-      }
-
-      console.log('Application submitted:', result);
-      showSuccessToast();
-      
-      // Reset form
-      applicationData = {
-        name: '',
-        email: '',
-        phone: '',
-        linkedin: '',
-        portfolio: '',
-        experience: '',
-        whyJoin: '',
-        resume: null
-      };
-      selectedJob = null;
-      goToSlide(0);
-
-    } catch (error) {
-      console.error('Error submitting application:', error);
-      showErrorToast('There was an error submitting your application. Please try again later.');
-    }
+    
+    isSubmitting = true;
   }
 </script>
 
@@ -269,7 +262,17 @@
               </ul>
             </div>
 
-            <form class="application-form" on:submit|preventDefault={handleSubmit}>
+            <form 
+              class="application-form" 
+              method="POST"
+              enctype="multipart/form-data"
+              on:submit={validateBeforeSubmit}
+              use:enhance={handleFormSubmit}
+            >
+              <!-- Hidden fields for job info -->
+              <input type="hidden" name="jobId" value={selectedJob?.id || ''} />
+              <input type="hidden" name="jobTitle" value={selectedJob?.title || ''} />
+              
               <Badge color="yellow" class="mb-4">* Required fields</Badge>
               
               <!-- Personal Info Section -->
@@ -383,8 +386,9 @@
                 <h3 class="form-section-title">Resume / CV *</h3>
                 <div class="file-upload-wrapper">
                   <Fileupload 
+                    name="resume"
                     accept=".pdf,.doc,.docx"
-                    on:change={handleFileChange}
+                    bind:files={resumeFiles}
                     class="file-upload"
                   />
                   <p class="file-hint">Accepted formats: PDF, DOC, DOCX (Max 5MB)</p>
@@ -399,10 +403,10 @@
               <!-- Submit Button -->
               <button
                 type="submit"
-                disabled={!applicationData.name || !applicationData.email || !applicationData.experience || !applicationData.whyJoin || !applicationData.resume}
+                disabled={isSubmitting || !applicationData.name || !applicationData.email || !applicationData.experience || !applicationData.whyJoin || !applicationData.resume}
                 class="submit-button"
               >
-                Submit Application
+                {isSubmitting ? 'Submitting...' : 'Submit Application'}
               </button>
             </form>
           {:else}
