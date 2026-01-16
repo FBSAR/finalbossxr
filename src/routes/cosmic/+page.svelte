@@ -79,7 +79,19 @@
 </script>
 <main>
   <!-- New Header -->
-   <div class="w-11/12 flex flex-col md:flex-row mx-auto my-10 lg:my-20 h-auto content-center">
+   <div class="relative w-full overflow-hidden">
+    <!-- Background Video -->
+    <video
+      class="hidden lg:block absolute inset-0 w-full h-full object-cover bg-black opacity-80"
+      style="transform: scaleX(-1);"
+      src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/space_rock_2.mp4"
+      autoplay
+      loop
+      playsinline 
+      muted>
+    </video>
+    
+    <div class="relative z-10 w-11/12 flex flex-col md:flex-row mx-auto py-10 lg:py-20 h-auto content-center">
 
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
       
@@ -143,6 +155,7 @@
       
     </div>
 
+    </div>
   </div>
 
   <!-- Spacer -->
