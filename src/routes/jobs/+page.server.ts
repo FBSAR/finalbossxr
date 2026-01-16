@@ -1,5 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { getDb, initializeJobApplicationsTable } from '$lib/db';
+import { sendApplicationConfirmationEmail } from '$lib/email';
 import type { Actions } from './$types';
 
 export const prerender = false;
@@ -122,6 +123,22 @@ export const actions: Actions = {
             `;
             
             console.log(`New job application submitted: ${name} for ${jobTitle}`);
+            
+            // Send confirmation email to applicant
+            const emailResult = await sendApplicationConfirmationEmail({
+                applicantName: name,
+                applicantEmail: email,
+                jobTitle: jobTitle || 'Unknown Position',
+                phone,
+                linkedin,
+                portfolio,
+                experience,
+                whyJoin
+            });
+            
+            if (!emailResult.success) {
+                console.warn('Failed to send confirmation email, but application was saved:', emailResult.error);
+            }
             
             return { 
                 success: true,

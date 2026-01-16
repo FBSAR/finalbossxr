@@ -5,6 +5,9 @@
   import { cubicOut } from 'svelte/easing';
   import { enhance } from '$app/forms';
 
+  // ⚠️ DEV MODE - Set to true to auto-fill form fields for testing
+  const devMode = true;
+
   // Slider State
   let currentSlide = 0;
   let sliderContainer: HTMLDivElement;
@@ -46,15 +49,15 @@
   // Selected Job
   let selectedJob: typeof jobs[0] | null = null;
 
-  // Application Form Data
+  // Application Form Data - Pre-filled in devMode
   let applicationData = {
-    name: '',
-    email: '',
-    phone: '',
-    linkedin: '',
-    portfolio: '',
-    experience: '',
-    whyJoin: '',
+    name: devMode ? 'John Developer' : '',
+    email: devMode ? 'eddielacrosse2@gmail.com' : '',
+    phone: devMode ? '(555) 123 - 4567' : '',
+    linkedin: devMode ? 'https://linkedin.com/in/johndev' : '',
+    portfolio: devMode ? 'https://github.com/johndev' : '',
+    experience: devMode ? 'I have 5+ years of experience in game development, specializing in Unreal Engine and VR/AR applications. I have shipped multiple titles on Steam and the Meta Quest store, including an award-winning puzzle game.' : '',
+    whyJoin: devMode ? 'I am passionate about XR technology and believe Final Boss Studios is at the forefront of immersive entertainment. I want to contribute my skills to create groundbreaking experiences that push the boundaries of what\'s possible in VR/AR gaming.' : '',
     resume: null as File | null
   };
   
@@ -329,7 +332,6 @@
                     class={inputClass}
                     style="filled"
                     type="tel"
-                    pattern="\\(\\d{3}\\) \\d{3} - \\d{4}"
                     placeholder="(xxx) xxx - xxxx"
                     on:input={formatPhoneNumber}
                   >
@@ -430,7 +432,12 @@
                 disabled={isSubmitting || !applicationData.name || !applicationData.email || !applicationData.experience || !applicationData.whyJoin || !applicationData.resume}
                 class="submit-button"
               >
-                {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                {#if isSubmitting}
+                  <span class="spinner"></span>
+                  <span>Submitting...</span>
+                {:else}
+                  Submit Application
+                {/if}
               </button>
             </form>
           {:else}
@@ -1220,6 +1227,10 @@
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
   }
 
   @media (min-width: 640px) {
@@ -1240,6 +1251,22 @@
     opacity: 0.5;
     background: rgba(255, 255, 255, 0.2);
     cursor: not-allowed;
+  }
+
+  /* Loading Spinner */
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .no-job-selected {
