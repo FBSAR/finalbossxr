@@ -1,6 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { fail } from '@sveltejs/kit';
 import { sendContactConfirmationEmail } from '$lib/email';
+import { saveCapturedBot, addToEmailList } from '$lib/db';
 
 export const prerender = false;
 
@@ -52,6 +53,13 @@ async function submitFormData(name: string, email: string, message: string) {
         if (response.ok) {
             console.log('Discord webhook POST request successful (204 No Content).');
             
+            // Add email to mailing list
+            await addToEmailList({
+                email,
+                name,
+                source: 'contact_form'
+            });
+            
             // Send confirmation email to the user
             const emailResult = await sendContactConfirmationEmail({ name, email, message });
             if (!emailResult.success) {
@@ -75,9 +83,24 @@ export const actions = {
         const data = await request.formData();
         
         // Honeypot check - if filled, it's a bot
-        const honeypot = data.get('website');
+        const honeypot = data.get('website') as string;
         if (honeypot) {
             console.log('Bot detected via honeypot on contact form');
+            
+            // Save bot data to database
+            await saveCapturedBot({
+                formType: 'contact',
+                honeypotField: 'website',
+                honeypotValue: honeypot,
+                formData: {
+                    name: data.get('name') as string,
+                    email: data.get('email') as string,
+                    message: data.get('message') as string
+                },
+                ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('cf-connecting-ip'),
+                userAgent: request.headers.get('user-agent')
+            });
+            
             // Return success to trick the bot, but don't process
             return { success: true };
         }

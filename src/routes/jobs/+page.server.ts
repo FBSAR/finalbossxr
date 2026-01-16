@@ -1,12 +1,12 @@
 import { fail } from '@sveltejs/kit';
-import { getDb, initializeJobApplicationsTable } from '$lib/db';
+import { getDb, initializeJobApplicationsTable, saveCapturedBot, addToEmailList } from '$lib/db';
 import { sendApplicationConfirmationEmail } from '$lib/email';
 import type { Actions } from './$types';
 
 export const prerender = false;
 
 // Initialize the table on first import (only creates if doesn't exist)
-let tableInitialized = false;
+let tableInitialized = true;
 
 async function ensureTableExists() {
     if (!tableInitialized) {
@@ -28,9 +28,30 @@ export const actions: Actions = {
         const formData = await request.formData();
         
         // Honeypot check - if filled, it's a bot
-        const honeypot = formData.get('company');
+        const honeypot = formData.get('company') as string;
         if (honeypot) {
             console.log('Bot detected via honeypot on job application form');
+            
+            // Save bot data to database
+            await saveCapturedBot({
+                formType: 'job_application',
+                honeypotField: 'company',
+                honeypotValue: honeypot,
+                formData: {
+                    jobId: formData.get('jobId') as string,
+                    jobTitle: formData.get('jobTitle') as string,
+                    name: formData.get('name') as string,
+                    email: formData.get('email') as string,
+                    phone: formData.get('phone') as string,
+                    linkedin: formData.get('linkedin') as string,
+                    portfolio: formData.get('portfolio') as string,
+                    experience: formData.get('experience') as string,
+                    whyJoin: formData.get('whyJoin') as string
+                },
+                ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('cf-connecting-ip'),
+                userAgent: request.headers.get('user-agent')
+            });
+            
             // Return success to trick the bot, but don't process
             return { success: true, message: 'Application submitted successfully!' };
         }
@@ -131,6 +152,13 @@ export const actions: Actions = {
             `;
             
             console.log(`New job application submitted: ${name} for ${jobTitle}`);
+            
+            // Add email to mailing list
+            await addToEmailList({
+                email,
+                name,
+                source: 'job_application'
+            });
             
             // Send confirmation email to applicant
             const emailResult = await sendApplicationConfirmationEmail({
