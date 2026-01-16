@@ -556,6 +556,18 @@
     background: #00ff00;
     border-color: #00ff00;
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(0, 255, 0, 0.8), 0 0 40px rgba(0, 255, 0, 0.4);
+      transform: scale(1.1);
+    }
   }
 
   .progress-dot .label {

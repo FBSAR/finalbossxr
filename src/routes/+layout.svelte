@@ -144,13 +144,13 @@
       <NavHamburger menuClass={'text-white inline'} onClick={() => onNavHamburgerClick()}  />
       <NavUl {activeUrl} hidden={hideNavMenu}
         on:click={() => onNavLinkClick()}>
-        <NavLi href="/" active={true} activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>HOME</NavLi>
-        <NavLi href="/cosmic" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>COSMIC</NavLi>
-        <NavLi href="/leaderboards" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>LEADERBOARDS</NavLi>
-        <NavLi href="/about" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>ABOUT US</NavLi>
-        <!-- <NavLi href="/education" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>EDUCATION</NavLi> -->
-        <!-- <NavLi href="/crowdfunding" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CROWDFUNDING</NavLi> -->
-        <NavLi href="/contact" active={true}  activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CONTACT</NavLi>
+        <NavLi href="/" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>HOME</NavLi>
+        <NavLi href="/cosmic" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>COSMIC</NavLi>
+        <NavLi href="/leaderboards" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>LEADERBOARDS</NavLi>
+        <NavLi href="/about" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>ABOUT US</NavLi>
+        <!-- <NavLi href="/education" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>EDUCATION</NavLi> -->
+        <!-- <NavLi href="/crowdfunding" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CROWDFUNDING</NavLi> -->
+        <NavLi href="/contact" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CONTACT</NavLi>
       </NavUl>
     </div> 
   </Navbar>
