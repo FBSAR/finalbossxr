@@ -4,7 +4,6 @@
   import { Button, Badge, FloatingLabelInput, Textarea } from 'flowbite-svelte';
   import { LinkedinSolid, AppleSolid, DiscordSolid, FacebookSolid, XSolid} from 'flowbite-svelte-icons'
   import { enhance } from '$app/forms';
-  import SocialMedia from '$lib/components/SocialMedia.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
   
   function testerLink() {
@@ -269,11 +268,6 @@
       <Button on:click={testerLink} color="green" class="mt-4 w-full lg:w-48">Become a Tester</Button>
     </div>
   </div>
-
-  <!-- Spacer -->
-  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#ffffff10]"></div>
-   
-  <SocialMedia />
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>

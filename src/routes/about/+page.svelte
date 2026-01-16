@@ -1,6 +1,5 @@
 <script lang="ts">
   import { LinkedinSolid } from 'flowbite-svelte-icons'
-  import SocialMedia from '$lib/components/SocialMedia.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
   
   let founders = [
@@ -109,11 +108,6 @@
     </div>
   </div>
 
-  <!-- Spacer -->
-  <div class="h-2 my-20 lg:my-32 border-b-8 border-[#00c40030]"></div>
-   
-  <SocialMedia />
-  
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
 

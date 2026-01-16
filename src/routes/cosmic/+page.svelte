@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import SocialMedia from '$lib/components/SocialMedia.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
     import { Button } from 'flowbite-svelte';
     import { AppleSolid } from 'flowbite-svelte-icons';
@@ -342,11 +341,6 @@
     <p class="text-xl text-white relative bottom-8">Coming Soon - 2025</p>
   </div>
 
-  <!-- Spacer -->
-  <div class="h-10 lg:h-32"></div>
-   
-  <SocialMedia />
-  
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
 
