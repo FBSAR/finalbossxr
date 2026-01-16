@@ -12,8 +12,12 @@
   // Navbar Link Classes
   const nonActiveNavLink = 'text-[#fff]/60 text-xl lg:text-sm  my-1 duration-100 raleway';
   const activeNavLink = 'text-[#fff] text-xl lg:text-sm green-header-text lg:bg-transparent my-1 font-bold duration-100 raleway-700';
-  const successToastClass = 'fixed top-4 right-4 w-full max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#00ff00] rounded gap-3';
-  const errorToastClass = 'fixed top-4 right-4 w-full max-w-sm lg:max-w-xl z-50 p-4 text-white text-3xl bg-black shadow dark:text-white dark:bg-black border-2 border-[#dd0000] rounded gap-3';
+  
+  // Toast Classes - Refined Modern Style
+  const baseToastClass = 'toast-refined fixed top-4 right-4 z-[100] max-w-[calc(100vw-2rem)] sm:max-w-md lg:max-w-lg rounded-2xl backdrop-blur-xl shadow-2xl';
+  const successToastClass = `${baseToastClass} bg-gradient-to-r from-[#0a2f0a]/95 to-[#0d3d0d]/90 border border-[#00ff00]/30`;
+  const errorToastClass = `${baseToastClass} bg-gradient-to-r from-[#3d0a0a]/95 to-[#2f0d0d]/90 border border-[#ff3333]/30`;
+  
   $: errorToastMessage = $toast.errorMessage; // Reactive for store
 
   // Should hide Navbar on mobile when a link is clicked
@@ -157,26 +161,51 @@
 
   <main class="scrollbar min-h-screen pt-4 pb-20 lg:py-20" style="background: var(--dark-purple-gradient);">
     <slot></slot>
-     {#if $toast.success}
-    <Toast 
-      
-      divClass={successToastClass} 
-      contentClass={'w-full text-sm lg:text-lg font-normal'} 
-      dismissable={true} 
-      align={true}>
-        <span><CheckCircleOutline size="xl" color="#00ff00"></CheckCircleOutline></span>
-        <span>Your message has been submitted! We will get back to you soon! 🙏🏾</span>
-    </Toast>
+    
+    <!-- Success Toast -->
+    {#if $toast.success}
+    <div 
+      class="toast-container"
+      transition:fly={{ x: 100, duration: 300, easing: cubicOut }}
+    >
+      <Toast 
+        divClass={successToastClass} 
+        contentClass={'toast-content'} 
+        dismissable={true} 
+        align={true}
+      >
+        <div class="toast-icon-wrapper success-icon">
+          <CheckCircleOutline size="lg" color="#00ff00" />
+        </div>
+        <div class="toast-text-wrapper">
+          <span class="toast-title success-title">Success!</span>
+          <span class="toast-message">Your message has been submitted! We will get back to you soon! 🙏🏾</span>
+        </div>
+      </Toast>
+    </div>
     {/if}
+    
+    <!-- Error Toast -->
     {#if $toast.error}
-    <Toast 
-      divClass={errorToastClass} 
-      contentClass={'w-full text-sm lg:text-lg font-normal'} 
-      dismissable={true} 
-      align={true}>
-        <span><CloseCircleOutline size="xl" color="#dd0000"></CloseCircleOutline></span>
-        <span>{errorToastMessage}</span>
-    </Toast>
+    <div 
+      class="toast-container"
+      transition:fly={{ x: 100, duration: 300, easing: cubicOut }}
+    >
+      <Toast 
+        divClass={errorToastClass} 
+        contentClass={'toast-content'} 
+        dismissable={true} 
+        align={true}
+      >
+        <div class="toast-icon-wrapper error-icon">
+          <CloseCircleOutline size="lg" color="#ff3333" />
+        </div>
+        <div class="toast-text-wrapper">
+          <span class="toast-title error-title">Error</span>
+          <span class="toast-message">{errorToastMessage}</span>
+        </div>
+      </Toast>
+    </div>
     {/if}
   </main>
 
@@ -416,5 +445,131 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* Toast Refined Styles */
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+}
+
+:global(.toast-refined) {
+  padding: 1rem 1.25rem !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.875rem !important;
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.4),
+    0 8px 10px -6px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
+}
+
+:global(.toast-content) {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.875rem !important;
+  width: 100% !important;
+}
+
+.toast-icon-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+.toast-icon-wrapper.success-icon {
+  background: rgba(0, 255, 0, 0.15);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.toast-icon-wrapper.error-icon {
+  background: rgba(255, 51, 51, 0.15);
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.2);
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.toast-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-title {
+  font-family: "Raleway", sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+.toast-title.success-title {
+  color: #00ff00;
+}
+
+.toast-title.error-title {
+  color: #ff3333;
+}
+
+.toast-message {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-family: "Raleway", sans-serif;
+}
+
+/* Toast close button styling */
+:global(.toast-refined button) {
+  color: rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.2s ease !important;
+  border-radius: 50% !important;
+  padding: 0.25rem !important;
+}
+
+:global(.toast-refined button:hover) {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Mobile responsiveness for toasts */
+@media (max-width: 640px) {
+  .toast-container {
+    top: auto;
+    bottom: 5rem;
+    right: 0.75rem;
+    left: 0.75rem;
+  }
+  
+  :global(.toast-refined) {
+    padding: 0.875rem 1rem !important;
+  }
+  
+  .toast-icon-wrapper {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .toast-title {
+    font-size: 0.875rem;
+  }
+  
+  .toast-message {
+    font-size: 0.8rem;
+  }
 }
 </style>
