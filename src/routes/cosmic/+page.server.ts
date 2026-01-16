@@ -1,5 +1,6 @@
 import { env } from '$env/dynamic/private';
 import { fail } from '@sveltejs/kit';
+import { sendContactConfirmationEmail } from '$lib/email';
 
 export const prerender = false;
 
@@ -50,6 +51,13 @@ async function submitFormData(name: string, email: string, message: string) {
         // Discord webhooks return 204 No Content on success
         if (response.ok) {
             console.log('Discord webhook POST request successful (204 No Content).');
+            
+            // Send confirmation email to the user
+            const emailResult = await sendContactConfirmationEmail({ name, email, message });
+            if (!emailResult.success) {
+                console.error('Failed to send confirmation email, but Discord webhook succeeded');
+            }
+            
             return { success: true };
         } else {
             // Log the error and fail the SvelteKit action
