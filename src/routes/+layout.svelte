@@ -395,17 +395,27 @@
   }
 
   .drawer-link-icon {
-    font-size: 1.5rem;
-    width: 2rem;
+    font-size: 1.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .drawer-link.active .drawer-link-icon {
+    background: rgba(0, 255, 0, 0.2);
+    border-color: rgba(0, 255, 0, 0.4);
   }
 
   .drawer-icon-img {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     object-fit: contain;
   }
 
