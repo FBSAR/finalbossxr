@@ -1,19 +1,27 @@
 import nodemailer from 'nodemailer';
-import { EMAIL_SERVER, EMAIL_PORT, EMAIL_USERNAME, EMAIL_PASSWORD } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
-// Create reusable transporter using SMTP
-const transporter = nodemailer.createTransport({
-    host: EMAIL_SERVER,
-    port: parseInt(EMAIL_PORT),
-    secure: parseInt(EMAIL_PORT) === 465, // true for 465, false for 587
-    auth: {
-        user: EMAIL_USERNAME,
-        pass: EMAIL_PASSWORD
-    },
-    connectionTimeout: 10000, // 10 seconds
-    greetingTimeout: 10000,
-    socketTimeout: 10000
-});
+// Create transporter lazily to avoid build-time errors
+let transporter: ReturnType<typeof nodemailer.createTransport> | null = null;
+
+function getTransporter() {
+    if (!transporter) {
+        const { EMAIL_SERVER, EMAIL_PORT, EMAIL_USERNAME, EMAIL_PASSWORD } = env;
+        transporter = nodemailer.createTransport({
+            host: EMAIL_SERVER,
+            port: parseInt(EMAIL_PORT || '465'),
+            secure: parseInt(EMAIL_PORT || '465') === 465,
+            auth: {
+                user: EMAIL_USERNAME,
+                pass: EMAIL_PASSWORD
+            },
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 10000
+        });
+    }
+    return transporter;
+}
 
 // Shared email styles that support light/dark mode
 const getEmailStyles = () => `
@@ -208,8 +216,8 @@ The Final Boss Studios Team
     `;
 
     try {
-        const info = await transporter.sendMail({
-            from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
+        const info = await getTransporter().sendMail({
+            from: `"Final Boss Studios" <${env.EMAIL_USERNAME}>`,
             to: email,
             subject: `Thanks for Contacting Final Boss Studios!`,
             text: textContent,
@@ -391,8 +399,8 @@ The Final Boss Studios Team
     `;
 
     try {
-        const info = await transporter.sendMail({
-            from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
+        const info = await getTransporter().sendMail({
+            from: `"Final Boss Studios" <${env.EMAIL_USERNAME}>`,
             to: applicantEmail,
             subject: `Application Received - ${jobTitle} at Final Boss Studios`,
             text: textContent,
