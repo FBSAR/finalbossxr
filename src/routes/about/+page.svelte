@@ -49,7 +49,7 @@
 
   <!-- Header -->
   <div class="mx-auto w-11/12">
-    <h1 class="jersey-font page-header green-header-text">ABOUT US</h1>
+    <h1 class="jersey-font page-header green-header-text glow-text">ABOUT US</h1>
     <p class="sm:w-1/2 lg:w-1/2">Introducing the Final Boss team.</p>
   </div>
 
@@ -118,6 +118,10 @@
 
 </main>
 <style>
+  .glow-text {
+    text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+  }
+
   .contact-card, .contact-header-card  {
     transition: 200ms;
   }

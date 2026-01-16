@@ -261,11 +261,7 @@
 
   <!-- Characters -->
   <div class="mx-auto w-11/12 lg:w-1/2 mt-20">
-    <h1 class="jersey-font text-4xl green-header-text">
-      <!-- svelte-ignore a11y-missing-attribute -->
-      <img
-        src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/Coz_Logo_Final_w_Text-NoBG.png" 
-        class="w-12 mx-auto inline"  />
+    <h1 class="jersey-font text-xl green-header-text glow-text">
       Characters
     </h1>
   </div>
@@ -365,6 +361,9 @@
   <div class="h-10 lg:h-32"></div>
 </main>
 <style>
+  .glow-text {
+    text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+  }
 
   .demo-card, .lore-card, .demo-card p, .demo-card h1, .demo-card h2, .demo-card li
   {
