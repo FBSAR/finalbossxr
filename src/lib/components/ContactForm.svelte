@@ -26,19 +26,21 @@
           body: new FormData(form)   
         });
 
-        // Success Response
-        if (response.ok) {
-          const data = await response.json();
-          form.reset();
-          contactInfo = { name: '', email: '', message: '' };
-          console.log('Form submitted successfully:', data);
-          showSuccessToast();
+        const data = await response.json();
 
-          // Failure Response
-        } else {
-          console.error('Error submitting form:', response.status);
-          showErrorToast('There was an error submitting your form. Please try again later.')
-      }
+        // Check for SvelteKit fail() response or HTTP error
+        if (!response.ok || data.type === 'failure') {
+          console.error('Error submitting form:', data.data?.message || response.status);
+          showErrorToast(data.data?.message || 'There was an error submitting your form. Please try again later.');
+          return;
+        }
+
+        // Success Response
+        form.reset();
+        contactInfo = { name: '', email: '', message: '' };
+        console.log('Form submitted successfully:', data);
+        showSuccessToast();
+
     } catch (error) {
       console.error('Error submitting form:', error);
       showErrorToast('There was an error submitting your form. Please try again later.')
