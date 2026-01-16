@@ -297,6 +297,12 @@
               <input type="hidden" name="jobId" value={selectedJob?.id || ''} />
               <input type="hidden" name="jobTitle" value={selectedJob?.title || ''} />
               
+              <!-- Honeypot field - hidden from humans, bots will fill it -->
+              <div class="honeypot" aria-hidden="true">
+                <label for="company">Company</label>
+                <input type="text" name="company" id="company" tabindex="-1" autocomplete="off" />
+              </div>
+              
               <Badge color="yellow" class="mb-4">* Required fields</Badge>
               
               <!-- Personal Info Section -->
@@ -1287,5 +1293,15 @@
       margin-bottom: 1.5rem;
       font-size: 1.1rem;
     }
+  }
+
+  /* Honeypot - Hidden from humans */
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
   }
 </style>

@@ -73,6 +73,15 @@ async function submitFormData(name: string, email: string, message: string) {
 export const actions = {
     default: async ({ request }) => {
         const data = await request.formData();
+        
+        // Honeypot check - if filled, it's a bot
+        const honeypot = data.get('website');
+        if (honeypot) {
+            console.log('Bot detected via honeypot on contact form');
+            // Return success to trick the bot, but don't process
+            return { success: true };
+        }
+        
         const name = data.get('name') as string;
         const email = data.get('email') as string;
         const message = data.get('message') as string;

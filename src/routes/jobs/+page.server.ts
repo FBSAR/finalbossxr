@@ -27,6 +27,14 @@ export const actions: Actions = {
         
         const formData = await request.formData();
         
+        // Honeypot check - if filled, it's a bot
+        const honeypot = formData.get('company');
+        if (honeypot) {
+            console.log('Bot detected via honeypot on job application form');
+            // Return success to trick the bot, but don't process
+            return { success: true, message: 'Application submitted successfully!' };
+        }
+        
         // Extract form fields
         const jobId = formData.get('jobId') as string;
         const jobTitle = formData.get('jobTitle') as string;

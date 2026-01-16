@@ -87,6 +87,13 @@
         placeholder="Your message" rows={6}  
             />
             <!--         style="background: var(--green-gradient);" -->
+            
+            <!-- Honeypot field - hidden from humans, bots will fill it -->
+            <div class="honeypot" aria-hidden="true">
+              <label for="website">Website</label>
+              <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" />
+            </div>
+            
             <button
         type="submit"
         disabled={contactInfo.name === '' || contactInfo.email === '' || contactInfo.message === '' }
@@ -98,5 +105,14 @@
   </div>
 </main>
 <style>
+  /* Honeypot - Hidden from humans */
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+  }
 
 </style>
