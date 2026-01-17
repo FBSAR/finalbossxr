@@ -78,11 +78,11 @@
   });
 </script>
 <main>
-  <!-- New Header -->
-   <div class="relative w-full overflow-hidden">
+  <!-- Header -->
+   <div class="relative w-full overflow-hidden min-h-[70vh] lg:min-h-[80vh]">
     <!-- Background Video -->
     <video
-      class="hidden lg:block absolute inset-0 w-full h-full object-cover bg-black opacity-80"
+      class="hidden lg:block absolute inset-0 w-full h-full object-cover bg-black"
       style="transform: scaleX(-1);"
       src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/space_rock_2.mp4"
       autoplay
@@ -90,71 +90,68 @@
       playsinline 
       muted>
     </video>
+    <!-- Dark overlay for better text readability -->
+    <div class="hidden lg:block absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60"></div>
     
-    <div class="relative z-10 w-11/12 flex flex-col md:flex-row mx-auto py-10 lg:py-20 h-auto content-center">
+    <div class="relative z-10 w-11/12 lg:w-10/12 flex flex-col mx-auto py-12 lg:py-24 h-full">
 
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
-      
-      <!-- New Left Column -->
-      <div class="lg:col-span-1 hidden lg:block">
-        <!-- Your new left content here -->
-        <!-- <div class="bg-white/10 border-white/20 border-2 rounded-lg p-4">
-          <p>Left sidebar content</p>
-        </div> -->
-      </div>
-      
-      <!-- Middle Left Column - Your existing left content -->
-      <div class="lg:col-span-1  content-center ">        
-       <img 
-         src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
-         class="w-full mx-auto" 
-         alt="Cosmic Collisions Logo"
-       >
-      </div>
-
-      <!-- Middle Right Column - Your existing right content -->
-      <div class="demo-card p-4 lg:col-span-2 space-y-4 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
-        <div class="flex bg-[#88888800]">
-          <h3 class="text-lg lg:text-2xl gold-header-text mr-2">Upcoming Platforms (Demo)</h3>
-          <svg fill="#00c400"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-            <g id="b75708d097f2188dff6617b0f00f7c43">
-              <path display="inline" d="M120.606,169h270.788v220.663c0,13.109-10.628,23.737-23.721,23.737h-27.123v67.203
-                c0,17.066-13.612,30.897-30.415,30.897c-16.846,0-30.438-13.831-30.438-30.897v-67.203h-47.371v67.203
-                c0,17.066-13.639,30.897-30.441,30.897c-16.799,0-30.437-13.831-30.437-30.897v-67.203h-27.099
-                c-13.096,0-23.744-10.628-23.744-23.737V169z M67.541,167.199c-16.974,0-30.723,13.963-30.723,31.2v121.937
-                c0,17.217,13.749,31.204,30.723,31.204c16.977,0,30.723-13.987,30.723-31.204V198.399
-                C98.264,181.162,84.518,167.199,67.541,167.199z M391.395,146.764H120.606c3.342-38.578,28.367-71.776,64.392-90.998
-                l-25.746-37.804c-3.472-5.098-2.162-12.054,2.946-15.525c5.102-3.471,12.044-2.151,15.533,2.943l28.061,41.232
-                c15.558-5.38,32.446-8.469,50.208-8.469c17.783,0,34.672,3.089,50.229,8.476L334.29,5.395c3.446-5.108,10.41-6.428,15.512-2.957
-                c5.108,3.471,6.418,10.427,2.946,15.525l-25.725,37.804C363.047,74.977,388.055,108.175,391.395,146.764z M213.865,94.345
-                c0-8.273-6.699-14.983-14.969-14.983c-8.291,0-14.99,6.71-14.99,14.983c0,8.269,6.721,14.976,14.99,14.976
-                S213.865,102.614,213.865,94.345z M329.992,94.345c0-8.273-6.722-14.983-14.99-14.983c-8.291,0-14.97,6.71-14.97,14.983
-                c0,8.269,6.679,14.976,14.97,14.976C323.271,109.321,329.992,102.614,329.992,94.345z M444.48,167.156
-                c-16.956,0-30.744,13.984-30.744,31.222v121.98c0,17.238,13.788,31.226,30.744,31.226c16.978,0,30.701-13.987,30.701-31.226
-                v-121.98C475.182,181.14,461.458,167.156,444.48,167.156z">
-              </path>
-            </g>
-          </svg>
+      <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+        
+        <!-- Logo Column -->
+        <div class="w-full lg:w-1/3 flex justify-center lg:justify-end">
+          <div class="relative">
+            <img 
+              src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
+              class="w-64 lg:w-80 mx-auto drop-shadow-2xl" 
+              alt="Cosmic Collisions Logo"
+            >
+            <!-- Glow effect behind logo -->
+            <div class="absolute inset-0 blur-3xl bg-[#00c400]/20 -z-10 scale-150"></div>
+          </div>
         </div>
-        <div class="italic">
-          <h1 class="text-3xl green-header-text inline">Genre:</h1>
-          <span class="text-[#999]">Arcade, Space Shooter, RPG, Augmented Reality (AR) </span>
-        </div>
-        <p class="text-white text-sm lg:text-lg">
-          Get ready to shoot some aliens and asteroids in space, in an AR environment! Inspired by classics like <b>Galaga</b> and <b>Space Invaders</b>, we aim to add another dimension - and story - to the traditional space shooter. Join our heroes from the SSDF (Solar System Defense Force), as they protect the Earth, the Sun, and their neighbors from an oncoming enemy attack.
-        </p>
-        <Button href="/leaderboards" color="purple" class="w-full sm:w-auto">🏆 Leaderboards</Button>
-      </div>
 
-      <!-- New Right Column -->
-      <div class="lg:col-span-1 hidden lg:block">
-        <!-- Your new right content here -->
-        <!-- <div class="bg-white/10 border-white/20 border-2 rounded-lg p-4">
-          <p>Right sidebar content</p>
-        </div> -->
+        <!-- Info Card Column -->
+        <div class="w-full lg:w-1/2">
+          <div class="header-card p-6 lg:p-8 space-y-5 backdrop-blur-xl bg-black/40 lg:bg-white/5 border border-white/10 rounded-2xl shadow-2xl">
+            
+            <!-- Platform Badge -->
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2 px-4 py-2 bg-[#00c400]/10 border border-[#00c400]/30 rounded-full">
+                <svg fill="#00c400" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 512 512">
+                  <path d="M120.606,169h270.788v220.663c0,13.109-10.628,23.737-23.721,23.737h-27.123v67.203c0,17.066-13.612,30.897-30.415,30.897c-16.846,0-30.438-13.831-30.438-30.897v-67.203h-47.371v67.203c0,17.066-13.639,30.897-30.441,30.897c-16.799,0-30.437-13.831-30.437-30.897v-67.203h-27.099c-13.096,0-23.744-10.628-23.744-23.737V169z M67.541,167.199c-16.974,0-30.723,13.963-30.723,31.2v121.937c0,17.217,13.749,31.204,30.723,31.204c16.977,0,30.723-13.987,30.723-31.204V198.399C98.264,181.162,84.518,167.199,67.541,167.199z M391.395,146.764H120.606c3.342-38.578,28.367-71.776,64.392-90.998l-25.746-37.804c-3.472-5.098-2.162-12.054,2.946-15.525c5.102-3.471,12.044-2.151,15.533,2.943l28.061,41.232c15.558-5.38,32.446-8.469,50.208-8.469c17.783,0,34.672,3.089,50.229,8.476L334.29,5.395c3.446-5.108,10.41-6.428,15.512-2.957c5.108,3.471,6.418,10.427,2.946,15.525l-25.725,37.804C363.047,74.977,388.055,108.175,391.395,146.764z M213.865,94.345c0-8.273-6.699-14.983-14.969-14.983c-8.291,0-14.99,6.71-14.99,14.983c0,8.269,6.721,14.976,14.99,14.976S213.865,102.614,213.865,94.345z M329.992,94.345c0-8.273-6.722-14.983-14.99-14.983c-8.291,0-14.97,6.71-14.97,14.983c0,8.269,6.679,14.976,14.97,14.976C323.271,109.321,329.992,102.614,329.992,94.345z M444.48,167.156c-16.956,0-30.744,13.984-30.744,31.222v121.98c0,17.238,13.788,31.226,30.744,31.226c16.978,0,30.701-13.987,30.701-31.226v-121.98C475.182,181.14,461.458,167.156,444.48,167.156z"/>
+                </svg>
+                <span class="text-[#00c400] text-sm font-semibold uppercase tracking-wide">Android Demo Available</span>
+              </div>
+            </div>
+
+            <!-- Title -->
+            <div>
+              <h1 class="text-4xl lg:text-5xl gold-header-text font-bold mb-2">Cosmic Collisions</h1>
+              <p class="text-gray-400 text-sm lg:text-base">Defend the Solar System in Augmented Reality</p>
+            </div>
+
+            <!-- Genre Tags -->
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 bg-black/60 border border-[#FFD700]/40 rounded-full text-xs text-white font-medium shadow-lg">🎮 Arcade</span>
+              <span class="px-3 py-1.5 bg-black/60 border border-[#00c400]/40 rounded-full text-xs text-white font-medium shadow-lg">🚀 Space Shooter</span>
+              <span class="px-3 py-1.5 bg-black/60 border border-purple-500/40 rounded-full text-xs text-white font-medium shadow-lg">⚔️ RPG</span>
+              <span class="px-3 py-1.5 bg-black/60 border border-blue-400/40 rounded-full text-xs text-white font-medium shadow-lg">📱 AR (Augmented Reality)</span>
+            </div>
+
+            <!-- Description -->
+            <p class="text-gray-300 text-sm lg:text-base leading-relaxed">
+              Get ready to shoot aliens and asteroids in space! Inspired by classics like <span class="text-[#FFD700] font-medium">Galaga</span> and <span class="text-[#FFD700] font-medium">Space Invaders</span>, we add another dimension to the traditional space shooter. Join the <span class="text-[#00c400] font-medium">SSDF</span> as they protect Earth from an oncoming enemy attack.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+              <Button href="/leaderboards" color="none" class="flex-1 justify-center bg-[#1b023d] hover:bg-[#2d0a5e] text-white border border-purple-900/50">🏆 Leaderboards</Button>
+              <Button href="#demo" color="dark" class="flex-1 justify-center border border-white/20 hover:border-[#00c400]/50">▶ Play Demo</Button>
+            </div>
+          </div>
+        </div>
+        
       </div>
-      
-    </div>
 
     </div>
   </div>
@@ -163,93 +160,103 @@
   <div class="h-2 border-b-8 border-[#ffffff10]"></div>
 
   <!-- Game Play Update & Video -->
-  <div class="w-11/12 flex flex-col md:flex-row mx-auto my-10 lg:my-20 h-auto content-center">
+  <div id="demo" class="w-11/12 lg:w-10/12 mx-auto my-16 lg:my-24">
 
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
+    <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
       
-      <!-- New Left Column -->
-      <div class="lg:col-span-1 hidden lg:block">
-        <!-- Your new left content here -->
-        <!-- <div class="bg-white/10 border-white/20 border-2 rounded-lg p-4">
-          <p>Left sidebar content</p>
-        </div> -->
-      </div>
-      
-      <!-- Middle Left Column - Your existing left content -->
-      <div class="demo-card p-4 lg:col-span-2 space-y-4 bg-none lg:backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2 rounded-lg shadow-2xl">
-        <h1 class="text-5xl gold-header-text">Demo</h1>
-        <p class="text-md">
-        We are currently working towards an iOS/Android release for an official demo. 
-        This demo will be specifially designed to highlight the gameplay design
-        </p>
-        <ul class="list-disc pl-8 mt-2 green-header-text jersey-font text-2xl">
-          <li>Tutorial Mission</li>
-          <li>Flight Mission #01</li>
-          <li>Survival Mode - Earth</li>
-        </ul>
-        <br>
-        <h2 class="text-4xl lg:mt-0 lg:text-4xl purple-header-text">
-          Want to play the Demo?
-        </h2>
-        
+      <!-- Demo Info Card -->
+      <div class="w-full lg:w-auto lg:max-w-xl">
+        <div class="demo-info-card p-6 lg:p-8 space-y-5 backdrop-blur-xl bg-black/40 lg:bg-white/5 border border-white/10 rounded-2xl shadow-2xl">
           
-        <!-- <Button on:click={testerLink} color="none" class="text-white text-md mt-2 w-full lg:w-40" style="background: var(--green-gradient);">Tester Sign Up</Button> -->
-        <p class="text-white text-xs"><b class="text-[#FFD700]">iOS</b> - Follow Steps 1 & 2 in the Link. Must have Testflight Downloaded to play.</p>
-        <Button on:click={iosTesterLink} class="text-white bg-[#555] hover:bg-[#776505] uppercase text-lg mt-2 w-full">
-          <span><AppleSolid size="xl" class="mx-2" color="#00c400"></AppleSolid></span>
-          iOS Testflight
-        </Button>
+          <!-- Status Badge -->
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 px-4 py-2 bg-[#FFD700]/10 border border-[#FFD700]/30 rounded-full">
+              <span class="text-lg">🎮</span>
+              <span class="text-[#FFD700] text-sm font-semibold uppercase tracking-wide">Demo Available</span>
+            </div>
+          </div>
 
-        <p class="text-white text-xs"><b class="text-[#FFD700]">Android</b> - Join Group > Download Demo Link > Install App.</p>
-        <Button on:click={androidTesterLink} class="text-white bg-[#555] hover:bg-[#776505] uppercase text-lg mt-2 w-full">
-          <span>
-            <!-- Android Icon -->
-            <svg fill="#00c400" class="mx-2" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32px" height="32px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
-            <g id="b75708d097f2188dff6617b0f00f7c43">
-              <path display="inline" d="M120.606,169h270.788v220.663c0,13.109-10.628,23.737-23.721,23.737h-27.123v67.203
-                  c0,17.066-13.612,30.897-30.415,30.897c-16.846,0-30.438-13.831-30.438-30.897v-67.203h-47.371v67.203
-                  c0,17.066-13.639,30.897-30.441,30.897c-16.799,0-30.437-13.831-30.437-30.897v-67.203h-27.099
-                  c-13.096,0-23.744-10.628-23.744-23.737V169z M67.541,167.199c-16.974,0-30.723,13.963-30.723,31.2v121.937
-                  c0,17.217,13.749,31.204,30.723,31.204c16.977,0,30.723-13.987,30.723-31.204V198.399
-                  C98.264,181.162,84.518,167.199,67.541,167.199z M391.395,146.764H120.606c3.342-38.578,28.367-71.776,64.392-90.998
-                  l-25.746-37.804c-3.472-5.098-2.162-12.054,2.946-15.525c5.102-3.471,12.044-2.151,15.533,2.943l28.061,41.232
-                  c15.558-5.38,32.446-8.469,50.208-8.469c17.783,0,34.672,3.089,50.229,8.476L334.29,5.395c3.446-5.108,10.41-6.428,15.512-2.957
-                  c5.108,3.471,6.418,10.427,2.946,15.525l-25.725,37.804C363.047,74.977,388.055,108.175,391.395,146.764z M213.865,94.345
-                  c0-8.273-6.699-14.983-14.969-14.983c-8.291,0-14.99,6.71-14.99,14.983c0,8.269,6.721,14.976,14.99,14.976
-                  S213.865,102.614,213.865,94.345z M329.992,94.345c0-8.273-6.722-14.983-14.99-14.983c-8.291,0-14.97,6.71-14.97,14.983
-                  c0,8.269,6.679,14.976,14.97,14.976C323.271,109.321,329.992,102.614,329.992,94.345z M444.48,167.156
-                  c-16.956,0-30.744,13.984-30.744,31.222v121.98c0,17.238,13.788,31.226,30.744,31.226c16.978,0,30.701-13.987,30.701-31.226
-                  v-121.98C475.182,181.14,461.458,167.156,444.48,167.156z">
-              </path>
-            </g>
-          </svg>
-          </span>
-          Android .APK
-        </Button>
-        <br>
-        <!-- <span class="text-white text-xs">Please open on Mobile Browsers (iOS/Android)</span> -->
+          <!-- Title -->
+          <div>
+            <h1 class="text-4xl lg:text-5xl gold-header-text font-bold mb-2">Play the Demo</h1>
+            <p class="text-gray-400 text-sm lg:text-base">Experience Cosmic Collisions before the official release</p>
+          </div>
+
+          <!-- Features List -->
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1.5 bg-black/60 border border-[#00c400]/40 rounded-full text-xs text-white font-medium shadow-lg">🎯 Tutorial Mission</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-[#FFD700]/40 rounded-full text-xs text-white font-medium shadow-lg">🚀 Flight Mission #01</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-purple-500/40 rounded-full text-xs text-white font-medium shadow-lg">🌍 Survival Mode - Earth</span>
+          </div>
+
+          <!-- Description -->
+          <p class="text-gray-300 text-sm lg:text-base leading-relaxed">
+            We're working towards an iOS/Android release for our official demo. This demo is specifically designed to showcase the <span class="text-[#00c400] font-medium">core gameplay mechanics</span> and give you a taste of the full experience.
+          </p>
+
+          <!-- Download Section -->
+          <div class="space-y-4 pt-2">
+            <h2 class="text-2xl purple-header-text font-semibold">Download Now</h2>
+            
+            <!-- iOS Button -->
+            <div class="space-y-2">
+              <p class="text-gray-400 text-xs"><span class="text-[#FFD700] font-semibold">iOS</span> — Requires TestFlight app installed</p>
+              <Button on:click={iosTesterLink} class="text-white bg-black/50 hover:bg-[#1b023d] border border-white/20 hover:border-[#00c400]/50 uppercase text-base w-full transition-all duration-200">
+                <span><AppleSolid size="lg" class="mr-3" color="#00c400"></AppleSolid></span>
+                Download via TestFlight
+              </Button>
+            </div>
+
+            <!-- Android Button -->
+            <div class="space-y-2">
+              <p class="text-gray-400 text-xs"><span class="text-[#FFD700] font-semibold">Android</span> — Join tester group, then download APK</p>
+              <Button on:click={androidTesterLink} class="text-white bg-black/50 hover:bg-[#1b023d] border border-white/20 hover:border-[#00c400]/50 uppercase text-base w-full transition-all duration-200">
+                <svg fill="#00c400" class="mr-3" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 512 512">
+                  <path d="M120.606,169h270.788v220.663c0,13.109-10.628,23.737-23.721,23.737h-27.123v67.203c0,17.066-13.612,30.897-30.415,30.897c-16.846,0-30.438-13.831-30.438-30.897v-67.203h-47.371v67.203c0,17.066-13.639,30.897-30.441,30.897c-16.799,0-30.437-13.831-30.437-30.897v-67.203h-27.099c-13.096,0-23.744-10.628-23.744-23.737V169z M67.541,167.199c-16.974,0-30.723,13.963-30.723,31.2v121.937c0,17.217,13.749,31.204,30.723,31.204c16.977,0,30.723-13.987,30.723-31.204V198.399C98.264,181.162,84.518,167.199,67.541,167.199z M391.395,146.764H120.606c3.342-38.578,28.367-71.776,64.392-90.998l-25.746-37.804c-3.472-5.098-2.162-12.054,2.946-15.525c5.102-3.471,12.044-2.151,15.533,2.943l28.061,41.232c15.558-5.38,32.446-8.469,50.208-8.469c17.783,0,34.672,3.089,50.229,8.476L334.29,5.395c3.446-5.108,10.41-6.428,15.512-2.957c5.108,3.471,6.418,10.427,2.946,15.525l-25.725,37.804C363.047,74.977,388.055,108.175,391.395,146.764z M213.865,94.345c0-8.273-6.699-14.983-14.969-14.983c-8.291,0-14.99,6.71-14.99,14.983c0,8.269,6.721,14.976,14.99,14.976S213.865,102.614,213.865,94.345z M329.992,94.345c0-8.273-6.722-14.983-14.99-14.983c-8.291,0-14.97,6.71-14.97,14.983c0,8.269,6.679,14.976,14.97,14.976C323.271,109.321,329.992,102.614,329.992,94.345z M444.48,167.156c-16.956,0-30.744,13.984-30.744,31.222v121.98c0,17.238,13.788,31.226,30.744,31.226c16.978,0,30.701-13.987,30.701-31.226v-121.98C475.182,181.14,461.458,167.156,444.48,167.156z"/>
+                </svg>
+                Download Android APK
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Middle Right Column - Your existing right content -->
-      <div class="lg:col-span-1  content-center">
-        <video
-          bind:this={demoVideo}
-          class="phone-case-iphone14"
-          style=""
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/Game-trailer-Attempt-3.mp4"
-          autoplay
-          playsinline 
-          loop
-          muted>
-        </video>
-      </div>
-
-      <!-- New Right Column -->
-      <div class="lg:col-span-1 hidden lg:block">
-        <!-- Your new right content here -->
-        <!-- <div class="bg-white/10 border-white/20 border-2 rounded-lg p-4">
-          <p>Right sidebar content</p>
-        </div> -->
+      <!-- Phone Mockup with Video -->
+      <div class="w-full lg:w-auto flex justify-center">
+        <div class="relative">
+          <!-- Phone Frame -->
+          <div class="phone-mockup relative">
+            <!-- Glow effect -->
+            <div class="absolute inset-0 blur-3xl bg-[#FFD700]/10 -z-10 scale-125 rounded-full"></div>
+            
+            <!-- Phone bezel -->
+            <div class="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl border border-gray-700/50">
+              <!-- Notch -->
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-b-2xl z-20"></div>
+              
+              <!-- Screen -->
+              <div class="relative overflow-hidden rounded-[2.5rem] bg-black">
+                <video
+                  bind:this={demoVideo}
+                  class="w-56 lg:w-64 aspect-[9/19.5] object-cover"
+                  src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/Game-trailer-Attempt-3.mp4"
+                  autoplay
+                  playsinline 
+                  loop
+                  muted>
+                </video>
+              </div>
+              
+              <!-- Home indicator -->
+              <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-24 h-1 bg-gray-600 rounded-full"></div>
+            </div>
+          </div>
+          
+          <!-- Floating badge -->
+          <div class="absolute -bottom-4 -right-4 px-4 py-2 bg-[#00c400]/20 border border-[#00c400]/50 rounded-full backdrop-blur-sm">
+            <span class="text-[#00c400] text-xs font-semibold">▶ Live Gameplay</span>
+          </div>
+        </div>
       </div>
       
     </div>
@@ -266,42 +273,67 @@
     </h1>
   </div>
   <div class="w-11/12 lg:w-1/2 mx-auto h-auto lg:h-auto"> 
-    {#each characters as character}
-      <div class="pilot-card w-full my-2 lg:mx-1 rounded sm:w-1/2 lg:w-full p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white flex gap-4">
-        <!-- Left column - Image only -->
-        <div class="flex-shrink-0 lg:content-center">
-        <!-- <img 
-          src={character.photo} 
-          class="h-20 lg:h-40 rounded-full" 
-          alt="Flowbite Logo" 
-        /> -->
-        <video
-          autoplay
-          playsinline 
-          muted
-          loop
-          class="h-20 w-20 lg:h-40 lg:w-40 rounded-full object-cover"
-          poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
+    {#each characters as character, index}
+      <div class="pilot-card group w-full my-4 rounded-xl lg:w-full p-5 backdrop-blur-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/20 text-white flex gap-5 hover:border-[#FFD700]/40 relative overflow-hidden">
+        <!-- Subtle gradient overlay on hover -->
+        <div class="absolute inset-0 bg-gradient-to-r from-[#FFD700]/5 to-[#00c400]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        
+        <!-- Left column - Video/Image -->
+        <div class="flex-shrink-0 relative z-10">
+          <div class="relative">
+            <video
+              autoplay
+              playsinline 
+              muted
+              loop
+              class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-all duration-300"
+              poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
             >
-         <source src="{character.video}" type="video/mp4">
-         Your browser does not support the video tag.
-        </video>
+              <source src="{character.video}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <!-- Character number badge -->
+            <div class="absolute -top-2 -left-2 w-7 h-7 bg-gradient-to-br from-[#FFD700] to-[#FFA500] rounded-full flex items-center justify-center text-black font-bold text-sm shadow-lg">
+              {index + 1}
+            </div>
+          </div>
         </div>
       
-        <!-- Right column - Everything else -->
-        <div class="flex-1">
-        <h1 class="text-3xl lg:text-5xl gold-header-text">{character.name}</h1>
-        <h2 class="text-2xl lg:text-xl green-header-text">{character.title}</h2>
-        <p class="text-sm lg:text-[0.85em] h-auto lg:h-6 mb-2 pb-4 border-b-2 border-[#999]"><b>Special</b>: {character.special}</p>
-        <p class="text-xs lg:text-md text-[#ffffff80]">{character.description}</p>
-        <br>
+        <!-- Right column - Character Info -->
+        <div class="flex-1 relative z-10 flex flex-col justify-center">
+          <div class="flex items-center gap-2 mb-1">
+            <h1 class="text-2xl lg:text-4xl gold-header-text tracking-tight">{character.name}</h1>
+          </div>
+          <h2 class="text-lg lg:text-xl green-header-text font-medium mb-2">{character.title}</h2>
+          
+          <!-- Special ability with icon -->
+          <div class="bg-black/30 rounded-lg px-3 py-2 mb-3 border-l-4 border-[#00c400]">
+            <p class="text-xs lg:text-sm text-gray-300">
+              <span class="text-[#00c400] font-semibold">⚡ Special:</span> {character.special}
+            </p>
+          </div>
+          
+          <p class="text-xs lg:text-sm text-gray-400 leading-relaxed line-clamp-3 lg:line-clamp-none">{character.description}</p>
         </div>
       </div>
     {/each}
   </div>
-  <!-- <div class="w-11/12 lg:w-1/2 flex flex-col md:flex-row mx-auto mt-2 h-auto lg:h-auto">
-    <span class="text-gray-500">[Disclaimer] AI-Generated concept images, final concepts in development.</span>
-  </div> -->
+  <div class="w-11/12 lg:w-1/2 mx-auto mt-4 p-4 rounded-lg border-2 border-[#FFD700]/50 bg-[#FFD700]/10 backdrop-blur-lg">
+    <div class="flex items-start gap-3">
+      <span class="text-2xl">🎨</span>
+      <div>
+        <h1 class="text-[#FFD700] text-sm lg:text-3xl mb-1">We're Hiring!</h1>
+        <p class="text-gray-300 text-xs lg:text-sm mb-2">
+          We're looking for a talented <span class="text-purple-400 font-semibold">Graphic Designer & Illustrator</span> to create original character concepts and game lore settings. 
+          We've used AI-generated concepts as a starting point, but now we need an artist to finalize designs and develop additional assets. Ideal candidates are passionate about sci-fi and space themes, with experience in 
+          <span class="text-purple-400 font-semibold">comic book-style illustration</span>.
+        </p>
+        <a href="/jobs" class="inline-flex items-center text-[#00c400] hover:text-[#00ff00] text-sm font-medium transition-colors">
+          View Open Positions →
+        </a>
+      </div>
+    </div>
+  </div>
 
   <!-- Spacer -->
   <div class="h-2 my-20 lg:my-32 border-b-8 border-[#ffffff10]"></div>
@@ -365,34 +397,26 @@
     text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
   }
 
-  .demo-card, .lore-card, .demo-card p, .demo-card h1, .demo-card h2, .demo-card li
+  .header-card, .demo-info-card, .lore-card
   {
-    transition: 200ms;
+    transition: all 300ms ease-out;
   }
+
+  .header-card:hover, .demo-info-card:hover {
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: translateY(-4px);
+  }
+
+  .phone-mockup {
+    transition: all 400ms ease-out;
+  }
+
+  .phone-mockup:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+
   @media (min-width: 1000px) { 
-    /* Header Card */
-    .demo-card:hover {
-      transition: 200ms;
-      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-      transform: translateY(-10px);
-      border-color: #0fd8414d;
-    } 
-
-    /* Demo Card */
-    .demo-card:hover h1 {
-      font-size: 5em;
-    }
-    .demo-card:hover h2 {
-      font-size: 3em;
-    }
-    .demo-card:hover li {
-      font-size: 1.25em;
-    }
-    .demo-card:hover p {
-      font-size: 1.15em;
-      line-height: 1.35em;
-    }
-
     /* Lore */
     .lore-card:hover{
     transition: 200ms;
@@ -408,19 +432,12 @@
 
     /* Pilot Card */
     .pilot-card {
-      transition: transform 200ms ease-out, background 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
-      transform: translateY(-10px);
+      transition: all 300ms ease-out;
+      transform: translateY(0);
     }
     .pilot-card:hover {
-      transition: 200ms;
-      margin: 2em 0em 1em 0em;
-      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-      transform: translateY(-10px);
-      border-color: #0fd8414d;
-    }
-    .pilot-card:hover::after {
-      transition: 200ms;
-      margin: 0em;
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px -15px rgba(255, 215, 0, 0.15);
     }
   }
 </style>
