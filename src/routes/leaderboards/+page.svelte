@@ -448,21 +448,25 @@
     border-radius: 0.5rem;
     background: rgba(255, 255, 255, 0.1);
     font-weight: bold;
+    color: rgba(255, 255, 255, 0.8);
   }
 
   .rank-badge.rank-gold {
-    background: linear-gradient(145deg, #FFD700, #DAA520);
-    color: #000;
+    background: linear-gradient(145deg, rgba(255, 215, 0, 0.3), rgba(218, 165, 32, 0.2));
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    color: #FFD700;
   }
 
   .rank-badge.rank-silver {
-    background: linear-gradient(145deg, #E8E8E8, #B0B0B0);
-    color: #000;
+    background: linear-gradient(145deg, rgba(192, 192, 192, 0.3), rgba(160, 160, 160, 0.2));
+    border: 1px solid rgba(192, 192, 192, 0.5);
+    color: #E8E8E8;
   }
 
   .rank-badge.rank-bronze {
-    background: linear-gradient(145deg, #CD7F32, #8B4513);
-    color: #fff;
+    background: linear-gradient(145deg, rgba(205, 127, 50, 0.3), rgba(139, 69, 19, 0.2));
+    border: 1px solid rgba(205, 127, 50, 0.5);
+    color: #CD9A6D;
   }
 
   .rank-text {
