@@ -1,4 +1,4 @@
-﻿<script lang="ts">
+<script lang="ts">
   import { onMount } from 'svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
     import { Button } from 'flowbite-svelte';
@@ -36,7 +36,7 @@
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/johnny_photo.PNG',
         title: 'The Rookie',
         video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/JohnnySparksIntroGesture.mp4',
-        special: 'Health Regeneration - Player Shipâ€™s Shield regenerates every [X amount of time]',
+        special: 'Health Regeneration - Player Ship’s Shield regenerates every [X amount of time]',
         description: "A newly minted graduate, Sparky is naive but full of courage and optimism. Despite their inexperience, they bring a fresh perspective and a contagious positive spirit, which could be the spark the resistance needs. An exceptional VR/AR gamer with a determination reminiscent of a young Leon Kennedy.",
     },
     {
@@ -132,10 +132,10 @@
 
             <!-- Genre Tags -->
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1.5 bg-black/60 border border-[#FFD700]/40 rounded-full text-xs text-white font-medium shadow-lg">ðŸŽ® Arcade</span>
-              <span class="px-3 py-1.5 bg-black/60 border border-[#00c400]/40 rounded-full text-xs text-white font-medium shadow-lg">ðŸš€ Space Shooter</span>
-              <span class="px-3 py-1.5 bg-black/60 border border-purple-500/40 rounded-full text-xs text-white font-medium shadow-lg">âš”ï¸ RPG</span>
-              <span class="px-3 py-1.5 bg-black/60 border border-blue-400/40 rounded-full text-xs text-white font-medium shadow-lg">ðŸ“± AR (Augmented Reality)</span>
+              <span class="px-3 py-1.5 bg-black/60 border border-[#FFD700]/40 rounded-full text-xs text-white font-medium shadow-lg">Arcade</span>
+              <span class="px-3 py-1.5 bg-black/60 border border-[#00c400]/40 rounded-full text-xs text-white font-medium shadow-lg">Space Shooter</span>
+              <span class="px-3 py-1.5 bg-black/60 border border-purple-500/40 rounded-full text-xs text-white font-medium shadow-lg">RPG</span>
+              <span class="px-3 py-1.5 bg-black/60 border border-blue-400/40 rounded-full text-xs text-white font-medium shadow-lg">AR (Augmented Reality)</span>
             </div>
 
             <!-- Description -->
@@ -145,8 +145,8 @@
 
             <!-- CTA Buttons -->
             <div class="flex flex-col sm:flex-row gap-3 pt-2">
-              <Button href="/leaderboards" color="none" class="flex-1 justify-center bg-[#1b023d] hover:bg-[#2d0a5e] text-white border border-purple-900/50">ðŸ† Leaderboards</Button>
-              <Button href="#demo" color="dark" class="flex-1 justify-center border border-white/20 hover:border-[#00c400]/50">â–¶ Play Demo</Button>
+              <Button href="/leaderboards" color="none" class="flex-1 justify-center bg-[#1b023d] hover:bg-[#2d0a5e] text-white border border-purple-900/50">Leaderboards</Button>
+              <Button href="#demo" color="dark" class="flex-1 justify-center border border-white/20 hover:border-[#00c400]/50">Play Demo</Button>
             </div>
           </div>
         </div>
@@ -171,7 +171,6 @@
           <!-- Status Badge -->
           <div class="flex items-center gap-3">
             <div class="flex items-center gap-2 px-4 py-2 bg-[#FFD700]/10 border border-[#FFD700]/30 rounded-full">
-              <span class="text-lg">ðŸŽ®</span>
               <span class="text-[#FFD700] text-sm font-semibold uppercase tracking-wide">Demo Available</span>
             </div>
           </div>
@@ -184,9 +183,9 @@
 
           <!-- Features List -->
           <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1.5 bg-black/60 border border-[#00c400]/40 rounded-full text-xs text-white font-medium shadow-lg">ðŸŽ¯ Tutorial Mission</span>
-            <span class="px-3 py-1.5 bg-black/60 border border-[#FFD700]/40 rounded-full text-xs text-white font-medium shadow-lg">ðŸš€ Flight Mission #01</span>
-            <span class="px-3 py-1.5 bg-black/60 border border-purple-500/40 rounded-full text-xs text-white font-medium shadow-lg">ðŸŒ Survival Mode - Earth</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-[#00c400]/40 rounded-full text-xs text-white font-medium shadow-lg">Tutorial Mission</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-[#FFD700]/40 rounded-full text-xs text-white font-medium shadow-lg">Flight Mission #01</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-purple-500/40 rounded-full text-xs text-white font-medium shadow-lg">Survival Mode</span>
           </div>
 
           <!-- Description -->
@@ -200,7 +199,7 @@
             
             <!-- iOS Button -->
             <div class="space-y-2">
-              <p class="text-gray-400 text-xs"><span class="text-[#FFD700] font-semibold">iOS</span> â€” Requires TestFlight app installed</p>
+              <p class="text-gray-400 text-xs"><span class="text-[#FFD700] font-semibold">iOS</span> — Requires TestFlight app installed</p>
               <Button on:click={iosTesterLink} class="text-white bg-black/50 hover:bg-[#1b023d] border border-white/20 hover:border-[#00c400]/50 uppercase text-base w-full transition-all duration-200">
                 <span><AppleSolid size="lg" class="mr-3" color="#00c400"></AppleSolid></span>
                 Download via TestFlight
@@ -209,7 +208,7 @@
 
             <!-- Android Button -->
             <div class="space-y-2">
-              <p class="text-gray-400 text-xs"><span class="text-[#FFD700] font-semibold">Android</span> â€” Join tester group, then download APK</p>
+              <p class="text-gray-400 text-xs"><span class="text-[#FFD700] font-semibold">Android</span> — Join tester group, then download APK</p>
               <Button on:click={androidTesterLink} class="text-white bg-black/50 hover:bg-[#1b023d] border border-white/20 hover:border-[#00c400]/50 uppercase text-base w-full transition-all duration-200">
                 <svg fill="#00c400" class="mr-3" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 512 512">
                   <path d="M120.606,169h270.788v220.663c0,13.109-10.628,23.737-23.721,23.737h-27.123v67.203c0,17.066-13.612,30.897-30.415,30.897c-16.846,0-30.438-13.831-30.438-30.897v-67.203h-47.371v67.203c0,17.066-13.639,30.897-30.441,30.897c-16.799,0-30.437-13.831-30.437-30.897v-67.203h-27.099c-13.096,0-23.744-10.628-23.744-23.737V169z M67.541,167.199c-16.974,0-30.723,13.963-30.723,31.2v121.937c0,17.217,13.749,31.204,30.723,31.204c16.977,0,30.723-13.987,30.723-31.204V198.399C98.264,181.162,84.518,167.199,67.541,167.199z M391.395,146.764H120.606c3.342-38.578,28.367-71.776,64.392-90.998l-25.746-37.804c-3.472-5.098-2.162-12.054,2.946-15.525c5.102-3.471,12.044-2.151,15.533,2.943l28.061,41.232c15.558-5.38,32.446-8.469,50.208-8.469c17.783,0,34.672,3.089,50.229,8.476L334.29,5.395c3.446-5.108,10.41-6.428,15.512-2.957c5.108,3.471,6.418,10.427,2.946,15.525l-25.725,37.804C363.047,74.977,388.055,108.175,391.395,146.764z M213.865,94.345c0-8.273-6.699-14.983-14.969-14.983c-8.291,0-14.99,6.71-14.99,14.983c0,8.269,6.721,14.976,14.99,14.976S213.865,102.614,213.865,94.345z M329.992,94.345c0-8.273-6.722-14.983-14.99-14.983c-8.291,0-14.97,6.71-14.97,14.983c0,8.269,6.679,14.976,14.97,14.976C323.271,109.321,329.992,102.614,329.992,94.345z M444.48,167.156c-16.956,0-30.744,13.984-30.744,31.222v121.98c0,17.238,13.788,31.226,30.744,31.226c16.978,0,30.701-13.987,30.701-31.226v-121.98C475.182,181.14,461.458,167.156,444.48,167.156z"/>
@@ -254,7 +253,7 @@
           
           <!-- Floating badge -->
           <div class="absolute -bottom-4 -right-4 px-4 py-2 bg-[#00c400]/20 border border-[#00c400]/50 rounded-full backdrop-blur-sm">
-            <span class="text-[#00c400] text-xs font-semibold">â–¶ Live Gameplay</span>
+            <span class="text-[#00c400] text-xs font-semibold">Live Gameplay</span>
           </div>
         </div>
       </div>
@@ -309,7 +308,7 @@
           <!-- Special ability with icon -->
           <div class="bg-black/30 rounded-lg px-3 py-2 mb-3 border-l-4 border-[#00c400]">
             <p class="text-xs lg:text-sm text-gray-300">
-              <span class="text-[#00c400] font-semibold">âš¡ Special:</span> {character.special}
+              <span class="text-[#00c400] font-semibold">Special:</span> {character.special}
             </p>
           </div>
           
@@ -320,7 +319,6 @@
   </div>
   <div class="w-11/12 lg:w-1/2 mx-auto mt-4 p-4 rounded-lg border-2 border-[#FFD700]/50 bg-[#FFD700]/10 backdrop-blur-lg">
     <div class="flex items-start gap-3">
-      <span class="text-2xl">ðŸŽ¨</span>
       <div>
         <h1 class="text-[#FFD700] text-sm lg:text-3xl mb-1">We're Hiring!</h1>
         <p class="text-gray-300 text-xs lg:text-sm mb-2">
@@ -329,7 +327,7 @@
           <span class="text-purple-400 font-semibold">comic book-style illustration</span>.
         </p>
         <a href="/jobs" class="inline-flex items-center text-[#00c400] hover:text-[#00ff00] text-sm font-medium transition-colors">
-          View Open Positions â†’
+          View Open Positions →
         </a>
       </div>
     </div>
@@ -360,7 +358,6 @@
           <!-- Section Badge -->
           <div class="flex items-center gap-3">
             <div class="flex items-center gap-2 px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-full">
-              <span class="text-lg"></span>
               <span class="text-purple-400 text-sm font-semibold uppercase tracking-wide">Story</span>
             </div>
           </div>
@@ -368,33 +365,33 @@
           <!-- Title -->
           <div>
             <h1 class="text-4xl lg:text-5xl gold-header-text font-bold mb-2">The Lore</h1>
-            <p class="text-gray-400 text-sm lg:text-base">Year 2157  The Solar System Under Siege</p>
+            <p class="text-gray-400 text-sm lg:text-base">Year 2157 — The Solar System Under Siege</p>
           </div>
 
           <!-- Lore Content -->
           <div class="space-y-4">
             <p class="text-gray-300 text-sm lg:text-base leading-relaxed">
-              An alien force has set its sights on our Sun  viewing it as a vital energy resource to fuel their interstellar conquest. Their strategy is ruthless: <span class="text-[#FFD700] font-medium">destroy each planet</span> to eliminate any resistance before claiming our star.
+              An alien force has set its sights on our Sun — viewing it as a vital energy resource to fuel their interstellar conquest. Their strategy is ruthless: <span class="text-[#FFD700] font-medium">destroy each planet</span> to eliminate any resistance before claiming our star.
             </p>
             
             <p class="text-gray-300 text-sm lg:text-base leading-relaxed">
-              Earth's <span class="text-[#00c400] font-medium">Solar System Defense Force (SSDF)</span> has discovered the enemy's first move  they've destabilized the asteroid belt, weaponizing space debris against every world in our system.
+              Earth's <span class="text-[#00c400] font-medium">Solar System Defense Force (SSDF)</span> has discovered the enemy's first move — they've destabilized the asteroid belt, weaponizing space debris against every world in our system.
             </p>
 
             <div class="bg-black/30 rounded-lg px-4 py-3 border-l-4 border-[#FFD700]">
               <p class="text-sm text-gray-300 italic">
                 "The Sun is essential to all life. If it falls, so does everything we've ever known. We are humanity's last line of defense."
               </p>
-              <p class="text-xs text-[#FFD700] mt-2 font-semibold"> Captain Phoenix, SSDF Commander</p>
+              <p class="text-xs text-[#FFD700] mt-2 font-semibold">— Captain Phoenix, SSDF Commander</p>
             </div>
           </div>
 
           <!-- Tags -->
           <div class="flex flex-wrap gap-2 pt-2">
-            <span class="px-3 py-1.5 bg-black/60 border border-[#FFD700]/40 rounded-full text-xs text-white font-medium shadow-lg"> Earth</span>
-            <span class="px-3 py-1.5 bg-black/60 border border-[#00c400]/40 rounded-full text-xs text-white font-medium shadow-lg"> The Sun</span>
-            <span class="px-3 py-1.5 bg-black/60 border border-purple-500/40 rounded-full text-xs text-white font-medium shadow-lg"> Alien Invasion</span>
-            <span class="px-3 py-1.5 bg-black/60 border border-blue-400/40 rounded-full text-xs text-white font-medium shadow-lg"> SSDF</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-[#FFD700]/40 rounded-full text-xs text-white font-medium shadow-lg">Earth</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-[#00c400]/40 rounded-full text-xs text-white font-medium shadow-lg">The Sun</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-purple-500/40 rounded-full text-xs text-white font-medium shadow-lg">Alien Invasion</span>
+            <span class="px-3 py-1.5 bg-black/60 border border-blue-400/40 rounded-full text-xs text-white font-medium shadow-lg">SSDF</span>
           </div>
         </div>
       </div>
@@ -474,3 +471,4 @@
     }
   }
 </style>
+
