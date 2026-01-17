@@ -115,15 +115,6 @@
   <!-- Leaderboard Content -->
   <div class="leaderboard-content">
     {#if activeTab === "survival"}
-      <!-- Coming Soon State -->
-      <div class="coming-soon-card">
-        <div class="coming-soon-icon">🎮</div>
-        <h2 class="gold-header-text coming-soon-title">Coming Soon!</h2>
-        <p class="coming-soon-text">Survival mode leaderboards are on their way. Stay tuned!</p>
-      </div>
-
-      <!-- Uncomment below when data is ready -->
-      <!-- 
       {#if data.survivalLeaderboard.length === 0}
         <div class="empty-state">
           <div class="empty-icon">🏆</div>
@@ -167,19 +158,9 @@
           {/each}
         </div>
       {/if}
-      -->
     {/if}
 
     {#if activeTab === "flight"}
-      <!-- Coming Soon State -->
-      <div class="coming-soon-card">
-        <div class="coming-soon-icon">✈️</div>
-        <h2 class="gold-header-text coming-soon-title">Coming Soon!</h2>
-        <p class="coming-soon-text">Flight mode leaderboards are on their way. Stay tuned!</p>
-      </div>
-
-      <!-- Uncomment below when data is ready -->
-      <!--
       {#if data.flightLeaderboard.length === 0}
         <div class="empty-state">
           <div class="empty-icon">🏆</div>
@@ -213,7 +194,6 @@
           {/each}
         </div>
       {/if}
-      -->
     {/if}
   </div>
 </div>
