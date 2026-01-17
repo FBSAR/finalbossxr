@@ -22,6 +22,7 @@
    export let data: {
     survivalLeaderboard: SurvivalEntry[];
     flightLeaderboard: FlightEntry[];
+    error?: string | null;
   };
 
   let activeTab: "survival" | "flight" = "survival";
@@ -93,6 +94,7 @@
   </div>
 
   <!-- Tab Switcher -->
+  {#if !data.error}
   <div class="tab-container">
     <button
       class="tab-button"
@@ -111,10 +113,21 @@
       <span class="tab-text">Flight</span>
     </button>
   </div>
+  {/if}
 
   <!-- Leaderboard Content -->
   <div class="leaderboard-content">
-    {#if activeTab === "survival"}
+    {#if data.error}
+      <!-- Error State -->
+      <div class="error-state">
+        <div class="error-icon">⚠️</div>
+        <h2 class="error-title">Unable to Load Leaderboards</h2>
+        <p class="error-message">{data.error}</p>
+        <button class="retry-button" on:click={() => window.location.reload()}>
+          Try Again
+        </button>
+      </div>
+    {:else if activeTab === "survival"}
       {#if data.survivalLeaderboard.length === 0}
         <div class="empty-state">
           <div class="empty-icon">🏆</div>
@@ -469,6 +482,48 @@
 
   .empty-state p {
     color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Error State */
+  .error-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 1rem;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .error-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .error-title {
+    color: #ef4444;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .error-message {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1.5rem;
+  }
+
+  .retry-button {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .retry-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
   }
 
   /* Mobile Responsive */
