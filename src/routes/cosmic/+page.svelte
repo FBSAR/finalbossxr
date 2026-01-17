@@ -251,9 +251,14 @@
             </div>
           </div>
           
-          <!-- Floating badge -->
-          <div class="absolute -bottom-4 -right-4 px-4 py-2 bg-[#00c400]/20 border border-[#00c400]/50 rounded-full backdrop-blur-sm">
-            <span class="text-[#00c400] text-xs font-semibold">Live Gameplay</span>
+          <!-- Badges underneath phone -->
+          <div class="flex flex-wrap justify-center gap-2 mt-6">
+            <div class="px-4 py-2 bg-[#00c400]/20 border border-[#00c400]/50 rounded-full backdrop-blur-sm">
+              <span class="text-[#00c400] text-xs font-semibold">Live Gameplay</span>
+            </div>
+            <div class="px-4 py-2 bg-[#FFD700]/20 border border-[#FFD700]/50 rounded-full backdrop-blur-sm">
+              <span class="text-[#FFD700] text-xs font-semibold">Alpha Development</span>
+            </div>
           </div>
         </div>
       </div>
