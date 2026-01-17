@@ -110,6 +110,28 @@
   $: survivalPagination = data.survivalLeaderboard?.pagination;
   $: flightEntries = data.flightLeaderboard?.data ?? [];
   $: flightPagination = data.flightLeaderboard?.pagination;
+
+  // Generate page numbers for pagination
+  const getPageNumbers = (current: number, total: number): (number | '...')[] => {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    
+    const pages: (number | '...')[] = [];
+    
+    if (current <= 3) {
+      // Near start: 1 2 3 4 ... last
+      pages.push(1, 2, 3, 4, '...', total);
+    } else if (current >= total - 2) {
+      // Near end: 1 ... last-3 last-2 last-1 last
+      pages.push(1, '...', total - 3, total - 2, total - 1, total);
+    } else {
+      // Middle: 1 ... current-1 current current+1 ... last
+      pages.push(1, '...', current - 1, current, current + 1, '...', total);
+    }
+    
+    return pages;
+  };
 </script>
 
 <div class="leaderboard-container">
@@ -244,22 +266,35 @@
         {#if survivalPagination && survivalPagination.totalPages > 1}
           <div class="pagination">
             <button 
-              class="page-btn" 
+              class="page-btn nav-btn" 
               disabled={!survivalPagination.hasPrev}
               on:click={() => goToPage('survival', survivalPagination.page - 1)}
             >
-              ← Prev
+              ←
             </button>
-            <span class="page-info">
-              Page {survivalPagination.page} of {survivalPagination.totalPages}
-              <span class="total-count">({survivalPagination.total} players)</span>
-            </span>
+            
+            <div class="page-numbers">
+              {#each getPageNumbers(survivalPagination.page, survivalPagination.totalPages) as pageNum}
+                {#if pageNum === '...'}
+                  <span class="page-ellipsis">...</span>
+                {:else}
+                  <button 
+                    class="page-num" 
+                    class:active={pageNum === survivalPagination.page}
+                    on:click={() => goToPage('survival', pageNum)}
+                  >
+                    {pageNum}
+                  </button>
+                {/if}
+              {/each}
+            </div>
+            
             <button 
-              class="page-btn" 
+              class="page-btn nav-btn" 
               disabled={!survivalPagination.hasNext}
               on:click={() => goToPage('survival', survivalPagination.page + 1)}
             >
-              Next →
+              →
             </button>
           </div>
         {/if}
@@ -304,22 +339,35 @@
         {#if flightPagination && flightPagination.totalPages > 1}
           <div class="pagination">
             <button 
-              class="page-btn" 
+              class="page-btn nav-btn" 
               disabled={!flightPagination.hasPrev}
               on:click={() => goToPage('flight', flightPagination.page - 1)}
             >
-              ← Prev
+              ←
             </button>
-            <span class="page-info">
-              Page {flightPagination.page} of {flightPagination.totalPages}
-              <span class="total-count">({flightPagination.total} players)</span>
-            </span>
+            
+            <div class="page-numbers">
+              {#each getPageNumbers(flightPagination.page, flightPagination.totalPages) as pageNum}
+                {#if pageNum === '...'}
+                  <span class="page-ellipsis">...</span>
+                {:else}
+                  <button 
+                    class="page-num" 
+                    class:active={pageNum === flightPagination.page}
+                    on:click={() => goToPage('flight', pageNum)}
+                  >
+                    {pageNum}
+                  </button>
+                {/if}
+              {/each}
+            </div>
+            
             <button 
-              class="page-btn" 
+              class="page-btn nav-btn" 
               disabled={!flightPagination.hasNext}
               on:click={() => goToPage('flight', flightPagination.page + 1)}
             >
-              Next →
+              →
             </button>
           </div>
         {/if}
@@ -851,63 +899,98 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding: 1rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .page-numbers {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
 
   .page-btn {
-    padding: 0.625rem 1.25rem;
+    padding: 0.5rem 0.75rem;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 0.5rem;
+    border-radius: 0.375rem;
     color: white;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+  }
+
+  .page-btn.nav-btn {
+    padding: 0.5rem 0.625rem;
   }
 
   .page-btn:hover:not(:disabled) {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
     border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
   }
 
   .page-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
   }
 
-  .page-info {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
+  .page-num {
+    min-width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 500;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
 
-  .total-count {
-    color: rgba(255, 255, 255, 0.5);
+  .page-num:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .page-num.active {
+    background: linear-gradient(135deg, #00c400 0%, #006600 100%);
+    color: white;
+    border-color: transparent;
+    font-weight: 600;
+  }
+
+  .page-ellipsis {
+    color: rgba(255, 255, 255, 0.4);
+    padding: 0 0.25rem;
     font-size: 0.8rem;
-    margin-left: 0.5rem;
   }
 
   @media (max-width: 640px) {
     .pagination {
-      flex-wrap: wrap;
-      gap: 0.75rem;
+      padding: 0.5rem;
+      gap: 0.25rem;
+    }
+
+    .page-numbers {
+      gap: 0.125rem;
     }
 
     .page-btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.8rem;
+      padding: 0.375rem 0.5rem;
+      font-size: 0.75rem;
     }
 
-    .page-info {
-      width: 100%;
-      text-align: center;
-      order: -1;
+    .page-num {
+      min-width: 1.75rem;
+      height: 1.75rem;
+      font-size: 0.75rem;
     }
   }
 </style>
