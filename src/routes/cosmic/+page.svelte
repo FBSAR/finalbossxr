@@ -428,6 +428,10 @@
   <div class="h-10 lg:h-32"></div>
 </main>
 <style>
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
   .glow-text {
     text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
   }
