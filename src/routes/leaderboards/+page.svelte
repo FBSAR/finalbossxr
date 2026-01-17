@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
+  import { navigating } from '$app/stores';
   import ContactForm from '$lib/components/ContactForm.svelte';
   import { get } from 'svelte/store';
 
@@ -38,6 +39,9 @@
   };
 
   let activeTab: "survival" | "flight" = "survival";
+
+  // Loading state for navigation
+  $: isLoading = $navigating !== null;
 
   const selectTab = (tab: "survival" | "flight") => {
     activeTab = tab;
@@ -155,6 +159,42 @@
         <button class="retry-button" on:click={() => window.location.reload()}>
           Try Again
         </button>
+      </div>
+    {:else if isLoading}
+      <!-- Skeleton Loading State -->
+      <div class="leaderboard-list">
+        {#each Array(10) as _, i}
+          <div class="leaderboard-card skeleton-card">
+            <div class="rank-badge skeleton-badge">
+              <span class="skeleton-text skeleton-rank"></span>
+            </div>
+            
+            <div class="player-info">
+              <div class="player-avatar skeleton-avatar"></div>
+              <div class="player-details">
+                <span class="skeleton-text skeleton-name"></span>
+                <span class="skeleton-text skeleton-time-ago"></span>
+              </div>
+            </div>
+
+            <div class="stats-container">
+              <div class="stat-item">
+                <span class="skeleton-text skeleton-stat-value"></span>
+                <span class="skeleton-text skeleton-stat-label"></span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="skeleton-text skeleton-stat-value"></span>
+                <span class="skeleton-text skeleton-stat-label"></span>
+              </div>
+              <div class="stat-divider hidden md:block"></div>
+              <div class="stat-item hidden md:flex">
+                <span class="skeleton-text skeleton-stat-value"></span>
+                <span class="skeleton-text skeleton-stat-label"></span>
+              </div>
+            </div>
+          </div>
+        {/each}
       </div>
     {:else if activeTab === "survival"}
       {#if survivalEntries.length === 0}
@@ -548,6 +588,75 @@
     width: 1px;
     height: 1.5rem;
     background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Skeleton Loading UI */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .skeleton-card {
+    pointer-events: none;
+  }
+
+  .skeleton-text {
+    display: block;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 0.25rem;
+  }
+
+  .skeleton-badge {
+    background: rgba(255, 255, 255, 0.06) !important;
+  }
+
+  .skeleton-rank {
+    width: 1.25rem;
+    height: 1rem;
+  }
+
+  .skeleton-avatar {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    ) !important;
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-name {
+    width: 80px;
+    height: 0.85rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .skeleton-time-ago {
+    width: 50px;
+    height: 0.6rem;
+  }
+
+  .skeleton-stat-value {
+    width: 40px;
+    height: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .skeleton-stat-label {
+    width: 30px;
+    height: 0.5rem;
   }
 
   /* Empty State */
