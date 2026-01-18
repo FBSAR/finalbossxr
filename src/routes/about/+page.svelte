@@ -105,56 +105,76 @@
     </div>
   {:else}
     <!-- Founders -->
-    <div class="fouders mx-auto my-4 w-11/12">
-      <h1 class="gold-header-text mb-2 mt-8 text-4xl">Founders</h1>
-      <div class="flex flex-wrap justify-start gap-2">
+    <div class="section-container mx-auto my-4 w-11/12">
+      <h2 class="section-title gold-header-text">Founders</h2>
+      <div class="cards-grid">
         {#each founders as founder}
-          <div class="founder-card w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
-            <img 
-              src={founder.photo} 
-              class="h-20 rounded mb-2" 
-              alt="Flowbite Logo" 
-            />
-            <h1 class="text-2xl green-header-text">{founder.name}</h1>
-            <p class="text-sm font-bold  pb-1 mb-2">{founder.title}</p>
-            <a href="{founder.linkedin}" target="_blank"><LinkedinSolid color="#DAA520"></LinkedinSolid></a>
+          <div class="team-card">
+            <div class="card-image-container">
+              <img 
+                src={founder.photo} 
+                class="card-image" 
+                alt="{founder.name}" 
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-name green-header-text">{founder.name}</h3>
+              <p class="card-title">{founder.title}</p>
+              <a href="{founder.linkedin}" target="_blank" class="linkedin-link">
+                <LinkedinSolid size="xl" />
+              </a>
+            </div>
           </div>
         {/each}
       </div>
     </div>
 
     <!-- Team -->
-    <div class=" mx-auto my-4 w-11/12">
-      <h1 class="gold-header-text mb-2 mt-8 text-4xl">Team</h1>
-      <div class="flex flex-wrap justify-start gap-2">
+    <div class="section-container mx-auto my-4 w-11/12">
+      <h2 class="section-title gold-header-text">Team</h2>
+      <div class="cards-grid">
         {#each team as member}
-          <div class="team-card w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
-            <img 
-              src={member.photo} 
-              class="h-20 rounded mb-2" 
-              alt="Flowbite Logo" 
-            />
-            <h1 class="text-2xl green-header-text">{member.name}</h1>
-            <p class="text-sm font-bold pb-1 mb-2">{member.title}</p>
-            <a href="{member.linkedin}" target="_blank"><LinkedinSolid color="#DAA520"></LinkedinSolid></a>        </div>
+          <div class="team-card">
+            <div class="card-image-container">
+              <img 
+                src={member.photo} 
+                class="card-image" 
+                alt="{member.name}" 
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-name green-header-text">{member.name}</h3>
+              <p class="card-title">{member.title}</p>
+              <a href="{member.linkedin}" target="_blank" class="linkedin-link">
+                <LinkedinSolid size="xl" />
+              </a>
+            </div>
+          </div>
         {/each}
       </div>
     </div>
 
     <!-- Advisors -->
-    <div class="mx-auto my-4 w-11/12">
-      <h1  class="gold-header-text mb-2 mt-8 text-4xl">Advisors</h1>
-      <div class="flex flex-wrap justify-start gap-2">
+    <div class="section-container mx-auto my-4 w-11/12">
+      <h2 class="section-title gold-header-text">Advisors</h2>
+      <div class="cards-grid">
         {#each advisors as advisor}
-          <div class="advisor-card w-full rounded sm:w-1/2 lg:w-1/4 p-4 backdrop-blur-lg bg-white/10 border-white/20 border-2 text-white">
-            <img 
-              src={advisor.photo} 
-              class="h-20 rounded mb-2" 
-              alt="Flowbite Logo" 
-            />
-            <h1 class="text-2xl green-header-text">{advisor.name}</h1>
-            <p class="text-sm font-bold pb-1 mb-2">{advisor.title}</p>
-            <a href="{advisor.linkedin}" target="_blank"><LinkedinSolid color="#DAA520"></LinkedinSolid></a>        </div>
+          <div class="team-card">
+            <div class="card-image-container">
+              <img 
+                src={advisor.photo} 
+                class="card-image" 
+                alt="{advisor.name}" 
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-name green-header-text">{advisor.name}</h3>
+              <p class="card-title">{advisor.title}</p>
+              <a href="{advisor.linkedin}" target="_blank" class="linkedin-link">
+                <LinkedinSolid size="xl" />
+              </a>
+            </div>
+          </div>
         {/each}
       </div>
     </div>
@@ -174,25 +194,89 @@
     text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
   }
 
-  .contact-card, .contact-header-card  {
-    transition: 200ms;
+  /* Section Styling */
+  .section-container {
+    margin-top: 2rem;
   }
-  @media (min-width: 1000px) {
-    .founder-card:hover, .team-card:hover, .advisor-card:hover {
-      transition: 200ms;
-      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-      transform: translateY(-10px);
-      border-color: #0fd8414d;
-    }
-    .contact-header-card:hover {
-      font-size: 1.35em;
-    }
-    .contact-card:hover, .contact-header-card:hover{
-      transition: 200ms;
-      background: linear-gradient(135deg, #5f9f571a, #FFD7001a);
-      transform: translateY(-10px);
-      border-color: #0fd8414d;
-    }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(218, 165, 32, 0.3);
+    display: inline-block;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Team Card */
+  .team-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .team-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 196, 0, 0.4);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 196, 0, 0.1);
+  }
+
+  .card-image-container {
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(0, 100, 0, 0.2), rgba(0, 50, 0, 0.3));
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transition: transform 0.3s ease;
+  }
+
+  .team-card:hover .card-image {
+    transform: scale(1.05);
+  }
+
+  .card-content {
+    padding: 1.25rem;
+  }
+
+  .card-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.375rem;
+  }
+
+  .card-title {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .linkedin-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #DAA520;
+    transition: all 0.2s ease;
+  }
+
+  .linkedin-link:hover {
+    color: #FFD700;
+    transform: scale(1.15);
   }
 
   /* Skeleton Loading UI */
@@ -268,5 +352,25 @@
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 640px) {
+    .section-title {
+      font-size: 1.5rem;
+    }
+
+    .cards-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .card-image-container {
+      height: 220px;
+    }
+
+    .card-name {
+      font-size: 1.2rem;
+    }
   }
 </style>
