@@ -183,7 +183,8 @@
 
       <div class="hero-cta">
         <a href="/cosmic" class="btn-primary">
-          <span>See Our Work</span>
+          <span class="btn-badge btn-badge-primary">Video Game</span>
+          <span>Cosmic Collisions</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
@@ -448,21 +449,22 @@
   .btn-primary {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     padding: 1rem 2rem;
-    background: linear-gradient(135deg, #00c400 0%, #006600 100%);
+    background: rgba(0, 196, 0, 0.1);
     color: white;
     font-weight: 600;
     font-size: 1rem;
+    border: 1px solid rgba(0, 196, 0, 0.3);
     border-radius: 0.5rem;
     text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 196, 0, 0.3);
   }
 
   .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(0, 196, 0, 0.4);
+    border-color: rgba(0, 196, 0, 0.6);
+    background: rgba(0, 196, 0, 0.15);
   }
 
   .btn-secondary {
@@ -494,6 +496,11 @@
     background: rgba(138, 43, 226, 0.3);
     border-radius: 0.25rem;
     color: #c4a1ff;
+  }
+
+  .btn-badge-primary {
+    background: rgba(0, 100, 0, 0.5);
+    color: #90EE90;
   }
 
   /* Scroll Indicator */
