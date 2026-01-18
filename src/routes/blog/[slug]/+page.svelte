@@ -1,10 +1,20 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { marked } from 'marked';
   
   export let data;
   
   $: post = data.post;
   $: relatedPosts = data.relatedPosts;
+  
+  // Configure marked for GitHub-flavored markdown
+  marked.setOptions({
+    breaks: true,
+    gfm: true
+  });
+  
+  // Parse markdown content
+  $: renderedContent = post.content ? marked(post.content) : '';
   
   let copied = false;
 
@@ -66,7 +76,7 @@
       </a>
       
       <!-- Meta -->
-      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-400 mb-4">
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-400">
         <span>{formatDate(post.created_at)}</span>
         <span>·</span>
         <span>{calculateReadTime(post.content)} min read</span>
@@ -75,9 +85,15 @@
           <span>By {post.author}</span>
         {/if}
       </div>
-      
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="px-4 pb-2">
+    <div class="max-w-3xl mx-auto">
+
       <!-- Title -->
-      <h1 class="text-4xl md:text-5xl green-header-text text-white mb-6">
+      <h1 class="text-4xl glow-text mt-8 md:text-5xl green-header-text text-white">
         {post.title}
       </h1>
       
@@ -87,16 +103,9 @@
           {post.excerpt}
         </p>
       {/if}
-    </div>
-  </section>
 
-  <!-- Content -->
-  <section class="px-4 pb-16">
-    <div class="max-w-3xl mx-auto">
-      <article class="prose prose-invert prose-lg max-w-none">
-        <div class="text-gray-300 leading-relaxed whitespace-pre-wrap">
-          {post.content}
-        </div>
+      <article class="prose">
+        {@html renderedContent}
       </article>
       
       <!-- Share Buttons -->
@@ -173,10 +182,205 @@
 </div>
 
 <style>
+    
+  .glow-text {
+    text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+  }
+
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* Markdown Prose Styles */
+  .prose {
+    color: #d1d5db;
+    line-height: 1.8;
+    font-size: 1.125rem;
+  }
+
+  .prose :global(h1) {
+    font-size: 2.25rem;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #4ade80, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #fff;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .prose :global(h3) {
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: #e5e7eb;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose :global(h4) {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: #d1d5db;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .prose :global(img) {
+    width: 100%;
+    border-radius: 1rem;
+    margin: 2rem 0;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .prose :global(a) {
+    color: #4ade80;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .prose :global(a:hover) {
+    color: #86efac;
+    text-decoration: underline;
+  }
+
+  .prose :global(strong) {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .prose :global(em) {
+    color: #9ca3af;
+    font-style: italic;
+  }
+
+  .prose :global(ul) {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose :global(ul li) {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose :global(ul li::before) {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 6px;
+    height: 6px;
+    background: linear-gradient(to right, #4ade80, #22d3ee);
+    border-radius: 50%;
+  }
+
+  .prose :global(ol) {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+    counter-reset: ol-counter;
+  }
+
+  .prose :global(ol li) {
+    position: relative;
+    padding-left: 2.5rem;
+    margin-bottom: 0.75rem;
+    counter-increment: ol-counter;
+  }
+
+  .prose :global(ol li::before) {
+    content: counter(ol-counter) '.';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 600;
+    color: #4ade80;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 4px solid #4ade80;
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #9ca3af;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem 1.5rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+
+  .prose :global(code) {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+    color: #f472b6;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .prose :global(pre) {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+    color: #e5e7eb;
+    font-size: 0.875rem;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+    margin: 3rem 0;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+  }
+
+  .prose :global(th) {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #fff;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .prose :global(td) {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .prose :global(tr:hover td) {
+    background: rgba(255, 255, 255, 0.02);
   }
 </style>
