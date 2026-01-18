@@ -101,6 +101,8 @@
     class="hero-section" 
     bind:this={heroSection}
     on:mousemove={handleMouseMove}
+    role="banner"
+    aria-label="Hero section"
   >
     <!-- Animated Background Grid -->
     <div class="grid-background"></div>
