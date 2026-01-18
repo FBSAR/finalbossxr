@@ -1,8 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { navigating } from '$app/stores';
   import ContactForm from '$lib/components/ContactForm.svelte';
     import { Button } from 'flowbite-svelte';
     import { AppleSolid } from 'flowbite-svelte-icons';
+
+  // Loading state for navigation
+  $: isLoading = $navigating !== null;
 
   // Contact Form Submission
   function testerLink() {
@@ -78,6 +82,68 @@
   });
 </script>
 <main>
+  {#if isLoading}
+    <!-- Skeleton Loading State -->
+    <div class="skeleton-container">
+      <!-- Hero Skeleton -->
+      <div class="skeleton-hero">
+        <div class="skeleton-hero-content">
+          <div class="skeleton-logo"></div>
+          <div class="skeleton-card-large">
+            <div class="skeleton-badge"></div>
+            <div class="skeleton-title-large"></div>
+            <div class="skeleton-text-line"></div>
+            <div class="skeleton-tags">
+              <div class="skeleton-tag"></div>
+              <div class="skeleton-tag"></div>
+              <div class="skeleton-tag"></div>
+            </div>
+            <div class="skeleton-text-block"></div>
+            <div class="skeleton-buttons">
+              <div class="skeleton-button"></div>
+              <div class="skeleton-button"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo Section Skeleton -->
+      <div class="skeleton-section">
+        <div class="skeleton-demo-grid">
+          <div class="skeleton-card-large">
+            <div class="skeleton-badge"></div>
+            <div class="skeleton-title-large"></div>
+            <div class="skeleton-text-line"></div>
+            <div class="skeleton-tags">
+              <div class="skeleton-tag"></div>
+              <div class="skeleton-tag"></div>
+              <div class="skeleton-tag"></div>
+            </div>
+            <div class="skeleton-text-block"></div>
+            <div class="skeleton-button-full"></div>
+            <div class="skeleton-button-full"></div>
+          </div>
+          <div class="skeleton-phone"></div>
+        </div>
+      </div>
+
+      <!-- Characters Section Skeleton -->
+      <div class="skeleton-section">
+        <div class="skeleton-section-title"></div>
+        {#each Array(3) as _}
+          <div class="skeleton-character-card">
+            <div class="skeleton-character-image"></div>
+            <div class="skeleton-character-info">
+              <div class="skeleton-character-name"></div>
+              <div class="skeleton-character-title"></div>
+              <div class="skeleton-character-special"></div>
+              <div class="skeleton-text-block"></div>
+            </div>
+          </div>
+        {/each}
+      </div>
+    </div>
+  {:else}
   <!-- Header -->
    <div class="relative w-full overflow-hidden min-h-[70vh] lg:min-h-[80vh]">
     <!-- Background Video -->
@@ -420,9 +486,10 @@
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
+  {/if}
 
   <!-- Contact Form -->
-  <ContactForm />
+  <ContactForm isLoading={isLoading} />
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
@@ -479,5 +546,310 @@
       box-shadow: 0 20px 40px -15px rgba(255, 215, 0, 0.15);
     }
   }
-</style>
 
+  /* Skeleton Loading UI */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .skeleton-container {
+    padding: 1rem;
+  }
+
+  .skeleton-hero {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .skeleton-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  @media (min-width: 1024px) {
+    .skeleton-hero-content {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  .skeleton-logo {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-card-large {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+  }
+
+  .skeleton-badge {
+    width: 180px;
+    height: 2rem;
+    border-radius: 9999px;
+    margin-bottom: 1.25rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-title-large {
+    width: 70%;
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-text-line {
+    width: 50%;
+    height: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .skeleton-tag {
+    width: 80px;
+    height: 1.75rem;
+    border-radius: 9999px;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-text-block {
+    width: 100%;
+    height: 4rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-buttons {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .skeleton-button {
+    flex: 1;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-button-full {
+    width: 100%;
+    height: 2.75rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-section {
+    width: 91.666%;
+    max-width: 800px;
+    margin: 3rem auto;
+  }
+
+  .skeleton-demo-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .skeleton-demo-grid {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  .skeleton-phone {
+    width: 256px;
+    height: 500px;
+    border-radius: 3rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-section-title {
+    width: 150px;
+    height: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-character-card {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+  }
+
+  .skeleton-character-image {
+    width: 6rem;
+    height: 6rem;
+    flex-shrink: 0;
+    border-radius: 0.75rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @media (min-width: 1024px) {
+    .skeleton-character-image {
+      width: 9rem;
+      height: 9rem;
+    }
+  }
+
+  .skeleton-character-info {
+    flex: 1;
+  }
+
+  .skeleton-character-name {
+    width: 60%;
+    height: 1.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-character-title {
+    width: 40%;
+    height: 1.25rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-character-special {
+    width: 100%;
+    height: 2.5rem;
+    margin-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+</style>
