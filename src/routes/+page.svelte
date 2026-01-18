@@ -95,6 +95,11 @@
   const handleScroll = () => {
     scrollY = window.scrollY;
     updateShapeTransforms();
+    
+    // Calculate scroll percentage for scroll-based animations
+    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = documentHeight > 0 ? (scrollY / documentHeight) * 100 : 0;
+    console.log(`Scroll Position: ${scrollPercent.toFixed(2)}%`);
   };
 
   onMount(() => {
