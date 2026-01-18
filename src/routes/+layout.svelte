@@ -50,6 +50,7 @@
     { href: '/', label: 'HOME', icon: '🏠', isImage: false },
     { href: '/cosmic', label: 'COSMIC', icon: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CosmicCollisions_Logo_NoText_NoBG.png', isImage: true },
     { href: '/project_v', label: 'PROJECT_V', icon: '🔥', isImage: false },
+    { href: '/blog', label: 'BLOG', icon: '📝', isImage: false },
     { href: '/about', label: 'ABOUT US', icon: '👥', isImage: false },
     { href: '/contact', label: 'CONTACT', icon: '✉️', isImage: false },
   ];
@@ -152,6 +153,7 @@
         <NavLi href="/" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>HOME</NavLi>
         <NavLi href="/cosmic" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>COSMIC</NavLi>
         <NavLi href="/project_v" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>PROJECT_V</NavLi>
+        <NavLi href="/blog" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>BLOG</NavLi>
         <NavLi href="/about" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>ABOUT US</NavLi>
         <!-- <NavLi href="/education" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>EDUCATION</NavLi> -->
         <!-- <NavLi href="/crowdfunding" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CROWDFUNDING</NavLi> -->
