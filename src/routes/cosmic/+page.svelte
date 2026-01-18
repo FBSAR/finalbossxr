@@ -126,7 +126,7 @@
 
             <!-- Title -->
             <div>
-              <h1 class="text-4xl lg:text-5xl gold-header-text font-bold mb-2">Cosmic Collisions</h1>
+              <h1 class="text-4xl lg:text-5xl gold-header-text mb-2">Cosmic Collisions</h1>
               <p class="text-gray-400 text-sm lg:text-base">Defend the Solar System in Augmented Reality</p>
             </div>
 
@@ -177,7 +177,7 @@
 
           <!-- Title -->
           <div>
-            <h1 class="text-4xl lg:text-5xl gold-header-text font-bold mb-2">Play the Demo</h1>
+            <h1 class="text-4xl lg:text-5xl gold-header-text mb-2">Play the Demo</h1>
             <p class="text-gray-400 text-sm lg:text-base">Experience Cosmic Collisions before the official release</p>
           </div>
 
