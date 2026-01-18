@@ -3,6 +3,7 @@
 
   let mouseX = 0;
   let mouseY = 0;
+  let scrollY = 0;
   let heroSection: HTMLElement;
   let windowWidth = 0;
   let windowHeight = 0;
@@ -11,25 +12,26 @@
   interface Shape {
     id: number;
     type: 'hexagon' | 'triangle' | 'square' | 'diamond' | 'circle';
-    x: number; // percentage
-    y: number; // percentage
+    x: number;
+    y: number;
     size: number;
     rotation: number;
     baseRotation: number;
     color: string;
+    parallaxSpeed: number; // Different speeds for each shape
   }
 
   const shapes: Shape[] = [
-    { id: 1, type: 'hexagon', x: 15, y: 20, size: 80, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.15)' },
-    { id: 2, type: 'triangle', x: 85, y: 15, size: 60, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.12)' },
-    { id: 3, type: 'square', x: 10, y: 70, size: 50, rotation: 0, baseRotation: 45, color: 'rgba(255, 215, 0, 0.1)' },
-    { id: 4, type: 'diamond', x: 90, y: 75, size: 70, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)' },
-    { id: 5, type: 'circle', x: 75, y: 45, size: 100, rotation: 0, baseRotation: 0, color: 'rgba(138, 43, 226, 0.08)' },
-    { id: 6, type: 'hexagon', x: 25, y: 85, size: 55, rotation: 0, baseRotation: 15, color: 'rgba(0, 196, 0, 0.08)' },
-    { id: 7, type: 'triangle', x: 5, y: 45, size: 45, rotation: 0, baseRotation: -20, color: 'rgba(255, 215, 0, 0.08)' },
-    { id: 8, type: 'square', x: 70, y: 85, size: 40, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)' },
-    { id: 9, type: 'diamond', x: 50, y: 10, size: 35, rotation: 0, baseRotation: 45, color: 'rgba(138, 43, 226, 0.1)' },
-    { id: 10, type: 'hexagon', x: 95, y: 50, size: 65, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.06)' },
+    { id: 1, type: 'hexagon', x: 15, y: 20, size: 80, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.15)', parallaxSpeed: 0.3 },
+    { id: 2, type: 'triangle', x: 85, y: 15, size: 60, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.12)', parallaxSpeed: 0.5 },
+    { id: 3, type: 'square', x: 10, y: 70, size: 50, rotation: 0, baseRotation: 45, color: 'rgba(255, 215, 0, 0.1)', parallaxSpeed: 0.2 },
+    { id: 4, type: 'diamond', x: 90, y: 75, size: 70, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.4 },
+    { id: 5, type: 'circle', x: 75, y: 45, size: 100, rotation: 0, baseRotation: 0, color: 'rgba(138, 43, 226, 0.08)', parallaxSpeed: 0.15 },
+    { id: 6, type: 'hexagon', x: 25, y: 85, size: 55, rotation: 0, baseRotation: 15, color: 'rgba(0, 196, 0, 0.08)', parallaxSpeed: 0.35 },
+    { id: 7, type: 'triangle', x: 5, y: 45, size: 45, rotation: 0, baseRotation: -20, color: 'rgba(255, 215, 0, 0.08)', parallaxSpeed: 0.45 },
+    { id: 8, type: 'square', x: 70, y: 85, size: 40, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.25 },
+    { id: 9, type: 'diamond', x: 50, y: 10, size: 35, rotation: 0, baseRotation: 45, color: 'rgba(138, 43, 226, 0.1)', parallaxSpeed: 0.55 },
+    { id: 10, type: 'hexagon', x: 95, y: 50, size: 65, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.06)', parallaxSpeed: 0.2 },
   ];
 
   let shapeTransforms: { [key: number]: { translateX: number; translateY: number; rotation: number; scale: number } } = {};
@@ -46,7 +48,13 @@
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
 
-    // Update each shape based on cursor proximity
+    updateShapeTransforms();
+  };
+
+  const updateShapeTransforms = () => {
+    if (!heroSection) return;
+    const rect = heroSection.getBoundingClientRect();
+
     shapes.forEach(shape => {
       const shapePixelX = (shape.x / 100) * rect.width;
       const shapePixelY = (shape.y / 100) * rect.height;
@@ -55,45 +63,53 @@
       const deltaY = mouseY - shapePixelY;
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
       
-      // Influence radius - shapes within this distance will react
       const influenceRadius = 400;
       
+      let translateX = 0;
+      let translateY = 0;
+      let rotation = shape.baseRotation;
+      let scale = 1;
+
+      // Mouse interaction
       if (distance < influenceRadius) {
         const influence = 1 - (distance / influenceRadius);
         const pushStrength = 50 * influence;
         
-        // Push shape away from cursor
         const angle = Math.atan2(deltaY, deltaX);
-        const translateX = -Math.cos(angle) * pushStrength;
-        const translateY = -Math.sin(angle) * pushStrength;
-        
-        // Rotate based on cursor position
-        const rotation = shape.baseRotation + (influence * 45);
-        
-        // Scale up slightly when cursor is near
-        const scale = 1 + (influence * 0.15);
-        
-        shapeTransforms[shape.id] = { translateX, translateY, rotation, scale };
-      } else {
-        // Return to base state
-        shapeTransforms[shape.id] = { 
-          translateX: 0, 
-          translateY: 0, 
-          rotation: shape.baseRotation, 
-          scale: 1 
-        };
+        translateX = -Math.cos(angle) * pushStrength;
+        translateY = -Math.sin(angle) * pushStrength;
+        rotation = shape.baseRotation + (influence * 45);
+        scale = 1 + (influence * 0.15);
       }
+
+      // Add scroll-based parallax offset
+      const parallaxOffset = scrollY * shape.parallaxSpeed;
+      translateY -= parallaxOffset;
+
+      shapeTransforms[shape.id] = { translateX, translateY, rotation, scale };
     });
     
-    // Trigger reactivity
     shapeTransforms = { ...shapeTransforms };
+  };
+
+  const handleScroll = () => {
+    scrollY = window.scrollY;
+    updateShapeTransforms();
   };
 
   onMount(() => {
     windowWidth = window.innerWidth;
     windowHeight = window.innerHeight;
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   });
 </script>
+
+<svelte:window on:scroll={handleScroll} />
 
 <main>
   <!-- Hero Section -->
@@ -104,8 +120,8 @@
     role="banner"
     aria-label="Hero section"
   >
-    <!-- Animated Background Grid -->
-    <div class="grid-background"></div>
+    <!-- Animated Background Grid - slowest parallax -->
+    <div class="grid-background" style="transform: translateY({scrollY * 0.1}px);"></div>
     
     <!-- Geometric Shapes -->
     {#each shapes as shape (shape.id)}
@@ -132,30 +148,60 @@
       style="left: {mouseX}px; top: {mouseY}px;"
     ></div>
 
-    <!-- Hero Content -->
-    <div class="hero-content">
+    <!-- Hero Content - moves slightly faster than background for depth -->
+    <div class="hero-content" style="transform: translateY({scrollY * -0.2}px);">
       <div class="hero-badge">
         <span class="badge-dot"></span>
-        <span>XR Gaming Studio</span>
+        <span>XR · AI · Spatial Computing</span>
       </div>
       
       <h1 class="hero-title">
-        <span class="title-line">Building the Future of</span>
-        <span class="title-line gradient-text">Immersive Gaming</span>
+        <span class="title-line">Shaping the Future of</span>
+        <span class="title-line gradient-text">Extended Reality</span>
       </h1>
       
       <p class="hero-subtitle">
-        We create cutting-edge AR/VR experiences that blur the line between reality and imagination.
+        We build proprietary XR software and AI-powered spatial experiences — 
+        from immersive games today to next-gen hardware tomorrow.
       </p>
+
+      <!-- Value Props -->
+      <div class="value-props">
+        <div class="value-prop">
+          <span class="prop-icon">🎮</span>
+          <span class="prop-text">Immersive Games</span>
+        </div>
+        <div class="value-prop">
+          <span class="prop-icon">🧠</span>
+          <span class="prop-text">AI Integration</span>
+        </div>
+        <div class="value-prop">
+          <span class="prop-icon">👓</span>
+          <span class="prop-text">XR Platform</span>
+        </div>
+      </div>
 
       <div class="hero-cta">
         <a href="/cosmic" class="btn-primary">
-          <span>Explore Our Games</span>
+          <span>See Our Work</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
-        <a href="/about" class="btn-secondary">Meet the Team</a>
+        <a href="/project_v" class="btn-secondary">
+          <span class="btn-badge">Coming Soon</span>
+          Project V
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator - fades out as you scroll -->
+    <div class="scroll-indicator" style="opacity: {Math.max(0, 1 - scrollY / 200)}; transform: translateY({scrollY * 0.5}px);">
+      <span>Scroll to explore</span>
+      <div class="scroll-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
       </div>
     </div>
   </section>
@@ -168,7 +214,7 @@
     height: 100vh;
     width: 100%;
     display: flex;
-    align-items: center;
+    padding-top: 2em;
     justify-content: center;
     overflow: hidden;
     background: radial-gradient(ellipse at 50% 50%, #0a1628 0%, #000000 100%);
@@ -184,6 +230,7 @@
     background-size: 60px 60px;
     mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
     animation: gridPulse 8s ease-in-out infinite;
+    will-change: transform;
   }
 
   @keyframes gridPulse {
@@ -195,10 +242,10 @@
   .geo-shape {
     position: absolute;
     pointer-events: none;
-    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
   }
 
-  /* Hexagon */
   .geo-shape.hexagon {
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     background: var(--shape-color);
@@ -214,7 +261,6 @@
     border: 1px solid rgba(0, 196, 0, 0.3);
   }
 
-  /* Triangle */
   .geo-shape.triangle {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
     background: var(--shape-color);
@@ -229,7 +275,6 @@
     border: 1px solid rgba(0, 196, 0, 0.25);
   }
 
-  /* Square */
   .geo-shape.square {
     background: var(--shape-color);
     border: 1px solid rgba(255, 215, 0, 0.2);
@@ -243,7 +288,6 @@
     border: 1px solid rgba(255, 215, 0, 0.15);
   }
 
-  /* Diamond */
   .geo-shape.diamond {
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
     background: var(--shape-color);
@@ -258,7 +302,6 @@
     border: 1px solid rgba(0, 196, 0, 0.2);
   }
 
-  /* Circle */
   .geo-shape.circle {
     border-radius: 50%;
     background: var(--shape-color);
@@ -293,6 +336,7 @@
     text-align: center;
     max-width: 900px;
     padding: 2rem;
+    will-change: transform;
   }
 
   .hero-badge {
@@ -326,7 +370,7 @@
 
   .hero-title {
     font-size: 4.5rem;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1.1;
     margin-bottom: 1.5rem;
     color: white;
@@ -353,11 +397,48 @@
   .hero-subtitle {
     font-size: 1.25rem;
     color: rgba(255, 255, 255, 0.7);
-    max-width: 600px;
-    margin: 0 auto 2.5rem;
+    max-width: 650px;
+    margin: 0 auto 2rem;
     line-height: 1.6;
   }
 
+  /* Value Props */
+  .value-props {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .value-prop {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .value-prop:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 196, 0, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .prop-icon {
+    font-size: 1.25rem;
+  }
+
+  .prop-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  /* CTA Buttons */
   .hero-cta {
     display: flex;
     gap: 1rem;
@@ -387,19 +468,60 @@
   .btn-secondary {
     display: inline-flex;
     align-items: center;
+    gap: 0.75rem;
     padding: 1rem 2rem;
-    background: transparent;
+    background: rgba(138, 43, 226, 0.1);
     color: white;
     font-weight: 600;
     font-size: 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(138, 43, 226, 0.3);
     border-radius: 0.5rem;
     text-decoration: none;
     transition: all 0.3s ease;
   }
 
   .btn-secondary:hover {
-    border-color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(138, 43, 226, 0.6);
+    background: rgba(138, 43, 226, 0.15);
+  }
+
+  .btn-badge {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.5rem;
+    background: rgba(138, 43, 226, 0.3);
+    border-radius: 0.25rem;
+    color: #c4a1ff;
+  }
+
+  /* Scroll Indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .scroll-arrow {
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  .scroll-arrow svg {
+    stroke: rgba(255, 255, 255, 0.4);
   }
 </style>
