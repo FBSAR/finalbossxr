@@ -7,6 +7,7 @@
     export let placeholder = 'Enter your email for updates';
     export let buttonText = 'Subscribe';
     export let triggerText = 'Sign up for newsletter';
+    export let showName = false;
 
     let email = '';
     let name = '';
@@ -170,11 +171,23 @@
     {:else}
         <!-- Stacked variant -->
         <form class="newsletter-form stacked" on:submit={handleSubmit}>
+            {#if showName}
+                <FloatingLabelInput
+                    bind:value={name}
+                    name="name"
+                    type="text"
+                    class="{inputClass} mb-3"
+                    style="filled"
+                    maxlength={100}
+                >
+                    Name (optional)
+                </FloatingLabelInput>
+            {/if}
             <FloatingLabelInput
                 bind:value={email}
                 name="email"
                 type="email"
-                class="{inputClass} mb-3"
+                class="{inputClass} mb-4"
                 style="filled"
                 maxlength={100}
             >
