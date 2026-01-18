@@ -45,89 +45,134 @@
 </svelte:head>
 
 <div class="admin-container">
-  <header class="dash-header">
-    <div class="header-left">
-      <h1>⚡ Admin Dashboard</h1>
-      <span class="stat">{data.jobApplications.length} Apps • {data.blogs.length} Blogs</span>
-    </div>
-    <div class="header-right">
-      <span class="admin-email">{data.adminEmail}</span>
-      <form method="POST" action="?/logout" use:enhance>
-        <button type="submit" class="btn-logout">Logout</button>
-      </form>
-    </div>
-  </header>
+  <div class="admin-inner">
+    <header class="dash-header">
+      <div class="header-left">
+        <h1>⚡ Admin Dashboard</h1>
+        <span class="stat">{data.jobApplications.length} Apps • {data.blogs.length} Blogs</span>
+      </div>
+      <div class="header-right">
+        <span class="admin-email">{data.adminEmail}</span>
+        <form method="POST" action="?/logout" use:enhance>
+          <button type="submit" class="btn-logout">Logout</button>
+        </form>
+      </div>
+    </header>
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class:active={activeTab === 'applications'} on:click={() => activeTab = 'applications'}>
-      📋 Applications ({data.jobApplications.length})
-    </button>
-    <button class:active={activeTab === 'blogs'} on:click={() => activeTab = 'blogs'}>
-      📝 Blogs ({data.blogs.length})
-    </button>
-  </div>
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class:active={activeTab === 'applications'} on:click={() => activeTab = 'applications'}>
+        <span class="tab-icon">📋</span>
+        <span class="tab-text">Applications</span>
+        <span class="tab-count">({data.jobApplications.length})</span>
+      </button>
+      <button class:active={activeTab === 'blogs'} on:click={() => activeTab = 'blogs'}>
+        <span class="tab-icon">📝</span>
+        <span class="tab-text">Blogs</span>
+        <span class="tab-count">({data.blogs.length})</span>
+      </button>
+    </div>
 
-  <!-- Applications Tab -->
-  {#if activeTab === 'applications'}
-    <div class="section">
-      {#if data.jobApplications.length === 0}
-        <div class="empty-state">No job applications yet</div>
-      {:else}
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Email</th>
-                <th>Resume</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {#each data.jobApplications as app}
-                <tr class:expanded={expandedApp === app.id}>
-                  <td>{new Date(app.created_at).toLocaleDateString()}</td>
-                  <td class="name-cell">
-                    <strong>{app.name}</strong>
-                    {#if app.linkedin}<a href={app.linkedin} target="_blank" class="link-icon">in</a>{/if}
-                  </td>
-                  <td><span class="badge">{app.job_title}</span></td>
-                  <td><a href="mailto:{app.email}">{app.email}</a></td>
-                  <td>{app.resume_filename ? '✅' : '—'}</td>
-                  <td class="actions">
-                    <button class="btn-sm" on:click={() => expandedApp = expandedApp === app.id ? null : app.id}>
-                      {expandedApp === app.id ? '▲' : '▼'}
-                    </button>
-                    <form method="POST" action="?/deleteApplication" use:enhance style="display:inline;">
-                      <input type="hidden" name="id" value={app.id} />
-                      <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this application?')}>🗑</button>
-                    </form>
-                  </td>
-                </tr>
+    <!-- Applications Tab -->
+    {#if activeTab === 'applications'}
+      <div class="section">
+        {#if data.jobApplications.length === 0}
+          <div class="empty-state">No job applications yet</div>
+        {:else}
+          <!-- Mobile: Card Layout -->
+          <div class="app-cards">
+            {#each data.jobApplications as app}
+              <div class="app-card" class:expanded={expandedApp === app.id}>
+                <div class="app-card-header">
+                  <div class="app-card-main">
+                    <strong class="app-name">{app.name}</strong>
+                    <span class="badge">{app.job_title}</span>
+                  </div>
+                  <div class="app-card-meta">
+                    <span class="app-date">{new Date(app.created_at).toLocaleDateString()}</span>
+                    {app.resume_filename ? '✅' : ''}
+                  </div>
+                </div>
+                <div class="app-card-contact">
+                  <a href="mailto:{app.email}">{app.email}</a>
+                  {#if app.linkedin}<a href={app.linkedin} target="_blank" class="link-icon">in</a>{/if}
+                </div>
+                <div class="app-card-actions">
+                  <button class="btn-sm btn-expand" on:click={() => expandedApp = expandedApp === app.id ? null : app.id}>
+                    {expandedApp === app.id ? '▲ Less' : '▼ More'}
+                  </button>
+                  <form method="POST" action="?/deleteApplication" use:enhance style="display:inline;">
+                    <input type="hidden" name="id" value={app.id} />
+                    <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this application?')}>🗑 Delete</button>
+                  </form>
+                </div>
                 {#if expandedApp === app.id}
-                  <tr class="detail-row">
-                    <td colspan="6">
-                      <div class="detail-grid">
-                        <div><strong>Phone:</strong> {app.phone || '—'}</div>
-                        <div><strong>Portfolio:</strong> {#if app.portfolio}<a href={app.portfolio} target="_blank">{app.portfolio}</a>{:else}—{/if}</div>
-                        <div class="full-width"><strong>Experience:</strong><p>{app.experience}</p></div>
-                        <div class="full-width"><strong>Why Join:</strong><p>{app.why_join}</p></div>
-                      </div>
+                  <div class="app-card-details">
+                    <div class="detail-item"><strong>Phone:</strong> {app.phone || '—'}</div>
+                    <div class="detail-item"><strong>Portfolio:</strong> {#if app.portfolio}<a href={app.portfolio} target="_blank">{app.portfolio}</a>{:else}—{/if}</div>
+                    <div class="detail-item full"><strong>Experience:</strong><p>{app.experience}</p></div>
+                    <div class="detail-item full"><strong>Why Join:</strong><p>{app.why_join}</p></div>
+                  </div>
+                {/if}
+              </div>
+            {/each}
+          </div>
+
+          <!-- Desktop: Table Layout -->
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Email</th>
+                  <th>Resume</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {#each data.jobApplications as app}
+                  <tr class:expanded={expandedApp === app.id}>
+                    <td>{new Date(app.created_at).toLocaleDateString()}</td>
+                    <td class="name-cell">
+                      <strong>{app.name}</strong>
+                      {#if app.linkedin}<a href={app.linkedin} target="_blank" class="link-icon">in</a>{/if}
+                    </td>
+                    <td><span class="badge">{app.job_title}</span></td>
+                    <td><a href="mailto:{app.email}">{app.email}</a></td>
+                    <td>{app.resume_filename ? '✅' : '—'}</td>
+                    <td class="actions">
+                      <button class="btn-sm" on:click={() => expandedApp = expandedApp === app.id ? null : app.id}>
+                        {expandedApp === app.id ? '▲' : '▼'}
+                      </button>
+                      <form method="POST" action="?/deleteApplication" use:enhance style="display:inline;">
+                        <input type="hidden" name="id" value={app.id} />
+                        <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this application?')}>🗑</button>
+                      </form>
                     </td>
                   </tr>
-                {/if}
-              {/each}
-            </tbody>
-          </table>
-        </div>
-      {/if}
-    </div>
-  {/if}
+                  {#if expandedApp === app.id}
+                    <tr class="detail-row">
+                      <td colspan="6">
+                        <div class="detail-grid">
+                          <div><strong>Phone:</strong> {app.phone || '—'}</div>
+                          <div><strong>Portfolio:</strong> {#if app.portfolio}<a href={app.portfolio} target="_blank">{app.portfolio}</a>{:else}—{/if}</div>
+                          <div class="full-width"><strong>Experience:</strong><p>{app.experience}</p></div>
+                          <div class="full-width"><strong>Why Join:</strong><p>{app.why_join}</p></div>
+                        </div>
+                      </td>
+                    </tr>
+                  {/if}
+                {/each}
+              </tbody>
+            </table>
+          </div>
+        {/if}
+      </div>
+    {/if}
 
-  <!-- Blogs Tab -->
+    <!-- Blogs Tab -->
   {#if activeTab === 'blogs'}
     <div class="section">
       <div class="section-header">
@@ -223,6 +268,7 @@
       </div>
     </div>
   {/if}
+  </div>
 </div>
 
 <style>
@@ -230,38 +276,72 @@
     min-height: 100vh;
     background: #0a0a0f;
     color: #e0e0e0;
-    padding: 1.5rem;
+    padding: 1rem;
+  }
+
+  .admin-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  @media (min-width: 1024px) {
+    .admin-container {
+      padding: 1.5rem;
+    }
+    .admin-inner {
+      padding: 0;
+    }
   }
 
   /* Header */
   .dash-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.75rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #222;
     margin-bottom: 1rem;
   }
-  .header-left h1 { font-size: 1.25rem; margin: 0; }
-  .stat { color: #666; font-size: 0.75rem; }
+  .header-left h1 { font-size: 1.125rem; margin: 0; }
+  .stat { color: #666; font-size: 0.7rem; }
   .header-right {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: space-between;
+    gap: 0.75rem;
   }
   .admin-email {
     color: #00c400;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 180px;
   }
   .btn-logout {
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.75rem;
     background: transparent;
     border: 1px solid #444;
     border-radius: 0.25rem;
     color: #888;
     cursor: pointer;
+    font-size: 0.75rem;
+    white-space: nowrap;
   }
   .btn-logout:hover { border-color: #666; color: #fff; }
+
+  @media (min-width: 768px) {
+    .dash-header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-left h1 { font-size: 1.25rem; }
+    .stat { font-size: 0.75rem; }
+    .admin-email { font-size: 0.8rem; max-width: none; }
+    .btn-logout { padding: 0.5rem 1rem; font-size: 0.875rem; }
+  }
 
   /* Tabs */
   .tabs {
@@ -270,18 +350,34 @@
     margin-bottom: 1rem;
   }
   .tabs button {
-    padding: 0.5rem 1rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.6rem 0.5rem;
     background: #1a1a24;
     border: 1px solid #333;
     border-radius: 0.5rem;
     color: #888;
     cursor: pointer;
     transition: all 0.2s;
+    font-size: 0.8rem;
   }
+  .tab-text { display: none; }
+  .tab-count { font-size: 0.7rem; }
   .tabs button.active {
     background: #00c400;
     border-color: #00c400;
     color: #000;
+  }
+
+  @media (min-width: 640px) {
+    .tabs button {
+      flex: none;
+      padding: 0.5rem 1rem;
+    }
+    .tab-text { display: inline; }
   }
 
   /* Section */
@@ -289,14 +385,84 @@
   .section-header { margin-bottom: 1rem; }
   .empty-state {
     text-align: center;
-    padding: 3rem;
+    padding: 2rem 1rem;
     color: #555;
     background: #12121a;
     border-radius: 0.5rem;
+    font-size: 0.875rem;
   }
 
-  /* Table */
-  .table-wrap { overflow-x: auto; }
+  /* Mobile App Cards */
+  .app-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .app-card {
+    background: #12121a;
+    border: 1px solid #222;
+    border-radius: 0.5rem;
+    padding: 0.875rem;
+  }
+  .app-card.expanded { border-color: #00c400; }
+  .app-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+  }
+  .app-card-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .app-name { font-size: 0.95rem; }
+  .app-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.7rem;
+  }
+  .app-card-contact {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+  }
+  .app-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #222;
+  }
+  .btn-expand { flex: 1; }
+  .app-card-details {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .detail-item { font-size: 0.8rem; }
+  .detail-item strong { color: #888; }
+  .detail-item p { margin: 0.35rem 0 0; color: #aaa; white-space: pre-wrap; }
+  .detail-item.full { width: 100%; }
+
+  @media (min-width: 1024px) {
+    .app-cards { display: none; }
+  }
+
+  /* Desktop Table */
+  .table-wrap { 
+    display: none;
+    overflow-x: auto; 
+  }
+  @media (min-width: 1024px) {
+    .table-wrap { display: block; }
+  }
   table {
     width: 100%;
     border-collapse: collapse;
@@ -325,11 +491,11 @@
   }
   .badge {
     display: inline-block;
-    padding: 0.25rem 0.5rem;
+    padding: 0.2rem 0.4rem;
     background: rgba(0,196,0,0.15);
     color: #00c400;
     border-radius: 0.25rem;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   .actions { display: flex; gap: 0.25rem; }
   .detail-row td { background: #0d0d12; padding: 1rem; }
@@ -344,13 +510,13 @@
 
   /* Buttons */
   .btn-sm {
-    padding: 0.25rem 0.5rem;
+    padding: 0.3rem 0.6rem;
     background: #1a1a24;
     border: 1px solid #333;
     border-radius: 0.25rem;
     color: #888;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   .btn-sm:hover { background: #222; color: #fff; }
   .btn-danger { border-color: #522; }
@@ -363,6 +529,7 @@
     color: #000;
     font-weight: 600;
     cursor: pointer;
+    font-size: 0.875rem;
   }
   .btn-primary:hover { background: #00e000; }
   .btn-secondary {
@@ -377,8 +544,14 @@
   /* Blog Grid */
   .blog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
   }
   .blog-card {
     padding: 1rem;
@@ -414,12 +587,18 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.85);
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     z-index: 100;
-    padding: 1rem;
+    padding: 0;
+  }
+  @media (min-width: 640px) {
+    .modal-overlay {
+      align-items: center;
+      padding: 1rem;
+    }
   }
   .modal {
     width: 100%;
@@ -428,7 +607,13 @@
     overflow-y: auto;
     background: #12121a;
     border: 1px solid #333;
-    border-radius: 0.75rem;
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+  @media (min-width: 640px) {
+    .modal {
+      border-radius: 0.75rem;
+      max-height: 85vh;
+    }
   }
   .modal-header {
     display: flex;
@@ -436,6 +621,10 @@
     align-items: center;
     padding: 1rem;
     border-bottom: 1px solid #222;
+    position: sticky;
+    top: 0;
+    background: #12121a;
+    z-index: 1;
   }
   .modal-header h2 { margin: 0; font-size: 1.125rem; }
   .close-btn {
@@ -445,6 +634,7 @@
     font-size: 1.5rem;
     cursor: pointer;
     line-height: 1;
+    padding: 0.25rem;
   }
   .modal form { padding: 1rem; }
   .form-row { margin-bottom: 1rem; }
@@ -457,12 +647,18 @@
   }
   .form-row input, .form-row textarea {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.6rem;
     background: #1a1a24;
     border: 1px solid #333;
     border-radius: 0.25rem;
     color: #fff;
-    font-size: 0.875rem;
+    font-size: 1rem;
+  }
+  @media (min-width: 640px) {
+    .form-row input, .form-row textarea {
+      font-size: 0.875rem;
+      padding: 0.5rem;
+    }
   }
   .form-row textarea { resize: vertical; font-family: inherit; }
   .form-row-inline {
@@ -484,6 +680,10 @@
     gap: 0.5rem;
     padding-top: 1rem;
     border-top: 1px solid #222;
+    position: sticky;
+    bottom: 0;
+    background: #12121a;
+    padding-bottom: 1rem;
   }
 
   a { color: #00c400; text-decoration: none; }
