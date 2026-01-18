@@ -1,10 +1,29 @@
 <script lang="ts">
   import NewsletterSignup from '$lib/components/NewsletterSignup.svelte';
+  import { navigating } from '$app/stores';
+
+  // Loading state for navigation
+  $: isLoading = $navigating !== null;
 </script>
 
 <main>
   <div class="coming-soon-container">
     <div class="coming-soon-content">
+      {#if isLoading}
+        <!-- Skeleton Loading State -->
+        <div class="skeleton-glasses"></div>
+        <div class="skeleton-text skeleton-title"></div>
+        <div class="skeleton-divider"></div>
+        <div class="skeleton-text skeleton-message"></div>
+        <div class="skeleton-text skeleton-subtitle"></div>
+        
+        <div class="newsletter-container">
+          <div class="skeleton-text skeleton-header"></div>
+          <div class="skeleton-input"></div>
+          <div class="skeleton-input"></div>
+          <div class="skeleton-button"></div>
+        </div>
+      {:else}
         <!-- Smart Glasses SVG -->
         <div class="glasses-container">
           <svg class="smart-glasses" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,6 +79,7 @@
         <h3 class="newsletter-header">Subscribe to Newsletter</h3>
         <NewsletterSignup variant="stacked" placeholder="Enter your email" buttonText="Subscribe" showName={true} />
       </div>
+      {/if}
     </div>
   </div>
 </main>
@@ -253,6 +273,124 @@
 
     .coming-soon-subtitle {
       font-size: 1rem;
+    }
+  }
+
+  /* Skeleton Loading UI */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .skeleton-text {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 0.25rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .skeleton-glasses {
+    width: 280px;
+    height: 120px;
+    margin: 0 auto 2rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 0.5rem;
+  }
+
+  .skeleton-title {
+    width: 320px;
+    height: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .skeleton-divider {
+    width: 100px;
+    height: 4px;
+    margin: 2rem auto;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 2px;
+  }
+
+  .skeleton-message {
+    width: 200px;
+    height: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .skeleton-subtitle {
+    width: 280px;
+    height: 1.25rem;
+  }
+
+  .skeleton-header {
+    width: 220px;
+    height: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .skeleton-input {
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 0.375rem;
+  }
+
+  .skeleton-button {
+    width: 100%;
+    height: 2.75rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 0.375rem;
+  }
+
+  @media (max-width: 640px) {
+    .skeleton-title {
+      width: 200px;
+      height: 3rem;
+    }
+
+    .skeleton-glasses {
+      width: 220px;
+      height: 100px;
     }
   }
 </style>
