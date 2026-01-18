@@ -212,7 +212,7 @@
     {/if}
   </main>
 
-  <Footer class="bg-black py-8 px-6 lg:px-10">
+  <Footer class="relative z-10 bg-black py-8 px-6 lg:px-10">
     <div class="max-w-7xl mx-auto">
       <!-- Newsletter Section -->
       <div class="mb-6 pb-6 border-b border-white/10">

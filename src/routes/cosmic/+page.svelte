@@ -145,10 +145,10 @@
     </div>
   {:else}
   <!-- Header -->
-   <div class="relative w-full overflow-hidden min-h-[70vh] lg:min-h-[80vh]">
+   <div class="relative w-full overflow-hidden min-h-[70vh] lg:min-h-[100vh]">
     <!-- Background Video -->
     <video
-      class="hidden lg:block absolute inset-0 w-full h-full object-cover bg-black"
+      class="hidden lg:block fixed inset-0 w-full h-full object-cover bg-black"
       style="transform: scaleX(-1);"
       src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/space_rock_2.mp4"
       autoplay
@@ -157,7 +157,7 @@
       muted>
     </video>
     <!-- Dark overlay for better text readability -->
-    <div class="hidden lg:block absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60"></div>
+    <div class="hidden lg:block absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/0"></div>
     
     <div class="relative z-10 w-11/12 lg:w-10/12 flex flex-col mx-auto py-12 lg:py-24 h-full">
 
@@ -489,10 +489,12 @@
   {/if}
 
   <!-- Contact Form -->
-  <ContactForm isLoading={isLoading} />
+  <div class="relative z-10">
+    <ContactForm isLoading={isLoading} />
 
-  <!-- Spacer -->
-  <div class="h-10 lg:h-32"></div>
+    <!-- Spacer -->
+    <div class="h-10 lg:h-32"></div>
+  </div>
 </main>
 <style>
   :global(html) {
