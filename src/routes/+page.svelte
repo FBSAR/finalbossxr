@@ -6,12 +6,16 @@
   let scrollY = 0;
   let heroSection: HTMLElement;
   let projectSection: HTMLElement;
+  let storySection: HTMLElement;
   let projectVideo: HTMLVideoElement;
   let windowWidth = 0;
   let windowHeight = 0;
   
   // Scroll animation state for project section
   let projectAnimationProgress = 0;
+  
+  // Scroll animation state for story section
+  let storyAnimationProgress = 0;
 
   // Define geometric shapes with their positions and properties
   interface Shape {
@@ -132,6 +136,23 @@
         }
       }
     }
+    
+    // Calculate story section animation progress
+    if (storySection) {
+      const rect = storySection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      const triggerStart = viewportHeight * 0.85;
+      const triggerEnd = viewportHeight * 0.2;
+      
+      if (rect.top <= triggerStart && rect.top >= triggerEnd) {
+        storyAnimationProgress = 1 - ((rect.top - triggerEnd) / (triggerStart - triggerEnd));
+      } else if (rect.top < triggerEnd) {
+        storyAnimationProgress = 1;
+      } else {
+        storyAnimationProgress = 0;
+      }
+    }
   };
 
   onMount(() => {
@@ -245,7 +266,7 @@
     </div>
   </section>
 
-  <!-- Most Recent Project Section -->
+  <!-- Featured Project -->
   <section 
     class="project-section" 
     bind:this={projectSection}
@@ -349,17 +370,247 @@
     </div>
   </section>
 
-  <!-- Our Story -->
+  <!-- Our Story Section -->
+  <section 
+    class="story-section" 
+    bind:this={storySection}
+    aria-label="Our Story"
+  >
+    <!-- Animated SVG Background -->
+    <div class="story-bg-elements">
+      <!-- Animated Circuit Lines -->
+      <svg class="circuit-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(0, 196, 0, 0)" />
+            <stop offset="50%" stop-color="rgba(0, 196, 0, 0.5)" />
+            <stop offset="100%" stop-color="rgba(0, 196, 0, 0)" />
+          </linearGradient>
+          <linearGradient id="lineGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(138, 43, 226, 0)" />
+            <stop offset="50%" stop-color="rgba(138, 43, 226, 0.4)" />
+            <stop offset="100%" stop-color="rgba(138, 43, 226, 0)" />
+          </linearGradient>
+        </defs>
+        
+        <!-- Horizontal flowing lines -->
+        <path class="circuit-line line-1" d="M0 200 Q300 200 400 300 T800 300 T1200 200" stroke="url(#lineGradient)" fill="none" stroke-width="1" />
+        <path class="circuit-line line-2" d="M0 400 Q200 350 500 400 T900 350 T1200 400" stroke="url(#lineGradient2)" fill="none" stroke-width="1" />
+        <path class="circuit-line line-3" d="M0 600 Q400 550 600 600 T1000 550 T1200 600" stroke="url(#lineGradient)" fill="none" stroke-width="1" />
+        
+        <!-- Animated dots along paths -->
+        <circle class="pulse-dot dot-1" cx="200" cy="200" r="3" fill="#00c400" />
+        <circle class="pulse-dot dot-2" cx="600" cy="400" r="3" fill="#8a2be2" />
+        <circle class="pulse-dot dot-3" cx="1000" cy="600" r="3" fill="#00c400" />
+      </svg>
+      
+      <!-- Floating geometric accents -->
+      <div class="floating-shape shape-1" style="opacity: {storyAnimationProgress * 0.6};"></div>
+      <div class="floating-shape shape-2" style="opacity: {storyAnimationProgress * 0.4};"></div>
+      <div class="floating-shape shape-3" style="opacity: {storyAnimationProgress * 0.5};"></div>
+    </div>
+
+    <div class="story-container">
+      <!-- Section Header -->
+      <div 
+        class="story-header"
+        style="
+          opacity: {storyAnimationProgress};
+          transform: translateY({(1 - storyAnimationProgress) * 60}px);
+        "
+      >
+        <span class="section-label">The Journey</span>
+        <h2 class="section-title">Our Story</h2>
+        
+        <!-- Animated underline SVG -->
+        <svg class="title-underline" viewBox="0 0 200 20" style="transform: scaleX({storyAnimationProgress});">
+          <path d="M0 10 Q50 0 100 10 T200 10" stroke="url(#lineGradient)" fill="none" stroke-width="2" />
+        </svg>
+      </div>
+
+      <div class="story-content">
+        <!-- Timeline / Text Side -->
+        <div 
+          class="story-text"
+          style="
+            opacity: {storyAnimationProgress};
+            transform: translateX({(1 - storyAnimationProgress) * -80}px);
+          "
+        >
+          <div class="story-intro">
+            <p class="lead-text">
+              What started as a passion project in a small apartment has grown into 
+              a vision for the future of human-computer interaction.
+            </p>
+          </div>
+
+          <!-- Timeline -->
+          <div class="timeline">
+            <div class="timeline-line" style="height: {storyAnimationProgress * 100}%;"></div>
+            
+            <div class="timeline-item" style="opacity: {Math.min(1, storyAnimationProgress * 2)}; transform: translateX({(1 - Math.min(1, storyAnimationProgress * 2)) * 30}px);">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-year">2023</span>
+                <h4>The Beginning</h4>
+                <p>Founded with a dream to push the boundaries of immersive technology and create experiences that matter.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item" style="opacity: {Math.min(1, Math.max(0, storyAnimationProgress * 2 - 0.5))}; transform: translateX({(1 - Math.min(1, Math.max(0, storyAnimationProgress * 2 - 0.5))) * 30}px);">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-year">2024</span>
+                <h4>First Launch</h4>
+                <p>Released our first mobile game, Cosmic Collisions, learning invaluable lessons about game development and user experience.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item" style="opacity: {Math.min(1, Math.max(0, storyAnimationProgress * 2 - 1))}; transform: translateX({(1 - Math.min(1, Math.max(0, storyAnimationProgress * 2 - 1))) * 30}px);">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-year">2025</span>
+                <h4>Expanding Horizons</h4>
+                <p>Began development on XR productivity tools and enterprise solutions, bringing our vision to new industries.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item" style="opacity: {Math.min(1, Math.max(0, storyAnimationProgress * 2 - 1.3))}; transform: translateX({(1 - Math.min(1, Math.max(0, storyAnimationProgress * 2 - 1.3))) * 30}px);">
+              <div class="timeline-dot active"></div>
+              <div class="timeline-content">
+                <span class="timeline-year">Today</span>
+                <h4>Building the Future</h4>
+                <p>Continuing to innovate at the intersection of gaming, AI, and spatial computing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Media Montage Side -->
+        <div 
+          class="story-media"
+          style="
+            opacity: {storyAnimationProgress};
+            transform: translateX({(1 - storyAnimationProgress) * 80}px);
+          "
+        >
+          <div class="media-montage">
+            <!-- Main featured media -->
+            <div class="media-item main" style="transform: translateY({(1 - storyAnimationProgress) * 40}px);">
+              <div class="media-frame">
+                <img src="/images/story/team-working.jpg" alt="Team collaboration" />
+                <div class="media-overlay">
+                  <span class="media-caption">Late nights & big dreams</span>
+                </div>
+              </div>
+              <!-- Decorative corner accent -->
+              <svg class="corner-accent" viewBox="0 0 60 60">
+                <path d="M0 60 L0 20 Q0 0 20 0 L60 0" stroke="#00c400" fill="none" stroke-width="2" />
+              </svg>
+            </div>
+
+            <!-- Secondary media items -->
+            <div class="media-item secondary-1" style="transform: translate({(1 - storyAnimationProgress) * 60}px, {(1 - storyAnimationProgress) * -30}px);">
+              <div class="media-frame">
+                <img src="/images/story/prototype.jpg" alt="Early prototype" />
+              </div>
+            </div>
+
+            <div class="media-item secondary-2" style="transform: translate({(1 - storyAnimationProgress) * -40}px, {(1 - storyAnimationProgress) * 50}px);">
+              <div class="media-frame">
+                <video autoplay loop muted playsinline>
+                  <source src="/videos/story/development-timelapse.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+
+            <div class="media-item secondary-3" style="transform: translate({(1 - storyAnimationProgress) * 30}px, {(1 - storyAnimationProgress) * 40}px);">
+              <div class="media-frame">
+                <img src="/images/story/milestone.jpg" alt="Celebrating milestone" />
+              </div>
+            </div>
+
+            <!-- Floating video thumbnail -->
+            <div class="media-item floating-video" style="transform: translateY({(1 - storyAnimationProgress) * -60}px) rotate({(1 - storyAnimationProgress) * 10}deg);">
+              <div class="media-frame">
+                <video autoplay loop muted playsinline>
+                  <source src="/videos/story/behind-scenes.mp4" type="video/mp4" />
+                </video>
+                <div class="play-indicator">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Animated connection lines between media -->
+          <svg class="media-connections" viewBox="0 0 500 600">
+            <defs>
+              <linearGradient id="connectionGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="rgba(0, 196, 0, 0.3)" />
+                <stop offset="100%" stop-color="rgba(138, 43, 226, 0.3)" />
+              </linearGradient>
+            </defs>
+            <path 
+              class="connection-path" 
+              d="M250 100 Q350 150 300 250 Q250 350 350 400 Q450 450 400 550" 
+              stroke="url(#connectionGrad)" 
+              fill="none" 
+              stroke-width="1"
+              stroke-dasharray="5 5"
+              style="stroke-dashoffset: {(1 - storyAnimationProgress) * 500};"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Bottom quote/mission statement -->
+      <div 
+        class="story-mission"
+        style="
+          opacity: {Math.max(0, storyAnimationProgress - 0.5) * 2};
+          transform: translateY({(1 - Math.max(0, storyAnimationProgress - 0.5) * 2) * 40}px);
+        "
+      >
+        <svg class="quote-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21" />
+          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
+        </svg>
+        <p class="mission-text">
+          We believe technology should feel like magic — intuitive, immersive, and 
+          deeply human. Every line of code we write brings us closer to that vision.
+        </p>
+        <span class="mission-attribution">— The FinalBoss Team</span>
+      </div>
+    </div>
+  </section>
 
   <!-- Our Next Project -->
+  <section>
+    
+  </section>
 
   <!-- Blog Section -->
+  <section>
+    
+  </section>
 
   <!-- Newsletter -->
+  <section>
+    
+  </section>
 
   <!-- Job Postings -->
+  <section>
+    
+  </section>
 
   <!-- Contact Us -->
+  <section>
+    
+  </section>
 </main>
 
 <style>
@@ -1099,5 +1350,444 @@
 
   .project-cta:hover svg {
     transform: translateX(4px);
+  }
+
+  /* ==================== Our Story Section ==================== */
+  .story-section {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #000000 0%, #0d1a2d 30%, #0a1628 70%, #000000 100%);
+    overflow: hidden;
+    padding: 6rem 0;
+  }
+
+  /* SVG Background Elements */
+  .story-bg-elements {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .circuit-svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+  }
+
+  .circuit-line {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawLine 4s ease-out forwards;
+  }
+
+  .line-1 { animation-delay: 0s; }
+  .line-2 { animation-delay: 0.5s; }
+  .line-3 { animation-delay: 1s; }
+
+  @keyframes drawLine {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .pulse-dot {
+    opacity: 0;
+    animation: pulseDot 3s ease-in-out infinite;
+  }
+
+  .dot-1 { animation-delay: 0.5s; }
+  .dot-2 { animation-delay: 1.5s; }
+  .dot-3 { animation-delay: 2.5s; }
+
+  @keyframes pulseDot {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    50% { opacity: 1; transform: scale(2); }
+  }
+
+  .floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+
+  .floating-shape.shape-1 {
+    width: 300px;
+    height: 300px;
+    background: rgba(0, 196, 0, 0.15);
+    top: 10%;
+    left: 5%;
+    animation: floatShape 15s ease-in-out infinite;
+  }
+
+  .floating-shape.shape-2 {
+    width: 250px;
+    height: 250px;
+    background: rgba(138, 43, 226, 0.1);
+    bottom: 20%;
+    right: 10%;
+    animation: floatShape 18s ease-in-out infinite reverse;
+  }
+
+  .floating-shape.shape-3 {
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 215, 0, 0.08);
+    top: 50%;
+    right: 30%;
+    animation: floatShape 12s ease-in-out infinite;
+  }
+
+  @keyframes floatShape {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -20px) scale(1.1); }
+    50% { transform: translate(-20px, 30px) scale(0.95); }
+    75% { transform: translate(20px, 20px) scale(1.05); }
+  }
+
+  /* Story Container */
+  .story-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1400px;
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .story-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    will-change: transform, opacity;
+  }
+
+  .title-underline {
+    width: 200px;
+    height: 20px;
+    margin: 1rem auto 0;
+    transform-origin: center;
+    transition: transform 0.5s ease-out;
+  }
+
+  /* Story Content Grid */
+  .story-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 1024px) {
+    .story-content {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* Story Text Side */
+  .story-text {
+    will-change: transform, opacity;
+  }
+
+  .story-intro {
+    margin-bottom: 3rem;
+  }
+
+  .lead-text {
+    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* Timeline Styles */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #00c400, #8a2be2);
+    transition: height 0.5s ease-out;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 2rem;
+    padding-left: 1.5rem;
+    will-change: transform, opacity;
+  }
+
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: 0.25rem;
+    width: 12px;
+    height: 12px;
+    background: #0a1628;
+    border: 2px solid #00c400;
+    border-radius: 50%;
+    transform: translateX(-5px);
+  }
+
+  .timeline-dot.active {
+    background: #00c400;
+    box-shadow: 0 0 15px rgba(0, 196, 0, 0.5);
+  }
+
+  .timeline-content {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-content:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 196, 0, 0.2);
+  }
+
+  .timeline-year {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00c400;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-content h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .timeline-content p {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Media Montage Side */
+  .story-media {
+    position: relative;
+    min-height: 600px;
+    will-change: transform, opacity;
+    padding-top: 8rem;
+  }
+
+  @media (max-width: 1024px) {
+    .story-media {
+      min-height: 400px;
+      padding-top: 0;
+    }
+  }
+
+  .media-montage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .media-item {
+    position: absolute;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s ease;
+  }
+
+  .media-item:hover {
+    transform: scale(1.02) !important;
+    z-index: 10;
+  }
+
+  .media-item.main {
+    top: 10%;
+    left: 5%;
+    width: 55%;
+    z-index: 3;
+  }
+
+  .media-item.secondary-1 {
+    top: 5%;
+    right: 0;
+    width: 38%;
+    z-index: 2;
+  }
+
+  .media-item.secondary-2 {
+    bottom: 10%;
+    left: 0;
+    width: 35%;
+    z-index: 2;
+  }
+
+  .media-item.secondary-3 {
+    bottom: 0;
+    right: 5%;
+    width: 32%;
+    z-index: 1;
+  }
+
+  .media-item.floating-video {
+    top: 45%;
+    right: 2%;
+    width: 28%;
+    z-index: 4;
+  }
+
+  @media (max-width: 768px) {
+    .media-item.main {
+      position: relative;
+      top: 0;
+      left: 0;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .media-item.secondary-1,
+    .media-item.secondary-2,
+    .media-item.secondary-3,
+    .media-item.floating-video {
+      display: none;
+    }
+
+    .media-montage {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .media-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/10;
+    background: #0a1628;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+
+  .media-frame img,
+  .media-frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .media-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 1rem 1rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  }
+
+  .media-caption {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+  }
+
+  .corner-accent {
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    width: 60px;
+    height: 60px;
+    opacity: 0.6;
+  }
+
+  .play-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .media-item:hover .play-indicator {
+    opacity: 1;
+  }
+
+  .media-connections {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .connection-path {
+    transition: stroke-dashoffset 1s ease-out;
+  }
+
+  /* Mission Statement */
+  .story-mission {
+    text-align: center;
+    max-width: 800px;
+    margin: 5rem auto 0;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    will-change: transform, opacity;
+  }
+
+  .quote-icon {
+    width: 40px;
+    height: 40px;
+    stroke: rgba(0, 196, 0, 0.5);
+    margin-bottom: 1.5rem;
+  }
+
+  .mission-text {
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.8;
+    font-weight: 300;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .mission-attribution {
+    font-size: 0.875rem;
+    color: rgba(0, 196, 0, 0.8);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .story-section {
+      padding: 4rem 0;
+    }
+
+    .story-mission {
+      margin-top: 3rem;
+      padding: 2rem 1.5rem;
+    }
   }
 </style>
