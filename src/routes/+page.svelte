@@ -1,6 +1,7 @@
 <script lang='ts'>
   import { onMount } from 'svelte';
   import NewsletterSignup from '$lib/components/NewsletterSignup.svelte';
+  import ContactForm from '$lib/components/ContactForm.svelte';
 
   let mouseX = 0;
   let mouseY = 0;
@@ -940,8 +941,10 @@
   </section>
 
   <!-- Contact Us -->
-  <section>
-    
+  <section class="contact-section" aria-label="Contact Us">
+    <div class="contact-container">
+      <ContactForm />
+    </div>
   </section>
 </main>
 
@@ -2877,5 +2880,28 @@
 
   .view-all-jobs:hover svg {
     transform: translateX(4px);
+  }
+
+  /* ==================== Contact Section ==================== */
+  .contact-section {
+    position: relative;
+    width: 100%;
+    /* background: linear-gradient(180deg, #000000 0%, #0a1628 50%, #000000 100%); */
+    padding: 4rem 0;
+  }
+
+  .contact-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  @media (max-width: 640px) {
+    .contact-section {
+      padding: 3rem 0;
+    }
   }
 </style>
