@@ -16,6 +16,10 @@
   
   // Scroll animation state for story section
   let storyAnimationProgress = 0;
+  
+  // Scroll animation state for next project section
+  let nextProjectSection: HTMLElement;
+  let nextProjectAnimationProgress = 0;
 
   // Define geometric shapes with their positions and properties
   interface Shape {
@@ -151,6 +155,23 @@
         storyAnimationProgress = 1;
       } else {
         storyAnimationProgress = 0;
+      }
+    }
+    
+    // Calculate next project section animation progress
+    if (nextProjectSection) {
+      const rect = nextProjectSection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      const triggerStart = viewportHeight * 0.9;
+      const triggerEnd = viewportHeight * 0.4;
+      
+      if (rect.top <= triggerStart && rect.top >= triggerEnd) {
+        nextProjectAnimationProgress = 1 - ((rect.top - triggerEnd) / (triggerStart - triggerEnd));
+      } else if (rect.top < triggerEnd) {
+        nextProjectAnimationProgress = 1;
+      } else {
+        nextProjectAnimationProgress = 0;
       }
     }
   };
@@ -330,7 +351,7 @@
             alt="Cosmic Collisions Logo"
           >
           
-          <h3 class="text-4xl gold-header-text">Cosmic Collisions</h3>
+          <h3 class="text-4xl gradient-text">Cosmic Collisions</h3>
           
           <p class="project-description">
             An arcade-style space shooter where physics meets chaos. Navigate through 
@@ -420,7 +441,7 @@
         "
       >
         <span class="section-label">The Journey</span>
-        <h2 class="section-title">Our Story</h2>
+        <h2 class="section-title gradient-text">Our Story</h2>
         
         <!-- Animated underline SVG -->
         <svg class="title-underline" viewBox="0 0 200 20" style="transform: scaleX({storyAnimationProgress});">
@@ -587,9 +608,146 @@
     </div>
   </section>
 
-  <!-- Our Next Project -->
-  <section>
-    
+  <!-- Next Project Section -->
+  <section 
+    class="next-project-section" 
+    bind:this={nextProjectSection}
+    aria-label="Next Project"
+  >
+    <!-- Animated Background -->
+    <div class="next-project-bg">
+      <!-- Animated Grid Pattern -->
+      <svg class="grid-pattern" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <pattern id="gridPattern" width="10" height="10" patternUnits="userSpaceOnUse">
+            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(0, 255, 0, 0.1)" stroke-width="0.5" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#gridPattern)" />
+      </svg>
+      
+      <!-- Glowing orbs -->
+      <div class="glow-orb orb-1" style="opacity: {nextProjectAnimationProgress * 0.5};"></div>
+      <div class="glow-orb orb-2" style="opacity: {nextProjectAnimationProgress * 0.3};"></div>
+    </div>
+
+    <div class="next-project-container">
+      <div class="next-project-content">
+        <!-- Left Side - Text -->
+        <div 
+          class="next-project-info"
+          style="
+            opacity: {nextProjectAnimationProgress};
+            transform: translateX({(1 - nextProjectAnimationProgress) * -60}px);
+          "
+        >
+          <h2 class="next-project-title">
+            <span class="title-prefix">Next Up:</span>
+            <span class="title-main gradient-text">Project V</span>
+          </h2>
+          
+          <p class="next-project-description">
+            A groundbreaking XR productivity platform designed to transform how teams 
+            collaborate in spatial environments. Seamlessly blend physical and digital 
+            workspaces with intuitive gesture controls and AI-powered assistance.
+          </p>
+        </div>
+
+        <!-- Right Side - SVG Visual -->
+        <div 
+          class="next-project-visual"
+          style="
+            opacity: {nextProjectAnimationProgress};
+            transform: translateX({(1 - nextProjectAnimationProgress) * 60}px) scale({0.9 + nextProjectAnimationProgress * 0.1});
+          "
+        >
+          <!-- Smart Glasses SVG -->
+          <div class="glasses-container">
+            <svg class="smart-glasses" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="glassesGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              <!-- Left Lens Frame -->
+              <rect x="10" y="20" width="70" height="40" rx="8" fill="none" stroke="#00ff00" stroke-width="2" filter="url(#glassesGlow)" />
+              <!-- Left Lens -->
+              <rect x="14" y="24" width="62" height="32" rx="6" fill="rgba(0, 255, 0, 0.1)" stroke="rgba(0, 255, 0, 0.5)" stroke-width="1" />
+              <!-- Left Lens Reflection -->
+              <path d="M20 28 L30 28 L25 35 Z" fill="rgba(0, 255, 0, 0.3)" />
+              
+              <!-- Right Lens Frame -->
+              <rect x="120" y="20" width="70" height="40" rx="8" fill="none" stroke="#00ff00" stroke-width="2" filter="url(#glassesGlow)" />
+              <!-- Right Lens -->
+              <rect x="124" y="24" width="62" height="32" rx="6" fill="rgba(0, 255, 0, 0.1)" stroke="rgba(0, 255, 0, 0.5)" stroke-width="1" />
+              <!-- Right Lens Reflection -->
+              <path d="M130 28 L140 28 L135 35 Z" fill="rgba(0, 255, 0, 0.3)" />
+              
+              <!-- Bridge -->
+              <path d="M80 35 Q100 25 120 35" fill="none" stroke="#00ff00" stroke-width="4" />
+              
+              <!-- Left Temple Arm -->
+              <path d="M10 30 L0 28 Q-5 27 -5 32 L-5 35" fill="none" stroke="#00ff00" stroke-width="3" />
+              
+              <!-- Right Temple Arm -->
+              <path d="M190 30 L200 28 Q205 27 205 32 L205 35" fill="none" stroke="#00ff00" stroke-width="3" />
+              
+              <!-- Tech Details - Left -->
+              <circle cx="25" cy="55" r="3" fill="#00ff00">
+                <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
+              </circle>
+              <rect x="60" y="52" width="15" height="6" rx="2" fill="rgba(0, 255, 0, 0.6)" />
+              
+              <!-- Tech Details - Right -->
+              <circle cx="175" cy="55" r="3" fill="#00ff00">
+                <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" begin="0.5s" />
+              </circle>
+              <rect x="125" y="52" width="15" height="6" rx="2" fill="rgba(0, 255, 0, 0.6)" />
+              
+              <!-- HUD Elements (animated) -->
+              <g class="hud-elements" opacity="0.7">
+                <rect x="20" y="32" width="20" height="2" rx="1" fill="#00ff00">
+                  <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" />
+                </rect>
+                <rect x="20" y="38" width="15" height="2" rx="1" fill="#00ff00">
+                  <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" begin="0.5s" />
+                </rect>
+                <rect x="20" y="44" width="25" height="2" rx="1" fill="#00ff00">
+                  <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" begin="1s" />
+                </rect>
+                
+                <rect x="155" y="32" width="20" height="2" rx="1" fill="#00ff00">
+                  <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" begin="1.5s" />
+                </rect>
+                <rect x="160" y="38" width="15" height="2" rx="1" fill="#00ff00">
+                  <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" begin="2s" />
+                </rect>
+                <rect x="150" y="44" width="25" height="2" rx="1" fill="#00ff00">
+                  <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" begin="2.5s" />
+                </rect>
+              </g>
+              
+              <!-- Scanning line effect -->
+              <rect x="14" y="24" width="62" height="2" rx="1" fill="rgba(0, 255, 0, 0.4)">
+                <animate attributeName="y" values="24;52;24" dur="2s" repeatCount="indefinite" />
+              </rect>
+              <rect x="124" y="24" width="62" height="2" rx="1" fill="rgba(0, 255, 0, 0.4)">
+                <animate attributeName="y" values="24;52;24" dur="2s" repeatCount="indefinite" begin="0.3s" />
+              </rect>
+            </svg>
+          </div>
+          
+          <!-- Animated rings around visual -->
+          <div class="visual-ring ring-1"></div>
+          <div class="visual-ring ring-2"></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Blog Section -->
@@ -1788,6 +1946,321 @@
     .story-mission {
       margin-top: 3rem;
       padding: 2rem 1.5rem;
+    }
+  }
+
+  /* ==================== Next Project Section ==================== */
+  .next-project-section {
+    position: relative;
+    min-height: 60vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #000000 0%, #0a1a0a 50%, #0d200d 100%);
+    overflow: hidden;
+    padding: 4rem 0;
+  }
+
+  .next-project-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .grid-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+  }
+
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+  }
+
+  .glow-orb.orb-1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(0, 255, 0, 0.2);
+    top: -10%;
+    right: 10%;
+    animation: floatOrb 20s ease-in-out infinite;
+  }
+
+  .glow-orb.orb-2 {
+    width: 300px;
+    height: 300px;
+    background: rgba(0, 200, 0, 0.15);
+    bottom: -5%;
+    left: 5%;
+    animation: floatOrb 15s ease-in-out infinite reverse;
+  }
+
+  @keyframes floatOrb {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -30px); }
+  }
+
+  .next-project-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .next-project-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 968px) {
+    .next-project-content {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .next-project-info {
+    will-change: transform, opacity;
+  }
+
+  @media (max-width: 968px) {
+    .next-project-info {
+      text-align: center;
+    }
+  }
+
+  .coming-soon-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: rgba(138, 43, 226, 0.15);
+    border: 1px solid rgba(138, 43, 226, 0.4);
+    border-radius: 9999px;
+    margin-bottom: 1.5rem;
+    color: #c4a1ff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .pulse-ring {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    background: #8a2be2;
+    border-radius: 50%;
+  }
+
+  .pulse-ring::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 2px solid rgba(138, 43, 226, 0.5);
+    border-radius: 50%;
+    animation: pulseRing 2s ease-out infinite;
+  }
+
+  @keyframes pulseRing {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  .next-project-title {
+    margin: 0 0 1.5rem 0;
+  }
+
+  .title-prefix {
+    display: block;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+
+  .title-main {
+    display: block;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+  }
+
+  .green-gradient-text {
+    background: linear-gradient(135deg, #00ff00 0%, #90EE90 50%, #00ff00 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease-in-out infinite;
+  }
+
+  .next-project-description {
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 500px;
+  }
+
+  @media (max-width: 968px) {
+    .next-project-description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .next-project-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 968px) {
+    .next-project-features {
+      justify-content: center;
+    }
+  }
+
+  .np-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    border-radius: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+  }
+
+  .np-feature:hover {
+    background: rgba(0, 255, 0, 0.15);
+    border-color: rgba(0, 255, 0, 0.4);
+  }
+
+  .np-feature svg {
+    stroke: #00ff00;
+  }
+
+  .next-project-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.75rem;
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(138, 43, 226, 0.15) 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    border: 1px solid rgba(138, 43, 226, 0.5);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .next-project-cta:hover {
+    transform: translateY(-2px);
+    border-color: rgba(138, 43, 226, 0.8);
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.4) 0%, rgba(138, 43, 226, 0.2) 100%);
+    box-shadow: 0 10px 30px -10px rgba(138, 43, 226, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .next-project-cta:hover {
+      transform: none;
+    }
+  }
+
+  .next-project-cta svg {
+    transition: transform 0.3s ease;
+  }
+
+  .next-project-cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Visual Side */
+  .next-project-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    will-change: transform, opacity;
+  }
+
+  @media (max-width: 968px) {
+    .next-project-visual {
+      order: -1;
+    }
+  }
+
+  /* Smart Glasses Styles */
+  .glasses-container {
+    display: flex;
+    justify-content: center;
+    animation: glassesFloat 4s ease-in-out infinite;
+  }
+
+  .smart-glasses {
+    width: 320px;
+    height: 140px;
+    filter: drop-shadow(0 0 25px rgba(0, 255, 0, 0.4));
+  }
+
+  @keyframes glassesFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .visual-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    pointer-events: none;
+  }
+
+  .visual-ring.ring-1 {
+    width: 120%;
+    height: 120%;
+    animation: rotateRing 20s linear infinite;
+  }
+
+  .visual-ring.ring-2 {
+    width: 140%;
+    height: 140%;
+    border-style: dashed;
+    animation: rotateRing 30s linear infinite reverse;
+  }
+
+  @keyframes rotateRing {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 768px) {
+    .next-project-section {
+      min-height: auto;
+      padding: 3rem 0;
+    }
+
+    .smart-glasses {
+      width: 260px;
+      height: 110px;
+    }
+
+    .visual-ring {
+      display: none;
     }
   }
 </style>
