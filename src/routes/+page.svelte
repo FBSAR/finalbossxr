@@ -956,7 +956,7 @@
     padding-top: 2em;
     justify-content: center;
     overflow: hidden;
-    background: radial-gradient(ellipse at 50% 50%, #0a1628 0%, #000000 100%);
+    /* background: radial-gradient(ellipse at 50% 50%, #0a1628 0%, #000000 100%); */
   }
 
   /* Animated Grid Background */
@@ -1410,7 +1410,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #000000 0%, #0a1628 50%, #000000 100%);
+    /* background: linear-gradient(180deg, #000000 0%, #0a1628 50%, #000000 100%); */
     overflow: hidden;
   }
 
@@ -1692,7 +1692,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #000000 0%, #0d1a2d 30%, #0a1628 70%, #000000 100%);
+    /* background: linear-gradient(180deg, #000000 0%, #0d1a2d 30%, #0a1628 70%, #000000 100%); */
     overflow: hidden;
     padding: 6rem 0;
   }
@@ -2131,7 +2131,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #000000 0%, #0a1a0a 50%, #0d200d 100%);
+    /* background: linear-gradient(180deg, #000000 0%, #0a1a0a 50%, #0d200d 100%); */
     overflow: hidden;
     padding: 4rem 0;
   }
@@ -2446,7 +2446,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #0d200d 0%, #0a1628 50%, #000000 100%);
+    /* background: linear-gradient(180deg, #0d200d 0%, #0a1628 50%, #000000 100%); */
     padding: 4rem 0;
   }
 
@@ -2597,7 +2597,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #000000 0%, #0a1628 50%, #0a0a1a 100%);
+    /* background: linear-gradient(180deg, #000000 0%, #0a1628 50%, #0a0a1a 100%); */
     padding: 4rem 0;
     overflow: hidden;
   }
@@ -2701,7 +2701,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #0a0a1a 0%, #0a1628 50%, #000000 100%);
+    /* background: linear-gradient(180deg, #0a0a1a 0%, #0a1628 50%, #000000 100%); */
     padding: 4rem 0;
   }
 
