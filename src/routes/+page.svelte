@@ -751,8 +751,90 @@
   </section>
 
   <!-- Blog Section -->
-  <section>
-    
+  <section class="blog-section" aria-label="Blog">
+    <div class="blog-container">
+      <div class="blog-header">
+        <span class="section-label">Latest Updates</span>
+        <h2 class="section-title gradient-text">From Our Blog</h2>
+      </div>
+
+      <div class="blog-grid">
+        <!-- Blog Card 1 -->
+        <article class="blog-card">
+          <div class="blog-image">
+            <div class="blog-image-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <span class="blog-category">Development</span>
+          </div>
+          <div class="blog-content">
+            <span class="blog-date">Jan 15, 2026</span>
+            <h3 class="blog-title">Building Immersive Experiences with Unreal Engine 5</h3>
+            <p class="blog-excerpt">Explore how we leverage the latest UE5 features to create stunning XR applications...</p>
+            <a href="/blog/placeholder-1" class="blog-link">
+              Read More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Blog Card 2 -->
+        <article class="blog-card">
+          <div class="blog-image">
+            <div class="blog-image-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <span class="blog-category">XR Insights</span>
+          </div>
+          <div class="blog-content">
+            <span class="blog-date">Jan 10, 2026</span>
+            <h3 class="blog-title">The Future of Spatial Computing in Enterprise</h3>
+            <p class="blog-excerpt">How businesses are adopting XR technologies to transform workflows and collaboration...</p>
+            <a href="/blog/placeholder-2" class="blog-link">
+              Read More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Blog Card 3 -->
+        <article class="blog-card">
+          <div class="blog-image">
+            <div class="blog-image-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <span class="blog-category">Behind the Scenes</span>
+          </div>
+          <div class="blog-content">
+            <span class="blog-date">Jan 5, 2026</span>
+            <h3 class="blog-title">Cosmic Collisions: From Concept to Launch</h3>
+            <p class="blog-excerpt">A deep dive into the creative process behind our first mobile game release...</p>
+            <a href="/blog/placeholder-3" class="blog-link">
+              Read More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
   </section>
 
   <!-- Newsletter -->
@@ -2262,5 +2344,156 @@
     .visual-ring {
       display: none;
     }
+  }
+
+  /* ==================== Blog Section ==================== */
+  .blog-section {
+    position: relative;
+    min-height: 50vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #0d200d 0%, #0a1628 50%, #000000 100%);
+    padding: 4rem 0;
+  }
+
+  .blog-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  .blog-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 968px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .blog-section {
+      min-height: auto;
+      padding: 3rem 0;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .blog-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 196, 0, 0.3);
+    box-shadow: 0 20px 40px -20px rgba(0, 196, 0, 0.2);
+  }
+
+  .blog-image {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .blog-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, rgba(0, 100, 0, 0.15) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 196, 0, 0.4);
+  }
+
+  .blog-category {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00c400;
+  }
+
+  .blog-content {
+    padding: 1.5rem;
+  }
+
+  .blog-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .blog-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin: 0.75rem 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-excerpt {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #00c400;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .blog-link:hover {
+    gap: 0.75rem;
+  }
+
+  .blog-link svg {
+    transition: transform 0.3s ease;
+  }
+
+  .blog-link:hover svg {
+    transform: translateX(4px);
   }
 </style>
