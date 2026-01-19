@@ -68,7 +68,7 @@
         <div class="skeleton-button"></div>
       </div>
     {:else}
-      <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 green-header-text glow-text">CONTACT US</h1>
+      <h1 class="text-7xl jersey-font sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 gradient-text">CONTACT US</h1>
       <p class="contact-header-card text-lg lg:text-lg sm:w-1/2 lg:w-1/2 mx-auto my-4 p-2 backdrop-blur-lg lg:bg-white/10 border-white/20 lg:border-2">
         Have a question? Have a comment? Want to work with, or invest in Final Boss?
         Please reach out, and we will contact you at our earliest convenience!
@@ -133,9 +133,6 @@
   </div>
 </main>
 <style>
-  .glow-text {
-    text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
-  }
 
   .submit-btn {
     display: block;

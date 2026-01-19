@@ -46,7 +46,7 @@
     
     <div class="relative max-w-6xl mx-auto text-center">
       <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">
-        <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-emerald-400 bg-clip-text text-transparent">
+        <span class="text-7xl jersey-font gradient-text">
           Blog
         </span>
       </h1>

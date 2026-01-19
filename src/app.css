@@ -157,3 +157,26 @@ ul {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #00c400 0%, #FFD700 50%, #00c400 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 650px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+    padding: 0 1rem;
+  }
