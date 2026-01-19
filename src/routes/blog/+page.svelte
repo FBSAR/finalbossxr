@@ -38,13 +38,86 @@
 
 <div class="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#12121a] to-[#0a0a0f]">
   <!-- Hero Section -->
-  <section class="relative pt-32 pb-16 px-4">
+  <section class="relative pt-12 pb-16 px-4">
     <div class="absolute inset-0 overflow-hidden">
       <div class="absolute top-20 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
       <div class="absolute bottom-10 right-1/4 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl"></div>
     </div>
     
     <div class="relative max-w-6xl mx-auto text-center">
+      <!-- SVG Animation -->
+      <div class="blog-svg-container mb-6">
+        <svg class="blog-illustration" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="blogGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00ff00" />
+              <stop offset="100%" stop-color="#004d00" />
+            </linearGradient>
+            <linearGradient id="blogGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(0, 255, 0, 0.2)" />
+              <stop offset="50%" stop-color="rgba(0, 255, 0, 0.5)" />
+              <stop offset="100%" stop-color="rgba(0, 255, 0, 0.2)" />
+            </linearGradient>
+            <filter id="blogGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          
+          <!-- Main Document -->
+          <rect x="50" y="20" width="100" height="120" rx="8" fill="rgba(0, 255, 0, 0.05)" stroke="#00ff00" stroke-width="1.5" filter="url(#blogGlow)" />
+          
+          <!-- Document Header Line -->
+          <rect x="65" y="35" width="50" height="6" rx="3" fill="rgba(0, 255, 0, 0.4)">
+            <animate attributeName="width" values="50;60;50" dur="3s" repeatCount="indefinite" />
+          </rect>
+          
+          <!-- Text Lines -->
+          <rect x="65" y="55" width="70" height="3" rx="1.5" fill="rgba(0, 255, 0, 0.25)">
+            <animate attributeName="opacity" values="0.25;0.5;0.25" dur="2s" repeatCount="indefinite" />
+          </rect>
+          <rect x="65" y="65" width="60" height="3" rx="1.5" fill="rgba(0, 255, 0, 0.2)">
+            <animate attributeName="opacity" values="0.2;0.45;0.2" dur="2s" repeatCount="indefinite" begin="0.3s" />
+          </rect>
+          <rect x="65" y="75" width="65" height="3" rx="1.5" fill="rgba(0, 255, 0, 0.25)">
+            <animate attributeName="opacity" values="0.25;0.5;0.25" dur="2s" repeatCount="indefinite" begin="0.6s" />
+          </rect>
+          <rect x="65" y="85" width="55" height="3" rx="1.5" fill="rgba(0, 255, 0, 0.2)">
+            <animate attributeName="opacity" values="0.2;0.45;0.2" dur="2s" repeatCount="indefinite" begin="0.9s" />
+          </rect>
+          <rect x="65" y="95" width="70" height="3" rx="1.5" fill="rgba(0, 255, 0, 0.25)">
+            <animate attributeName="opacity" values="0.25;0.5;0.25" dur="2s" repeatCount="indefinite" begin="1.2s" />
+          </rect>
+          
+          <!-- Floating Elements -->
+          <circle cx="35" cy="50" r="8" fill="none" stroke="rgba(0, 255, 0, 0.3)" stroke-width="1.5">
+            <animate attributeName="cy" values="50;45;50" dur="4s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="35" cy="50" r="3" fill="#00ff00" opacity="0.5">
+            <animate attributeName="cy" values="50;45;50" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite" />
+          </circle>
+          
+          <circle cx="165" cy="70" r="10" fill="none" stroke="rgba(0, 255, 0, 0.25)" stroke-width="1.5">
+            <animate attributeName="cy" values="70;65;70" dur="3.5s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="165" cy="70" r="4" fill="#00ff00" opacity="0.4">
+            <animate attributeName="cy" values="70;65;70" dur="3.5s" repeatCount="indefinite" />
+          </circle>
+          
+          <!-- Connection Lines -->
+          <path d="M40 55 Q45 40 50 35" stroke="url(#blogGradient2)" stroke-width="1" fill="none" stroke-dasharray="3 3">
+            <animate attributeName="stroke-dashoffset" values="0;-12" dur="1.5s" repeatCount="indefinite" />
+          </path>
+          <path d="M160 75 Q155 60 150 50" stroke="url(#blogGradient2)" stroke-width="1" fill="none" stroke-dasharray="3 3">
+            <animate attributeName="stroke-dashoffset" values="0;-12" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
+          </path>
+        </svg>
+      </div>
+       
       <h1 class="text-5xl md:text-6xl font-bold text-white mb-4">
         <span class="text-7xl jersey-font gradient-text">
           Blog
@@ -172,6 +245,30 @@
 </div>
 
 <style>
+  .blog-svg-container {
+    display: flex;
+    justify-content: center;
+    animation: floatBlog 4s ease-in-out infinite;
+  }
+
+  .blog-illustration {
+    width: 200px;
+    height: 160px;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 0, 0.3));
+  }
+
+  @keyframes floatBlog {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (max-width: 640px) {
+    .blog-illustration {
+      width: 160px;
+      height: 128px;
+    }
+  }
+
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
