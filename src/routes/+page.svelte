@@ -393,6 +393,43 @@
     </div>
   </section>
 
+  <!-- Newsletter -->
+  <section class="newsletter-section" aria-label="Newsletter">
+    <div class="newsletter-bg">
+      <div class="newsletter-glow"></div>
+    </div>
+    
+    <div class="newsletter-container">
+      <div class="newsletter-content">
+        <div class="newsletter-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        
+        <h2 class="newsletter-title gradient-text">Stay in the Loop</h2>
+        <p class="newsletter-description">
+          Get the latest updates on our projects, behind-the-scenes content, 
+          and exclusive announcements delivered straight to your inbox.
+        </p>
+
+        <div class="newsletter-form-wrapper">
+          <NewsletterSignup 
+            variant="stacked" 
+            placeholder="Enter your email" 
+            buttonText="Subscribe" 
+            showName={true} 
+          />
+        </div>
+
+        <p class="newsletter-privacy">
+          We respect your privacy. Unsubscribe at any time.
+        </p>
+      </div>
+    </div>
+  </section>
+  
   <!-- Our Story Section -->
   <section 
     class="story-section" 
@@ -839,42 +876,6 @@
     </div>
   </section>
 
-  <!-- Newsletter -->
-  <section class="newsletter-section" aria-label="Newsletter">
-    <div class="newsletter-bg">
-      <div class="newsletter-glow"></div>
-    </div>
-    
-    <div class="newsletter-container">
-      <div class="newsletter-content">
-        <div class="newsletter-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-            <polyline points="22,6 12,13 2,6"></polyline>
-          </svg>
-        </div>
-        
-        <h2 class="newsletter-title gradient-text">Stay in the Loop</h2>
-        <p class="newsletter-description">
-          Get the latest updates on our projects, behind-the-scenes content, 
-          and exclusive announcements delivered straight to your inbox.
-        </p>
-
-        <div class="newsletter-form-wrapper">
-          <NewsletterSignup 
-            variant="stacked" 
-            placeholder="Enter your email" 
-            buttonText="Subscribe" 
-            showName={true} 
-          />
-        </div>
-
-        <p class="newsletter-privacy">
-          We respect your privacy. Unsubscribe at any time.
-        </p>
-      </div>
-    </div>
-  </section>
 
   <!-- Job Postings -->
   <section class="jobs-section" aria-label="Job Postings">
