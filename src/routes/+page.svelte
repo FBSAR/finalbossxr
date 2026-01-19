@@ -305,7 +305,7 @@
         >
           <img 
             src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
-            class="w-10 lg:w-20 drop-shadow-2xl" 
+            class="w-32 lg:w-20 mx-auto lg:mx-0 drop-shadow-2xl" 
             alt="Cosmic Collisions Logo"
           >
           
