@@ -36,11 +36,10 @@
   <meta name="description" content="Latest news, updates, and insights from FinalBossXR" />
 </svelte:head>
 
-<div class="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#12121a] to-[#0a0a0f]">
+<div class="min-h-screen">
   <!-- Hero Section -->
   <section class="relative pt-12 pb-16 px-4">
     <div class="absolute inset-0 overflow-hidden">
-      <div class="absolute top-20 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
       <div class="absolute bottom-10 right-1/4 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl"></div>
     </div>
     
