@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  
   export let size: 'sm' | 'md' | 'lg' | 'xl' = 'md';
   export let className: string = '';
+  export let interactive: boolean = true;
   
   const sizeMap = {
     sm: '150px',
@@ -8,11 +11,84 @@
     lg: '300px',
     xl: '400px'
   };
+
+  let container: HTMLDivElement;
+  let rotateX = 0;
+  let rotateY = 0;
+  let scale = 1;
+  let glowIntensity = 20;
+  let isHovering = false;
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!interactive || !container) return;
+    
+    const rect = container.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Calculate distance from center of element
+    const deltaX = e.clientX - centerX;
+    const deltaY = e.clientY - centerY;
+    
+    // Max rotation of 15 degrees
+    const maxRotation = 15;
+    const maxDistance = Math.max(rect.width, rect.height);
+    
+    rotateY = (deltaX / maxDistance) * maxRotation;
+    rotateX = -(deltaY / maxDistance) * maxRotation;
+    
+    // Calculate distance for glow effect
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const maxGlowDistance = 300;
+    
+    if (distance < maxGlowDistance) {
+      const proximity = 1 - (distance / maxGlowDistance);
+      glowIntensity = 20 + (proximity * 25);
+      scale = 1 + (proximity * 0.05);
+    } else {
+      glowIntensity = 20;
+      scale = 1;
+    }
+  };
+
+  const handleMouseEnter = () => {
+    isHovering = true;
+  };
+
+  const handleMouseLeave = () => {
+    isHovering = false;
+    // Smoothly reset transforms
+    rotateX = 0;
+    rotateY = 0;
+    scale = 1;
+    glowIntensity = 20;
+  };
+
+  onMount(() => {
+    if (interactive) {
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+      };
+    }
+  });
 </script>
 
 <div 
   class="xr-abstract-container {className}"
-  style="--xr-size: {sizeMap[size]};"
+  class:interactive
+  bind:this={container}
+  on:mouseenter={handleMouseEnter}
+  on:mouseleave={handleMouseLeave}
+  role="img"
+  aria-label="Abstract XR visualization"
+  style="
+    --xr-size: {sizeMap[size]};
+    --rotate-x: {rotateX}deg;
+    --rotate-y: {rotateY}deg;
+    --scale: {scale};
+    --glow-intensity: {glowIntensity}px;
+  "
 >
   <svg class="xr-abstract-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -183,12 +259,48 @@
     width: 100%;
     max-width: var(--xr-size, 220px);
     animation: xrFloat 6s ease-in-out infinite;
+    perspective: 1000px;
+  }
+
+  .xr-abstract-container.interactive {
+    animation: none;
   }
 
   .xr-abstract-svg {
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 0 20px rgba(0, 196, 0, 0.2));
+    filter: drop-shadow(0 0 var(--glow-intensity, 20px) rgba(0, 196, 0, 0.2));
+    transition: filter 0.3s ease-out, transform 0.15s ease-out;
+    transform-style: preserve-3d;
+  }
+
+  .xr-abstract-container.interactive .xr-abstract-svg {
+    transform: 
+      rotateX(var(--rotate-x, 0deg)) 
+      rotateY(var(--rotate-y, 0deg)) 
+      scale(var(--scale, 1));
+  }
+
+  /* Subtle idle animation when not being interacted with */
+  .xr-abstract-container.interactive .xr-abstract-svg {
+    animation: subtleFloat 8s ease-in-out infinite;
+  }
+
+  @keyframes subtleFloat {
+    0%, 100% {
+      transform: 
+        rotateX(var(--rotate-x, 0deg)) 
+        rotateY(var(--rotate-y, 0deg)) 
+        scale(var(--scale, 1))
+        translateY(0px);
+    }
+    50% {
+      transform: 
+        rotateX(var(--rotate-x, 0deg)) 
+        rotateY(var(--rotate-y, 0deg)) 
+        scale(var(--scale, 1))
+        translateY(-5px);
+    }
   }
 
   @keyframes xrFloat {
@@ -200,8 +312,16 @@
     }
   }
 
-  /* Hover effect for interactive contexts */
+  /* Enhanced hover effect */
   .xr-abstract-container:hover .xr-abstract-svg {
-    filter: drop-shadow(0 0 30px rgba(0, 196, 0, 0.4));
+    filter: drop-shadow(0 0 var(--glow-intensity, 30px) rgba(0, 196, 0, 0.4));
+  }
+
+  /* Touch devices - disable 3D transforms */
+  @media (hover: none) {
+    .xr-abstract-container.interactive .xr-abstract-svg {
+      transform: none;
+      animation: xrFloat 6s ease-in-out infinite;
+    }
   }
 </style>
