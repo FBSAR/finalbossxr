@@ -101,6 +101,13 @@
       <div class="drawer-handle-container">
         <div class="drawer-handle"></div>
       </div>
+      <div class="drawer-logo-container">
+        <img 
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" 
+          alt="Final Boss Studios Logo"
+          class="drawer-logo"
+        />
+      </div>
       <nav class="drawer-nav">
         {#each navLinks as link, i}
           <a 
@@ -333,12 +340,13 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%);
+    background: #000;
     border-top-left-radius: 1.5rem;
     border-top-right-radius: 1.5rem;
+    border-top: 1px solid rgba(0, 255, 0, 0.2);
     z-index: 50;
     padding: 0.5rem 1.5rem 2rem;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8), 0 -2px 20px rgba(0, 255, 0, 0.1);
     max-height: 80vh;
     overflow-y: auto;
   }
@@ -352,25 +360,40 @@
   .drawer-handle {
     width: 40px;
     height: 4px;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 255, 0, 0.4);
     border-radius: 2px;
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+  }
+
+  /* Drawer Logo */
+  .drawer-logo-container {
+    display: flex;
+    justify-content: center;
+    padding: 0.25rem 0 0.5rem;
+  }
+
+  .drawer-logo {
+    height: 40px;
+    width: auto;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.3));
   }
 
   /* Drawer Navigation */
   .drawer-nav {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
   }
 
   .drawer-link {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     transition: all 0.2s ease;
@@ -388,75 +411,83 @@
   }
 
   .drawer-link:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 255, 0, 0.08);
+    border-color: rgba(0, 255, 0, 0.2);
     color: white;
   }
 
   .drawer-link.active {
-    background: linear-gradient(135deg, rgba(0, 196, 0, 0.2) 0%, rgba(0, 100, 0, 0.1) 100%);
-    color: white;
-    border: 1px solid rgba(0, 196, 0, 0.3);
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.15) 0%, rgba(0, 255, 0, 0.05) 100%);
+    color: #00ff00;
+    border: 1px solid rgba(0, 255, 0, 0.4);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
   }
 
   .drawer-link-icon {
-    font-size: 1.25rem;
-    width: 2.5rem;
-    height: 2.5rem;
+    font-size: 1rem;
+    width: 2rem;
+    height: 2rem;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 255, 0, 0.1);
-    border: 1px solid rgba(0, 255, 0, 0.2);
-    border-radius: 0.5rem;
+    background: rgba(0, 255, 0, 0.08);
+    border: 1px solid rgba(0, 255, 0, 0.15);
+    border-radius: 0.375rem;
     flex-shrink: 0;
+  }
+
+  .drawer-link:hover .drawer-link-icon {
+    background: rgba(0, 255, 0, 0.15);
+    border-color: rgba(0, 255, 0, 0.3);
   }
 
   .drawer-link.active .drawer-link-icon {
     background: rgba(0, 255, 0, 0.2);
-    border-color: rgba(0, 255, 0, 0.4);
+    border-color: rgba(0, 255, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
   }
 
   .drawer-icon-img {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
     object-fit: contain;
   }
 
   .drawer-link-label {
     font-family: "Raleway", sans-serif;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.875rem;
     letter-spacing: 0.5px;
   }
 
   .drawer-active-indicator {
     position: absolute;
-    right: 1.25rem;
-    width: 8px;
-    height: 8px;
+    right: 1rem;
+    width: 6px;
+    height: 6px;
     background: #00ff00;
     border-radius: 50%;
-    box-shadow: 0 0 10px #00ff00;
+    box-shadow: 0 0 10px #00ff00, 0 0 20px rgba(0, 255, 0, 0.5);
   }
 
   /* Drawer Footer */
   .drawer-footer {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(0, 255, 0, 0.15);
     text-align: center;
   }
 
   .drawer-footer-link {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .drawer-footer-link:hover {
-    color: white;
+    color: #00ff00;
   }
 
   /* Drawer Close Button */
@@ -466,23 +497,24 @@
     justify-content: center;
     gap: 0.5rem;
     width: 100%;
-    margin-top: 1rem;
-    padding: 0.875rem 1.5rem;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 1rem;
-    color: rgba(255, 255, 255, 0.8);
+    margin-top: 0.5rem;
+    padding: 0.625rem 1rem;
+    background: rgba(0, 255, 0, 0.08);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    border-radius: 0.75rem;
+    color: rgba(0, 255, 0, 0.8);
     font-family: "Raleway", sans-serif;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
   .drawer-close-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: white;
-    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(0, 255, 0, 0.15);
+    color: #00ff00;
+    border-color: rgba(0, 255, 0, 0.4);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.15);
   }
 
   .drawer-close-btn:active {
@@ -495,22 +527,23 @@
 
   /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: red;
+  background: #1a1a1a;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: rgba(0, 255, 0, 0.3);
+  border-radius: 4px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: rgba(0, 255, 0, 0.5);
 }
 
 /* Toast Refined Styles */
