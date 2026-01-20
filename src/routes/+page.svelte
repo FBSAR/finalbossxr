@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import NewsletterSignup from '$lib/components/NewsletterSignup.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
+  import XRAbstractArt from '$lib/components/XRAbstractArt.svelte';
 
   let mouseX = 0;
   let mouseY = 0;
@@ -231,6 +232,12 @@
 
     <!-- Hero Content - moves slightly faster than background for depth -->
     <div class="hero-content" style="transform: translateY({scrollY * -0.2}px);">
+      
+      <!-- Abstract XR Art - Geometric representation of extended reality -->
+      <div class="xr-art-hero">
+        <XRAbstractArt size="lg" />
+      </div>
+
       <div class="hero-badge">
         <span class="badge-dot"></span>
         <span>Immersive Technology Studio</span>
@@ -1089,6 +1096,23 @@
   @media (max-width: 768px) {
     .cursor-glow {
       display: none;
+    }
+  }
+
+  /* XR Abstract Art in Hero */
+  .xr-art-hero {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .xr-art-hero {
+      margin-bottom: 0.5rem;
+    }
+    
+    .xr-art-hero :global(.xr-abstract-container) {
+      max-width: 200px;
     }
   }
 
