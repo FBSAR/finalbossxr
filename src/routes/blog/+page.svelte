@@ -136,7 +136,7 @@
           type="text"
           bind:value={searchQuery}
           placeholder="Search articles..."
-          class="w-full px-5 py-3 pl-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all"
+          class="w-full px-5 py-3 pl-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#00c400]/50 focus:ring-2 focus:ring-[#00c400]/20 transition-all"
         />
         <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -161,14 +161,14 @@
         <!-- Featured Post -->
         {#if featuredPost && !searchQuery}
           <div class="mb-12">
-            <h2 class="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-4">Featured</h2>
+            <h2 class="text-sm font-semibold text-[#00c400] uppercase tracking-wider mb-4">Featured</h2>
             <a 
               href="/blog/{featuredPost.slug}"
-              class="group block bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/30 transition-all duration-300"
+              class="featured-card group block"
             >
-              <div class="p-8 md:p-10">
+              <div class="featured-content">
                 <div class="flex items-center gap-3 mb-4">
-                  <span class="px-3 py-1 text-xs font-medium bg-purple-500/20 text-purple-300 rounded-full">
+                  <span class="featured-badge">
                     Featured
                   </span>
                   <span class="text-sm text-gray-500">
@@ -178,13 +178,13 @@
                     · {calculateReadTime(featuredPost.content)} min read
                   </span>
                 </div>
-                <h3 class="text-2xl md:text-3xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">
+                <h3 class="text-2xl md:text-3xl text-white mb-3 group-hover:text-[#00c400] transition-colors">
                   {featuredPost.title}
                 </h3>
                 <p class="text-gray-400 text-lg mb-4 line-clamp-2">
                   {featuredPost.excerpt || featuredPost.content?.substring(0, 200) + '...'}
                 </p>
-                <div class="flex items-center gap-2 text-purple-400 font-medium">
+                <div class="flex items-center gap-2 text-[#00c400] font-medium">
                   Read more
                   <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -207,32 +207,33 @@
                 <p class="text-gray-400">No posts found matching "{searchQuery}"</p>
               </div>
             {:else}
-              <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div class="blog-grid">
                 {#each filteredPosts as post}
-                  <a 
-                    href="/blog/{post.slug}"
-                    class="group block bg-white/[0.03] border border-white/10 rounded-xl overflow-hidden hover:border-purple-500/30 hover:bg-white/[0.05] transition-all duration-300"
-                  >
-                    <div class="p-6">
-                      <div class="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                        <span>{formatDate(post.created_at)}</span>
-                        <span>·</span>
-                        <span>{calculateReadTime(post.content)} min read</span>
+                  <article class="blog-card">
+                    <a href="/blog/{post.slug}" class="blog-card-link">
+                      <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                          </svg>
+                        </div>
+                        <span class="blog-category">Article</span>
                       </div>
-                      <h3 class="text-xl font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p class="text-gray-400 text-sm line-clamp-3 mb-4">
-                        {post.excerpt || post.content?.substring(0, 150) + '...'}
-                      </p>
-                      <div class="flex items-center gap-2 text-sm text-purple-400 font-medium">
-                        Read more
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                      <div class="blog-content">
+                        <span class="blog-date">{formatDate(post.created_at)} · {calculateReadTime(post.content)} min read</span>
+                        <h3 class="blog-title">{post.title}</h3>
+                        <p class="blog-excerpt">{post.excerpt || post.content?.substring(0, 150) + '...'}</p>
+                        <span class="blog-link">
+                          Read More
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                          </svg>
+                        </span>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </article>
                 {/each}
               </div>
             {/if}
@@ -280,5 +281,168 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* Blog Grid - Landing Page Style */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .blog-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 196, 0, 0.3);
+    box-shadow: 0 20px 40px -20px rgba(0, 196, 0, 0.2);
+  }
+
+  .blog-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .blog-image {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .blog-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, rgba(0, 100, 0, 0.15) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 196, 0, 0.4);
+  }
+
+  .blog-category {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00c400;
+  }
+
+  .blog-content {
+    padding: 1.5rem;
+  }
+
+  .blog-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .blog-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin: 0.75rem 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-excerpt {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #00c400;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .blog-card:hover .blog-link {
+    gap: 0.75rem;
+  }
+
+  .blog-link svg {
+    transition: transform 0.3s ease;
+  }
+
+  .blog-card:hover .blog-link svg {
+    transform: translateX(4px);
+  }
+
+  /* Featured Card */
+  .featured-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .featured-card:hover {
+    border-color: rgba(0, 196, 0, 0.3);
+    box-shadow: 0 20px 40px -20px rgba(0, 196, 0, 0.2);
+  }
+
+  .featured-content {
+    padding: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .featured-content {
+      padding: 2.5rem;
+    }
+  }
+
+  .featured-badge {
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 196, 0, 0.15);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #00c400;
   }
 </style>

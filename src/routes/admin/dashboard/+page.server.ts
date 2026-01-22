@@ -73,7 +73,7 @@ export const actions: Actions = {
 
     const data = await request.formData();
     const title = data.get('title') as string;
-    const slug = data.get('slug') as string || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const baseSlug = data.get('slug') as string || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
     const excerpt = data.get('excerpt') as string;
     const content = data.get('content') as string;
     const author = data.get('author') as string || 'FinalBoss XR';
@@ -81,6 +81,13 @@ export const actions: Actions = {
     const featured = data.get('featured') === 'true';
 
     const db = getDb();
+    
+    // Check if slug already exists, if so append a timestamp
+    const existingSlugs = await db`SELECT slug FROM blogs WHERE slug LIKE ${baseSlug + '%'}`;
+    let slug = baseSlug;
+    if (existingSlugs.length > 0) {
+      slug = `${baseSlug}-${Date.now()}`;
+    }
     
     await db`
       INSERT INTO blogs (title, slug, excerpt, content, author, published, featured)
