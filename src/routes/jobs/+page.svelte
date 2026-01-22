@@ -186,7 +186,7 @@
 <main class="jobs-page">
   <!-- Header Section -->
   <div class="header-section">
-    <h1 class="page-title jersey-font green-header-text">JOIN OUR TEAM</h1>
+    <h1 class="page-title jersey-font gradient-text">JOIN OUR TEAM</h1>
     <p class="page-subtitle">
       Help us build the future of XR gaming. We're looking for passionate individuals who want to push the boundaries of immersive entertainment.
     </p>
