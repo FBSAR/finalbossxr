@@ -272,7 +272,12 @@
       
       <!-- Footer Links -->
       <div class="sm:flex sm:items-center sm:justify-between">
-        <FooterCopyright href="/" by="Final Boss Studios" year={2021} />
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <FooterCopyright href="/" by="Final Boss Studios" year={2021} />
+          <span class="text-gray-500 text-sm flex items-center gap-1">
+            Made with <span class="text-red-500 animate-pulse">❤️</span> by <a href="https://www.linkedin.com/in/eddietaliaferrojr/" target="_blank" rel="noopener noreferrer" class="text-[#FFD700] hover:text-[#00ff00] transition-colors font-medium">Eddie Taliaferro</a>, CEO
+          </span>
+        </div>
         <FooterLinkGroup ulClass="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
           <FooterLink href="/jobs">Jobs</FooterLink>
           <FooterLink href="/privacy">Privacy Policy</FooterLink>
