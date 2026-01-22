@@ -9,12 +9,33 @@
   
   let searchQuery = '';
   
+  // Pagination
+  const POSTS_PER_PAGE = 6;
+  let currentPage = 1;
+  
   $: filteredPosts = searchQuery
     ? posts.filter((p: any) => 
         p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.excerpt?.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : regularPosts;
+  
+  $: totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+  $: paginatedPosts = filteredPosts.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  );
+  
+  // Reset to page 1 when search changes
+  $: if (searchQuery) currentPage = 1;
+  
+  function goToPage(page: number) {
+    if (page >= 1 && page <= totalPages) {
+      currentPage = page;
+      // Scroll to top of posts section
+      document.querySelector('.max-w-6xl')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 
   function formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -161,7 +182,7 @@
         <!-- Featured Post -->
         {#if featuredPost && !searchQuery}
           <div class="mb-12">
-            <h2 class="text-sm font-semibold text-[#00c400] uppercase tracking-wider mb-4">Featured</h2>
+            <h2 class="text-sm font-semibold text-[#f2e41c] uppercase tracking-wider mb-4">Featured</h2>
             <a 
               href="/blog/{featuredPost.slug}"
               class="featured-card group block"
@@ -178,7 +199,7 @@
                     · {calculateReadTime(featuredPost.content)} min read
                   </span>
                 </div>
-                <h3 class="text-2xl md:text-3xl text-white mb-3 group-hover:text-[#00c400] transition-colors">
+                <h3 class="text-2xl md:text-3xl gradient-text mb-3 group-hover:text-[#00c400] transition-colors">
                   {featuredPost.title}
                 </h3>
                 <p class="text-gray-400 text-lg mb-4 line-clamp-2">
@@ -208,7 +229,7 @@
               </div>
             {:else}
               <div class="blog-grid">
-                {#each filteredPosts as post}
+                {#each paginatedPosts as post}
                   <article class="blog-card">
                     <a href="/blog/{post.slug}" class="blog-card-link">
                       <div class="blog-image">
@@ -236,6 +257,49 @@
                   </article>
                 {/each}
               </div>
+              
+              <!-- Pagination -->
+              {#if totalPages > 1}
+                <div class="pagination">
+                  <button 
+                    class="pagination-btn"
+                    disabled={currentPage === 1}
+                    on:click={() => goToPage(currentPage - 1)}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                    Prev
+                  </button>
+                  
+                  <div class="pagination-numbers">
+                    {#each Array(totalPages) as _, i}
+                      <button 
+                        class="pagination-num"
+                        class:active={currentPage === i + 1}
+                        on:click={() => goToPage(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    {/each}
+                  </div>
+                  
+                  <button 
+                    class="pagination-btn"
+                    disabled={currentPage === totalPages}
+                    on:click={() => goToPage(currentPage + 1)}
+                  >
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                  </button>
+                </div>
+                
+                <p class="pagination-info">
+                  Showing {(currentPage - 1) * POSTS_PER_PAGE + 1} - {Math.min(currentPage * POSTS_PER_PAGE, filteredPosts.length)} of {filteredPosts.length} posts
+                </p>
+              {/if}
             {/if}
           </div>
         {/if}
@@ -368,8 +432,8 @@
 
   .blog-title {
     font-size: 1.125rem;
-    font-weight: 600;
-    color: white;
+    font-weight: 400;
+    color: #f2e41c;
     margin: 0.75rem 0;
     line-height: 1.4;
     display: -webkit-box;
@@ -444,5 +508,105 @@
     font-size: 0.75rem;
     font-weight: 600;
     color: #00c400;
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .pagination-btn:hover:not(:disabled) {
+    background: rgba(0, 196, 0, 0.1);
+    border-color: rgba(0, 196, 0, 0.3);
+    color: #00c400;
+  }
+
+  .pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .pagination-numbers {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .pagination-num {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .pagination-num:hover {
+    background: rgba(0, 196, 0, 0.1);
+    border-color: rgba(0, 196, 0, 0.3);
+    color: white;
+  }
+
+  .pagination-num.active {
+    background: #00c400;
+    border-color: #00c400;
+    color: black;
+    font-weight: 600;
+  }
+
+  .pagination-info {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.875rem;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .pagination {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .pagination-btn {
+      padding: 0.625rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    .pagination-btn span {
+      display: none;
+    }
+
+    .pagination-num {
+      width: 36px;
+      height: 36px;
+      font-size: 0.8rem;
+    }
   }
 </style>
