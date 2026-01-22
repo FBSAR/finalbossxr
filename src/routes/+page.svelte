@@ -208,20 +208,27 @@
     <!-- Geometric Shapes -->
     {#each shapes as shape (shape.id)}
       <div 
-        class="geo-shape {shape.type}"
+        class="geo-shape-wrapper"
         style="
           left: {shape.x}%;
           top: {shape.y}%;
           width: {shape.size}px;
           height: {shape.size}px;
-          --shape-color: {shape.color};
           transform: translate(-50%, -50%) 
             translateX({shapeTransforms[shape.id]?.translateX || 0}px) 
             translateY({shapeTransforms[shape.id]?.translateY || 0}px) 
-            rotate({shapeTransforms[shape.id]?.rotation || shape.baseRotation}deg)
             scale({shapeTransforms[shape.id]?.scale || 1});
         "
-      ></div>
+      >
+        <div 
+          class="geo-shape {shape.type}"
+          style="
+            width: 100%;
+            height: 100%;
+            --shape-color: {shape.color};
+          "
+        ></div>
+      </div>
     {/each}
 
     <!-- Subtle Cursor Glow -->
@@ -994,8 +1001,8 @@
     50% { opacity: 1; }
   }
 
-  /* Geometric Shapes */
-  .geo-shape {
+  /* Geometric Shape Wrapper - handles mouse interaction transforms */
+  .geo-shape-wrapper {
     position: absolute;
     pointer-events: none;
     transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -1004,16 +1011,24 @@
 
   /* Hide some shapes on mobile for cleaner look */
   @media (max-width: 768px) {
-    .geo-shape {
+    .geo-shape-wrapper {
       opacity: 0.5;
       transform: scale(0.6) !important;
     }
+  }
+
+  /* Geometric Shapes - handles CSS animations */
+  .geo-shape {
+    position: relative;
+    pointer-events: none;
+    will-change: transform, filter;
   }
 
   .geo-shape.hexagon {
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     background: var(--shape-color);
     border: 2px solid rgba(0, 196, 0, 0.2);
+    animation: hexagonPulse 20s linear infinite, hexagonGlow 3s ease-in-out infinite;
   }
 
   .geo-shape.hexagon::before {
@@ -1028,6 +1043,7 @@
   .geo-shape.triangle {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
     background: var(--shape-color);
+    animation: trianglePulse 25s linear infinite, triangleGlow 4s ease-in-out infinite;
   }
 
   .geo-shape.triangle::before {
@@ -1042,6 +1058,7 @@
   .geo-shape.square {
     background: var(--shape-color);
     border: 1px solid rgba(255, 215, 0, 0.2);
+    animation: squarePulse 15s linear infinite, squareGlow 3.5s ease-in-out infinite;
   }
 
   .geo-shape.square::before {
@@ -1055,6 +1072,7 @@
   .geo-shape.diamond {
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
     background: var(--shape-color);
+    animation: diamondPulse 18s linear infinite, diamondGlow 4.5s ease-in-out infinite;
   }
 
   .geo-shape.diamond::before {
@@ -1070,6 +1088,7 @@
     border-radius: 50%;
     background: var(--shape-color);
     border: 1px solid rgba(138, 43, 226, 0.15);
+    animation: circleGlow 5s ease-in-out infinite;
   }
 
   .geo-shape.circle::before {
@@ -1079,6 +1098,74 @@
     border-radius: 50%;
     background: transparent;
     border: 1px solid rgba(138, 43, 226, 0.1);
+  }
+
+  /* Pulsating glow animations for each shape type with subtle rotation */
+  /* Rotation animations for each shape type */
+  @keyframes hexagonPulse {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes trianglePulse {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+  }
+
+  @keyframes squarePulse {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes diamondPulse {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+  }
+
+  /* Pulsating glow animations for each shape type */
+  @keyframes hexagonGlow {
+    0%, 100% { 
+      filter: drop-shadow(0 0 3px rgba(0, 196, 0, 0.2));
+    }
+    50% { 
+      filter: drop-shadow(0 0 12px rgba(0, 196, 0, 0.6)) drop-shadow(0 0 25px rgba(0, 196, 0, 0.3));
+    }
+  }
+
+  @keyframes triangleGlow {
+    0%, 100% { 
+      filter: drop-shadow(0 0 3px rgba(0, 196, 0, 0.15));
+    }
+    50% { 
+      filter: drop-shadow(0 0 10px rgba(0, 196, 0, 0.5)) drop-shadow(0 0 20px rgba(0, 196, 0, 0.25));
+    }
+  }
+
+  @keyframes squareGlow {
+    0%, 100% { 
+      filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.15));
+    }
+    50% { 
+      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 22px rgba(255, 215, 0, 0.25));
+    }
+  }
+
+  @keyframes diamondGlow {
+    0%, 100% { 
+      filter: drop-shadow(0 0 3px rgba(0, 196, 0, 0.15));
+    }
+    50% { 
+      filter: drop-shadow(0 0 12px rgba(0, 196, 0, 0.55)) drop-shadow(0 0 24px rgba(0, 196, 0, 0.28));
+    }
+  }
+
+  @keyframes circleGlow {
+    0%, 100% { 
+      filter: drop-shadow(0 0 3px rgba(138, 43, 226, 0.15));
+    }
+    50% { 
+      filter: drop-shadow(0 0 14px rgba(138, 43, 226, 0.5)) drop-shadow(0 0 28px rgba(138, 43, 226, 0.25));
+    }
   }
 
   /* Cursor Glow - hide on touch devices */
