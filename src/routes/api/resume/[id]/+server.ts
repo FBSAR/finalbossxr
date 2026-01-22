@@ -54,7 +54,7 @@ export const GET: RequestHandler = async ({ params, cookies }) => {
     return new Response(resumeBuffer, {
         headers: {
             'Content-Type': contentType,
-            'Content-Disposition': `attachment; filename="${filename}"`,
+            'Content-Disposition': `inline; filename="${filename}"`,
             'Content-Length': resumeBuffer.length.toString()
         }
     });

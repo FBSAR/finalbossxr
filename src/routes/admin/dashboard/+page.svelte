@@ -91,7 +91,7 @@
                   <div class="app-card-meta">
                     <span class="app-date">{new Date(app.created_at).toLocaleDateString()}</span>
                     {#if app.resume_filename}
-                      <a href="/api/resume/{app.id}" class="resume-link" title="Download {app.resume_filename}">📄</a>
+                      <a href="/api/resume/{app.id}" class="resume-link" title="View {app.resume_filename}" target="_blank">📄</a>
                     {/if}
                   </div>
                 </div>
@@ -115,7 +115,7 @@
                     <div class="detail-item">
                       <strong>Resume:</strong> 
                       {#if app.resume_filename}
-                        <a href="/api/resume/{app.id}" class="resume-download-link">📄 Download {app.resume_filename}</a>
+                        <a href="/api/resume/{app.id}" class="resume-download-link" target="_blank">📄 View {app.resume_filename}</a>
                       {:else}
                         —
                       {/if}
@@ -153,7 +153,7 @@
                     <td><a href="mailto:{app.email}">{app.email}</a></td>
                     <td>
                       {#if app.resume_filename}
-                        <a href="/api/resume/{app.id}" class="resume-download-link" title="Download {app.resume_filename}">
+                        <a href="/api/resume/{app.id}" class="resume-download-link" title="View {app.resume_filename}" target="_blank">
                           📄 {app.resume_filename}
                         </a>
                       {:else}
@@ -179,7 +179,7 @@
                           <div>
                             <strong>Resume:</strong>
                             {#if app.resume_filename}
-                              <a href="/api/resume/{app.id}" class="resume-download-link">📄 Download {app.resume_filename}</a>
+                              <a href="/api/resume/{app.id}" class="resume-download-link" target="_blank">📄 View {app.resume_filename}</a>
                             {:else}
                               —
                             {/if}
