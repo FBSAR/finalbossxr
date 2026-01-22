@@ -6,7 +6,7 @@
   import { enhance } from '$app/forms';
 
   // ⚠️ DEV MODE - Set to true to auto-fill form fields for testing
-  const devMode = true;
+  const devMode = false;
 
   // Slider State
   let currentSlide = 0;
