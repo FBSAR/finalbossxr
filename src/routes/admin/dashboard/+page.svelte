@@ -90,7 +90,9 @@
                   </div>
                   <div class="app-card-meta">
                     <span class="app-date">{new Date(app.created_at).toLocaleDateString()}</span>
-                    {app.resume_filename ? '✅' : ''}
+                    {#if app.resume_filename}
+                      <a href="/api/resume/{app.id}" class="resume-link" title="Download {app.resume_filename}">📄</a>
+                    {/if}
                   </div>
                 </div>
                 <div class="app-card-contact">
@@ -110,6 +112,14 @@
                   <div class="app-card-details">
                     <div class="detail-item"><strong>Phone:</strong> {app.phone || '—'}</div>
                     <div class="detail-item"><strong>Portfolio:</strong> {#if app.portfolio}<a href={app.portfolio} target="_blank">{app.portfolio}</a>{:else}—{/if}</div>
+                    <div class="detail-item">
+                      <strong>Resume:</strong> 
+                      {#if app.resume_filename}
+                        <a href="/api/resume/{app.id}" class="resume-download-link">📄 Download {app.resume_filename}</a>
+                      {:else}
+                        —
+                      {/if}
+                    </div>
                     <div class="detail-item full"><strong>Experience:</strong><p>{app.experience}</p></div>
                     <div class="detail-item full"><strong>Why Join:</strong><p>{app.why_join}</p></div>
                   </div>
@@ -141,7 +151,15 @@
                     </td>
                     <td><span class="badge">{app.job_title}</span></td>
                     <td><a href="mailto:{app.email}">{app.email}</a></td>
-                    <td>{app.resume_filename ? '✅' : '—'}</td>
+                    <td>
+                      {#if app.resume_filename}
+                        <a href="/api/resume/{app.id}" class="resume-download-link" title="Download {app.resume_filename}">
+                          📄 {app.resume_filename}
+                        </a>
+                      {:else}
+                        —
+                      {/if}
+                    </td>
                     <td class="actions">
                       <button class="btn-sm" on:click={() => expandedApp = expandedApp === app.id ? null : app.id}>
                         {expandedApp === app.id ? '▲' : '▼'}
@@ -158,6 +176,14 @@
                         <div class="detail-grid">
                           <div><strong>Phone:</strong> {app.phone || '—'}</div>
                           <div><strong>Portfolio:</strong> {#if app.portfolio}<a href={app.portfolio} target="_blank">{app.portfolio}</a>{:else}—{/if}</div>
+                          <div>
+                            <strong>Resume:</strong>
+                            {#if app.resume_filename}
+                              <a href="/api/resume/{app.id}" class="resume-download-link">📄 Download {app.resume_filename}</a>
+                            {:else}
+                              —
+                            {/if}
+                          </div>
                           <div class="full-width"><strong>Experience:</strong><p>{app.experience}</p></div>
                           <div class="full-width"><strong>Why Join:</strong><p>{app.why_join}</p></div>
                         </div>
@@ -496,6 +522,33 @@
     color: #00c400;
     border-radius: 0.25rem;
     font-size: 0.7rem;
+  }
+  .resume-link {
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+  .resume-link:hover {
+    opacity: 0.8;
+  }
+  .resume-download-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .resume-download-link:hover {
+    background: rgba(59, 130, 246, 0.25);
+    color: #93c5fd;
   }
   .actions { display: flex; gap: 0.25rem; }
   .detail-row td { background: #0d0d12; padding: 1rem; }

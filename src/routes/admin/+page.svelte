@@ -22,7 +22,7 @@
 <div class="admin-container">
   <div class="login-card">
     <div class="login-header">
-      <h1>🔐 Admin Access</h1>
+      <h1 class="gradient-text">🔐 Admin Access</h1>
       <p>{loginStep === 'email' ? 'Enter your admin email' : 'Enter the 6-digit code'}</p>
     </div>
     
