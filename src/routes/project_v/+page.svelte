@@ -70,7 +70,7 @@
             </g>
           </svg>
         </div>
-      <h1 class="coming-soon-title">#PROJECT_V</h1>
+      <h1 class="coming-soon-title gradient-text">#PROJECT_V</h1>
       <div class="coming-soon-divider"></div>
       <p class="coming-soon-message gold-header-text">Coming Soon</p>
       <p class="coming-soon-subtitle">Our most ambitious project yet.</p>
