@@ -594,15 +594,21 @@
             <!-- Main featured media -->
             <div class="media-item main" style="transform: translateY({(1 - storyAnimationProgress) * 40}px);">
               <div class="media-frame">
-                <img src="/images/story/team-working.jpg" alt="Team collaboration" />
-                <div class="media-overlay">
-                  <span class="media-caption">Late nights & big dreams</span>
-                </div>
+                <video 
+                  autoplay 
+                  loop 
+                  muted 
+                  playsinline
+                  on:loadedmetadata={(e) => { e.currentTarget.currentTime = 50; }}
+                >
+                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/unreal_basecamp_promo.mp4" type="video/mp4" />
+                </video>
               </div>
               <!-- Decorative corner accent -->
               <svg class="corner-accent" viewBox="0 0 60 60">
                 <path d="M0 60 L0 20 Q0 0 20 0 L60 0" stroke="#00c400" fill="none" stroke-width="2" />
               </svg>
+              <span class="media-badge">2022 - Unreal Basecamp Class</span>
             </div>
 
             <!-- Secondary media items -->
@@ -637,7 +643,7 @@
                   <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/DC_Demo_02.mov" type="video/mp4" />
                 </video>
               </div>
-              <span class="phone-badge">2023 - Drone Training MVP</span>
+              <span class="phone-badge">2023 - Drone Training</span>
             </div>
 
             <!-- Floating video thumbnail -->
@@ -2251,6 +2257,23 @@
     border: 1px solid rgba(0, 196, 0, 0.3);
     border-radius: 2rem;
     font-size: 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .media-badge {
+    display: block;
+    text-align: center;
+    margin-top: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 2rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
