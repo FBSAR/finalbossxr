@@ -21,126 +21,166 @@
 >
   <div class="project-background"></div>
   
-  <!-- Floating Background Shapes -->
+  <!-- Floating Cosmic Shapes -->
   <div class="floating-shapes">
-    <!-- Triangle -->
+    <!-- 4-Point Star -->
     <svg class="shape shape-1" viewBox="0 0 100 100" fill="none">
-      <polygon points="50,10 90,90 10,90" stroke="rgba(0, 196, 0, 0.2)" stroke-width="2" fill="none"/>
+      <path d="M50,5 L55,45 L95,50 L55,55 L50,95 L45,55 L5,50 L45,45 Z" stroke="rgba(0, 196, 0, 0.2)" stroke-width="1.5" fill="none"/>
     </svg>
     
-    <!-- Circle -->
+    <!-- Planet with Ring -->
     <svg class="shape shape-2" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="40" stroke="rgba(147, 51, 234, 0.15)" stroke-width="2" fill="none"/>
+      <circle cx="50" cy="50" r="25" stroke="rgba(147, 51, 234, 0.2)" stroke-width="2" fill="rgba(147, 51, 234, 0.03)"/>
+      <ellipse cx="50" cy="50" rx="45" ry="12" stroke="rgba(147, 51, 234, 0.15)" stroke-width="1.5" fill="none" transform="rotate(-20 50 50)"/>
     </svg>
     
-    <!-- Square/Diamond -->
+    <!-- Comet -->
     <svg class="shape shape-3" viewBox="0 0 100 100" fill="none">
-      <rect x="20" y="20" width="60" height="60" stroke="rgba(0, 196, 0, 0.15)" stroke-width="2" fill="none" transform="rotate(45 50 50)"/>
+      <circle cx="75" cy="30" r="8" stroke="rgba(0, 196, 0, 0.25)" stroke-width="2" fill="rgba(0, 196, 0, 0.05)"/>
+      <path d="M70,35 Q40,50 10,80" stroke="rgba(0, 196, 0, 0.15)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M68,38 Q35,55 5,75" stroke="rgba(0, 196, 0, 0.08)" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
     
-    <!-- Hexagon -->
+    <!-- Crescent Moon -->
     <svg class="shape shape-4" viewBox="0 0 100 100" fill="none">
-      <polygon points="50,5 93,25 93,75 50,95 7,75 7,25" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2" fill="none"/>
+      <path d="M60,15 A35,35 0 1,1 60,85 A28,28 0 1,0 60,15" stroke="rgba(147, 51, 234, 0.2)" stroke-width="2" fill="rgba(147, 51, 234, 0.03)"/>
     </svg>
     
-    <!-- Small Circle -->
+    <!-- Twinkling Star (small) -->
     <svg class="shape shape-5" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="30" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1.5" fill="none"/>
+      <path d="M50,20 L53,47 L80,50 L53,53 L50,80 L47,53 L20,50 L47,47 Z" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1" fill="none"/>
     </svg>
     
-    <!-- Plus/Cross -->
+    <!-- Orbit Path -->
     <svg class="shape shape-6" viewBox="0 0 100 100" fill="none">
-      <line x1="50" y1="20" x2="50" y2="80" stroke="rgba(147, 51, 234, 0.15)" stroke-width="2"/>
-      <line x1="20" y1="50" x2="80" y2="50" stroke="rgba(147, 51, 234, 0.15)" stroke-width="2"/>
+      <ellipse cx="50" cy="50" rx="40" ry="20" stroke="rgba(147, 51, 234, 0.12)" stroke-width="1" stroke-dasharray="6 4" fill="none"/>
+      <circle cx="85" cy="58" r="4" fill="rgba(147, 51, 234, 0.2)"/>
     </svg>
     
-    <!-- Ring -->
+    <!-- Galaxy Spiral -->
     <svg class="shape shape-7" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="35" stroke="rgba(0, 196, 0, 0.08)" stroke-width="3" fill="none"/>
-      <circle cx="50" cy="50" r="25" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1" fill="none"/>
+      <path d="M50,50 Q60,30 80,35 Q90,50 75,65 Q55,75 45,60 Q35,45 50,35 Q65,25 75,40" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1.5" fill="none"/>
+      <circle cx="50" cy="50" r="5" fill="rgba(0, 196, 0, 0.15)"/>
     </svg>
     
-    <!-- Pentagon -->
+    <!-- Asteroid -->
     <svg class="shape shape-8" viewBox="0 0 100 100" fill="none">
-      <polygon points="50,5 97,38 79,95 21,95 3,38" stroke="rgba(0, 196, 0, 0.12)" stroke-width="2" fill="none"/>
+      <path d="M30,50 Q25,30 45,25 Q70,20 80,40 Q85,60 70,75 Q50,85 35,70 Q20,60 30,50" stroke="rgba(0, 196, 0, 0.15)" stroke-width="2" fill="none"/>
+      <circle cx="55" cy="40" r="3" fill="rgba(0, 196, 0, 0.1)"/>
+      <circle cx="65" cy="55" r="2" fill="rgba(0, 196, 0, 0.08)"/>
     </svg>
     
-    <!-- Star -->
+    <!-- 6-Point Star -->
     <svg class="shape shape-9" viewBox="0 0 100 100" fill="none">
-      <polygon points="50,5 61,40 98,40 68,62 79,97 50,75 21,97 32,62 2,40 39,40" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1.5" fill="none"/>
+      <polygon points="50,10 58,40 88,40 64,58 72,88 50,70 28,88 36,58 12,40 42,40" stroke="rgba(147, 51, 234, 0.12)" stroke-width="1.5" fill="none"/>
     </svg>
     
-    <!-- Dotted Circle -->
+    <!-- Satellite -->
     <svg class="shape shape-10" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="35" stroke="rgba(0, 196, 0, 0.15)" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+      <rect x="40" y="45" width="20" height="10" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1.5" fill="none"/>
+      <rect x="20" y="42" width="20" height="16" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1" fill="none"/>
+      <rect x="60" y="42" width="20" height="16" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1" fill="none"/>
+      <line x1="50" y1="45" x2="50" y2="35" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1"/>
     </svg>
     
-    <!-- Spiral/Arc -->
+    <!-- Nebula Cloud -->
     <svg class="shape shape-11" viewBox="0 0 100 100" fill="none">
-      <path d="M20,50 Q50,10 80,50 Q50,90 20,50" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2" fill="none"/>
+      <ellipse cx="50" cy="50" rx="35" ry="25" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1" fill="rgba(147, 51, 234, 0.02)"/>
+      <ellipse cx="40" cy="45" rx="20" ry="15" stroke="rgba(147, 51, 234, 0.08)" stroke-width="1" fill="none"/>
+      <ellipse cx="60" cy="55" rx="18" ry="12" stroke="rgba(0, 196, 0, 0.08)" stroke-width="1" fill="none"/>
     </svg>
     
-    <!-- Octagon -->
+    <!-- Rocket -->
     <svg class="shape shape-12" viewBox="0 0 100 100" fill="none">
-      <polygon points="30,10 70,10 90,30 90,70 70,90 30,90 10,70 10,30" stroke="rgba(0, 196, 0, 0.1)" stroke-width="2" fill="none"/>
+      <path d="M50,15 Q65,30 65,55 L55,70 L50,65 L45,70 L35,55 Q35,30 50,15" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1.5" fill="none"/>
+      <circle cx="50" cy="40" r="5" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1" fill="none"/>
+      <path d="M45,70 L50,85 L55,70" stroke="rgba(147, 51, 234, 0.12)" stroke-width="1.5" fill="none"/>
     </svg>
     
-    <!-- X Shape -->
+    <!-- Constellation Pattern -->
     <svg class="shape shape-13" viewBox="0 0 100 100" fill="none">
-      <line x1="20" y1="20" x2="80" y2="80" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2"/>
-      <line x1="80" y1="20" x2="20" y2="80" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2"/>
+      <circle cx="20" cy="30" r="3" fill="rgba(147, 51, 234, 0.2)"/>
+      <circle cx="50" cy="20" r="2" fill="rgba(147, 51, 234, 0.15)"/>
+      <circle cx="80" cy="35" r="3" fill="rgba(147, 51, 234, 0.2)"/>
+      <circle cx="60" cy="60" r="2" fill="rgba(147, 51, 234, 0.15)"/>
+      <circle cx="30" cy="70" r="3" fill="rgba(147, 51, 234, 0.2)"/>
+      <line x1="20" y1="30" x2="50" y2="20" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1"/>
+      <line x1="50" y1="20" x2="80" y2="35" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1"/>
+      <line x1="80" y1="35" x2="60" y2="60" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1"/>
+      <line x1="60" y1="60" x2="30" y2="70" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1"/>
     </svg>
     
-    <!-- PROMINENT: Large Triangle -->
+    <!-- PROMINENT: Large Planet with Rings -->
     <svg class="shape shape-14 shape-prominent" viewBox="0 0 100 100" fill="none">
-      <polygon points="50,10 90,90 10,90" stroke="rgba(0, 196, 0, 0.35)" stroke-width="2.5" fill="rgba(0, 196, 0, 0.03)"/>
+      <circle cx="50" cy="50" r="30" stroke="rgba(0, 196, 0, 0.4)" stroke-width="2" fill="rgba(0, 196, 0, 0.05)"/>
+      <ellipse cx="50" cy="50" rx="48" ry="15" stroke="rgba(0, 196, 0, 0.25)" stroke-width="2" fill="none" transform="rotate(-25 50 50)"/>
+      <ellipse cx="50" cy="50" rx="42" ry="10" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1" fill="none" transform="rotate(-25 50 50)"/>
     </svg>
     
-    <!-- Small Diamond -->
+    <!-- Shooting Star (small) -->
     <svg class="shape shape-15" viewBox="0 0 100 100" fill="none">
-      <rect x="25" y="25" width="50" height="50" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1.5" fill="none" transform="rotate(45 50 50)"/>
+      <path d="M80,20 L20,80" stroke="rgba(147, 51, 234, 0.15)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M75,25 L25,75" stroke="rgba(147, 51, 234, 0.08)" stroke-width="1" stroke-linecap="round"/>
+      <circle cx="80" cy="20" r="4" fill="rgba(147, 51, 234, 0.2)"/>
     </svg>
     
-    <!-- PROMINENT: Glowing Circle -->
+    <!-- PROMINENT: Supernova -->
     <svg class="shape shape-16 shape-prominent" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="40" stroke="rgba(147, 51, 234, 0.4)" stroke-width="2" fill="rgba(147, 51, 234, 0.05)"/>
-      <circle cx="50" cy="50" r="30" stroke="rgba(147, 51, 234, 0.2)" stroke-width="1" fill="none"/>
+      <circle cx="50" cy="50" r="15" stroke="rgba(147, 51, 234, 0.5)" stroke-width="2" fill="rgba(147, 51, 234, 0.1)"/>
+      <circle cx="50" cy="50" r="25" stroke="rgba(147, 51, 234, 0.25)" stroke-width="1" fill="none"/>
+      <circle cx="50" cy="50" r="35" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1" fill="none"/>
+      <path d="M50,10 L50,5 M50,90 L50,95 M10,50 L5,50 M90,50 L95,50 M22,22 L17,17 M78,78 L83,83 M78,22 L83,17 M22,78 L17,83" stroke="rgba(147, 51, 234, 0.3)" stroke-width="2" stroke-linecap="round"/>
     </svg>
     
-    <!-- Tiny Square -->
+    <!-- Small Moon -->
     <svg class="shape shape-17" viewBox="0 0 100 100" fill="none">
-      <rect x="30" y="30" width="40" height="40" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1.5" fill="none"/>
+      <circle cx="50" cy="50" r="20" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1.5" fill="none"/>
+      <circle cx="42" cy="45" r="4" stroke="rgba(0, 196, 0, 0.08)" stroke-width="1" fill="none"/>
+      <circle cx="58" cy="55" r="3" stroke="rgba(0, 196, 0, 0.08)" stroke-width="1" fill="none"/>
     </svg>
     
-    <!-- PROMINENT: Large Hexagon -->
+    <!-- PROMINENT: Galaxy -->
     <svg class="shape shape-18 shape-prominent" viewBox="0 0 100 100" fill="none">
-      <polygon points="50,5 93,25 93,75 50,95 7,75 7,25" stroke="rgba(0, 196, 0, 0.4)" stroke-width="2" fill="rgba(0, 196, 0, 0.04)"/>
+      <ellipse cx="50" cy="50" rx="40" ry="20" stroke="rgba(0, 196, 0, 0.3)" stroke-width="2" fill="rgba(0, 196, 0, 0.03)" transform="rotate(-30 50 50)"/>
+      <ellipse cx="50" cy="50" rx="30" ry="12" stroke="rgba(0, 196, 0, 0.2)" stroke-width="1.5" fill="none" transform="rotate(-30 50 50)"/>
+      <ellipse cx="50" cy="50" rx="18" ry="6" stroke="rgba(147, 51, 234, 0.25)" stroke-width="1" fill="none" transform="rotate(-30 50 50)"/>
+      <circle cx="50" cy="50" r="6" fill="rgba(0, 196, 0, 0.2)"/>
     </svg>
     
-    <!-- Double Ring -->
+    <!-- Binary Stars -->
     <svg class="shape shape-19" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="40" stroke="rgba(147, 51, 234, 0.08)" stroke-width="1" stroke-dasharray="4 4" fill="none"/>
-      <circle cx="50" cy="50" r="30" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1" fill="none"/>
+      <circle cx="35" cy="50" r="12" stroke="rgba(147, 51, 234, 0.15)" stroke-width="1.5" fill="rgba(147, 51, 234, 0.03)"/>
+      <circle cx="65" cy="50" r="8" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1.5" fill="rgba(0, 196, 0, 0.03)"/>
+      <ellipse cx="50" cy="50" rx="30" ry="8" stroke="rgba(147, 51, 234, 0.08)" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
     </svg>
     
-    <!-- Arrow/Chevron -->
+    <!-- UFO -->
     <svg class="shape shape-20" viewBox="0 0 100 100" fill="none">
-      <polyline points="20,70 50,30 80,70" stroke="rgba(0, 196, 0, 0.12)" stroke-width="2" fill="none"/>
+      <ellipse cx="50" cy="55" rx="30" ry="8" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1.5" fill="none"/>
+      <path d="M35,55 Q35,40 50,35 Q65,40 65,55" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1.5" fill="none"/>
+      <circle cx="50" cy="42" r="6" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1" fill="none"/>
     </svg>
     
-    <!-- PROMINENT: Star Burst -->
+    <!-- PROMINENT: Cosmic Starburst -->
     <svg class="shape shape-21 shape-prominent" viewBox="0 0 100 100" fill="none">
-      <polygon points="50,5 61,40 98,40 68,62 79,97 50,75 21,97 32,62 2,40 39,40" stroke="rgba(147, 51, 234, 0.35)" stroke-width="2" fill="rgba(147, 51, 234, 0.04)"/>
+      <path d="M50,5 L54,42 L90,30 L58,48 L95,50 L58,52 L90,70 L54,58 L50,95 L46,58 L10,70 L42,52 L5,50 L42,48 L10,30 L46,42 Z" stroke="rgba(147, 51, 234, 0.4)" stroke-width="1.5" fill="rgba(147, 51, 234, 0.05)"/>
+      <circle cx="50" cy="50" r="8" fill="rgba(147, 51, 234, 0.15)"/>
     </svg>
     
-    <!-- Parallelogram -->
+    <!-- Space Station -->
     <svg class="shape shape-22" viewBox="0 0 100 100" fill="none">
-      <polygon points="25,70 40,30 75,30 60,70" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1.5" fill="none"/>
+      <rect x="35" y="45" width="30" height="10" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1.5" fill="none"/>
+      <rect x="15" y="40" width="15" height="20" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1" fill="none"/>
+      <rect x="70" y="40" width="15" height="20" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1" fill="none"/>
+      <circle cx="50" cy="50" r="3" fill="rgba(0, 196, 0, 0.15)"/>
     </svg>
     
-    <!-- Crescent -->
+    <!-- Wormhole -->
     <svg class="shape shape-23" viewBox="0 0 100 100" fill="none">
-      <path d="M60,20 A35,35 0 1,1 60,80 A25,25 0 1,0 60,20" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2" fill="none"/>
+      <ellipse cx="50" cy="50" rx="35" ry="35" stroke="rgba(147, 51, 234, 0.08)" stroke-width="1" fill="none"/>
+      <ellipse cx="50" cy="50" rx="28" ry="28" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1" fill="none"/>
+      <ellipse cx="50" cy="50" rx="20" ry="20" stroke="rgba(147, 51, 234, 0.12)" stroke-width="1" fill="none"/>
+      <ellipse cx="50" cy="50" rx="12" ry="12" stroke="rgba(147, 51, 234, 0.15)" stroke-width="1.5" fill="rgba(147, 51, 234, 0.03)"/>
     </svg>
   </div>
   
@@ -196,11 +236,11 @@
       >
         <img 
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
-          class="w-32 lg:w-20 mx-auto lg:mx-0 drop-shadow-2xl" 
+          class="w-32 lg:w-30 mx-auto lg:mx-0 drop-shadow-2xl" 
           alt="Cosmic Collisions Logo"
         >
         
-        <h3 class="text-4xl gradient-text">Cosmic Collisions</h3>
+        <h3 class="lg:text-6xl gradient-text">Cosmic Collisions</h3>
         
         <p class="project-description">
           An arcade-style space shooter where physics meets chaos. Navigate through 
