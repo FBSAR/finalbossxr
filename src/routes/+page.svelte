@@ -22,7 +22,7 @@
 
   // Active timeline index for desktop media visibility
   let activeTimelineIndex = -1;
-  let timelineRowElements: HTMLElement[] = [];
+  let timelineRowElements: HTMLElement[] = new Array(6); // Pre-initialize for 6 timeline items
 
   // Timeline data
   interface TimelineItem {
@@ -288,43 +288,44 @@
       } else {
         storyAnimationProgress = 0;
       }
+    }
 
-      // Track which timeline row is active on desktop (threshold-based for consistency)
-      if (windowWidth >= 1024) {
-        const activationZone = window.innerHeight * 0.4; // Upper 40% of viewport
-        let newActiveIndex = -1;
+    // Track which timeline row is active on desktop (threshold-based for consistency)
+    // This runs independently of storySection's animation progress
+    if (windowWidth >= 1024) {
+      const activationZone = window.innerHeight * 0.4; // Upper 40% of viewport
+      let newActiveIndex = -1;
 
-        // Find the row whose top edge has scrolled past the activation zone (iterate backwards)
-        for (let i = timelineRowElements.length - 1; i >= 0; i--) {
+      // Find the row whose top edge has scrolled past the activation zone (iterate backwards)
+      for (let i = timelineRowElements.length - 1; i >= 0; i--) {
+        const el = timelineRowElements[i];
+        if (el) {
+          const elRect = el.getBoundingClientRect();
+          // A row is active if its top is above the activation zone and it's still visible
+          if (elRect.top <= activationZone && elRect.bottom > 0) {
+            newActiveIndex = i;
+            break;
+          }
+        }
+      }
+
+      // If nothing found (all below), use the first visible one
+      if (newActiveIndex === -1) {
+        for (let i = 0; i < timelineRowElements.length; i++) {
           const el = timelineRowElements[i];
           if (el) {
             const elRect = el.getBoundingClientRect();
-            // A row is active if its top is above the activation zone and it's still visible
-            if (elRect.top <= activationZone && elRect.bottom > 0) {
+            if (elRect.top < window.innerHeight && elRect.bottom > 0) {
               newActiveIndex = i;
               break;
             }
           }
         }
-
-        // If nothing found (all below), use the first visible one
-        if (newActiveIndex === -1) {
-          for (let i = 0; i < timelineRowElements.length; i++) {
-            const el = timelineRowElements[i];
-            if (el) {
-              const elRect = el.getBoundingClientRect();
-              if (elRect.top < window.innerHeight && elRect.bottom > 0) {
-                newActiveIndex = i;
-                break;
-              }
-            }
-          }
-        }
-
-        activeTimelineIndex = newActiveIndex;
-      } else {
-        activeTimelineIndex = -1; // Show all on mobile
       }
+
+      activeTimelineIndex = newActiveIndex;
+    } else {
+      activeTimelineIndex = -1; // Show all on mobile
     }
     
     // Calculate next project section animation progress
@@ -357,7 +358,7 @@
   });
 </script>
 
-<svelte:window on:scroll={handleScroll} />
+<svelte:window on:scroll={handleScroll} bind:innerWidth={windowWidth} />
 
 <main>
   <!-- Hero Section -->
@@ -609,167 +610,6 @@
       </div>
     </div>
   </section>
-  
-  <!-- Our Story Section -->
-  <section 
-    class="story-section" 
-    bind:this={storySection}
-    aria-label="Our Story"
-  >
-    <!-- Animated SVG Background -->
-    <div class="story-bg-elements">
-      <!-- Animated Circuit Lines -->
-      <svg class="circuit-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="rgba(0, 196, 0, 0)" />
-            <stop offset="50%" stop-color="rgba(0, 196, 0, 0.5)" />
-            <stop offset="100%" stop-color="rgba(0, 196, 0, 0)" />
-          </linearGradient>
-          <linearGradient id="lineGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="rgba(138, 43, 226, 0)" />
-            <stop offset="50%" stop-color="rgba(138, 43, 226, 0.4)" />
-            <stop offset="100%" stop-color="rgba(138, 43, 226, 0)" />
-          </linearGradient>
-        </defs>
-        
-        <!-- Horizontal flowing lines -->
-        <path class="circuit-line line-1" d="M0 200 Q300 200 400 300 T800 300 T1200 200" stroke="url(#lineGradient)" fill="none" stroke-width="1" />
-        <path class="circuit-line line-2" d="M0 400 Q200 350 500 400 T900 350 T1200 400" stroke="url(#lineGradient2)" fill="none" stroke-width="1" />
-        <path class="circuit-line line-3" d="M0 600 Q400 550 600 600 T1000 550 T1200 600" stroke="url(#lineGradient)" fill="none" stroke-width="1" />
-        
-        <!-- Animated dots along paths -->
-        <circle class="pulse-dot dot-1" cx="200" cy="200" r="3" fill="#00c400" />
-        <circle class="pulse-dot dot-2" cx="600" cy="400" r="3" fill="#8a2be2" />
-        <circle class="pulse-dot dot-3" cx="1000" cy="600" r="3" fill="#00c400" />
-      </svg>
-      
-      <!-- Floating geometric accents -->
-      <div class="floating-shape shape-1" style="opacity: {storyAnimationProgress * 0.6};"></div>
-      <div class="floating-shape shape-2" style="opacity: {storyAnimationProgress * 0.4};"></div>
-      <div class="floating-shape shape-3" style="opacity: {storyAnimationProgress * 0.5};"></div>
-    </div>
-
-    <div class="story-container">
-      <!-- Section Header -->
-      <div 
-        class="story-header"
-        style="
-          opacity: {storyAnimationProgress};
-          transform: translateY({(1 - storyAnimationProgress) * 60}px);
-        "
-      >
-        <span class="section-label">The Journey</span>
-        <h2 class="section-title gradient-text">Our Story</h2>
-        
-        <!-- Animated underline SVG -->
-        <svg class="title-underline" viewBox="0 0 200 20" style="transform: scaleX({storyAnimationProgress});">
-          <path d="M0 10 Q50 0 100 10 T200 10" stroke="url(#lineGradient)" fill="none" stroke-width="2" />
-        </svg>
-      </div>
-
-      <div class="story-content-integrated">
-        <div class="story-intro" style="opacity: {storyAnimationProgress}; transform: translateY({(1 - storyAnimationProgress) * 40}px);">
-          <p class="lead-text">
-            What started as a passion project in a small apartment has grown into 
-            a vision for the future of human-computer interaction.
-          </p>
-        </div>
-
-        <!-- Integrated Timeline with Media -->
-        <div class="timeline-integrated">
-          <div class="timeline-line-vertical" style="height: {storyAnimationProgress * 100}%;"></div>
-          
-          {#each timelineItems as item, index}
-            {@const offset = index * (1.5 / (timelineItems.length - 1))}
-            {@const progress = Math.min(1, Math.max(0, storyAnimationProgress * 2.5 - offset))}
-            <div 
-              class="timeline-row" 
-              class:has-media={item.media && item.media.length > 0}
-              class:media-active={activeTimelineIndex === index || activeTimelineIndex === -1}
-              bind:this={timelineRowElements[index]}
-              style="opacity: {progress}; transform: translateY({(1 - progress) * 40}px);"
-            >
-              <div class="timeline-marker">
-                <div class="timeline-dot-integrated" class:active={item.isActive}></div>
-              </div>
-              
-              <div class="timeline-row-content">
-                <div class="timeline-text-block">
-                  <span class="timeline-year">{item.year}</span>
-                  <h4 class="gradient-text text-2xl">{item.title}</h4>
-                  <p>{item.description}</p>
-                </div>
-                
-                {#if item.media && item.media.length > 0}
-                  <div 
-                    class="timeline-media-grid" 
-                    class:media-visible={activeTimelineIndex === index || activeTimelineIndex === -1}
-                    style="transform: translateX({(1 - progress) * 30}px);"
-                  >
-                    {#if activeTimelineIndex === index || activeTimelineIndex === -1 || windowWidth < 1024}
-                    {#each item.media as media, mediaIndex}
-                      <div class="timeline-media-item" class:phone={media.isPhone} class:has-companion={media.companionPhoto}>
-                        <div class="media-stack">
-                          <div class="media-frame">
-                            {#if media.isPhone}
-                              <div class="phone-notch"></div>
-                            {/if}
-                            {#if media.type === 'video'}
-                              <video 
-                                autoplay 
-                                loop={!media.endTime}
-                                muted 
-                                playsinline
-                                on:loadedmetadata={(e) => { if (media.startTime) e.currentTarget.currentTime = media.startTime; }}
-                                on:timeupdate={(e) => { if (media.endTime && e.currentTarget.currentTime >= media.endTime) e.currentTarget.currentTime = media.startTime || 0; }}
-                              >
-                                <source src={media.src} type="video/mp4" />
-                              </video>
-                            {:else}
-                              <img src={media.src} alt={media.badge || 'Media'} />
-                            {/if}
-                          </div>
-                          {#if media.companionPhoto}
-                            <div class="companion-photo-frame">
-                              <img src={media.companionPhoto} alt="Companion photo" />
-                            </div>
-                          {/if}
-                        </div>
-                        {#if media.badge}
-                          <span class="timeline-media-badge">{media.badge}</span>
-                        {/if}
-                      </div>
-                    {/each}
-                    {/if}
-                  </div>
-                {/if}
-              </div>
-            </div>
-          {/each}
-        </div>
-      </div>
-
-      <!-- Bottom quote/mission statement -->
-      <div 
-        class="story-mission"
-        style="
-          opacity: {Math.max(0, storyAnimationProgress - 0.5) * 2};
-          transform: translateY({(1 - Math.max(0, storyAnimationProgress - 0.5) * 2) * 40}px);
-        "
-      >
-        <svg class="quote-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21" />
-          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
-        </svg>
-        <p class="mission-text">
-          We believe technology should feel like magic — intuitive, immersive, and 
-          deeply human. Every line of code we write brings us closer to that vision.
-        </p>
-        <span class="mission-attribution">— The FinalBoss Team</span>
-      </div>
-    </div>
-  </section>
 
   <!-- Next Project Section -->
   <section 
@@ -1000,7 +840,6 @@
     </div>
   </section>
 
-
   <!-- Job Postings -->
   <section class="jobs-section" aria-label="Job Postings">
     <div class="jobs-container">
@@ -1064,6 +903,168 @@
       </div>
     </div>
   </section>
+  
+  <!-- Our Story Section -->
+  <section 
+    class="story-section" 
+    bind:this={storySection}
+    aria-label="Our Story"
+  >
+    <!-- Animated SVG Background -->
+    <div class="story-bg-elements">
+      <!-- Animated Circuit Lines -->
+      <svg class="circuit-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(0, 196, 0, 0)" />
+            <stop offset="50%" stop-color="rgba(0, 196, 0, 0.5)" />
+            <stop offset="100%" stop-color="rgba(0, 196, 0, 0)" />
+          </linearGradient>
+          <linearGradient id="lineGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(138, 43, 226, 0)" />
+            <stop offset="50%" stop-color="rgba(138, 43, 226, 0.4)" />
+            <stop offset="100%" stop-color="rgba(138, 43, 226, 0)" />
+          </linearGradient>
+        </defs>
+        
+        <!-- Horizontal flowing lines -->
+        <path class="circuit-line line-1" d="M0 200 Q300 200 400 300 T800 300 T1200 200" stroke="url(#lineGradient)" fill="none" stroke-width="1" />
+        <path class="circuit-line line-2" d="M0 400 Q200 350 500 400 T900 350 T1200 400" stroke="url(#lineGradient2)" fill="none" stroke-width="1" />
+        <path class="circuit-line line-3" d="M0 600 Q400 550 600 600 T1000 550 T1200 600" stroke="url(#lineGradient)" fill="none" stroke-width="1" />
+        
+        <!-- Animated dots along paths -->
+        <circle class="pulse-dot dot-1" cx="200" cy="200" r="3" fill="#00c400" />
+        <circle class="pulse-dot dot-2" cx="600" cy="400" r="3" fill="#8a2be2" />
+        <circle class="pulse-dot dot-3" cx="1000" cy="600" r="3" fill="#00c400" />
+      </svg>
+      
+      <!-- Floating geometric accents -->
+      <div class="floating-shape shape-1" style="opacity: {storyAnimationProgress * 0.6};"></div>
+      <div class="floating-shape shape-2" style="opacity: {storyAnimationProgress * 0.4};"></div>
+      <div class="floating-shape shape-3" style="opacity: {storyAnimationProgress * 0.5};"></div>
+    </div>
+
+    <div class="story-container">
+      <!-- Section Header -->
+      <div 
+        class="story-header"
+        style="
+          opacity: {storyAnimationProgress};
+          transform: translateY({(1 - storyAnimationProgress) * 60}px);
+        "
+      >
+        <span class="section-label">The Journey</span>
+        <h2 class="section-title gradient-text">Our Story</h2>
+        
+        <!-- Animated underline SVG -->
+        <svg class="title-underline" viewBox="0 0 200 20" style="transform: scaleX({storyAnimationProgress});">
+          <path d="M0 10 Q50 0 100 10 T200 10" stroke="url(#lineGradient)" fill="none" stroke-width="2" />
+        </svg>
+      </div>
+
+      <div class="story-content-integrated">
+        <div class="story-intro" style="opacity: {storyAnimationProgress}; transform: translateY({(1 - storyAnimationProgress) * 40}px);">
+          <p class="lead-text">
+            What started as a passion project in a small apartment has grown into 
+            a vision for the future of human-computer interaction.
+          </p>
+        </div>
+
+        <!-- Integrated Timeline with Media -->
+        <div class="timeline-integrated">
+          <div class="timeline-line-vertical" style="height: {storyAnimationProgress * 100}%;"></div>
+          
+          {#each timelineItems as item, index}
+            {@const offset = index * (1.5 / (timelineItems.length - 1))}
+            {@const progress = Math.min(1, Math.max(0, storyAnimationProgress * 2.5 - offset))}
+            <div 
+              class="timeline-row" 
+              class:has-media={item.media && item.media.length > 0}
+              class:media-active={activeTimelineIndex === index || activeTimelineIndex === -1}
+              bind:this={timelineRowElements[index]}
+              style="opacity: {progress}; transform: translateY({(1 - progress) * 40}px);"
+            >
+              <div class="timeline-marker">
+                <div class="timeline-dot-integrated" class:active={item.isActive}></div>
+              </div>
+              
+              <div class="timeline-row-content">
+                <div class="timeline-text-block">
+                  <span class="timeline-year">{item.year}</span>
+                  <h4 class="gradient-text text-2xl">{item.title}</h4>
+                  <p>{item.description}</p>
+                </div>
+                
+                {#if item.media && item.media.length > 0}
+                  <div 
+                    class="timeline-media-grid" 
+                    class:media-visible={activeTimelineIndex === index || activeTimelineIndex === -1}
+                    style="transform: translateX({(1 - progress) * 30}px);"
+                  >
+                    {#if activeTimelineIndex === index || activeTimelineIndex === -1 || windowWidth < 1024}
+                    {#each item.media as media, mediaIndex}
+                      <div class="timeline-media-item" class:phone={media.isPhone} class:has-companion={media.companionPhoto}>
+                        <div class="media-stack">
+                          <div class="media-frame">
+                            {#if media.isPhone}
+                              <div class="phone-notch"></div>
+                            {/if}
+                            {#if media.type === 'video'}
+                              <video 
+                                autoplay 
+                                loop={!media.endTime}
+                                muted 
+                                playsinline
+                                on:loadedmetadata={(e) => { if (media.startTime) e.currentTarget.currentTime = media.startTime; }}
+                                on:timeupdate={(e) => { if (media.endTime && e.currentTarget.currentTime >= media.endTime) e.currentTarget.currentTime = media.startTime || 0; }}
+                              >
+                                <source src={media.src} type="video/mp4" />
+                              </video>
+                            {:else}
+                              <img src={media.src} alt={media.badge || 'Media'} />
+                            {/if}
+                          </div>
+                          {#if media.companionPhoto}
+                            <div class="companion-photo-frame">
+                              <img src={media.companionPhoto} alt="Companion photo" />
+                            </div>
+                          {/if}
+                        </div>
+                        {#if media.badge}
+                          <span class="timeline-media-badge">{media.badge}</span>
+                        {/if}
+                      </div>
+                    {/each}
+                    {/if}
+                  </div>
+                {/if}
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <!-- Bottom quote/mission statement -->
+      <div 
+        class="story-mission"
+        style="
+          opacity: {Math.max(0, storyAnimationProgress - 0.5) * 2};
+          transform: translateY({(1 - Math.max(0, storyAnimationProgress - 0.5) * 2) * 40}px);
+        "
+      >
+        <svg class="quote-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21" />
+          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
+        </svg>
+        <p class="mission-text">
+          We believe technology should feel like magic — intuitive, immersive, and 
+          deeply human. Every line of code we write brings us closer to that vision.
+        </p>
+        <span class="mission-attribution">— The FinalBoss Team</span>
+      </div>
+    </div>
+  </section>
+
 
   <!-- Contact Us -->
   <section class="contact-section" aria-label="Contact Us">
