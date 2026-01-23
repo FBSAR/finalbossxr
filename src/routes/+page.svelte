@@ -30,22 +30,32 @@
 
   const timelineItems: TimelineItem[] = [
     {
-      year: '2023',
+      year: '2021',
       title: 'The Beginning',
       description: 'Founded with a dream to push the boundaries of immersive technology and create experiences that matter.'
     },
     {
-      year: '2024',
+      year: '2022',
       title: 'First Launch',
       description: 'Released our first mobile game, Cosmic Collisions, learning invaluable lessons about game development and user experience.'
     },
     {
-      year: '2025',
+      year: '2023',
       title: 'Expanding Horizons',
       description: 'Began development on XR productivity tools and enterprise solutions, bringing our vision to new industries.'
     },
     {
-      year: 'Today',
+      year: '2024',
+      title: 'Building the Future',
+      description: 'Continuing to innovate at the intersection of gaming, AI, and spatial computing.',
+    },
+    {
+      year: '2025',
+      title: 'Building the Future',
+      description: 'Continuing to innovate at the intersection of gaming, AI, and spatial computing.',
+    },
+    {
+      year: '2026',
       title: 'Building the Future',
       description: 'Continuing to innovate at the intersection of gaming, AI, and spatial computing.',
       isActive: true
@@ -555,8 +565,8 @@
             <div class="timeline-line" style="height: {storyAnimationProgress * 100}%;"></div>
             
             {#each timelineItems as item, index}
-              {@const offset = index * 0.25}
-              {@const progress = Math.min(1, Math.max(0, storyAnimationProgress * 2 - offset))}
+              {@const offset = index * (1.5 / (timelineItems.length - 1))}
+              {@const progress = Math.min(1, Math.max(0, storyAnimationProgress * 2.5 - offset))}
               <div 
                 class="timeline-item" 
                 style="opacity: {progress}; transform: translateX({(1 - progress) * 30}px);"
@@ -1999,6 +2009,13 @@
     border: 2px solid #00c400;
     border-radius: 50%;
     transform: translateX(-5px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .timeline-item:hover .timeline-dot {
+    transform: translateX(-5px) scale(1.4);
+    background: #00c400;
+    box-shadow: 0 0 20px rgba(0, 196, 0, 0.6), 0 0 40px rgba(0, 196, 0, 0.3);
   }
 
   .timeline-dot.active {
@@ -2011,12 +2028,47 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 0.75rem;
     padding: 1.25rem;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
   }
 
-  .timeline-content:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(0, 196, 0, 0.2);
+  .timeline-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, transparent 50%, rgba(138, 43, 226, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .timeline-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .timeline-item:hover .timeline-content {
+    background: rgba(10, 22, 40, 0.95);
+    border-color: rgba(0, 196, 0, 0.4);
+    transform: scale(1.03) translateX(8px);
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(0, 196, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .timeline-item:hover .timeline-content::before {
+    opacity: 1;
+  }
+
+  .timeline-item:hover .timeline-content::after {
+    left: 100%;
   }
 
   .timeline-year {
@@ -2027,12 +2079,25 @@
     letter-spacing: 0.1em;
     color: #00c400;
     margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-item:hover .timeline-year {
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 10px rgba(0, 196, 0, 0.5);
   }
 
   .timeline-content h4 {
     font-weight: 400;
     color: white;
     margin: 0 0 0.5rem 0;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-item:hover .timeline-content h4 {
+    transform: scale(1.05);
+    transform-origin: left center;
   }
 
   .timeline-content p {
@@ -2040,6 +2105,13 @@
     color: rgba(255, 255, 255, 0.6);
     line-height: 1.6;
     margin: 0;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-item:hover .timeline-content p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1rem;
+    line-height: 1.7;
   }
 
   /* Media Montage Side */
