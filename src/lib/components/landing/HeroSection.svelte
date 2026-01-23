@@ -158,6 +158,60 @@
   // Hero text reveal animation
   let heroRevealed = false;
   let heroRevealTimeout: ReturnType<typeof setTimeout>;
+  
+  // Typewriter effect state
+  const titleLine1 = 'Shaping the Future of';
+  const titleLine2 = 'Extended Reality';
+  const subtitleText = 'We build proprietary XR software and (sometimes) AI-powered spatial experiences — from immersive games, and other industries. We are a creative studio that wants to truly innovate the way people interact with technology.';
+  
+  let typedTitle1 = '';
+  let typedTitle2 = '';
+  let typedSubtitle = '';
+  let typewriterComplete = false;
+  
+  function startTypewriter() {
+    const speed = 25; // ms per character
+    let i = 0;
+    let j = 0;
+    let k = 0;
+    
+    // Type title line 1
+    const typeTitle1 = () => {
+      if (i < titleLine1.length) {
+        typedTitle1 = titleLine1.slice(0, i + 1);
+        i++;
+        setTimeout(typeTitle1, speed);
+      } else {
+        // Start title line 2 after a brief pause
+        setTimeout(typeTitle2, 150);
+      }
+    };
+    
+    // Type title line 2
+    const typeTitle2 = () => {
+      if (j < titleLine2.length) {
+        typedTitle2 = titleLine2.slice(0, j + 1);
+        j++;
+        setTimeout(typeTitle2, speed);
+      } else {
+        // Start subtitle after a brief pause
+        setTimeout(typeSubtitle, 200);
+      }
+    };
+    
+    // Type subtitle (slightly faster than title but still readable)
+    const typeSubtitle = () => {
+      if (k < subtitleText.length) {
+        typedSubtitle = subtitleText.slice(0, k + 1);
+        k++;
+        setTimeout(typeSubtitle, 20); // Comfortable reading speed
+      } else {
+        typewriterComplete = true;
+      }
+    };
+    
+    typeTitle1();
+  }
 
   onMount(() => {
     if (browser && canvas) {
@@ -169,9 +223,11 @@
       window.addEventListener('resize', resizeCanvas);
     }
     
-    // Reveal hero text after 1500ms
+    // Reveal hero text after 2500ms
     heroRevealTimeout = setTimeout(() => {
       heroRevealed = true;
+      // Start typewriter effect 400ms after reveal animation starts
+      setTimeout(startTypewriter, 400);
     }, 2500);
   });
 
@@ -345,18 +401,16 @@
     </div>
     
     <h1 class="hero-title" class:revealed={heroRevealed}>
-      <span class="title-line">Shaping the Future of</span>
-      <span class="title-line gradient-text">Extended Reality</span>
+      <span class="title-line">{typedTitle1}<span class="typewriter-cursor" class:hidden={typedTitle1.length === titleLine1.length}></span></span>
+      <span class="title-line gradient-text">{typedTitle2}<span class="typewriter-cursor" class:hidden={typedTitle2.length !== titleLine2.length || typewriterComplete}></span></span>
     </h1>
     
     <p class="hero-subtitle" class:revealed={heroRevealed}>
-      We build proprietary XR software and (sometimes) AI-powered spatial experiences — 
-      from immersive games, and other industries. We are a creative studio that wants to
-      truly innovate the way people interact with technology.
+      {typedSubtitle}<span class="typewriter-cursor subtitle-cursor" class:hidden={typewriterComplete}></span>
     </p>
 
     <!-- Value Props -->
-    <div class="value-props">
+    <div class="value-props" class:revealed={typewriterComplete}>
       <div class="value-prop">
         <span class="prop-icon">🎮</span>
         <span class="prop-text">Immersive Games</span>
@@ -371,7 +425,7 @@
       </div>
     </div>
 
-    <div class="hero-cta">
+    <div class="hero-cta" class:revealed={typewriterComplete}>
       <a href="/cosmic" class="btn-primary">
         <span class="btn-badge btn-badge-primary">Video Game</span>
         <span>Cosmic Collisions</span>
@@ -744,6 +798,39 @@
     transform: translateY(0);
   }
 
+  /* Typewriter cursor */
+  .typewriter-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background: #00c400;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: cursorBlink 0.7s ease-in-out infinite;
+  }
+
+  .typewriter-cursor.hidden {
+    display: none;
+  }
+
+  .subtitle-cursor {
+    width: 2px;
+    height: 0.9em;
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  @keyframes cursorBlink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .typewriter-cursor {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
   @media (max-width: 768px) {
     .hero-subtitle {
       margin-bottom: 1.5rem;
@@ -756,6 +843,16 @@
     margin-bottom: 2.5rem;
     flex-wrap: wrap;
     justify-content: center;
+    /* Initial hidden state */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .value-props.revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   @media (max-width: 768px) {
@@ -782,6 +879,16 @@
     gap: 1rem;
     flex-wrap: wrap;
     justify-content: center;
+    /* Initial hidden state */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, 
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  }
+
+  .hero-cta.revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .btn-primary {
