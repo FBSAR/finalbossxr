@@ -1,11 +1,177 @@
 <script lang="ts">
   import XRAbstractArt from '$lib/components/XRAbstractArt.svelte';
+  import { onMount, onDestroy } from 'svelte';
+  import { browser } from '$app/environment';
 
   export let scrollY = 0;
 
   let heroSection: HTMLElement;
   let mouseX = 0;
   let mouseY = 0;
+
+  // ============================================
+  // CONSTELLATION PARTICLE SYSTEM - Cherry on top!
+  // ============================================
+  let canvas: HTMLCanvasElement;
+  let ctx: CanvasRenderingContext2D | null;
+  let particles: Particle[] = [];
+  let animationId: number;
+  let canvasWidth = 0;
+  let canvasHeight = 0;
+
+  interface Particle {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    radius: number;
+    color: string;
+    alpha: number;
+    baseAlpha: number;
+    pulseOffset: number;
+  }
+
+  const PARTICLE_COUNT = 60;
+  const CONNECTION_DISTANCE = 150;
+  const MOUSE_INFLUENCE_RADIUS = 200;
+  const COLORS = ['#00c400', '#00ff88', '#8a2be2', '#aa66ff', '#ffd700'];
+
+  function createParticle(): Particle {
+    return {
+      x: Math.random() * canvasWidth,
+      y: Math.random() * canvasHeight,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
+      radius: Math.random() * 2 + 1,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      alpha: Math.random() * 0.5 + 0.3,
+      baseAlpha: Math.random() * 0.5 + 0.3,
+      pulseOffset: Math.random() * Math.PI * 2
+    };
+  }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push(createParticle());
+    }
+  }
+
+  function drawParticles(time: number) {
+    if (!ctx) return;
+    const c = ctx; // Local reference for TypeScript narrowing
+    
+    c.clearRect(0, 0, canvasWidth, canvasHeight);
+    
+    // Update and draw particles
+    particles.forEach((p, i) => {
+      // Mouse influence - attract particles slightly toward cursor
+      const dx = mouseX - p.x;
+      const dy = mouseY - p.y;
+      const distToMouse = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distToMouse < MOUSE_INFLUENCE_RADIUS && distToMouse > 0) {
+        const influence = (1 - distToMouse / MOUSE_INFLUENCE_RADIUS) * 0.005;
+        p.vx += dx * influence;
+        p.vy += dy * influence;
+      }
+      
+      // Apply velocity with damping (higher = more friction = slower)
+      p.vx *= 0.98;
+      p.vy *= 0.98;
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      // Wrap around edges
+      if (p.x < 0) p.x = canvasWidth;
+      if (p.x > canvasWidth) p.x = 0;
+      if (p.y < 0) p.y = canvasHeight;
+      if (p.y > canvasHeight) p.y = 0;
+      
+      // Pulsing alpha
+      p.alpha = p.baseAlpha + Math.sin(time * 0.002 + p.pulseOffset) * 0.2;
+      
+      // Draw connections to nearby particles
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const dist = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
+        
+        if (dist < CONNECTION_DISTANCE) {
+          const lineAlpha = (1 - dist / CONNECTION_DISTANCE) * 0.3;
+          
+          c.beginPath();
+          c.moveTo(p.x, p.y);
+          c.lineTo(p2.x, p2.y);
+          c.strokeStyle = `rgba(0, 196, 0, ${lineAlpha})`;
+          c.lineWidth = 0.5;
+          c.stroke();
+        }
+      }
+      
+      // Draw mouse connection lines
+      if (distToMouse < CONNECTION_DISTANCE * 1.5) {
+        const lineAlpha = (1 - distToMouse / (CONNECTION_DISTANCE * 1.5)) * 0.4;
+        c.beginPath();
+        c.moveTo(p.x, p.y);
+        c.lineTo(mouseX, mouseY);
+        c.strokeStyle = `rgba(138, 43, 226, ${lineAlpha})`;
+        c.lineWidth = 0.8;
+        c.stroke();
+      }
+      
+      // Draw particle with glow
+      c.beginPath();
+      c.arc(p.x, p.y, p.radius * 2, 0, Math.PI * 2);
+      const glowGradient = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 2);
+      glowGradient.addColorStop(0, p.color);
+      glowGradient.addColorStop(1, 'transparent');
+      c.fillStyle = glowGradient;
+      c.globalAlpha = p.alpha * 0.5;
+      c.fill();
+      
+      // Draw core
+      c.beginPath();
+      c.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      c.fillStyle = p.color;
+      c.globalAlpha = p.alpha;
+      c.fill();
+      c.globalAlpha = 1;
+    });
+    
+    animationId = requestAnimationFrame((t) => drawParticles(t));
+  }
+
+  function resizeCanvas() {
+    if (!canvas || !heroSection) return;
+    const rect = heroSection.getBoundingClientRect();
+    canvasWidth = rect.width;
+    canvasHeight = rect.height;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    
+    // Reinitialize particles on resize
+    if (particles.length === 0 || Math.abs(particles[0]?.x - canvasWidth) > canvasWidth * 0.5) {
+      initParticles();
+    }
+  }
+
+  onMount(() => {
+    if (browser && canvas) {
+      ctx = canvas.getContext('2d');
+      resizeCanvas();
+      initParticles();
+      drawParticles(0);
+      
+      window.addEventListener('resize', resizeCanvas);
+    }
+  });
+
+  onDestroy(() => {
+    if (browser) {
+      if (animationId) cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resizeCanvas);
+    }
+  });
 
   // Define geometric shapes with their positions and properties
   interface Shape {
@@ -115,6 +281,13 @@
   role="banner"
   aria-label="Hero section"
 >
+  <!-- Constellation Particle Canvas - The Cherry on Top! -->
+  <canvas 
+    bind:this={canvas} 
+    class="constellation-canvas"
+    aria-hidden="true"
+  ></canvas>
+
   <!-- Animated Background Grid -->
   <div class="grid-background" style="transform: translateY({scrollY * 0.1}px);"></div>
   
@@ -226,6 +399,30 @@
     overflow: hidden;
     contain: layout paint;
     isolation: isolate;
+  }
+
+  /* Constellation Particle System */
+  .constellation-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.8;
+    mix-blend-mode: screen;
+  }
+
+  @media (max-width: 768px) {
+    .constellation-canvas {
+      opacity: 0.4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .constellation-canvas {
+      display: none;
+    }
   }
 
   .grid-background {
