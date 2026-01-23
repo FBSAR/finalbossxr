@@ -606,10 +606,20 @@
             </div>
 
             <!-- Secondary media items -->
-            <div class="media-item secondary-1" style="transform: translate({(1 - storyAnimationProgress) * 60}px, {(1 - storyAnimationProgress) * -30}px);">
+            <div class="media-item secondary-1 phone" style="transform: translate({(1 - storyAnimationProgress) * 60}px, {(1 - storyAnimationProgress) * -30}px);">
               <div class="media-frame">
-                <img src="/images/story/prototype.jpg" alt="Early prototype" />
+                <div class="phone-notch"></div>
+                <video 
+                  autoplay 
+                  muted 
+                  playsinline
+                  on:loadedmetadata={(e) => { e.currentTarget.currentTime = 35; }}
+                  on:timeupdate={(e) => { if (e.currentTarget.currentTime >= 75) e.currentTarget.currentTime = 35; }}
+                >
+                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/monopoly_ar_demo.mp4" type="video/mp4" />
+                </video>
               </div>
+              <span class="phone-badge">(2022) Monopoly AR Demo</span>
             </div>
 
             <div class="media-item secondary-2" style="transform: translate({(1 - storyAnimationProgress) * -40}px, {(1 - storyAnimationProgress) * 50}px);">
@@ -620,8 +630,9 @@
               </div>
             </div>
 
-            <div class="media-item secondary-3" style="transform: translate({(1 - storyAnimationProgress) * 30}px, {(1 - storyAnimationProgress) * 40}px);">
+            <div class="media-item secondary-3 phone" style="transform: translate({(1 - storyAnimationProgress) * 30}px, {(1 - storyAnimationProgress) * 40}px);">
               <div class="media-frame">
+                <div class="phone-notch"></div>
                 <img src="/images/story/milestone.jpg" alt="Celebrating milestone" />
               </div>
             </div>
@@ -2181,6 +2192,68 @@
     right: 2%;
     width: 28%;
     z-index: 4;
+  }
+
+  /* Phone-shaped media items */
+  .media-item.phone .media-frame {
+    aspect-ratio: 9/19;
+    border-radius: 1.5rem;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    background: #1a1a2e;
+    box-shadow: 
+      0 0 0 2px rgba(0, 0, 0, 0.8),
+      0 20px 50px rgba(0, 0, 0, 0.4),
+      inset 0 0 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .phone-notch {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35%;
+    height: 20px;
+    background: #0a0a14;
+    border-radius: 0 0 12px 12px;
+    z-index: 10;
+  }
+
+  .phone-notch::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 3px rgba(138, 43, 226, 0.5);
+  }
+
+  .media-item.secondary-1.phone {
+    width: 22%;
+  }
+
+  .media-item.secondary-3.phone {
+    width: 20%;
+  }
+
+  .phone-badge {
+    display: block;
+    text-align: center;
+    margin-top: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 2rem;
+    font-size: 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
 
   @media (max-width: 768px) {
