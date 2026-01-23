@@ -219,11 +219,4 @@
     background: rgba(0, 196, 0, 0.05);
   }
 
-  /* Gradient text utility */
-  :global(.gradient-text) {
-    background: linear-gradient(135deg, #00c400 0%, #8a2be2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
 </style>
