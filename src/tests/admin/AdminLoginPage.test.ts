@@ -172,12 +172,12 @@ describe('AdminLoginPage', () => {
 
   describe('Error Display', () => {
     it('displays error message when form has error', () => {
-      render(AdminLoginPage, { props: { form: { error: 'Invalid email address' } } });
+      render(AdminLoginPage, { props: { form: { error: 'Invalid email address', step: 'email' } } });
       expect(screen.getByText('Invalid email address')).toBeTruthy();
     });
 
     it('error message has error styling class', () => {
-      render(AdminLoginPage, { props: { form: { error: 'Something went wrong' } } });
+      render(AdminLoginPage, { props: { form: { error: 'Something went wrong', step: 'email' } } });
       const errorDiv = document.querySelector('.error-msg');
       expect(errorDiv).toBeTruthy();
       expect(errorDiv?.textContent).toContain('Something went wrong');

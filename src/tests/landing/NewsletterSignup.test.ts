@@ -226,6 +226,7 @@ describe('NewsletterSignup', () => {
     });
 
     it('should show error toast on network error', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       (global.fetch as ReturnType<typeof vi.fn>).mockRejectedValueOnce(new Error('Network error'));
       
       render(NewsletterSignup, { props: { variant: 'stacked' } });
@@ -239,6 +240,7 @@ describe('NewsletterSignup', () => {
       await waitFor(() => {
         expect(showErrorToast).toHaveBeenCalledWith('Something went wrong. Please try again.');
       });
+      consoleSpy.mockRestore();
     });
   });
 

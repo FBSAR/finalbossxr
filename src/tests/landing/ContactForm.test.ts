@@ -214,6 +214,7 @@ describe('ContactForm', () => {
     });
 
     it('should show error toast on failed submission', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: false,
         json: () => Promise.resolve({ type: 'failure', data: { message: 'Server error' } })
@@ -237,9 +238,11 @@ describe('ContactForm', () => {
       await waitFor(() => {
         expect(showErrorToast).toHaveBeenCalled();
       });
+      consoleSpy.mockRestore();
     });
 
     it('should show error toast on network error', async () => {
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       (global.fetch as ReturnType<typeof vi.fn>).mockRejectedValueOnce(new Error('Network error'));
       
       render(ContactForm);
@@ -260,6 +263,7 @@ describe('ContactForm', () => {
       await waitFor(() => {
         expect(showErrorToast).toHaveBeenCalledWith('There was an error submitting your form. Please try again later.');
       });
+      consoleSpy.mockRestore();
     });
   });
 
