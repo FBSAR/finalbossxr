@@ -159,6 +159,10 @@
   let heroRevealed = false;
   let heroRevealTimeout: ReturnType<typeof setTimeout>;
   
+  // XR Art reveal animation
+  let xrArtRevealed = false;
+  let xrArtRevealTimeout: ReturnType<typeof setTimeout>;
+  
   // Typewriter effect state
   const titleLine1 = 'Shaping the Future of';
   const titleLine2 = 'Extended Reality';
@@ -223,6 +227,11 @@
       window.addEventListener('resize', resizeCanvas);
     }
     
+    // Reveal XR art after 1500ms
+    xrArtRevealTimeout = setTimeout(() => {
+      xrArtRevealed = true;
+    }, 1500);
+    
     // Reveal hero text after 2500ms
     heroRevealTimeout = setTimeout(() => {
       heroRevealed = true;
@@ -236,6 +245,7 @@
       if (animationId) cancelAnimationFrame(animationId);
       window.removeEventListener('resize', resizeCanvas);
       clearTimeout(heroRevealTimeout);
+      clearTimeout(xrArtRevealTimeout);
     }
   });
 
@@ -391,7 +401,7 @@
 
   <!-- Hero Content -->
   <div class="hero-content" style="transform: translateY({scrollY * -0.2}px);">
-    <div class="xr-art-hero">
+    <div class="xr-art-hero" class:revealed={xrArtRevealed}>
       <XRAbstractArt size="lg" />
     </div>
 
@@ -679,6 +689,16 @@
     display: flex;
     justify-content: center;
     margin-bottom: 1.5rem;
+    /* Initial hidden state */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .xr-art-hero.revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   @media (max-width: 768px) {
