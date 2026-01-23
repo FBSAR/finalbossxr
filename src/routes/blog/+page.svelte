@@ -343,13 +343,6 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
 
   /* Blog Grid - Landing Page Style */
   .blog-grid {
@@ -601,10 +594,6 @@
     .pagination-btn {
       padding: 0.625rem 1rem;
       font-size: 0.8rem;
-    }
-
-    .pagination-btn span {
-      display: none;
     }
 
     .pagination-num {

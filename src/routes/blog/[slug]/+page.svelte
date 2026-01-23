@@ -204,11 +204,6 @@
 </div>
 
 <style>
-    
-  .glow-text {
-    text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
-  }
-
   /* Related Posts Styles */
   .related-post-card {
     display: block;

@@ -200,7 +200,7 @@ describe('AdminLoginPage', () => {
     });
 
     it('shows invalid code error', () => {
-      render(AdminLoginPage, { props: { form: { error: 'Invalid code', step: 'code', email: 'test@finalbossxr.com' } } });
+      render(AdminLoginPage, { props: { form: { error: 'Invalid code', step: 'code', email: 'test@finalbossxr.com' } as any } });
       expect(screen.getByText('Invalid code')).toBeTruthy();
     });
   });
@@ -242,7 +242,7 @@ describe('AdminLoginPage', () => {
     });
 
     it('code input has name attribute', () => {
-      render(AdminLoginPage, { props: { form: { step: 'code', email: 'test@finalbossxr.com' } } });
+      render(AdminLoginPage, { props: { form: { success: true, step: 'code', email: 'test@finalbossxr.com' } } });
       const codeInput = screen.getByPlaceholderText('000000');
       expect(codeInput).toHaveAttribute('name', 'code');
     });
@@ -265,7 +265,7 @@ describe('AdminLoginPage', () => {
     });
 
     it('code verification form uses POST method', () => {
-      render(AdminLoginPage, { props: { form: { step: 'code', email: 'test@finalbossxr.com' } } });
+      render(AdminLoginPage, { props: { form: { success: true, step: 'code', email: 'test@finalbossxr.com' } } });
       const form = document.querySelector('form');
       expect(form).toHaveAttribute('method', 'POST');
     });
@@ -285,13 +285,13 @@ describe('AdminLoginPage', () => {
     });
 
     it('code input has proper labeling via placeholder', () => {
-      render(AdminLoginPage, { props: { form: { step: 'code', email: 'test@finalbossxr.com' } } });
+      render(AdminLoginPage, { props: { form: { success: true, step: 'code', email: 'test@finalbossxr.com' } } });
       const codeInput = screen.getByPlaceholderText('000000');
       expect(codeInput).toBeTruthy();
     });
 
     it('Back button is clickable', async () => {
-      render(AdminLoginPage, { props: { form: { step: 'code', email: 'test@finalbossxr.com' } } });
+      render(AdminLoginPage, { props: { form: { success: true, step: 'code', email: 'test@finalbossxr.com' } } });
       const backButton = screen.getByText('← Back');
       await fireEvent.click(backButton);
       // After clicking back, should show email step
@@ -308,7 +308,7 @@ describe('AdminLoginPage', () => {
     });
 
     it('allows typing in code input', async () => {
-      render(AdminLoginPage, { props: { form: { step: 'code', email: 'test@finalbossxr.com' } } });
+      render(AdminLoginPage, { props: { form: { success: true, step: 'code', email: 'test@finalbossxr.com' } } });
       const codeInput = screen.getByPlaceholderText('000000') as HTMLInputElement;
       await fireEvent.input(codeInput, { target: { value: '123456' } });
       expect(codeInput.value).toBe('123456');
