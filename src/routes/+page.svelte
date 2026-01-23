@@ -37,6 +37,7 @@
       startTime?: number;
       endTime?: number;
       isPhone?: boolean;
+      companionPhoto?: string;
     }[];
   }
 
@@ -79,18 +80,14 @@
         {
           type: 'video',
           src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/Eddie_Teaching_Class2.mp4',
-          badge: 'ToT Intro to Unreal Class'
+          badge: 'ToT Intro to Unreal Class',
+          companionPhoto: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/BLACK_Group_Photo.jpg'
         },
         {
           type: 'video',
           src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/DC_Demo_02.mov',
           badge: 'Drone Training MVP',
           isPhone: true
-        },
-        {
-          type: 'video',
-          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/CosmicVRgamedemo2-1.mp4',
-          badge: 'Original Cosmic Collisions'
         },
         {
           type: 'video',
@@ -705,24 +702,31 @@
                   >
                     {#if activeTimelineIndex === index || activeTimelineIndex === -1 || windowWidth < 1024}
                     {#each item.media as media, mediaIndex}
-                      <div class="timeline-media-item" class:phone={media.isPhone}>
-                        <div class="media-frame">
-                          {#if media.isPhone}
-                            <div class="phone-notch"></div>
-                          {/if}
-                          {#if media.type === 'video'}
-                            <video 
-                              autoplay 
-                              loop={!media.endTime}
-                              muted 
-                              playsinline
-                              on:loadedmetadata={(e) => { if (media.startTime) e.currentTarget.currentTime = media.startTime; }}
-                              on:timeupdate={(e) => { if (media.endTime && e.currentTarget.currentTime >= media.endTime) e.currentTarget.currentTime = media.startTime || 0; }}
-                            >
-                              <source src={media.src} type="video/mp4" />
-                            </video>
-                          {:else}
-                            <img src={media.src} alt={media.badge || 'Media'} />
+                      <div class="timeline-media-item" class:phone={media.isPhone} class:has-companion={media.companionPhoto}>
+                        <div class="media-stack">
+                          <div class="media-frame">
+                            {#if media.isPhone}
+                              <div class="phone-notch"></div>
+                            {/if}
+                            {#if media.type === 'video'}
+                              <video 
+                                autoplay 
+                                loop={!media.endTime}
+                                muted 
+                                playsinline
+                                on:loadedmetadata={(e) => { if (media.startTime) e.currentTarget.currentTime = media.startTime; }}
+                                on:timeupdate={(e) => { if (media.endTime && e.currentTarget.currentTime >= media.endTime) e.currentTarget.currentTime = media.startTime || 0; }}
+                              >
+                                <source src={media.src} type="video/mp4" />
+                              </video>
+                            {:else}
+                              <img src={media.src} alt={media.badge || 'Media'} />
+                            {/if}
+                          </div>
+                          {#if media.companionPhoto}
+                            <div class="companion-photo-frame">
+                              <img src={media.companionPhoto} alt="Companion photo" />
+                            </div>
                           {/if}
                         </div>
                         {#if media.badge}
@@ -2208,10 +2212,36 @@
     z-index: 10;
   }
 
+  .timeline-media-item .media-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
   .timeline-media-item .media-frame {
     border-radius: 0.75rem;
     overflow: hidden;
     background: #1a1a2e;
+  }
+
+  .timeline-media-item .companion-photo-frame {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .timeline-media-item .companion-photo-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .timeline-media-item:hover .companion-photo-frame {
+    border-color: rgba(0, 196, 0, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 196, 0, 0.2);
   }
 
   .timeline-media-item video,
