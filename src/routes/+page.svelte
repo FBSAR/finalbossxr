@@ -675,6 +675,14 @@
             </div>
 
             <!-- Original VR Cosmic -->
+            <div class="media-item vr-cosmic" style="transform: translate({(1 - storyAnimationProgress) * 25}px, {(1 - storyAnimationProgress) * -20}px);">
+              <div class="media-frame">
+                <video autoplay loop muted playsinline>
+                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/CosmicVRgamedemo2-1.mp4" type="video/mp4" />
+                </video>
+              </div>
+              <span class="media-badge">2023 - Original Cosmic Collisions Prototype</span>
+            </div>
           </div>
 
           <!-- Animated connection lines between media -->
@@ -2268,6 +2276,13 @@
     top: 55%;
     left: 5%;
     width: 30%;
+    z-index: 3;
+  }
+
+  .media-item.vr-cosmic {
+    top: 75%;
+    right: 35%;
+    width: 28%;
     z-index: 3;
   }
 
