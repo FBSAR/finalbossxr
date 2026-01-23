@@ -591,6 +591,7 @@
           "
         >
           <div class="media-montage">
+
             <!-- Main featured media -->
             <div class="media-item main" style="transform: translateY({(1 - storyAnimationProgress) * 40}px);">
               <div class="media-frame">
@@ -611,7 +612,7 @@
               <span class="media-badge">2022 - Unreal Basecamp Class</span>
             </div>
 
-            <!-- Secondary media items -->
+            <!-- Monopoly AR Demo -->
             <div class="media-item secondary-1 phone" style="transform: translate({(1 - storyAnimationProgress) * 60}px, {(1 - storyAnimationProgress) * -30}px);">
               <div class="media-frame">
                 <div class="phone-notch"></div>
@@ -628,6 +629,7 @@
               <span class="phone-badge">(2022) Monopoly AR Demo</span>
             </div>
 
+            <!-- Taste of Tech -->
             <div class="secondary-2-container" style="transform: translate({(1 - storyAnimationProgress) * -40}px, {(1 - storyAnimationProgress) * 50}px);">
               <div class="secondary-2-media">
                 <div class="media-item secondary-2">
@@ -651,6 +653,7 @@
               <span class="secondary-2-badge">2023 ToT Intro to Unreal Class</span>
             </div>
 
+            <!-- Drone Training -->
             <div class="media-item secondary-3 phone" style="transform: translate({(1 - storyAnimationProgress) * 30}px, {(1 - storyAnimationProgress) * 40}px);">
               <div class="media-frame">
                 <div class="phone-notch"></div>
@@ -661,19 +664,17 @@
               <span class="phone-badge">2023 - Drone Training</span>
             </div>
 
-            <!-- Floating video thumbnail -->
-            <div class="media-item floating-video" style="transform: translateY({(1 - storyAnimationProgress) * -60}px) rotate({(1 - storyAnimationProgress) * 10}deg);">
+            <!-- Gameball -->
+            <div class="media-item gameball" style="transform: translate({(1 - storyAnimationProgress) * -30}px, {(1 - storyAnimationProgress) * 35}px);">
               <div class="media-frame">
                 <video autoplay loop muted playsinline>
-                  <source src="/videos/story/behind-scenes.mp4" type="video/mp4" />
+                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/gameball_demo.mp4" type="video/mp4" />
                 </video>
-                <div class="play-indicator">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </div>
               </div>
+              <span class="media-badge">2022 Gameball Prototype</span>
             </div>
+
+            <!-- Original VR Cosmic -->
           </div>
 
           <!-- Animated connection lines between media -->
@@ -2261,6 +2262,13 @@
     right: 5%;
     width: 32%;
     z-index: 1;
+  }
+
+  .media-item.gameball {
+    top: 55%;
+    left: 5%;
+    width: 30%;
+    z-index: 3;
   }
 
   .media-item.floating-video {
