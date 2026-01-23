@@ -101,6 +101,11 @@
       title: 'AR Innovations',
       description: 'Launched augmented reality experiences pushing the boundaries of mobile gaming.',
       media: [
+        {
+          type: 'image',
+          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300c400'/%3E%3Cstop offset='100%25' stop-color='%238a2be2'/%3E%3C/linearGradient%3E%3ClinearGradient id='g2' x1='100%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%238a2be2'/%3E%3Cstop offset='100%25' stop-color='%2300c400'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='%230a1628' width='200' height='200' rx='20'/%3E%3Ccircle cx='100' cy='100' r='60' fill='none' stroke='url(%23g1)' stroke-width='3' stroke-dasharray='95 285' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 100 100' to='360 100 100' dur='2s' repeatCount='indefinite'/%3E%3C/circle%3E%3Ccircle cx='100' cy='100' r='45' fill='none' stroke='url(%23g2)' stroke-width='3' stroke-dasharray='70 213' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='360 100 100' to='0 100 100' dur='1.5s' repeatCount='indefinite'/%3E%3C/circle%3E%3Ccircle cx='100' cy='100' r='30' fill='none' stroke='%2300c400' stroke-width='2' stroke-dasharray='47 141' stroke-linecap='round' opacity='0.7'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 100 100' to='360 100 100' dur='1s' repeatCount='indefinite'/%3E%3C/circle%3E%3Ccircle cx='100' cy='100' r='8' fill='%238a2be2'%3E%3Canimate attributeName='opacity' values='1;0.4;1' dur='1.5s' repeatCount='indefinite'/%3E%3C/circle%3E%3Ccircle cx='100' cy='100' r='4' fill='%2300c400'/%3E%3C/svg%3E",
+          badge: '2024 - Taking a Break'
+        }
       ]
     },
     {
