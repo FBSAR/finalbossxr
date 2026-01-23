@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { navigating } from '$app/stores';
   import ContactForm from '$lib/components/ContactForm.svelte';
+  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
     import { Button } from 'flowbite-svelte';
     import { AppleSolid } from 'flowbite-svelte-icons';
 
@@ -474,69 +475,7 @@
   <div class="mb-20 border-b-8 border-[#ffffff10]"></div>
 
   <!-- Kickstarter -->
-  <div class="w-11/12 lg:w-1/2 mx-auto">
-    <div class="kickstarter-card p-6 lg:p-8 rounded-2xl backdrop-blur-xl bg-black/40 lg:bg-white/5 border border-[#05ce78]/30 shadow-2xl text-center space-y-4">
-      
-      <!-- Kickstarter Logo -->
-      <div class="relative inline-block">
-        <img 
-          class="h-20 lg:h-28 mx-auto" 
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/misc/Kickstarter-Logo.png" 
-          alt="Kickstarter"
-        >
-        <!-- Glow effect -->
-        <div class="absolute inset-0 blur-2xl bg-[#05ce78]/20 -z-10 scale-150"></div>
-      </div>
-
-      <!-- Status Badge -->
-      <div class="flex justify-center">
-        <div class="flex items-center gap-2 px-4 py-2 bg-[#FFD700]/15 border border-[#FFD700]/40 rounded-full">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFD700] opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#FFD700]"></span>
-          </span>
-          <span class="text-[#FFD700] text-sm font-semibold uppercase tracking-wide">Coming Soon</span>
-        </div>
-      </div>
-
-      <!-- Title & Description -->
-      <div class="space-y-2">
-        <h2 class="text-2xl lg:text-3xl gradient-text">Support Our Campaign</h2>
-        <p class="text-gray-400 text-sm lg:text-base max-w-md mx-auto">
-          Help us bring <span class="text-[#FFD700] font-medium">Cosmic Collisions</span> to life! Back our Kickstarter to unlock exclusive rewards and be part of the journey.
-        </p>
-      </div>
-
-      <!-- Launch Date -->
-      <div class="bg-black/30 rounded-lg px-4 py-3 inline-block border border-white/10">
-        <p class="text-gray-300 text-sm">
-          <span class="text-[#05ce78] font-semibold">Launch Date:</span> Q2 2026
-        </p>
-      </div>
-
-      <!-- CTA Button -->
-      <div class="pt-2">
-        <a 
-          href="https://www.kickstarter.com/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-3 px-8 py-3 bg-[#05ce78] hover:bg-[#04b56a] text-black font-bold text-base rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#05ce78]/30"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-          Visit Kickstarter Page
-        </a>
-      </div>
-
-      <!-- Notify Me Option -->
-      <p class="text-gray-500 text-xs">
-        Want to be notified when we launch? <a href="#contact" class="text-[#05ce78] hover:underline">Sign up for updates</a>
-      </p>
-    </div>
-  </div>
+  <KickstarterPromo variant="cosmic" />
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
@@ -559,20 +498,15 @@
     text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
   }
 
-  .header-card, .demo-info-card, .lore-card, .kickstarter-card
+  .header-card, .demo-info-card, .lore-card
   {
     transition: all 300ms ease-out;
   }
 
-  .header-card:hover, .demo-info-card:hover, .kickstarter-card:hover {
+  .header-card:hover, .demo-info-card:hover {
     border-color: rgba(255, 215, 0, 0.3);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     transform: translateY(-4px);
-  }
-
-  .kickstarter-card:hover {
-    border-color: rgba(5, 206, 120, 0.5);
-    box-shadow: 0 25px 50px -12px rgba(5, 206, 120, 0.15);
   }
 
   .phone-mockup {

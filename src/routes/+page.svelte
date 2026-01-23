@@ -6,6 +6,7 @@
   import NextProject from '$lib/components/landing/NextProject.svelte';
   import BlogSection from '$lib/components/landing/BlogSection.svelte';
   import JobsSection from '$lib/components/landing/JobsSection.svelte';
+  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import OurStorySection from '$lib/components/landing/OurStorySection.svelte';
 
   let scrollY = 0;
@@ -158,6 +159,9 @@
     {activeTimelineIndex}
     {windowWidth}
   />
+
+  <!-- Kickstarter Promo -->
+  <KickstarterPromo />
 
   <!-- Contact Us -->
   <section class="contact-section" aria-label="Contact Us">
