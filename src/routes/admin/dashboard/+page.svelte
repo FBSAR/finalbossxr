@@ -2,11 +2,25 @@
   import { enhance } from '$app/forms';
   
   export let data;
+  export let form;
 
   let activeTab: 'applications' | 'blogs' = 'applications';
   let showBlogModal = false;
   let editingBlog: any = null;
   let expandedApp: number | null = null;
+  
+  // Toast state
+  let toast: { message: string; type: 'success' | 'error' } | null = null;
+  
+  function showToast(message: string, type: 'success' | 'error' = 'success') {
+    toast = { message, type };
+    setTimeout(() => toast = null, 4000);
+  }
+  
+  // Show toast when form returns error
+  $: if (form?.error && form?.message) {
+    showToast(form.message, 'error');
+  }
 
   // Blog form state
   let blogForm = { title: '', slug: '', excerpt: '', content: '', author: 'FinalBoss XR', published: false, featured: false };
@@ -45,6 +59,17 @@
 </svelte:head>
 
 <div class="admin-container">
+  <!-- Toast Notification -->
+  {#if toast}
+    <div class="toast" class:error={toast.type === 'error'} class:success={toast.type === 'success'}>
+      <span class="toast-icon">
+        {#if toast.type === 'error'}⚠️{:else}✓{/if}
+      </span>
+      <span class="toast-message">{toast.message}</span>
+      <button class="toast-close" on:click={() => toast = null}>×</button>
+    </div>
+  {/if}
+  
   <div class="admin-inner">
     <header class="dash-header">
       <div class="header-left">
@@ -103,7 +128,16 @@
                   <button class="btn-sm btn-expand" on:click={() => expandedApp = expandedApp === app.id ? null : app.id}>
                     {expandedApp === app.id ? '▲ Less' : '▼ More'}
                   </button>
-                  <form method="POST" action="?/deleteApplication" use:enhance style="display:inline;">
+                  <form method="POST" action="?/deleteApplication" use:enhance={() => {
+                    return async ({ result, update }) => {
+                      if (result.type === 'success') {
+                        showToast('Application deleted successfully', 'success');
+                        await update();
+                      } else if (result.type === 'failure' || result.type === 'error') {
+                        showToast('Failed to delete application', 'error');
+                      }
+                    };
+                  }} style="display:inline;">
                     <input type="hidden" name="id" value={app.id} />
                     <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this application?')}>🗑 Delete</button>
                   </form>
@@ -164,7 +198,16 @@
                       <button class="btn-sm" on:click={() => expandedApp = expandedApp === app.id ? null : app.id}>
                         {expandedApp === app.id ? '▲' : '▼'}
                       </button>
-                      <form method="POST" action="?/deleteApplication" use:enhance style="display:inline;">
+                      <form method="POST" action="?/deleteApplication" use:enhance={() => {
+                        return async ({ result, update }) => {
+                          if (result.type === 'success') {
+                            showToast('Application deleted successfully', 'success');
+                            await update();
+                          } else if (result.type === 'failure' || result.type === 'error') {
+                            showToast('Failed to delete application', 'error');
+                          }
+                        };
+                      }} style="display:inline;">
                         <input type="hidden" name="id" value={app.id} />
                         <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this application?')}>🗑</button>
                       </form>
@@ -221,7 +264,16 @@
                 <span class="date">{new Date(blog.created_at).toLocaleDateString()}</span>
                 <div class="blog-actions">
                   <button class="btn-sm" on:click={() => openBlogModal(blog)}>Edit</button>
-                  <form method="POST" action="?/deleteBlog" use:enhance style="display:inline;">
+                  <form method="POST" action="?/deleteBlog" use:enhance={() => {
+                    return async ({ result, update }) => {
+                      if (result.type === 'success') {
+                        showToast('Blog deleted successfully', 'success');
+                        await update();
+                      } else if (result.type === 'failure' || result.type === 'error') {
+                        showToast('Failed to delete blog', 'error');
+                      }
+                    };
+                  }} style="display:inline;">
                     <input type="hidden" name="id" value={blog.id} />
                     <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this blog?')}>🗑</button>
                   </form>
@@ -248,6 +300,13 @@
           return async ({ result, update }) => {
             if (result.type === 'success') {
               closeBlogModal();
+              showToast(editingBlog ? 'Blog updated successfully!' : 'Blog created successfully!', 'success');
+              await update();
+            } else if (result.type === 'failure') {
+              // Show error toast but keep modal open
+              const data = result.data;
+              const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
+              showToast(errorMessage, 'error');
               await update();
             }
           };
@@ -921,5 +980,67 @@
   a:hover { 
     color: #00e000;
     text-decoration: underline; 
+  }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(145deg, #1a1a24 0%, #12121a 100%);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 196, 0, 0.1);
+    z-index: 200;
+    animation: slideIn 0.3s ease;
+    max-width: 400px;
+  }
+  .toast.error {
+    border-color: rgba(239, 68, 68, 0.4);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(239, 68, 68, 0.1);
+  }
+  .toast.success {
+    border-color: rgba(0, 196, 0, 0.4);
+  }
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  .toast-icon {
+    font-size: 1.25rem;
+  }
+  .toast-message {
+    flex: 1;
+    color: #e0e0e0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .toast.error .toast-message {
+    color: #fca5a5;
+  }
+  .toast-close {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.375rem;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    transition: all 0.2s ease;
+  }
+  .toast-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
   }
 </style>

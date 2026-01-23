@@ -19,12 +19,12 @@ export const load: PageServerLoad = async ({ params }) => {
       throw error(404, 'Post not found');
     }
     
-    // Fetch related posts (other published posts)
+    // Fetch related posts (other published posts, prioritizing featured and recent)
     const relatedPosts = await sql`
-      SELECT id, title, slug, excerpt, created_at
+      SELECT id, title, slug, excerpt, created_at, featured
       FROM blogs
       WHERE published = true AND slug != ${slug}
-      ORDER BY created_at DESC
+      ORDER BY featured DESC, created_at DESC
       LIMIT 3
     `;
     

@@ -82,6 +82,17 @@ export const actions: Actions = {
 
     const db = getDb();
     
+    // Check if trying to feature this blog while another is already featured
+    if (featured) {
+      const existingFeatured = await db`SELECT id, title FROM blogs WHERE featured = true LIMIT 1`;
+      if (existingFeatured.length > 0) {
+        return fail(400, { 
+          error: true, 
+          message: `Cannot feature this blog. "${existingFeatured[0].title}" is already featured. Please unfeature it first.` 
+        });
+      }
+    }
+    
     // Check if slug already exists, if so append a timestamp
     const existingSlugs = await db`SELECT slug FROM blogs WHERE slug LIKE ${baseSlug + '%'}`;
     let slug = baseSlug;
@@ -114,6 +125,17 @@ export const actions: Actions = {
     const featured = data.get('featured') === 'true';
 
     const db = getDb();
+    
+    // Check if trying to feature this blog while another is already featured
+    if (featured) {
+      const existingFeatured = await db`SELECT id, title FROM blogs WHERE featured = true AND id != ${id} LIMIT 1`;
+      if (existingFeatured.length > 0) {
+        return fail(400, { 
+          error: true, 
+          message: `Cannot feature this blog. "${existingFeatured[0].title}" is already featured. Please unfeature it first.` 
+        });
+      }
+    }
     
     await db`
       UPDATE blogs 
