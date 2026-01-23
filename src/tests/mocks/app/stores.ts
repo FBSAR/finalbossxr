@@ -1,5 +1,5 @@
 // Mock $app/stores
-import { readable, writable } from 'svelte/store';
+import { readable, writable, get } from 'svelte/store';
 
 export const page = readable({
   url: new URL('http://localhost'),
@@ -11,6 +11,8 @@ export const page = readable({
   form: null
 });
 
+// Navigating store that always returns null (not navigating)
+// This ensures components using $navigating !== null see false
 export const navigating = readable(null);
 
 export const updated = {
