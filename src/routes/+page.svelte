@@ -633,8 +633,11 @@
             <div class="media-item secondary-3 phone" style="transform: translate({(1 - storyAnimationProgress) * 30}px, {(1 - storyAnimationProgress) * 40}px);">
               <div class="media-frame">
                 <div class="phone-notch"></div>
-                <img src="/images/story/milestone.jpg" alt="Celebrating milestone" />
+                <video autoplay loop muted playsinline>
+                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/DC_Demo_02.mov" type="video/mp4" />
+                </video>
               </div>
+              <span class="phone-badge">2023 - Drone Training MVP</span>
             </div>
 
             <!-- Floating video thumbnail -->
