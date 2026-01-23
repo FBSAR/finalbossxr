@@ -19,6 +19,38 @@
   
   // Scroll animation state for story section
   let storyAnimationProgress = 0;
+
+  // Timeline data
+  interface TimelineItem {
+    year: string;
+    title: string;
+    description: string;
+    isActive?: boolean;
+  }
+
+  const timelineItems: TimelineItem[] = [
+    {
+      year: '2023',
+      title: 'The Beginning',
+      description: 'Founded with a dream to push the boundaries of immersive technology and create experiences that matter.'
+    },
+    {
+      year: '2024',
+      title: 'First Launch',
+      description: 'Released our first mobile game, Cosmic Collisions, learning invaluable lessons about game development and user experience.'
+    },
+    {
+      year: '2025',
+      title: 'Expanding Horizons',
+      description: 'Began development on XR productivity tools and enterprise solutions, bringing our vision to new industries.'
+    },
+    {
+      year: 'Today',
+      title: 'Building the Future',
+      description: 'Continuing to innovate at the intersection of gaming, AI, and spatial computing.',
+      isActive: true
+    }
+  ];
   
   // Scroll animation state for next project section
   let nextProjectSection: HTMLElement;
@@ -522,41 +554,21 @@
           <div class="timeline">
             <div class="timeline-line" style="height: {storyAnimationProgress * 100}%;"></div>
             
-            <div class="timeline-item" style="opacity: {Math.min(1, storyAnimationProgress * 2)}; transform: translateX({(1 - Math.min(1, storyAnimationProgress * 2)) * 30}px);">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <span class="timeline-year">2023</span>
-                <h4>The Beginning</h4>
-                <p>Founded with a dream to push the boundaries of immersive technology and create experiences that matter.</p>
+            {#each timelineItems as item, index}
+              {@const offset = index * 0.25}
+              {@const progress = Math.min(1, Math.max(0, storyAnimationProgress * 2 - offset))}
+              <div 
+                class="timeline-item" 
+                style="opacity: {progress}; transform: translateX({(1 - progress) * 30}px);"
+              >
+                <div class="timeline-dot" class:active={item.isActive}></div>
+                <div class="timeline-content">
+                  <span class="timeline-year">{item.year}</span>
+                  <h4 class="gradient-text lg:text-2xl">{item.title}</h4>
+                  <p>{item.description}</p>
+                </div>
               </div>
-            </div>
-
-            <div class="timeline-item" style="opacity: {Math.min(1, Math.max(0, storyAnimationProgress * 2 - 0.5))}; transform: translateX({(1 - Math.min(1, Math.max(0, storyAnimationProgress * 2 - 0.5))) * 30}px);">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <span class="timeline-year">2024</span>
-                <h4>First Launch</h4>
-                <p>Released our first mobile game, Cosmic Collisions, learning invaluable lessons about game development and user experience.</p>
-              </div>
-            </div>
-
-            <div class="timeline-item" style="opacity: {Math.min(1, Math.max(0, storyAnimationProgress * 2 - 1))}; transform: translateX({(1 - Math.min(1, Math.max(0, storyAnimationProgress * 2 - 1))) * 30}px);">
-              <div class="timeline-dot"></div>
-              <div class="timeline-content">
-                <span class="timeline-year">2025</span>
-                <h4>Expanding Horizons</h4>
-                <p>Began development on XR productivity tools and enterprise solutions, bringing our vision to new industries.</p>
-              </div>
-            </div>
-
-            <div class="timeline-item" style="opacity: {Math.min(1, Math.max(0, storyAnimationProgress * 2 - 1.3))}; transform: translateX({(1 - Math.min(1, Math.max(0, storyAnimationProgress * 2 - 1.3))) * 30}px);">
-              <div class="timeline-dot active"></div>
-              <div class="timeline-content">
-                <span class="timeline-year">Today</span>
-                <h4>Building the Future</h4>
-                <p>Continuing to innovate at the intersection of gaming, AI, and spatial computing.</p>
-              </div>
-            </div>
+            {/each}
           </div>
         </div>
 
@@ -2018,8 +2030,7 @@
   }
 
   .timeline-content h4 {
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-weight: 400;
     color: white;
     margin: 0 0 0.5rem 0;
   }
