@@ -300,7 +300,6 @@
 <style>
   .admin-container {
     min-height: 100vh;
-    background: #0a0a0f;
     color: #e0e0e0;
     padding: 1rem;
   }
