@@ -628,12 +628,27 @@
               <span class="phone-badge">(2022) Monopoly AR Demo</span>
             </div>
 
-            <div class="media-item secondary-2" style="transform: translate({(1 - storyAnimationProgress) * -40}px, {(1 - storyAnimationProgress) * 50}px);">
-              <div class="media-frame">
-                <video autoplay loop muted playsinline>
-                  <source src="/videos/story/development-timelapse.mp4" type="video/mp4" />
-                </video>
+            <div class="secondary-2-container" style="transform: translate({(1 - storyAnimationProgress) * -40}px, {(1 - storyAnimationProgress) * 50}px);">
+              <div class="secondary-2-media">
+                <div class="media-item secondary-2">
+                  <div class="media-frame">
+                    <video autoplay loop muted playsinline>
+                      <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/Eddie_Teaching_Class2.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                </div>
+
+                <div class="companion-photo" style="transform: translate({(1 - storyAnimationProgress) * 20}px, {(1 - storyAnimationProgress) * -15}px);">
+                  <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/BLACK_Group_Photo.jpg" alt="Group photo" />
+                </div>
+
+                <div class="companion-video" style="transform: translate({(1 - storyAnimationProgress) * 15}px, {(1 - storyAnimationProgress) * 10}px);">
+                  <video autoplay loop muted playsinline>
+                    <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/mr_car_02.mov" type="video/mp4" />
+                  </video>
+                </div>
               </div>
+              <span class="secondary-2-badge">2023 ToT Intro to Unreal Class</span>
             </div>
 
             <div class="media-item secondary-3 phone" style="transform: translate({(1 - storyAnimationProgress) * 30}px, {(1 - storyAnimationProgress) * 40}px);">
@@ -2183,10 +2198,62 @@
   }
 
   .media-item.secondary-2 {
+    position: relative;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .secondary-2-container {
+    position: absolute;
     bottom: 10%;
     left: 0;
-    width: 35%;
+    width: 50%;
     z-index: 2;
+  }
+
+  .secondary-2-media {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .secondary-2-media .media-item.secondary-2 {
+    flex: 1;
+  }
+
+  .secondary-2-media .companion-photo {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    flex: 1;
+  }
+
+  .companion-video {
+    position: relative;
+    flex: 1;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(0, 196, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .companion-video:hover {
+    transform: scale(1.08) rotate(2deg);
+    border-color: rgba(138, 43, 226, 0.4);
+    box-shadow: 
+      0 15px 40px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(138, 43, 226, 0.3);
+  }
+
+  .companion-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .media-item.secondary-3 {
@@ -2280,6 +2347,55 @@
     color: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .companion-photo {
+    position: absolute;
+    bottom: 10%;
+    left: 36%;
+    width: 22%;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(138, 43, 226, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+  }
+
+  .companion-photo:hover {
+    transform: scale(1.08) rotate(-2deg);
+    border-color: rgba(0, 196, 0, 0.4);
+    box-shadow: 
+      0 15px 40px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(0, 196, 0, 0.3);
+  }
+
+  .companion-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .secondary-2-badge {
+    position: relative;
+    display: block;
+    text-align: center;
+    margin-top: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 2rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 6;
   }
 
   @media (max-width: 768px) {
