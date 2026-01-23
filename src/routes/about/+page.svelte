@@ -1,6 +1,7 @@
 <script lang="ts">
   import { LinkedinSolid } from 'flowbite-svelte-icons'
   import ContactForm from '$lib/components/ContactForm.svelte';
+  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import { navigating } from '$app/stores';
 
   // Loading state for navigation
@@ -187,6 +188,9 @@
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
+
+  <!-- Kickstarter Promo -->
+  <KickstarterPromo />
 
 </main>
 <style>
