@@ -44,7 +44,14 @@
     {
       year: '2021',
       title: 'Early Ideas',
-      description: 'Founded with a dream to push the boundaries of immersive technology and create experiences that matter.'
+      description: 'Founded with a dream to push the boundaries of immersive technology and create experiences that matter.',
+      media: [
+        {
+          type: 'image',
+          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='xMidYMid meet'%3E%3Cdefs%3E%3ClinearGradient id='bulbG' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300c400'/%3E%3Cstop offset='100%25' stop-color='%238a2be2'/%3E%3C/linearGradient%3E%3CradialGradient id='glow' cx='50%25' cy='43%25' r='30%25'%3E%3Cstop offset='0%25' stop-color='%2300c400' stop-opacity='0.5'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3CradialGradient id='innerGlow' cx='50%25' cy='35%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%2300c400' stop-opacity='0.4'/%3E%3Cstop offset='50%25' stop-color='%238a2be2' stop-opacity='0.2'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect fill='%230a1628' width='200' height='200' rx='12'/%3E%3Cellipse cx='100' cy='86' rx='28' ry='32' fill='url(%23glow)'%3E%3Canimate attributeName='opacity' values='0.5;1;0.5' dur='2s' repeatCount='indefinite'/%3E%3C/ellipse%3E%3Cpath d='M100 56 C78 56 70 73 70 86 C70 99 78 107 83 114 L83 123 L117 123 L117 114 C122 107 130 99 130 86 C130 73 122 56 100 56Z' fill='url(%23innerGlow)' stroke='url(%23bulbG)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cline x1='86' y1='129' x2='114' y2='129' stroke='%2300c400' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='88' y1='137' x2='112' y2='137' stroke='%238a2be2' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='92' y1='145' x2='108' y2='145' stroke='%2300c400' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E",
+          badge: 'The Spark'
+        }
+      ]
     },
     {
       year: '2022',
@@ -2212,7 +2219,7 @@
     width: 100%;
     height: auto;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   /* Phone-style items in timeline */
