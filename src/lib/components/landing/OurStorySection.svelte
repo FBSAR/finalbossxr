@@ -292,7 +292,7 @@
 </section>
 
 <style>
-  /* Our Story Section */
+  /* Our Story Section - Performance Optimized */
   .story-section {
     position: relative;
     min-height: 100vh;
@@ -302,6 +302,8 @@
     justify-content: center;
     overflow: hidden;
     padding: 6rem 0;
+    contain: layout paint;
+    isolation: isolate;
   }
 
   /* SVG Background Elements */
@@ -310,6 +312,7 @@
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    contain: strict;
   }
 
   .circuit-svg {
@@ -317,6 +320,8 @@
     width: 100%;
     height: 100%;
     opacity: 0.6;
+    will-change: opacity;
+    transform: translateZ(0);
   }
 
   .circuit-line {
@@ -473,6 +478,8 @@
     padding-bottom: 3rem;
     position: relative;
     will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   .timeline-row:last-child {
@@ -491,12 +498,13 @@
     background: #0a1628;
     border: 2px solid #00c400;
     border-radius: 50%;
-    transform: translateX(-5px);
+    transform: translateX(-5px) translateZ(0);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backface-visibility: hidden;
   }
 
   .timeline-row:hover .timeline-dot-integrated {
-    transform: translateX(-5px) scale(1.4);
+    transform: translateX(-5px) scale(1.4) translateZ(0);
     background: #00c400;
     box-shadow: 0 0 20px rgba(0, 196, 0, 0.6), 0 0 40px rgba(0, 196, 0, 0.3);
   }
@@ -523,6 +531,8 @@
     padding: 1.25rem;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
+    transform: translateZ(0);
+    backface-visibility: hidden;
     overflow: hidden;
   }
 

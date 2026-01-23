@@ -40,14 +40,27 @@
     shapeTransforms[shape.id] = { translateX: 0, translateY: 0, rotation: shape.baseRotation, scale: 1 };
   });
 
+  // Performance: RAF-based mouse tracking
+  let mouseTicking = false;
+  let pendingMouseX = 0;
+  let pendingMouseY = 0;
+
   const handleMouseMove = (e: MouseEvent) => {
     if (!heroSection) return;
     
     const rect = heroSection.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
+    pendingMouseX = e.clientX - rect.left;
+    pendingMouseY = e.clientY - rect.top;
 
-    updateShapeTransforms();
+    if (!mouseTicking) {
+      requestAnimationFrame(() => {
+        mouseX = pendingMouseX;
+        mouseY = pendingMouseY;
+        updateShapeTransforms();
+        mouseTicking = false;
+      });
+      mouseTicking = true;
+    }
   };
 
   const updateShapeTransforms = () => {
@@ -211,6 +224,8 @@
     padding-top: 2em;
     justify-content: center;
     overflow: hidden;
+    contain: layout paint;
+    isolation: isolate;
   }
 
   .grid-background {
@@ -222,7 +237,9 @@
     background-size: 60px 60px;
     mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
     animation: gridPulse 8s ease-in-out infinite;
-    will-change: transform;
+    will-change: opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   @media (max-width: 768px) {
@@ -241,12 +258,14 @@
     pointer-events: none;
     transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   @media (max-width: 768px) {
     .geo-shape-wrapper {
       opacity: 0.5;
-      transform: scale(0.6) !important;
+      transform: scale(0.6) translateZ(0) !important;
     }
   }
 
@@ -254,6 +273,7 @@
     position: relative;
     pointer-events: none;
     will-change: transform, filter;
+    backface-visibility: hidden;
   }
 
   .geo-shape.hexagon {

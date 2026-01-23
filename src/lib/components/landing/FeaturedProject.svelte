@@ -281,7 +281,7 @@
 </section>
 
 <style>
-  /* Featured Project Section */
+  /* Featured Project Section - Performance Optimized */
   .project-section {
     position: relative;
     min-height: 100vh;
@@ -289,6 +289,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    contain: layout paint;
+    isolation: isolate;
   }
 
   @media (max-width: 768px) {
@@ -305,17 +307,22 @@
     pointer-events: none;
   }
 
-  /* Floating Shapes */
+  /* Floating Shapes - GPU Optimized */
   .floating-shapes {
     position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
+    contain: strict;
+    z-index: 0;
   }
 
   .shape {
     position: absolute;
     opacity: 0.6;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .shape-1 {
