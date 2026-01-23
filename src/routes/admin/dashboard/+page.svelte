@@ -15,6 +15,10 @@
   let draftForm = { subject: '', content: '', status: 'draft', scheduled_at: '' };
   let sendingNewsletterIds: Set<number> = new Set();
   
+  // Local reactive copy of subscribers (to avoid page reload on delete)
+  let subscribers = data.subscribers;
+  $: subscribers = data.subscribers; // Keep in sync if data changes from elsewhere
+  
   // Section collapsed states
   let subscribersExpanded = true;
   let draftsExpanded = true;
@@ -39,6 +43,32 @@
   // Show toast when form returns error
   $: if (form?.error && form?.message) {
     showToast(form.message, 'error');
+  }
+
+  // Confirmation modal state
+  let showConfirmModal = false;
+  let confirmModalMessage = '';
+  let confirmModalAction: (() => void) | null = null;
+  let confirmModalType: 'danger' | 'warning' = 'danger';
+
+  function openConfirmModal(message: string, action: () => void, type: 'danger' | 'warning' = 'danger') {
+    confirmModalMessage = message;
+    confirmModalAction = action;
+    confirmModalType = type;
+    showConfirmModal = true;
+  }
+
+  function closeConfirmModal() {
+    showConfirmModal = false;
+    confirmModalMessage = '';
+    confirmModalAction = null;
+  }
+
+  function executeConfirmAction() {
+    if (confirmModalAction) {
+      confirmModalAction();
+    }
+    closeConfirmModal();
   }
 
   // Blog form state
@@ -88,10 +118,12 @@
 
   function confirmDelete(e: MouseEvent, message: string) {
     e.preventDefault();
-    if (confirm(message)) {
-      const btn = e.currentTarget as HTMLButtonElement;
-      btn.form?.submit();
-    }
+    const btn = e.currentTarget as HTMLButtonElement;
+    
+    openConfirmModal(message, () => {
+      // Use requestSubmit() to trigger the enhance callback instead of native submit
+      btn.form?.requestSubmit(btn);
+    }, 'danger');
   }
 </script>
 
@@ -115,7 +147,7 @@
     <header class="dash-header">
       <div class="header-left">
         <h1 class="gradient-text">⚡ Admin Dashboard</h1>
-        <span class="stat">{data.jobApplications.length} Apps • {data.blogs.length} Blogs • {data.subscribers.length} Subscribers</span>
+        <span class="stat">{data.jobApplications.length} Apps • {data.blogs.length} Blogs • {subscribers.length} Subscribers</span>
       </div>
       <div class="header-right">
         <span class="admin-email">{data.adminEmail}</span>
@@ -140,7 +172,7 @@
       <button class:active={activeTab === 'newsletter'} on:click={() => activeTab = 'newsletter'}>
         <span class="tab-icon">📧</span>
         <span class="tab-text">Newsletter</span>
-        <span class="tab-count">({data.subscribers.length})</span>
+        <span class="tab-count">({subscribers.length})</span>
       </button>
     </div>
 
@@ -342,15 +374,15 @@
             <span class="collapse-icon" class:expanded={subscribersExpanded}>{subscribersExpanded ? '▼' : '▶'}</span>
             <h2>📧 Email Subscribers</h2>
           </div>
-          <span class="subscriber-count">{data.subscribers.length} subscribers</span>
+          <span class="subscriber-count">{subscribers.length} subscribers</span>
         </button>
         
         {#if subscribersExpanded}
-          {#if data.subscribers.length === 0}
+          {#if subscribers.length === 0}
             <div class="empty-state">No subscribers yet</div>
           {:else}
             <div class="subscribers-list">
-              {#each data.subscribers as sub}
+              {#each subscribers as sub}
                 <div class="subscriber-card">
                   <div class="subscriber-info">
                     <span class="subscriber-email">{sub.email}</span>
@@ -360,11 +392,13 @@
                       <span class="sub-date">{new Date(sub.created_at).toLocaleDateString()}</span>
                     </span>
                   </div>
-                  <form method="POST" action="?/deleteSubscriber" use:enhance={() => {
-                    return async ({ result, update }) => {
+                  <form method="POST" action="?/deleteSubscriber" use:enhance={({ formData }) => {
+                    const deletedId = Number(formData.get('id'));
+                    return async ({ result }) => {
                       if (result.type === 'success') {
+                        // Update local state without page reload
+                        subscribers = subscribers.filter(s => s.id !== deletedId);
                         showToast('Subscriber removed', 'success');
-                        await update();
                       } else {
                         showToast('Failed to remove subscriber', 'error');
                       }
@@ -444,7 +478,7 @@
                         class="btn-sm btn-send" 
                         class:sending={sendingNewsletterIds.has(draft.id)}
                         disabled={sendingNewsletterIds.has(draft.id)}
-                        on:click={(e) => !sendingNewsletterIds.has(draft.id) && confirmDelete(e, `Send this newsletter to ${data.subscribers.length} subscribers?`)}
+                        on:click={(e) => !sendingNewsletterIds.has(draft.id) && confirmDelete(e, `Send this newsletter to ${subscribers.length} subscribers?`)}
                       >
                         {#if sendingNewsletterIds.has(draft.id)}
                           <span class="spinner"></span> Sending...
@@ -709,6 +743,41 @@
             <button type="submit" class="btn-primary">{editingBlog ? 'Update' : 'Create'}</button>
           </div>
         </form>
+      </div>
+    </div>
+  {/if}
+
+  <!-- Confirmation Modal -->
+  {#if showConfirmModal}
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <div class="modal-overlay confirm-modal-overlay" role="dialog" aria-modal="true" on:click={closeConfirmModal} on:keydown={(e) => e.key === 'Escape' && closeConfirmModal()}>
+      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+      <div class="confirm-modal" role="document" on:click|stopPropagation on:keydown|stopPropagation>
+        <div class="confirm-modal-icon" class:danger={confirmModalType === 'danger'} class:warning={confirmModalType === 'warning'}>
+          {#if confirmModalType === 'danger'}
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"></path>
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+          {:else}
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          {/if}
+        </div>
+        <h3 class="confirm-modal-title">Confirm Action</h3>
+        <p class="confirm-modal-message">{confirmModalMessage}</p>
+        <div class="confirm-modal-actions">
+          <button type="button" class="btn-secondary" on:click={closeConfirmModal}>Cancel</button>
+          <button type="button" class="btn-danger-solid" on:click={executeConfirmAction}>
+            {#if confirmModalType === 'danger'}Delete{:else}Confirm{/if}
+          </button>
+        </div>
       </div>
     </div>
   {/if}
@@ -1265,6 +1334,98 @@
     border-color: rgba(255, 100, 100, 0.25);
     color: #f87171;
   }
+
+  /* Confirmation Modal */
+  .confirm-modal-overlay {
+    z-index: 200;
+  }
+
+  .confirm-modal {
+    background: linear-gradient(180deg, #14141e 0%, #0d0d14 100%);
+    border: 1px solid rgba(255, 100, 100, 0.2);
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 100, 100, 0.05);
+    animation: modalSlideIn 0.2s ease-out;
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .confirm-modal-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+  }
+
+  .confirm-modal-icon.danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 2px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .confirm-modal-icon.warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 2px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .confirm-modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0 0 0.75rem;
+  }
+
+  .confirm-modal-message {
+    color: #888;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 1.5rem;
+  }
+
+  .confirm-modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .confirm-modal-actions button {
+    padding: 0.65rem 1.5rem;
+    font-size: 0.875rem;
+    min-width: 100px;
+  }
+
+  .btn-danger-solid {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .btn-danger-solid:hover {
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  }
+
   .modal form { padding: 1.25rem; }
   .form-row { margin-bottom: 1.25rem; }
   .form-row label {
