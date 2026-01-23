@@ -249,7 +249,7 @@
   .title-main {
     display: block;
     font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.1;
   }
 
