@@ -2077,7 +2077,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: #00c400;
+    color: #a855f7;
     margin-bottom: 0.5rem;
     transition: all 0.3s ease;
   }
@@ -2085,7 +2085,7 @@
   .timeline-item:hover .timeline-year {
     font-size: 0.85rem;
     letter-spacing: 0.15em;
-    text-shadow: 0 0 10px rgba(0, 196, 0, 0.5);
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
   }
 
   .timeline-content h4 {
