@@ -21,6 +21,129 @@
 >
   <div class="project-background"></div>
   
+  <!-- Floating Background Shapes -->
+  <div class="floating-shapes">
+    <!-- Triangle -->
+    <svg class="shape shape-1" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,10 90,90 10,90" stroke="rgba(0, 196, 0, 0.2)" stroke-width="2" fill="none"/>
+    </svg>
+    
+    <!-- Circle -->
+    <svg class="shape shape-2" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="40" stroke="rgba(147, 51, 234, 0.15)" stroke-width="2" fill="none"/>
+    </svg>
+    
+    <!-- Square/Diamond -->
+    <svg class="shape shape-3" viewBox="0 0 100 100" fill="none">
+      <rect x="20" y="20" width="60" height="60" stroke="rgba(0, 196, 0, 0.15)" stroke-width="2" fill="none" transform="rotate(45 50 50)"/>
+    </svg>
+    
+    <!-- Hexagon -->
+    <svg class="shape shape-4" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,5 93,25 93,75 50,95 7,75 7,25" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2" fill="none"/>
+    </svg>
+    
+    <!-- Small Circle -->
+    <svg class="shape shape-5" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="30" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1.5" fill="none"/>
+    </svg>
+    
+    <!-- Plus/Cross -->
+    <svg class="shape shape-6" viewBox="0 0 100 100" fill="none">
+      <line x1="50" y1="20" x2="50" y2="80" stroke="rgba(147, 51, 234, 0.15)" stroke-width="2"/>
+      <line x1="20" y1="50" x2="80" y2="50" stroke="rgba(147, 51, 234, 0.15)" stroke-width="2"/>
+    </svg>
+    
+    <!-- Ring -->
+    <svg class="shape shape-7" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="35" stroke="rgba(0, 196, 0, 0.08)" stroke-width="3" fill="none"/>
+      <circle cx="50" cy="50" r="25" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1" fill="none"/>
+    </svg>
+    
+    <!-- Pentagon -->
+    <svg class="shape shape-8" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,5 97,38 79,95 21,95 3,38" stroke="rgba(0, 196, 0, 0.12)" stroke-width="2" fill="none"/>
+    </svg>
+    
+    <!-- Star -->
+    <svg class="shape shape-9" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,5 61,40 98,40 68,62 79,97 50,75 21,97 32,62 2,40 39,40" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1.5" fill="none"/>
+    </svg>
+    
+    <!-- Dotted Circle -->
+    <svg class="shape shape-10" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="35" stroke="rgba(0, 196, 0, 0.15)" stroke-width="2" stroke-dasharray="8 6" fill="none"/>
+    </svg>
+    
+    <!-- Spiral/Arc -->
+    <svg class="shape shape-11" viewBox="0 0 100 100" fill="none">
+      <path d="M20,50 Q50,10 80,50 Q50,90 20,50" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2" fill="none"/>
+    </svg>
+    
+    <!-- Octagon -->
+    <svg class="shape shape-12" viewBox="0 0 100 100" fill="none">
+      <polygon points="30,10 70,10 90,30 90,70 70,90 30,90 10,70 10,30" stroke="rgba(0, 196, 0, 0.1)" stroke-width="2" fill="none"/>
+    </svg>
+    
+    <!-- X Shape -->
+    <svg class="shape shape-13" viewBox="0 0 100 100" fill="none">
+      <line x1="20" y1="20" x2="80" y2="80" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2"/>
+      <line x1="80" y1="20" x2="20" y2="80" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2"/>
+    </svg>
+    
+    <!-- PROMINENT: Large Triangle -->
+    <svg class="shape shape-14 shape-prominent" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,10 90,90 10,90" stroke="rgba(0, 196, 0, 0.35)" stroke-width="2.5" fill="rgba(0, 196, 0, 0.03)"/>
+    </svg>
+    
+    <!-- Small Diamond -->
+    <svg class="shape shape-15" viewBox="0 0 100 100" fill="none">
+      <rect x="25" y="25" width="50" height="50" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1.5" fill="none" transform="rotate(45 50 50)"/>
+    </svg>
+    
+    <!-- PROMINENT: Glowing Circle -->
+    <svg class="shape shape-16 shape-prominent" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="40" stroke="rgba(147, 51, 234, 0.4)" stroke-width="2" fill="rgba(147, 51, 234, 0.05)"/>
+      <circle cx="50" cy="50" r="30" stroke="rgba(147, 51, 234, 0.2)" stroke-width="1" fill="none"/>
+    </svg>
+    
+    <!-- Tiny Square -->
+    <svg class="shape shape-17" viewBox="0 0 100 100" fill="none">
+      <rect x="30" y="30" width="40" height="40" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1.5" fill="none"/>
+    </svg>
+    
+    <!-- PROMINENT: Large Hexagon -->
+    <svg class="shape shape-18 shape-prominent" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,5 93,25 93,75 50,95 7,75 7,25" stroke="rgba(0, 196, 0, 0.4)" stroke-width="2" fill="rgba(0, 196, 0, 0.04)"/>
+    </svg>
+    
+    <!-- Double Ring -->
+    <svg class="shape shape-19" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="40" stroke="rgba(147, 51, 234, 0.08)" stroke-width="1" stroke-dasharray="4 4" fill="none"/>
+      <circle cx="50" cy="50" r="30" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1" fill="none"/>
+    </svg>
+    
+    <!-- Arrow/Chevron -->
+    <svg class="shape shape-20" viewBox="0 0 100 100" fill="none">
+      <polyline points="20,70 50,30 80,70" stroke="rgba(0, 196, 0, 0.12)" stroke-width="2" fill="none"/>
+    </svg>
+    
+    <!-- PROMINENT: Star Burst -->
+    <svg class="shape shape-21 shape-prominent" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,5 61,40 98,40 68,62 79,97 50,75 21,97 32,62 2,40 39,40" stroke="rgba(147, 51, 234, 0.35)" stroke-width="2" fill="rgba(147, 51, 234, 0.04)"/>
+    </svg>
+    
+    <!-- Parallelogram -->
+    <svg class="shape shape-22" viewBox="0 0 100 100" fill="none">
+      <polygon points="25,70 40,30 75,30 60,70" stroke="rgba(0, 196, 0, 0.1)" stroke-width="1.5" fill="none"/>
+    </svg>
+    
+    <!-- Crescent -->
+    <svg class="shape shape-23" viewBox="0 0 100 100" fill="none">
+      <path d="M60,20 A35,35 0 1,1 60,80 A25,25 0 1,0 60,20" stroke="rgba(147, 51, 234, 0.12)" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+  
   <div class="project-container">
     <!-- Section Header -->
     <div 
@@ -140,6 +263,314 @@
     inset: 0;
     background: radial-gradient(ellipse at 30% 50%, rgba(0, 196, 0, 0.08) 0%, transparent 60%);
     pointer-events: none;
+  }
+
+  /* Floating Shapes */
+  .floating-shapes {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .shape {
+    position: absolute;
+    opacity: 0.6;
+  }
+
+  .shape-1 {
+    width: 80px;
+    height: 80px;
+    top: 10%;
+    left: 5%;
+    animation: float-1 20s ease-in-out infinite, spin-slow 30s linear infinite;
+  }
+
+  .shape-2 {
+    width: 120px;
+    height: 120px;
+    top: 15%;
+    right: 8%;
+    animation: float-2 25s ease-in-out infinite;
+  }
+
+  .shape-3 {
+    width: 60px;
+    height: 60px;
+    bottom: 20%;
+    left: 10%;
+    animation: float-3 18s ease-in-out infinite, spin-slow 25s linear infinite reverse;
+  }
+
+  .shape-4 {
+    width: 100px;
+    height: 100px;
+    bottom: 15%;
+    right: 5%;
+    animation: float-1 22s ease-in-out infinite reverse;
+  }
+
+  .shape-5 {
+    width: 40px;
+    height: 40px;
+    top: 40%;
+    left: 3%;
+    animation: float-2 15s ease-in-out infinite;
+  }
+
+  .shape-6 {
+    width: 50px;
+    height: 50px;
+    top: 60%;
+    right: 12%;
+    animation: float-3 20s ease-in-out infinite, spin-slow 40s linear infinite;
+  }
+
+  .shape-7 {
+    width: 70px;
+    height: 70px;
+    bottom: 35%;
+    right: 20%;
+    animation: float-1 17s ease-in-out infinite;
+  }
+
+  .shape-8 {
+    width: 55px;
+    height: 55px;
+    top: 25%;
+    left: 15%;
+    animation: float-2 19s ease-in-out infinite, spin-slow 35s linear infinite;
+  }
+
+  .shape-9 {
+    width: 45px;
+    height: 45px;
+    top: 8%;
+    right: 25%;
+    animation: float-3 16s ease-in-out infinite;
+  }
+
+  .shape-10 {
+    width: 90px;
+    height: 90px;
+    bottom: 8%;
+    left: 25%;
+    animation: float-1 24s ease-in-out infinite reverse, spin-slow 50s linear infinite;
+  }
+
+  .shape-11 {
+    width: 65px;
+    height: 65px;
+    top: 50%;
+    right: 3%;
+    animation: float-2 21s ease-in-out infinite;
+  }
+
+  .shape-12 {
+    width: 50px;
+    height: 50px;
+    bottom: 45%;
+    left: 8%;
+    animation: float-3 23s ease-in-out infinite, spin-slow 45s linear infinite reverse;
+  }
+
+  .shape-13 {
+    width: 35px;
+    height: 35px;
+    top: 70%;
+    right: 30%;
+    animation: float-1 14s ease-in-out infinite, spin-slow 20s linear infinite;
+  }
+
+  /* PROMINENT: Large Triangle */
+  .shape-14 {
+    width: 140px;
+    height: 140px;
+    top: 5%;
+    left: 8%;
+    animation: float-2 28s ease-in-out infinite, spin-slow 60s linear infinite;
+  }
+
+  .shape-15 {
+    width: 30px;
+    height: 30px;
+    top: 35%;
+    right: 15%;
+    animation: float-3 13s ease-in-out infinite;
+  }
+
+  /* PROMINENT: Glowing Circle */
+  .shape-16 {
+    width: 120px;
+    height: 120px;
+    bottom: 10%;
+    right: 8%;
+    animation: float-1 26s ease-in-out infinite reverse;
+  }
+
+  .shape-17 {
+    width: 25px;
+    height: 25px;
+    top: 55%;
+    left: 5%;
+    animation: float-2 11s ease-in-out infinite, spin-slow 15s linear infinite;
+  }
+
+  /* PROMINENT: Large Hexagon */
+  .shape-18 {
+    width: 130px;
+    height: 130px;
+    top: 20%;
+    right: 3%;
+    animation: float-3 30s ease-in-out infinite, spin-slow 70s linear infinite reverse;
+  }
+
+  .shape-19 {
+    width: 50px;
+    height: 50px;
+    bottom: 25%;
+    left: 18%;
+    animation: float-1 18s ease-in-out infinite, spin-slow 25s linear infinite;
+  }
+
+  .shape-20 {
+    width: 40px;
+    height: 40px;
+    top: 75%;
+    left: 12%;
+    animation: float-2 15s ease-in-out infinite;
+  }
+
+  /* PROMINENT: Star Burst */
+  .shape-21 {
+    width: 110px;
+    height: 110px;
+    bottom: 5%;
+    left: 5%;
+    animation: float-3 32s ease-in-out infinite, spin-slow 55s linear infinite;
+  }
+
+  .shape-22 {
+    width: 35px;
+    height: 35px;
+    top: 45%;
+    right: 25%;
+    animation: float-1 12s ease-in-out infinite;
+  }
+
+  .shape-23 {
+    width: 55px;
+    height: 55px;
+    bottom: 40%;
+    right: 12%;
+    animation: float-2 20s ease-in-out infinite, spin-slow 40s linear infinite reverse;
+  }
+
+  /* Prominent shape glow effect */
+  .shape-prominent {
+    filter: drop-shadow(0 0 15px currentColor);
+  }
+
+  @keyframes float-1 {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(15px, -20px);
+    }
+    50% {
+      transform: translate(-10px, -35px);
+    }
+    75% {
+      transform: translate(20px, -15px);
+    }
+  }
+
+  @keyframes float-2 {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    33% {
+      transform: translate(-20px, 25px);
+    }
+    66% {
+      transform: translate(15px, -20px);
+    }
+  }
+
+  @keyframes float-3 {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    20% {
+      transform: translate(25px, 10px);
+    }
+    40% {
+      transform: translate(-15px, 30px);
+    }
+    60% {
+      transform: translate(10px, -25px);
+    }
+    80% {
+      transform: translate(-20px, 5px);
+    }
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .shape {
+      opacity: 0.4;
+    }
+    .shape-1, .shape-3, .shape-5, .shape-8, .shape-10, .shape-12, .shape-15, .shape-17, .shape-19, .shape-20, .shape-22 {
+      display: none;
+    }
+    .shape-2 {
+      width: 80px;
+      height: 80px;
+    }
+    .shape-4 {
+      width: 60px;
+      height: 60px;
+    }
+    .shape-9, .shape-11, .shape-13, .shape-23 {
+      opacity: 0.3;
+    }
+    /* Keep prominent shapes visible but smaller on mobile */
+    .shape-prominent {
+      opacity: 0.5;
+    }
+    .shape-14 {
+      width: 80px;
+      height: 80px;
+      top: 3%;
+      left: 5%;
+    }
+    .shape-16 {
+      width: 70px;
+      height: 70px;
+      bottom: 8%;
+      right: 5%;
+    }
+    .shape-18 {
+      width: 75px;
+      height: 75px;
+      top: 15%;
+      right: 2%;
+    }
+    .shape-21 {
+      width: 65px;
+      height: 65px;
+      bottom: 3%;
+      left: 3%;
+    }
   }
 
   .project-container {
