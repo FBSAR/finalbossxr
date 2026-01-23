@@ -1,4 +1,12 @@
 <script lang='ts'>
+  /**
+   * Landing Page Performance Optimizations:
+   * - requestAnimationFrame throttling for scroll/mouse handlers
+   * - Passive event listeners and cached viewport dimensions
+   * - CSS containment and GPU acceleration for animated elements
+   * - Floating cosmic shapes optimized with will-change and translateZ
+   * - Respects prefers-reduced-motion for accessibility
+   */
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import ContactForm from '$lib/components/ContactForm.svelte';
