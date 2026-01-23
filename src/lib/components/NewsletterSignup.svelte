@@ -176,23 +176,27 @@
                     bind:value={name}
                     name="name"
                     type="text"
-                    class="{inputClass} mb-3"
+                    class="{inputClass} my-4"
                     style="filled"
                     maxlength={100}
                 >
                     Name (optional)
                 </FloatingLabelInput>
             {/if}
+            <!-- Spacer -->
+            <div class="my-2"></div>
             <FloatingLabelInput
                 bind:value={email}
                 name="email"
                 type="email"
-                class="{inputClass} mb-4"
+                class="{inputClass} my-4"
                 style="filled"
                 maxlength={100}
             >
                 {placeholder}
             </FloatingLabelInput>
+            <!-- Spacer -->
+            <div class="my-2"></div>
             <button
                 type="submit"
                 disabled={!email || isSubmitting}
