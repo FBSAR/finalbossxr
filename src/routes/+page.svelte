@@ -26,39 +26,106 @@
     title: string;
     description: string;
     isActive?: boolean;
+    media?: {
+      type: 'video' | 'image';
+      src: string;
+      badge?: string;
+      startTime?: number;
+      endTime?: number;
+      isPhone?: boolean;
+    }[];
   }
 
   const timelineItems: TimelineItem[] = [
     {
       year: '2021',
-      title: 'The Beginning',
+      title: 'Early Ideas',
       description: 'Founded with a dream to push the boundaries of immersive technology and create experiences that matter.'
     },
     {
       year: '2022',
-      title: 'First Launch',
-      description: 'Released our first mobile game, Cosmic Collisions, learning invaluable lessons about game development and user experience.'
+      title: 'First Prototypes',
+      description: 'Teaching Unreal Basecamp with Journi was a big catalyst. We built early prototypes exploring game development and immersive experiences.',
+      media: [
+        {
+          type: 'video',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/unreal_basecamp_promo.mp4',
+          badge: 'Unreal Basecamp Class',
+          startTime: 80
+        },
+        {
+          type: 'video',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/gameball_demo.mp4',
+          badge: 'Gameball Prototype'
+        }
+      ]
     },
     {
       year: '2023',
       title: 'Expanding Horizons',
-      description: 'Began development on XR productivity tools and enterprise solutions, bringing our vision to new industries.'
+      description: 'Began development on XR productivity tools and enterprise solutions, bringing our vision to new industries.',
+      media: [
+        {
+          type: 'video',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/Eddie_Teaching_Class2.mp4',
+          badge: 'ToT Intro to Unreal Class'
+        },
+        {
+          type: 'video',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/DC_Demo_02.mov',
+          badge: 'Drone Training MVP',
+          isPhone: true
+        },
+        {
+          type: 'video',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/CosmicVRgamedemo2-1.mp4',
+          badge: 'Original Cosmic Collisions'
+        },
+        {
+          type: 'video',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/monopoly_ar_demo.mp4',
+          badge: 'Monopoly AR Demo',
+          startTime: 35,
+          endTime: 75,
+          isPhone: true
+        },
+        {
+          type: 'video',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/mr_car_02.mov',
+          badge: 'MR Car Experience'
+        }
+      ]
     },
     {
       year: '2024',
-      title: 'Building the Future',
-      description: 'Continuing to innovate at the intersection of gaming, AI, and spatial computing.',
+      title: 'AR Innovations',
+      description: 'Launched augmented reality experiences pushing the boundaries of mobile gaming.',
+      media: [
+      ]
     },
     {
       year: '2025',
-      title: 'Building the Future',
-      description: 'Continuing to innovate at the intersection of gaming, AI, and spatial computing.',
+      title: 'Scaling Up',
+      description: 'Growing the team and expanding our reach into enterprise XR solutions.'
     },
     {
       year: '2026',
       title: 'Building the Future',
       description: 'Continuing to innovate at the intersection of gaming, AI, and spatial computing.',
-      isActive: true
+      isActive: true,
+      media: [
+        {
+          type: 'image',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif',
+          badge: 'Cosmic Collisions'
+        },
+        {
+          type: 'video',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/FlightMission01PortraitFinal+-+Made+with+Clipchamp+(2).mp4',
+          badge: 'Flight Mission',
+          isPhone: true
+        }
+      ]
     }
   ];
   
@@ -544,165 +611,70 @@
         </svg>
       </div>
 
-      <div class="story-content">
-        <!-- Timeline / Text Side -->
-        <div 
-          class="story-text"
-          style="
-            opacity: {storyAnimationProgress};
-            transform: translateX({(1 - storyAnimationProgress) * -80}px);
-          "
-        >
-          <div class="story-intro">
-            <p class="lead-text">
-              What started as a passion project in a small apartment has grown into 
-              a vision for the future of human-computer interaction.
-            </p>
-          </div>
-
-          <!-- Timeline -->
-          <div class="timeline">
-            <div class="timeline-line" style="height: {storyAnimationProgress * 100}%;"></div>
-            
-            {#each timelineItems as item, index}
-              {@const offset = index * (1.5 / (timelineItems.length - 1))}
-              {@const progress = Math.min(1, Math.max(0, storyAnimationProgress * 2.5 - offset))}
-              <div 
-                class="timeline-item" 
-                style="opacity: {progress}; transform: translateX({(1 - progress) * 30}px);"
-              >
-                <div class="timeline-dot" class:active={item.isActive}></div>
-                <div class="timeline-content">
-                  <span class="timeline-year">{item.year}</span>
-                  <h4 class="gradient-text lg:text-2xl">{item.title}</h4>
-                  <p>{item.description}</p>
-                </div>
-              </div>
-            {/each}
-          </div>
+      <div class="story-content-integrated">
+        <div class="story-intro" style="opacity: {storyAnimationProgress}; transform: translateY({(1 - storyAnimationProgress) * 40}px);">
+          <p class="lead-text">
+            What started as a passion project in a small apartment has grown into 
+            a vision for the future of human-computer interaction.
+          </p>
         </div>
 
-        <!-- Media Montage Side -->
-        <div 
-          class="story-media"
-          style="
-            opacity: {storyAnimationProgress};
-            transform: translateX({(1 - storyAnimationProgress) * 80}px);
-          "
-        >
-          <div class="media-montage">
-
-            <!-- Main featured media -->
-            <div class="media-item main" style="transform: translateY({(1 - storyAnimationProgress) * 40}px);">
-              <div class="media-frame">
-                <video 
-                  autoplay 
-                  loop 
-                  muted 
-                  playsinline
-                  on:loadedmetadata={(e) => { e.currentTarget.currentTime = 50; }}
-                >
-                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/unreal_basecamp_promo.mp4" type="video/mp4" />
-                </video>
+        <!-- Integrated Timeline with Media -->
+        <div class="timeline-integrated">
+          <div class="timeline-line-vertical" style="height: {storyAnimationProgress * 100}%;"></div>
+          
+          {#each timelineItems as item, index}
+            {@const offset = index * (1.5 / (timelineItems.length - 1))}
+            {@const progress = Math.min(1, Math.max(0, storyAnimationProgress * 2.5 - offset))}
+            <div 
+              class="timeline-row" 
+              class:has-media={item.media && item.media.length > 0}
+              style="opacity: {progress}; transform: translateY({(1 - progress) * 40}px);"
+            >
+              <div class="timeline-marker">
+                <div class="timeline-dot-integrated" class:active={item.isActive}></div>
               </div>
-              <!-- Decorative corner accent -->
-              <svg class="corner-accent" viewBox="0 0 60 60">
-                <path d="M0 60 L0 20 Q0 0 20 0 L60 0" stroke="#00c400" fill="none" stroke-width="2" />
-              </svg>
-              <span class="media-badge">2022 - Unreal Basecamp Class</span>
-            </div>
-
-            <!-- Monopoly AR Demo -->
-            <div class="media-item secondary-1 phone" style="transform: translate({(1 - storyAnimationProgress) * 60}px, {(1 - storyAnimationProgress) * -30}px);">
-              <div class="media-frame">
-                <div class="phone-notch"></div>
-                <video 
-                  autoplay 
-                  muted 
-                  playsinline
-                  on:loadedmetadata={(e) => { e.currentTarget.currentTime = 35; }}
-                  on:timeupdate={(e) => { if (e.currentTarget.currentTime >= 75) e.currentTarget.currentTime = 35; }}
-                >
-                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/monopoly_ar_demo.mp4" type="video/mp4" />
-                </video>
-              </div>
-              <span class="phone-badge">(2022) Monopoly AR Demo</span>
-            </div>
-
-            <!-- Taste of Tech -->
-            <div class="secondary-2-container" style="transform: translate({(1 - storyAnimationProgress) * -40}px, {(1 - storyAnimationProgress) * 50}px);">
-              <div class="secondary-2-media">
-                <div class="media-item secondary-2">
-                  <div class="media-frame">
-                    <video autoplay loop muted playsinline>
-                      <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/Eddie_Teaching_Class2.mp4" type="video/mp4" />
-                    </video>
+              
+              <div class="timeline-row-content">
+                <div class="timeline-text-block">
+                  <span class="timeline-year">{item.year}</span>
+                  <h4 class="gradient-text text-2xl">{item.title}</h4>
+                  <p>{item.description}</p>
+                </div>
+                
+                {#if item.media && item.media.length > 0}
+                  <div class="timeline-media-grid" style="transform: translateX({(1 - progress) * 30}px);">
+                    {#each item.media as media, mediaIndex}
+                      <div class="timeline-media-item" class:phone={media.isPhone}>
+                        <div class="media-frame">
+                          {#if media.isPhone}
+                            <div class="phone-notch"></div>
+                          {/if}
+                          {#if media.type === 'video'}
+                            <video 
+                              autoplay 
+                              loop={!media.endTime}
+                              muted 
+                              playsinline
+                              on:loadedmetadata={(e) => { if (media.startTime) e.currentTarget.currentTime = media.startTime; }}
+                              on:timeupdate={(e) => { if (media.endTime && e.currentTarget.currentTime >= media.endTime) e.currentTarget.currentTime = media.startTime || 0; }}
+                            >
+                              <source src={media.src} type="video/mp4" />
+                            </video>
+                          {:else}
+                            <img src={media.src} alt={media.badge || 'Media'} />
+                          {/if}
+                        </div>
+                        {#if media.badge}
+                          <span class="timeline-media-badge">{media.badge}</span>
+                        {/if}
+                      </div>
+                    {/each}
                   </div>
-                </div>
-
-                <div class="companion-photo" style="transform: translate({(1 - storyAnimationProgress) * 20}px, {(1 - storyAnimationProgress) * -15}px);">
-                  <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/BLACK_Group_Photo.jpg" alt="Group photo" />
-                </div>
-
-                <div class="companion-video" style="transform: translate({(1 - storyAnimationProgress) * 15}px, {(1 - storyAnimationProgress) * 10}px);">
-                  <video autoplay loop muted playsinline>
-                    <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/mr_car_02.mov" type="video/mp4" />
-                  </video>
-                </div>
+                {/if}
               </div>
-              <span class="secondary-2-badge">2023 ToT Intro to Unreal Class</span>
             </div>
-
-            <!-- Drone Training -->
-            <div class="media-item secondary-3 phone" style="transform: translate({(1 - storyAnimationProgress) * 30}px, {(1 - storyAnimationProgress) * 40}px);">
-              <div class="media-frame">
-                <div class="phone-notch"></div>
-                <video autoplay loop muted playsinline>
-                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/DC_Demo_02.mov" type="video/mp4" />
-                </video>
-              </div>
-              <span class="phone-badge">2023 - Drone Training</span>
-            </div>
-
-            <!-- Gameball -->
-            <div class="media-item gameball" style="transform: translate({(1 - storyAnimationProgress) * -30}px, {(1 - storyAnimationProgress) * 35}px);">
-              <div class="media-frame">
-                <video autoplay loop muted playsinline>
-                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/gameball_demo.mp4" type="video/mp4" />
-                </video>
-              </div>
-              <span class="media-badge">2022 Gameball Prototype</span>
-            </div>
-
-            <!-- Original VR Cosmic -->
-            <div class="media-item vr-cosmic" style="transform: translate({(1 - storyAnimationProgress) * 25}px, {(1 - storyAnimationProgress) * -20}px);">
-              <div class="media-frame">
-                <video autoplay loop muted playsinline>
-                  <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/landing_page_my_stories_videos/CosmicVRgamedemo2-1.mp4" type="video/mp4" />
-                </video>
-              </div>
-              <span class="media-badge">2023 - Original Cosmic Collisions Prototype</span>
-            </div>
-          </div>
-
-          <!-- Animated connection lines between media -->
-          <svg class="media-connections" viewBox="0 0 500 600">
-            <defs>
-              <linearGradient id="connectionGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="rgba(0, 196, 0, 0.3)" />
-                <stop offset="100%" stop-color="rgba(138, 43, 226, 0.3)" />
-              </linearGradient>
-            </defs>
-            <path 
-              class="connection-path" 
-              d="M250 100 Q350 150 300 250 Q250 350 350 400 Q450 450 400 550" 
-              stroke="url(#connectionGrad)" 
-              fill="none" 
-              stroke-width="1"
-              stroke-dasharray="5 5"
-              style="stroke-dashoffset: {(1 - storyAnimationProgress) * 500};"
-            />
-          </svg>
+          {/each}
         </div>
       </div>
 
@@ -1986,7 +1958,7 @@
     transition: transform 0.5s ease-out;
   }
 
-  /* Story Content Grid */
+  /* Story Content Grid - OLD (keeping for reference) */
   .story-content {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
@@ -2001,13 +1973,285 @@
     }
   }
 
-  /* Story Text Side */
-  .story-text {
-    will-change: transform, opacity;
+  /* NEW Integrated Timeline + Media Layout */
+  .story-content-integrated {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .story-intro {
     margin-bottom: 3rem;
+    text-align: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .timeline-integrated {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline-line-vertical {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #00c400, #8a2be2);
+    transition: height 0.5s ease-out;
+  }
+
+  .timeline-row {
+    display: flex;
+    gap: 2rem;
+    padding-bottom: 3rem;
+    position: relative;
+    will-change: transform, opacity;
+  }
+
+  .timeline-row:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-marker {
+    position: absolute;
+    left: -2rem;
+    top: 0.25rem;
+  }
+
+  .timeline-dot-integrated {
+    width: 12px;
+    height: 12px;
+    background: #0a1628;
+    border: 2px solid #00c400;
+    border-radius: 50%;
+    transform: translateX(-5px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .timeline-row:hover .timeline-dot-integrated {
+    transform: translateX(-5px) scale(1.4);
+    background: #00c400;
+    box-shadow: 0 0 20px rgba(0, 196, 0, 0.6), 0 0 40px rgba(0, 196, 0, 0.3);
+  }
+
+  .timeline-dot-integrated.active {
+    background: #00c400;
+    box-shadow: 0 0 15px rgba(0, 196, 0, 0.5);
+  }
+
+  .timeline-row-content {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .timeline-text-block {
+    flex: 0 0 280px;
+    max-width: 350px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .timeline-text-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, transparent 50%, rgba(138, 43, 226, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .timeline-row:hover .timeline-text-block {
+    background: rgba(10, 22, 40, 0.95);
+    border-color: rgba(0, 196, 0, 0.4);
+    transform: scale(1.02);
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(0, 196, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .timeline-row:hover .timeline-text-block::before {
+    opacity: 1;
+  }
+
+  .timeline-text-block h4 {
+    font-weight: 400;
+    color: white;
+    margin: 0 0 0.5rem 0;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-text-block p {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin: 0;
+    transition: all 0.3s ease;
+  }
+
+  .timeline-row:hover .timeline-text-block p {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Timeline Media Grid */
+  .timeline-media-grid {
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    will-change: transform;
+  }
+
+  .timeline-media-item {
+    position: relative;
+    flex: 0 0 auto;
+    width: 200px;
+    border-radius: 0.75rem;
+    overflow: visible;
+    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s ease;
+  }
+
+  .timeline-media-item:hover {
+    transform: scale(1.05);
+    z-index: 10;
+  }
+
+  .timeline-media-item .media-frame {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: #1a1a2e;
+  }
+
+  .timeline-media-item video,
+  .timeline-media-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* Phone-style items in timeline */
+  .timeline-media-item.phone {
+    width: 130px;
+  }
+
+  .timeline-media-item.phone .media-frame {
+    aspect-ratio: 9/19;
+    border-radius: 1.25rem;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+    box-shadow: 
+      0 0 0 2px rgba(0, 0, 0, 0.8),
+      0 20px 50px rgba(0, 0, 0, 0.4),
+      inset 0 0 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .timeline-media-item.phone video {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .timeline-media-item .phone-notch {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35%;
+    height: 16px;
+    background: #0a0a14;
+    border-radius: 0 0 10px 10px;
+    z-index: 10;
+  }
+
+  .timeline-media-item .phone-notch::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 3px rgba(138, 43, 226, 0.5);
+  }
+
+  .timeline-media-badge {
+    display: block;
+    text-align: center;
+    margin-top: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 2rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+  }
+
+  /* Responsive adjustments for integrated layout */
+  @media (max-width: 1024px) {
+    .timeline-row-content {
+      flex-direction: column;
+    }
+
+    .timeline-text-block {
+      flex: 1 1 auto;
+      max-width: none;
+    }
+
+    .timeline-media-grid {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    .timeline-media-item {
+      width: 150px;
+    }
+
+    .timeline-media-item.phone {
+      width: 100px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .timeline-integrated {
+      padding-left: 1.5rem;
+    }
+
+    .timeline-marker {
+      left: -1.5rem;
+    }
+
+    .timeline-media-item {
+      width: 120px;
+    }
+
+    .timeline-media-item.phone {
+      width: 80px;
+    }
+  }
+
+  /* Story Text Side - Keep for backwards compatibility */
+  .story-text {
+    will-change: transform, opacity;
   }
 
   .lead-text {
