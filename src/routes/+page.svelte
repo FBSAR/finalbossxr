@@ -20,6 +20,10 @@
   // Scroll animation state for story section
   let storyAnimationProgress = 0;
 
+  // Active timeline index for desktop media visibility
+  let activeTimelineIndex = -1;
+  let timelineRowElements: HTMLElement[] = [];
+
   // Timeline data
   interface TimelineItem {
     year: string;
@@ -272,6 +276,43 @@
         storyAnimationProgress = 1;
       } else {
         storyAnimationProgress = 0;
+      }
+
+      // Track which timeline row is active on desktop (threshold-based for consistency)
+      if (windowWidth >= 1024) {
+        const activationZone = window.innerHeight * 0.4; // Upper 40% of viewport
+        let newActiveIndex = -1;
+
+        // Find the row whose top edge has scrolled past the activation zone (iterate backwards)
+        for (let i = timelineRowElements.length - 1; i >= 0; i--) {
+          const el = timelineRowElements[i];
+          if (el) {
+            const elRect = el.getBoundingClientRect();
+            // A row is active if its top is above the activation zone and it's still visible
+            if (elRect.top <= activationZone && elRect.bottom > 0) {
+              newActiveIndex = i;
+              break;
+            }
+          }
+        }
+
+        // If nothing found (all below), use the first visible one
+        if (newActiveIndex === -1) {
+          for (let i = 0; i < timelineRowElements.length; i++) {
+            const el = timelineRowElements[i];
+            if (el) {
+              const elRect = el.getBoundingClientRect();
+              if (elRect.top < window.innerHeight && elRect.bottom > 0) {
+                newActiveIndex = i;
+                break;
+              }
+            }
+          }
+        }
+
+        activeTimelineIndex = newActiveIndex;
+      } else {
+        activeTimelineIndex = -1; // Show all on mobile
       }
     }
     
@@ -634,6 +675,8 @@
             <div 
               class="timeline-row" 
               class:has-media={item.media && item.media.length > 0}
+              class:media-active={activeTimelineIndex === index || activeTimelineIndex === -1}
+              bind:this={timelineRowElements[index]}
               style="opacity: {progress}; transform: translateY({(1 - progress) * 40}px);"
             >
               <div class="timeline-marker">
@@ -648,7 +691,12 @@
                 </div>
                 
                 {#if item.media && item.media.length > 0}
-                  <div class="timeline-media-grid" style="transform: translateX({(1 - progress) * 30}px);">
+                  <div 
+                    class="timeline-media-grid" 
+                    class:media-visible={activeTimelineIndex === index || activeTimelineIndex === -1}
+                    style="transform: translateX({(1 - progress) * 30}px);"
+                  >
+                    {#if activeTimelineIndex === index || activeTimelineIndex === -1 || windowWidth < 1024}
                     {#each item.media as media, mediaIndex}
                       <div class="timeline-media-item" class:phone={media.isPhone}>
                         <div class="media-frame">
@@ -675,6 +723,7 @@
                         {/if}
                       </div>
                     {/each}
+                    {/if}
                   </div>
                 {/if}
               </div>
@@ -2115,7 +2164,26 @@
     gap: 1rem;
     flex-wrap: wrap;
     align-items: flex-start;
-    will-change: transform;
+    will-change: transform, opacity;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+  }
+
+  .timeline-media-grid.media-visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  /* On mobile, always show media */
+  @media (max-width: 1023px) {
+    .timeline-media-grid {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
   }
 
   .timeline-media-item {
