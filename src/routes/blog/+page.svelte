@@ -433,7 +433,7 @@
   .blog-title {
     font-size: 1.125rem;
     font-weight: 400;
-    color: #f2e41c;
+    color: #fff;
     margin: 0.75rem 0;
     line-height: 1.4;
     display: -webkit-box;

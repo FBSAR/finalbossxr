@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { marked } from 'marked';
+  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   
   export let data;
   
@@ -55,7 +56,7 @@
   <meta name="description" content={post.excerpt || post.content?.substring(0, 160)} />
 </svelte:head>
 
-<div class="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#12121a] to-[#0a0a0f]">
+<div class="min-h-screen">
   <!-- Header -->
   <section class="relative pt-32 pb-12 px-4">
     <div class="absolute inset-0 overflow-hidden">
@@ -85,21 +86,21 @@
           <span>By {post.author}</span>
         {/if}
       </div>
+
+      <!-- Title -->
+      <h1 class="text-4xl md:text-5xl font-bold gradient-text mt-6">
+        {post.title}
+      </h1>
     </div>
   </section>
 
   <!-- Content -->
   <section class="px-4 pb-2">
     <div class="max-w-3xl mx-auto">
-
-      <!-- Title -->
-      <h1 class="text-4xl glow-text mt-8 md:text-5xl green-header-text text-white">
-        {post.title}
-      </h1>
       
       <!-- Excerpt -->
       {#if post.excerpt}
-        <p class="text-xl text-gray-400">
+        <p class="text-xl text-gray-400 my-6">
           {post.excerpt}
         </p>
       {/if}
@@ -155,30 +156,51 @@
   {#if relatedPosts.length > 0}
     <section class="px-4 pb-20">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-2xl font-bold text-white mb-8">Related Posts</h2>
+        <h2 class="text-2xl gradient-text mb-8">Related Posts</h2>
         <div class="grid md:grid-cols-3 gap-6">
           {#each relatedPosts as relatedPost}
             <a 
               href="/blog/{relatedPost.slug}"
-              class="group block bg-white/[0.03] border border-white/10 rounded-xl p-6 hover:border-purple-500/30 hover:bg-white/[0.05] transition-all duration-300"
+              class="related-post-card group"
             >
-              <div class="text-sm text-gray-500 mb-2">
-                {formatDate(relatedPost.created_at)}
+              <div class="related-post-image">
+                <div class="related-post-placeholder">
+                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                </div>
+                {#if relatedPost.featured}
+                  <span class="related-post-badge">Featured</span>
+                {/if}
               </div>
-              <h3 class="text-lg font-semibold text-white group-hover:text-purple-300 transition-colors line-clamp-2">
-                {relatedPost.title}
-              </h3>
-              {#if relatedPost.excerpt}
-                <p class="text-gray-400 text-sm mt-2 line-clamp-2">
-                  {relatedPost.excerpt}
-                </p>
-              {/if}
+              <div class="related-post-content">
+                <div class="related-post-date">
+                  {formatDate(relatedPost.created_at)}
+                </div>
+                <h3 class="related-post-title">
+                  {relatedPost.title}
+                </h3>
+                {#if relatedPost.excerpt}
+                  <p class="related-post-excerpt">
+                    {relatedPost.excerpt}
+                  </p>
+                {/if}
+                <span class="related-post-link">
+                  Read more
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
+              </div>
             </a>
           {/each}
         </div>
       </div>
     </section>
   {/if}
+
+  <!-- Kickstarter Promo -->
+  <KickstarterPromo />
 </div>
 
 <style>
@@ -187,11 +209,116 @@
     text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
   }
 
-  .line-clamp-2 {
+  /* Related Posts Styles */
+  .related-post-card {
+    display: block;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .related-post-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 196, 0, 0.3);
+    box-shadow: 0 20px 40px -20px rgba(0, 196, 0, 0.2);
+  }
+
+  .related-post-image {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .related-post-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, rgba(0, 100, 0, 0.15) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 196, 0, 0.4);
+  }
+
+  .related-post-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00c400;
+  }
+
+  .related-post-content {
+    padding: 1.25rem;
+  }
+
+  .related-post-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .related-post-title {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 0.5rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: color 0.2s ease;
+  }
+
+  .related-post-card:hover .related-post-title {
+    color: #00c400;
+  }
+
+  .related-post-excerpt {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+  }
+
+  .related-post-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(0, 196, 0, 0.7);
+    transition: all 0.2s ease;
+  }
+
+  .related-post-link svg {
+    transition: transform 0.2s ease;
+  }
+
+  .related-post-card:hover .related-post-link {
+    color: #00c400;
+  }
+
+  .related-post-card:hover .related-post-link svg {
+    transform: translateX(4px);
   }
 
   /* Markdown Prose Styles */
