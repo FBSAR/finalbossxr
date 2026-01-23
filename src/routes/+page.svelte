@@ -40,6 +40,20 @@
   let activeTimelineIndex = -1;
   let timelineRowElements: HTMLElement[] = new Array(6); // Pre-initialize for 6 timeline items
 
+  // Click-to-scroll handler for timeline cards (desktop)
+  const scrollToTimeline = (index: number) => {
+    if (windowWidth >= 1024 && timelineRowElements[index]) {
+      const element = timelineRowElements[index];
+      const elementRect = element.getBoundingClientRect();
+      const targetY = window.scrollY + elementRect.top - (viewportHeight * 0.35);
+      
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   // Performance optimization: RAF-based scroll handling
   let ticking = false;
   let rafId: number;
@@ -228,6 +242,7 @@
     animationProgress={storyAnimationProgress}
     {activeTimelineIndex}
     {windowWidth}
+    onTimelineClick={scrollToTimeline}
   />
 
   <!-- Kickstarter Promo -->

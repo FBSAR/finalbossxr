@@ -4,6 +4,7 @@
   export let activeTimelineIndex = -1;
   export let windowWidth = 0;
   export let timelineRowElements: HTMLElement[] = [];
+  export let onTimelineClick: ((index: number) => void) | undefined = undefined;
 
   // Timeline data
   interface TimelineItem {
@@ -203,12 +204,19 @@
         {#each timelineItems as item, index}
           {@const offset = index * (1.5 / (timelineItems.length - 1))}
           {@const progress = Math.min(1, Math.max(0, animationProgress * 2.5 - offset))}
+          {@const isClickable = windowWidth >= 1024 && !!onTimelineClick}
+          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
           <div 
             class="timeline-row" 
             class:has-media={item.media && item.media.length > 0}
             class:media-active={activeTimelineIndex === index || activeTimelineIndex === -1}
+            class:clickable={isClickable}
             bind:this={timelineRowElements[index]}
             style="opacity: {progress}; transform: translateY({(1 - progress) * 40}px);"
+            on:click={() => isClickable && onTimelineClick?.(index)}
+            on:keydown={(e) => e.key === 'Enter' && isClickable && onTimelineClick?.(index)}
+            role={isClickable ? 'button' : undefined}
+            tabindex={isClickable ? 0 : -1}
           >
             <div class="timeline-marker">
               <div class="timeline-dot-integrated" class:active={item.isActive}></div>
@@ -480,6 +488,16 @@
     will-change: transform, opacity;
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+
+  .timeline-row.clickable {
+    cursor: pointer;
+  }
+
+  .timeline-row.clickable:focus-visible {
+    outline: 2px solid rgba(0, 196, 0, 0.5);
+    outline-offset: 8px;
+    border-radius: 8px;
   }
 
   .timeline-row:last-child {
