@@ -118,8 +118,15 @@
     },
     {
       year: '2025',
-      title: 'Scaling Up',
-      description: 'Growing the team and expanding our reach into enterprise XR solutions.'
+      title: 'Building Cosmic Collisions',
+      description: 'Growing the team and expanding our reach into enterprise XR solutions.',
+      media: [
+        {
+          type: 'image',
+          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='xMidYMid meet'%3E%3Cdefs%3E%3ClinearGradient id='engG' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300c400'/%3E%3Cstop offset='100%25' stop-color='%238a2be2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='%230a1628' width='200' height='200' rx='12'/%3E%3Crect x='35' y='55' width='130' height='85' rx='6' fill='none' stroke='url(%23engG)' stroke-width='3'/%3E%3Crect x='45' y='65' width='110' height='65' rx='3' fill='%23111827'/%3E%3Ctext x='55' y='85' font-family='monospace' font-size='10' fill='%2300c400'%3E%3E_ init game%3C/text%3E%3Ctext x='55' y='100' font-family='monospace' font-size='10' fill='%238a2be2'%3Eload assets...%3C/text%3E%3Ctext x='55' y='115' font-family='monospace' font-size='10' fill='%2300c400' opacity='0.7'%3E%3Canimate attributeName='opacity' values='0.7;1;0.7' dur='1s' repeatCount='indefinite'/%3E%E2%96%88%3C/text%3E%3Ccircle cx='60' cy='150' r='12' fill='none' stroke='url(%23engG)' stroke-width='2'/%3E%3Ccircle cx='60' cy='150' r='6' fill='url(%23engG)' opacity='0.5'%3E%3Canimate attributeName='r' values='4;7;4' dur='1.5s' repeatCount='indefinite'/%3E%3C/circle%3E%3Crect x='90' y='145' width='20' height='10' rx='2' fill='none' stroke='%2300c400' stroke-width='2'/%3E%3Crect x='93' y='148' width='5' height='4' fill='%2300c400' opacity='0.6'/%3E%3Crect x='100' y='148' width='5' height='4' fill='%238a2be2' opacity='0.6'/%3E%3Cg transform='translate(135,143)'%3E%3Cpath d='M0 0 L0 14 L5 14 L5 6 L7 6 L12 14 L18 14 L12 5 L12 5 C15 4 16 2 16 0 L16 0 C16 -2 14 -4 11 -4 L0 -4 Z M5 -1 L5 3 L10 3 C11 3 11 2 11 1 C11 0 11 -1 10 -1 Z' fill='url(%23engG)' transform='scale(0.9)'/%3E%3C/g%3E%3C/svg%3E",
+          badge: 'Engineering'
+        }
+      ]
     },
     {
       year: '2026',
