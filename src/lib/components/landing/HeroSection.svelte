@@ -155,6 +155,10 @@
     }
   }
 
+  // Hero text reveal animation
+  let heroRevealed = false;
+  let heroRevealTimeout: ReturnType<typeof setTimeout>;
+
   onMount(() => {
     if (browser && canvas) {
       ctx = canvas.getContext('2d');
@@ -164,12 +168,18 @@
       
       window.addEventListener('resize', resizeCanvas);
     }
+    
+    // Reveal hero text after 1500ms
+    heroRevealTimeout = setTimeout(() => {
+      heroRevealed = true;
+    }, 2500);
   });
 
   onDestroy(() => {
     if (browser) {
       if (animationId) cancelAnimationFrame(animationId);
       window.removeEventListener('resize', resizeCanvas);
+      clearTimeout(heroRevealTimeout);
     }
   });
 
@@ -329,17 +339,17 @@
       <XRAbstractArt size="lg" />
     </div>
 
-    <div class="hero-badge">
+    <div class="hero-badge" class:revealed={heroRevealed}>
       <span class="badge-dot"></span>
       <span>Immersive Technology Studio</span>
     </div>
     
-    <h1 class="hero-title">
+    <h1 class="hero-title" class:revealed={heroRevealed}>
       <span class="title-line">Shaping the Future of</span>
       <span class="title-line gradient-text">Extended Reality</span>
     </h1>
     
-    <p class="hero-subtitle">
+    <p class="hero-subtitle" class:revealed={heroRevealed}>
       We build proprietary XR software and (sometimes) AI-powered spatial experiences — 
       from immersive games, and other industries. We are a creative studio that wants to
       truly innovate the way people interact with technology.
@@ -660,6 +670,16 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    /* Initial hidden state */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-badge.revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   @media (max-width: 768px) {
@@ -689,6 +709,16 @@
     line-height: 1.1;
     margin-bottom: 1.5rem;
     letter-spacing: -0.02em;
+    /* Initial hidden state */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, 
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  }
+
+  .hero-title.revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .title-line {
@@ -702,6 +732,16 @@
     line-height: 1.6;
     max-width: 700px;
     margin: 0 auto 2rem;
+    /* Initial hidden state */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, 
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+  }
+
+  .hero-subtitle.revealed {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   @media (max-width: 768px) {
