@@ -6,8 +6,26 @@
   export let scrollY = 0;
 
   let heroSection: HTMLElement;
+  let xrArtElement: HTMLElement;
   let mouseX = 0;
   let mouseY = 0;
+
+  // ============================================
+  // GAMIFICATION - Shape Collection System
+  // ============================================
+  let collectedShapes = 0;
+  let isSupernova = false;
+  let supernovaComplete = false;
+  let xrArtReacting = false;
+  let reactionIntensity = 0;
+  
+  // Dragging state
+  let isDragging = false;
+  let draggedShapeId: number | null = null;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
 
   // ============================================
   // CONSTELLATION PARTICLE SYSTEM - Cherry on top!
@@ -260,19 +278,21 @@
     baseRotation: number;
     color: string;
     parallaxSpeed: number;
+    collected: boolean;
+    draggable: boolean;
   }
 
-  const shapes: Shape[] = [
-    { id: 1, type: 'hexagon', x: 15, y: 20, size: 80, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.15)', parallaxSpeed: 0.3 },
-    { id: 2, type: 'triangle', x: 85, y: 15, size: 60, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.12)', parallaxSpeed: 0.5 },
-    { id: 3, type: 'square', x: 10, y: 70, size: 50, rotation: 0, baseRotation: 45, color: 'rgba(255, 215, 0, 0.1)', parallaxSpeed: 0.2 },
-    { id: 4, type: 'diamond', x: 90, y: 75, size: 70, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.4 },
-    { id: 5, type: 'circle', x: 75, y: 45, size: 100, rotation: 0, baseRotation: 0, color: 'rgba(138, 43, 226, 0.08)', parallaxSpeed: 0.15 },
-    { id: 6, type: 'hexagon', x: 25, y: 85, size: 55, rotation: 0, baseRotation: 15, color: 'rgba(0, 196, 0, 0.08)', parallaxSpeed: 0.35 },
-    { id: 7, type: 'triangle', x: 5, y: 45, size: 45, rotation: 0, baseRotation: -20, color: 'rgba(255, 215, 0, 0.08)', parallaxSpeed: 0.45 },
-    { id: 8, type: 'square', x: 70, y: 85, size: 40, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.25 },
-    { id: 9, type: 'diamond', x: 50, y: 10, size: 35, rotation: 0, baseRotation: 45, color: 'rgba(138, 43, 226, 0.1)', parallaxSpeed: 0.55 },
-    { id: 10, type: 'hexagon', x: 95, y: 50, size: 65, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.06)', parallaxSpeed: 0.2 },
+  let shapes: Shape[] = [
+    { id: 1, type: 'hexagon', x: 15, y: 20, size: 80, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.15)', parallaxSpeed: 0.3, collected: false, draggable: true },
+    { id: 2, type: 'triangle', x: 85, y: 15, size: 60, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.12)', parallaxSpeed: 0.5, collected: false, draggable: true },
+    { id: 3, type: 'square', x: 10, y: 70, size: 50, rotation: 0, baseRotation: 45, color: 'rgba(255, 215, 0, 0.1)', parallaxSpeed: 0.2, collected: false, draggable: true },
+    { id: 4, type: 'diamond', x: 90, y: 75, size: 70, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.4, collected: false, draggable: true },
+    { id: 5, type: 'circle', x: 75, y: 45, size: 100, rotation: 0, baseRotation: 0, color: 'rgba(138, 43, 226, 0.08)', parallaxSpeed: 0.15, collected: false, draggable: true },
+    { id: 6, type: 'hexagon', x: 25, y: 85, size: 55, rotation: 0, baseRotation: 15, color: 'rgba(0, 196, 0, 0.08)', parallaxSpeed: 0.35, collected: false, draggable: false },
+    { id: 7, type: 'triangle', x: 5, y: 45, size: 45, rotation: 0, baseRotation: -20, color: 'rgba(255, 215, 0, 0.08)', parallaxSpeed: 0.45, collected: false, draggable: false },
+    { id: 8, type: 'square', x: 70, y: 85, size: 40, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.25, collected: false, draggable: false },
+    { id: 9, type: 'diamond', x: 50, y: 10, size: 35, rotation: 0, baseRotation: 45, color: 'rgba(138, 43, 226, 0.1)', parallaxSpeed: 0.55, collected: false, draggable: false },
+    { id: 10, type: 'hexagon', x: 95, y: 50, size: 65, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.06)', parallaxSpeed: 0.2, collected: false, draggable: false },
   ];
 
   let shapeTransforms: { [key: number]: { translateX: number; translateY: number; rotation: number; scale: number } } = {};
@@ -324,7 +344,9 @@
       let rotation = shape.baseRotation;
       let scale = 1;
 
-      if (distance < influenceRadius) {
+      // Only apply mouse influence to non-draggable (decorative) shapes
+      // Draggable shapes stay in place so users can grab them
+      if (distance < influenceRadius && !shape.draggable) {
         const influence = 1 - (distance / influenceRadius);
         const pushStrength = 50 * influence;
         
@@ -335,7 +357,8 @@
         scale = 1 + (influence * 0.15);
       }
 
-      const parallaxOffset = scrollY * shape.parallaxSpeed;
+      // Only apply parallax to non-draggable shapes
+      const parallaxOffset = shape.draggable ? 0 : scrollY * shape.parallaxSpeed;
       translateY -= parallaxOffset;
 
       shapeTransforms[shape.id] = { translateX, translateY, rotation, scale };
@@ -344,53 +367,345 @@
     shapeTransforms = { ...shapeTransforms };
   };
 
+  // ============================================
+  // DRAG & DROP HANDLERS
+  // ============================================
+  
+  function handleShapeMouseDown(e: MouseEvent, shapeId: number) {
+    const shape = shapes.find(s => s.id === shapeId);
+    if (!shape || !shape.draggable || shape.collected || isSupernova) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
+    
+    isDragging = true;
+    draggedShapeId = shapeId;
+    
+    const rect = heroSection.getBoundingClientRect();
+    dragStartX = (shape.x / 100) * rect.width;
+    dragStartY = (shape.y / 100) * rect.height;
+    dragOffsetX = e.clientX - rect.left - dragStartX;
+    dragOffsetY = e.clientY - rect.top - dragStartY;
+    
+    // Add global listeners
+    window.addEventListener('mousemove', handleDragMove);
+    window.addEventListener('mouseup', handleDragEnd);
+  }
+  
+  function handleDragMove(e: MouseEvent) {
+    if (!isDragging || draggedShapeId === null || !heroSection) return;
+    
+    const rect = heroSection.getBoundingClientRect();
+    const newX = e.clientX - rect.left - dragOffsetX;
+    const newY = e.clientY - rect.top - dragOffsetY;
+    
+    // Update shape position (as percentage)
+    const shapeIndex = shapes.findIndex(s => s.id === draggedShapeId);
+    if (shapeIndex !== -1) {
+      shapes[shapeIndex].x = (newX / rect.width) * 100;
+      shapes[shapeIndex].y = (newY / rect.height) * 100;
+      shapes = [...shapes]; // Trigger reactivity
+    }
+    
+    // Check proximity to XR Art center for visual feedback
+    if (xrArtElement) {
+      const xrRect = xrArtElement.getBoundingClientRect();
+      const xrCenterX = xrRect.left + xrRect.width / 2 - rect.left;
+      const xrCenterY = xrRect.top + xrRect.height / 2 - rect.top;
+      
+      const distance = Math.sqrt((newX - xrCenterX) ** 2 + (newY - xrCenterY) ** 2);
+      const dropZoneRadius = 120;
+      
+      if (distance < dropZoneRadius * 1.5) {
+        reactionIntensity = Math.max(0, 1 - distance / (dropZoneRadius * 1.5));
+        xrArtReacting = true;
+      } else {
+        xrArtReacting = false;
+        reactionIntensity = 0;
+      }
+    }
+  }
+  
+  function handleDragEnd(e: MouseEvent) {
+    if (!isDragging || draggedShapeId === null || !heroSection) {
+      cleanupDrag();
+      return;
+    }
+    
+    const rect = heroSection.getBoundingClientRect();
+    const shape = shapes.find(s => s.id === draggedShapeId);
+    
+    if (shape && xrArtElement) {
+      const xrRect = xrArtElement.getBoundingClientRect();
+      const xrCenterX = xrRect.left + xrRect.width / 2 - rect.left;
+      const xrCenterY = xrRect.top + xrRect.height / 2 - rect.top;
+      
+      const shapeX = (shape.x / 100) * rect.width;
+      const shapeY = (shape.y / 100) * rect.height;
+      const distance = Math.sqrt((shapeX - xrCenterX) ** 2 + (shapeY - xrCenterY) ** 2);
+      
+      const dropZoneRadius = 120;
+      
+      if (distance < dropZoneRadius) {
+        // Shape was dropped in the XR Art zone - collect it!
+        collectShape(draggedShapeId);
+      }
+    }
+    
+    cleanupDrag();
+  }
+  
+  function cleanupDrag() {
+    isDragging = false;
+    draggedShapeId = null;
+    xrArtReacting = false;
+    reactionIntensity = 0;
+    window.removeEventListener('mousemove', handleDragMove);
+    window.removeEventListener('mouseup', handleDragEnd);
+  }
+  
+  function collectShape(shapeId: number) {
+    const shapeIndex = shapes.findIndex(s => s.id === shapeId);
+    if (shapeIndex === -1) return;
+    
+    // Mark shape as collected (will animate it being absorbed)
+    shapes[shapeIndex].collected = true;
+    shapes = [...shapes];
+    
+    collectedShapes++;
+    
+    // Trigger XR Art reaction
+    triggerAbsorptionReaction();
+    
+    // Check for supernova
+    if (collectedShapes >= 5) {
+      setTimeout(() => {
+        triggerSupernova();
+      }, 500);
+    }
+  }
+  
+  function triggerAbsorptionReaction() {
+    xrArtReacting = true;
+    reactionIntensity = 1;
+    
+    setTimeout(() => {
+      xrArtReacting = false;
+      reactionIntensity = 0;
+    }, 600);
+  }
+  
+  function triggerSupernova() {
+    isSupernova = true;
+    
+    // After supernova animation completes
+    setTimeout(() => {
+      supernovaComplete = true;
+    }, 2500);
+  }
+  
+  // Touch support for mobile
+  function handleShapeTouchStart(e: TouchEvent, shapeId: number) {
+    const shape = shapes.find(s => s.id === shapeId);
+    if (!shape || !shape.draggable || shape.collected || isSupernova) return;
+    
+    e.preventDefault();
+    
+    const touch = e.touches[0];
+    isDragging = true;
+    draggedShapeId = shapeId;
+    
+    const rect = heroSection.getBoundingClientRect();
+    dragStartX = (shape.x / 100) * rect.width;
+    dragStartY = (shape.y / 100) * rect.height;
+    dragOffsetX = touch.clientX - rect.left - dragStartX;
+    dragOffsetY = touch.clientY - rect.top - dragStartY;
+    
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd);
+  }
+  
+  function handleTouchMove(e: TouchEvent) {
+    if (!isDragging || draggedShapeId === null || !heroSection) return;
+    e.preventDefault();
+    
+    const touch = e.touches[0];
+    const rect = heroSection.getBoundingClientRect();
+    const newX = touch.clientX - rect.left - dragOffsetX;
+    const newY = touch.clientY - rect.top - dragOffsetY;
+    
+    const shapeIndex = shapes.findIndex(s => s.id === draggedShapeId);
+    if (shapeIndex !== -1) {
+      shapes[shapeIndex].x = (newX / rect.width) * 100;
+      shapes[shapeIndex].y = (newY / rect.height) * 100;
+      shapes = [...shapes];
+    }
+    
+    // Check proximity to XR Art
+    if (xrArtElement) {
+      const xrRect = xrArtElement.getBoundingClientRect();
+      const xrCenterX = xrRect.left + xrRect.width / 2 - rect.left;
+      const xrCenterY = xrRect.top + xrRect.height / 2 - rect.top;
+      
+      const distance = Math.sqrt((newX - xrCenterX) ** 2 + (newY - xrCenterY) ** 2);
+      const dropZoneRadius = 120;
+      
+      if (distance < dropZoneRadius * 1.5) {
+        reactionIntensity = Math.max(0, 1 - distance / (dropZoneRadius * 1.5));
+        xrArtReacting = true;
+      } else {
+        xrArtReacting = false;
+        reactionIntensity = 0;
+      }
+    }
+  }
+  
+  function handleTouchEnd(e: TouchEvent) {
+    if (!isDragging || draggedShapeId === null || !heroSection) {
+      cleanupTouch();
+      return;
+    }
+    
+    const rect = heroSection.getBoundingClientRect();
+    const shape = shapes.find(s => s.id === draggedShapeId);
+    
+    if (shape && xrArtElement) {
+      const xrRect = xrArtElement.getBoundingClientRect();
+      const xrCenterX = xrRect.left + xrRect.width / 2 - rect.left;
+      const xrCenterY = xrRect.top + xrRect.height / 2 - rect.top;
+      
+      const shapeX = (shape.x / 100) * rect.width;
+      const shapeY = (shape.y / 100) * rect.height;
+      const distance = Math.sqrt((shapeX - xrCenterX) ** 2 + (shapeY - xrCenterY) ** 2);
+      
+      const dropZoneRadius = 120;
+      
+      if (distance < dropZoneRadius) {
+        collectShape(draggedShapeId);
+      }
+    }
+    
+    cleanupTouch();
+  }
+  
+  function cleanupTouch() {
+    isDragging = false;
+    draggedShapeId = null;
+    xrArtReacting = false;
+    reactionIntensity = 0;
+    window.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('touchend', handleTouchEnd);
+  }
+
   // Update shapes when scrollY changes
-  $: if (scrollY !== undefined) {
+  $: if (scrollY !== undefined && !isDragging) {
     updateShapeTransforms();
   }
 </script>
 
 <section 
   class="hero-section" 
+  class:supernova-active={isSupernova}
   bind:this={heroSection}
   on:mousemove={handleMouseMove}
   role="banner"
   aria-label="Hero section"
 >
+  <!-- Supernova Flash Overlay -->
+  {#if isSupernova}
+    <div class="supernova-flash"></div>
+    <div class="supernova-particles"></div>
+    <div class="supernova-rings"></div>
+  {/if}
+
   <!-- Constellation Particle Canvas - The Cherry on Top! -->
   <canvas 
     bind:this={canvas} 
     class="constellation-canvas"
+    class:fade-out={isSupernova}
     aria-hidden="true"
   ></canvas>
 
   <!-- Animated Background Grid -->
   <div class="grid-background" style="transform: translateY({scrollY * 0.1}px);"></div>
   
+  <!-- Shape Collection Progress -->
+  {#if collectedShapes > 0 && !isSupernova}
+    <div class="collection-progress">
+      <div class="progress-label">Energy Collected</div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: {(collectedShapes / 5) * 100}%"></div>
+      </div>
+      <div class="progress-count">{collectedShapes} / 5</div>
+    </div>
+  {/if}
+  
+  <!-- Drag Hint -->
+  {#if typewriterComplete && collectedShapes === 0 && !isSupernova}
+    <div class="drag-hint">
+      <span class="hint-icon">✨</span>
+      <span>Drag the glowing shapes to the center!</span>
+    </div>
+  {/if}
+  
   <!-- Geometric Shapes -->
   {#each shapes as shape (shape.id)}
-    <div 
-      class="geo-shape-wrapper"
-      style="
-        left: {shape.x}%;
-        top: {shape.y}%;
-        width: {shape.size}px;
-        height: {shape.size}px;
-        transform: translate(-50%, -50%) 
-          translateX({shapeTransforms[shape.id]?.translateX || 0}px) 
-          translateY({shapeTransforms[shape.id]?.translateY || 0}px) 
-          scale({shapeTransforms[shape.id]?.scale || 1});
-      "
-    >
+    {#if !shape.collected}
+      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
       <div 
-        class="geo-shape {shape.type}"
+        class="geo-shape-wrapper"
+        class:draggable={shape.draggable && !isSupernova}
+        class:dragging={draggedShapeId === shape.id}
         style="
-          width: 100%;
-          height: 100%;
-          --shape-color: {shape.color};
+          left: {shape.x}%;
+          top: {shape.y}%;
+          width: {shape.size}px;
+          height: {shape.size}px;
+          transform: translate(-50%, -50%) 
+            translateX({isDragging && draggedShapeId === shape.id ? 0 : (shapeTransforms[shape.id]?.translateX || 0)}px) 
+            translateY({isDragging && draggedShapeId === shape.id ? 0 : (shapeTransforms[shape.id]?.translateY || 0)}px) 
+            scale({draggedShapeId === shape.id ? 1.3 : (shapeTransforms[shape.id]?.scale || 1)});
+          z-index: {draggedShapeId === shape.id ? 100 : 1};
         "
-      ></div>
-    </div>
+        on:mousedown={(e) => handleShapeMouseDown(e, shape.id)}
+        on:touchstart={(e) => handleShapeTouchStart(e, shape.id)}
+        role={shape.draggable ? "button" : "presentation"}
+        tabindex={shape.draggable ? 0 : -1}
+        aria-label={shape.draggable ? `Drag ${shape.type} shape to center` : undefined}
+      >
+        <div 
+          class="geo-shape {shape.type}"
+          style="
+            width: 100%;
+            height: 100%;
+            --shape-color: {shape.color};
+          "
+        ></div>
+        {#if shape.draggable && !isSupernova}
+          <div class="drag-indicator">⤳</div>
+        {/if}
+      </div>
+    {:else}
+      <!-- Absorbed shape animation -->
+      <div 
+        class="geo-shape-wrapper absorbed"
+        style="
+          left: 50%;
+          top: 35%;
+          width: {shape.size}px;
+          height: {shape.size}px;
+        "
+      >
+        <div 
+          class="geo-shape {shape.type}"
+          style="
+            width: 100%;
+            height: 100%;
+            --shape-color: {shape.color};
+          "
+        ></div>
+      </div>
+    {/if}
   {/each}
 
   <!-- Subtle Cursor Glow -->
@@ -400,9 +715,25 @@
   ></div>
 
   <!-- Hero Content -->
-  <div class="hero-content" style="transform: translateY({scrollY * -0.2}px);">
-    <div class="xr-art-hero" class:revealed={xrArtRevealed}>
+  <div class="hero-content" class:supernova-content={supernovaComplete} style="transform: translateY({scrollY * -0.2}px);">
+    <div 
+      class="xr-art-hero" 
+      class:revealed={xrArtRevealed}
+      class:reacting={xrArtReacting}
+      class:supernova={isSupernova}
+      class:golden-state={supernovaComplete}
+      bind:this={xrArtElement}
+      style="--reaction-intensity: {reactionIntensity};"
+    >
       <XRAbstractArt size="lg" />
+      <!-- Drop Zone Indicator -->
+      <div class="drop-zone" class:active={xrArtReacting}></div>
+      <!-- Golden Aura - Super Saiyan State -->
+      {#if supernovaComplete}
+        <div class="golden-aura"></div>
+        <div class="golden-particles"></div>
+        <div class="golden-lightning"></div>
+      {/if}
     </div>
 
     <div class="hero-badge" class:revealed={heroRevealed}>
@@ -533,10 +864,81 @@
     backface-visibility: hidden;
   }
 
+  /* Draggable shapes */
+  .geo-shape-wrapper.draggable {
+    pointer-events: auto;
+    cursor: grab;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
+  }
+  
+  .geo-shape-wrapper.draggable .geo-shape {
+    border: 2px solid rgba(255, 215, 0, 0.7) !important;
+    box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.2);
+  }
+  
+  .geo-shape-wrapper.draggable:hover {
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.5));
+  }
+  
+  .geo-shape-wrapper.draggable:hover .geo-shape {
+    border-color: rgba(255, 215, 0, 1) !important;
+  }
+  
+  .geo-shape-wrapper.dragging {
+    cursor: grabbing;
+    filter: brightness(1.5) drop-shadow(0 0 30px rgba(0, 196, 0, 0.8));
+    transition: none;
+  }
+  
+  .geo-shape-wrapper.absorbed {
+    animation: absorb 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+  }
+  
+  @keyframes absorb {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translate(-50%, -50%) scale(0.5) rotate(180deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0) rotate(360deg);
+    }
+  }
+  
+  .drag-indicator {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1.25rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    animation: dragHint 2s ease-in-out infinite;
+  }
+  
+  .geo-shape-wrapper.draggable:hover .drag-indicator {
+    opacity: 1;
+  }
+  
+  @keyframes dragHint {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-5px, 5px); }
+  }
+
   @media (max-width: 768px) {
     .geo-shape-wrapper {
       opacity: 0.5;
       transform: scale(0.6) translateZ(0) !important;
+    }
+    
+    .geo-shape-wrapper.draggable {
+      opacity: 0.8;
+      transform: scale(0.8) translateZ(0) !important;
     }
   }
 
@@ -689,16 +1091,248 @@
     display: flex;
     justify-content: center;
     margin-bottom: 1.5rem;
+    position: relative;
     /* Initial hidden state */
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.3s ease;
   }
 
   .xr-art-hero.revealed {
     opacity: 1;
     transform: translateY(0);
+  }
+  
+  /* XR Art Reactions when shapes approach */
+  .xr-art-hero.reacting {
+    filter: brightness(calc(1 + var(--reaction-intensity) * 0.5)) 
+            drop-shadow(0 0 calc(20px + var(--reaction-intensity) * 40px) rgba(0, 196, 0, calc(0.3 + var(--reaction-intensity) * 0.5)));
+    animation: xrPulse 0.3s ease-in-out infinite;
+  }
+  
+  @keyframes xrPulse {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-2px) scale(1.02); }
+  }
+  
+  /* Supernova state */
+  .xr-art-hero.supernova {
+    animation: supernovaCore 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  @keyframes supernovaCore {
+    0% {
+      transform: translateY(0) scale(1);
+      filter: brightness(1);
+    }
+    30% {
+      transform: translateY(0) scale(1.5);
+      filter: brightness(3) drop-shadow(0 0 100px rgba(255, 255, 255, 1));
+    }
+    60% {
+      transform: translateY(0) scale(2);
+      filter: brightness(5) drop-shadow(0 0 200px rgba(255, 215, 0, 1));
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      filter: brightness(1.2) drop-shadow(0 0 30px rgba(0, 196, 0, 0.5));
+    }
+  }
+  
+  /* Drop zone indicator */
+  .drop-zone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 240px;
+    height: 240px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 2px dashed transparent;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  
+  .drop-zone.active {
+    border-color: rgba(0, 196, 0, 0.6);
+    background: radial-gradient(circle, rgba(0, 196, 0, 0.1) 0%, transparent 70%);
+    animation: dropZonePulse 0.8s ease-in-out infinite;
+  }
+  
+  @keyframes dropZonePulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+  }
+
+  /* ============================================
+     GOLDEN STATE - SUPER SAIYAN TRANSFORMATION
+     ============================================ */
+  
+  .xr-art-hero.golden-state {
+    animation: goldenPulse 2s ease-in-out infinite;
+    filter: 
+      brightness(1.3) 
+      saturate(1.2)
+      drop-shadow(0 0 30px rgba(255, 215, 0, 0.8))
+      drop-shadow(0 0 60px rgba(255, 215, 0, 0.5))
+      drop-shadow(0 0 100px rgba(255, 180, 0, 0.3));
+  }
+  
+  .xr-art-hero.golden-state :global(.xr-abstract-container) {
+    filter: sepia(0.3) saturate(2) hue-rotate(-10deg);
+  }
+  
+  @keyframes goldenPulse {
+    0%, 100% { 
+      filter: 
+        brightness(1.3) 
+        saturate(1.2)
+        drop-shadow(0 0 30px rgba(255, 215, 0, 0.8))
+        drop-shadow(0 0 60px rgba(255, 215, 0, 0.5))
+        drop-shadow(0 0 100px rgba(255, 180, 0, 0.3));
+      transform: translateY(0) scale(1);
+    }
+    50% { 
+      filter: 
+        brightness(1.5) 
+        saturate(1.4)
+        drop-shadow(0 0 40px rgba(255, 215, 0, 1))
+        drop-shadow(0 0 80px rgba(255, 215, 0, 0.7))
+        drop-shadow(0 0 120px rgba(255, 180, 0, 0.4));
+      transform: translateY(-3px) scale(1.02);
+    }
+  }
+  
+  /* Golden Aura Effect */
+  .golden-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 215, 0, 0.4) 0%,
+      rgba(255, 180, 0, 0.2) 30%,
+      rgba(255, 150, 0, 0.1) 50%,
+      transparent 70%
+    );
+    animation: auraFlicker 0.1s ease-in-out infinite, auraPulse 2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  @keyframes auraFlicker {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 1; }
+  }
+  
+  @keyframes auraPulse {
+    0%, 100% { 
+      transform: translate(-50%, -50%) scale(1);
+      filter: blur(20px);
+    }
+    50% { 
+      transform: translate(-50%, -50%) scale(1.15);
+      filter: blur(25px);
+    }
+  }
+  
+  /* Golden Particles Rising */
+  .golden-particles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .golden-particles::before,
+  .golden-particles::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 20% 80%, #ffd700 2px, transparent 2px),
+      radial-gradient(circle at 80% 70%, #ffaa00 2px, transparent 2px),
+      radial-gradient(circle at 40% 60%, #ffd700 1.5px, transparent 1.5px),
+      radial-gradient(circle at 60% 90%, #ffcc00 2px, transparent 2px),
+      radial-gradient(circle at 30% 40%, #ffd700 1px, transparent 1px),
+      radial-gradient(circle at 70% 30%, #ffaa00 1.5px, transparent 1.5px),
+      radial-gradient(circle at 50% 20%, #ffd700 2px, transparent 2px),
+      radial-gradient(circle at 15% 50%, #ffcc00 1px, transparent 1px),
+      radial-gradient(circle at 85% 50%, #ffd700 1.5px, transparent 1.5px);
+    animation: particlesRise 3s ease-in-out infinite;
+  }
+  
+  .golden-particles::after {
+    animation-delay: 1.5s;
+    transform: rotate(180deg);
+  }
+  
+  @keyframes particlesRise {
+    0% {
+      transform: translateY(20px) scale(0.8);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-80px) scale(1.2);
+      opacity: 0;
+    }
+  }
+  
+  /* Golden Lightning Bolts */
+  .golden-lightning {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250px;
+    height: 250px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .golden-lightning::before,
+  .golden-lightning::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, #ffd700, #fff, #ffd700, transparent);
+    filter: blur(1px);
+    animation: lightningFlash 0.15s ease-out infinite;
+    opacity: 0;
+  }
+  
+  .golden-lightning::before {
+    top: 10%;
+    left: 15%;
+    transform: rotate(-20deg);
+    animation-delay: 0s;
+  }
+  
+  .golden-lightning::after {
+    top: 20%;
+    right: 20%;
+    transform: rotate(25deg);
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes lightningFlash {
+    0%, 89%, 100% { opacity: 0; }
+    90%, 95% { opacity: 1; }
   }
 
   @media (max-width: 768px) {
@@ -708,6 +1342,26 @@
     
     .xr-art-hero :global(.xr-abstract-container) {
       max-width: 200px;
+    }
+    
+    .drop-zone {
+      width: 180px;
+      height: 180px;
+    }
+    
+    .golden-aura {
+      width: 200px;
+      height: 200px;
+    }
+    
+    .golden-particles {
+      width: 150px;
+      height: 150px;
+    }
+    
+    .golden-lightning {
+      width: 180px;
+      height: 180px;
     }
   }
 
@@ -1000,6 +1654,256 @@
   @media (max-width: 768px) {
     .scroll-indicator {
       display: none;
+    }
+  }
+
+  /* ============================================
+     GAMIFICATION STYLES
+     ============================================ */
+  
+  /* Supernova Effects */
+  .hero-section.supernova-active {
+    overflow: hidden;
+  }
+  
+  .supernova-flash {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 1) 0%, rgba(255, 215, 0, 0.8) 20%, rgba(0, 196, 0, 0.4) 50%, transparent 80%);
+    z-index: 1000;
+    animation: supernovaFlash 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+  }
+  
+  @keyframes supernovaFlash {
+    0% { opacity: 0; transform: scale(0); }
+    20% { opacity: 1; transform: scale(1); }
+    40% { opacity: 1; transform: scale(1.5); }
+    100% { opacity: 0; transform: scale(3); }
+  }
+  
+  .supernova-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    animation: supernovaParticles 2.5s ease-out forwards;
+  }
+  
+  .supernova-particles::before,
+  .supernova-particles::after {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffd700;
+    box-shadow: 
+      0 0 20px 10px rgba(255, 215, 0, 0.8),
+      60px -80px 0 0 #00c400,
+      -70px -60px 0 0 #ffd700,
+      100px 20px 0 0 #8a2be2,
+      -90px 40px 0 0 #00ff88,
+      40px 100px 0 0 #ffd700,
+      -50px 90px 0 0 #00c400,
+      120px -40px 0 0 #00ff88,
+      -130px -20px 0 0 #8a2be2,
+      80px 80px 0 0 #ffd700,
+      -100px 70px 0 0 #00c400;
+    animation: particlesBurst 2s ease-out forwards;
+  }
+  
+  .supernova-particles::after {
+    animation-delay: 0.1s;
+    box-shadow: 
+      0 0 15px 8px rgba(0, 196, 0, 0.8),
+      -80px -50px 0 0 #00ff88,
+      90px -70px 0 0 #ffd700,
+      -60px 80px 0 0 #8a2be2,
+      70px 60px 0 0 #00c400,
+      -100px -90px 0 0 #ffd700,
+      110px 30px 0 0 #00ff88,
+      -40px 110px 0 0 #00c400,
+      50px -100px 0 0 #8a2be2;
+  }
+  
+  @keyframes particlesBurst {
+    0% { 
+      transform: translate(-50%, -50%) scale(0); 
+      opacity: 1;
+    }
+    50% { 
+      transform: translate(-50%, -50%) scale(3); 
+      opacity: 0.8;
+    }
+    100% { 
+      transform: translate(-50%, -50%) scale(6); 
+      opacity: 0;
+    }
+  }
+  
+  .supernova-rings {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -50%);
+    z-index: 998;
+    pointer-events: none;
+  }
+  
+  .supernova-rings::before,
+  .supernova-rings::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 196, 0, 0.8);
+    animation: ringExpand 2s ease-out forwards;
+  }
+  
+  .supernova-rings::after {
+    animation-delay: 0.3s;
+    border-color: rgba(255, 215, 0, 0.6);
+  }
+  
+  @keyframes ringExpand {
+    0% { 
+      transform: scale(0); 
+      opacity: 1;
+      border-width: 3px;
+    }
+    100% { 
+      transform: scale(15); 
+      opacity: 0;
+      border-width: 1px;
+    }
+  }
+  
+  .constellation-canvas.fade-out {
+    animation: canvasFade 1s ease-out forwards;
+  }
+  
+  @keyframes canvasFade {
+    0% { opacity: 0.8; }
+    100% { opacity: 0.2; }
+  }
+  
+  .hero-content.supernova-content {
+    animation: contentReveal 1s ease-out 2s forwards;
+  }
+  
+  @keyframes contentReveal {
+    0% { filter: brightness(2); }
+    100% { filter: brightness(1); }
+  }
+  
+  /* Collection Progress Bar */
+  .collection-progress {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 50;
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  
+  .progress-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(0, 196, 0, 0.8);
+    font-weight: 600;
+  }
+  
+  .progress-bar {
+    width: 200px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 196, 0, 0.3);
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00c400, #00ff88, #ffd700);
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(0, 196, 0, 0.5);
+  }
+  
+  .progress-count {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+  }
+  
+  /* Drag Hint */
+  .drag-hint {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 9999px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.875rem;
+    z-index: 50;
+    animation: hintPulse 3s ease-in-out infinite, fadeIn 0.5s ease-out;
+    backdrop-filter: blur(10px);
+  }
+  
+  @keyframes hintPulse {
+    0%, 100% { 
+      border-color: rgba(0, 196, 0, 0.3);
+      box-shadow: 0 0 0 0 rgba(0, 196, 0, 0);
+    }
+    50% { 
+      border-color: rgba(0, 196, 0, 0.6);
+      box-shadow: 0 0 20px 5px rgba(0, 196, 0, 0.2);
+    }
+  }
+  
+  .hint-icon {
+    animation: sparkle 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(15deg); }
+  }
+  
+  @media (max-width: 768px) {
+    .collection-progress {
+      top: 80px;
+    }
+    
+    .progress-bar {
+      width: 150px;
+    }
+    
+    .drag-hint {
+      bottom: 80px;
+      font-size: 0.75rem;
+      padding: 0.5rem 1rem;
     }
   }
 
