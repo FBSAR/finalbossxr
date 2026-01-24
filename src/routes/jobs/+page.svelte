@@ -440,8 +440,10 @@
                 </div>
               </div>
 
-              <!-- Bot Protection CAPTCHA -->
-              <BotProtection bind:isValid={captchaValid} />
+              <!-- Bot Protection CAPTCHA - Only show when form is filled -->
+              {#if applicationData.name && applicationData.email && applicationData.experience && applicationData.whyJoin && applicationData.resume}
+                <BotProtection bind:isValid={captchaValid} />
+              {/if}
 
               <!-- Submit Button -->
               <button

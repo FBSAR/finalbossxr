@@ -126,8 +126,10 @@
                     </FloatingLabelInput>
                 </div>
                 
-                <!-- Bot Protection CAPTCHA -->
-                <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
+                <!-- Bot Protection CAPTCHA - Only show when email is filled -->
+                {#if email}
+                    <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
+                {/if}
                 
                 <div class="expandable-actions">
                     <button
@@ -166,8 +168,10 @@
                     {placeholder}
                 </FloatingLabelInput>
             </div>
-            <!-- Bot Protection CAPTCHA -->
-            <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
+            <!-- Bot Protection CAPTCHA - Only show when email is filled -->
+            {#if email}
+                <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
+            {/if}
             <div class="inline-submit">
                 <button
                     type="submit"
@@ -212,8 +216,10 @@
             </FloatingLabelInput>
             <!-- Spacer -->
             <div class="my-2"></div>
-            <!-- Bot Protection CAPTCHA -->
-            <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
+            <!-- Bot Protection CAPTCHA - Only show when email is filled -->
+            {#if email}
+                <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
+            {/if}
             <button
                 type="submit"
                 disabled={!email || isSubmitting || !captchaValid}

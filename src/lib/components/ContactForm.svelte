@@ -127,8 +127,10 @@
             <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" />
           </div>
           
-          <!-- Bot Protection CAPTCHA -->
-          <BotProtection bind:isValid={captchaValid} />
+          <!-- Bot Protection CAPTCHA - Only show when form is filled -->
+          {#if contactInfo.name && contactInfo.email && contactInfo.message}
+            <BotProtection bind:isValid={captchaValid} />
+          {/if}
           
           <button
             type="submit"
