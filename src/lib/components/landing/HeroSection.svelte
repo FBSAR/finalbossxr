@@ -1818,6 +1818,8 @@
     line-height: 1.6;
     max-width: 700px;
     margin: 0 auto 2rem;
+    /* Fixed height to prevent layout shift during typewriter */
+    min-height: calc(1.6em * 4); /* 4 lines at 1.6 line-height */
     /* Initial hidden state */
     opacity: 0;
     transform: translateY(40px);
