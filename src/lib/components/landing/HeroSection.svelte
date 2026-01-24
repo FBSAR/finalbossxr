@@ -28,6 +28,14 @@
   let dragOffsetY = 0;
   let isHoveringDraggable = false;
 
+  // Persistent energy sound state
+  let energyAudioCtx: AudioContext | null = null;
+  let energyOscillators: OscillatorNode[] = [];
+  let energyGains: GainNode[] = [];
+  let energyLFO: OscillatorNode | null = null;
+  let isEnergyPlaying = false;
+  let crackleInterval: ReturnType<typeof setInterval> | null = null;
+
   // ============================================
   // CONSTELLATION PARTICLE SYSTEM - Cherry on top!
   // ============================================
@@ -265,6 +273,8 @@
       window.removeEventListener('resize', resizeCanvas);
       clearTimeout(heroRevealTimeout);
       clearTimeout(xrArtRevealTimeout);
+      // Stop energy hum if playing
+      stopEnergyHum();
     }
   });
 
@@ -634,6 +644,214 @@
       
     } catch (e) {
       // Audio not supported, silently ignore
+    }
+  }
+
+  // Persistent energy hum for golden state
+  function startEnergyHum() {
+    if (isEnergyPlaying || !browser) return;
+    
+    try {
+      energyAudioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      
+      // Create master gain for overall volume control
+      const masterGain = energyAudioCtx.createGain();
+      masterGain.gain.setValueAtTime(0, energyAudioCtx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.15, energyAudioCtx.currentTime + 0.5);
+      masterGain.connect(energyAudioCtx.destination);
+      energyGains.push(masterGain);
+      
+      // LFO for pulsating effect
+      energyLFO = energyAudioCtx.createOscillator();
+      energyLFO.type = 'sine';
+      energyLFO.frequency.setValueAtTime(2, energyAudioCtx.currentTime); // Pulse 2x per second
+      
+      const lfoGain = energyAudioCtx.createGain();
+      lfoGain.gain.setValueAtTime(0.3, energyAudioCtx.currentTime);
+      energyLFO.connect(lfoGain);
+      
+      // Base drone - low frequency hum
+      const drone1 = energyAudioCtx.createOscillator();
+      drone1.type = 'sine';
+      drone1.frequency.setValueAtTime(32, energyAudioCtx.currentTime); // Sub-bass C1
+      
+      const drone1Gain = energyAudioCtx.createGain();
+      drone1Gain.gain.setValueAtTime(0.4, energyAudioCtx.currentTime);
+      lfoGain.connect(drone1Gain.gain); // LFO modulates this
+      drone1.connect(drone1Gain);
+      drone1Gain.connect(masterGain);
+      energyOscillators.push(drone1);
+      energyGains.push(drone1Gain);
+      
+      // Mid harmonic - adds richness
+      const drone2 = energyAudioCtx.createOscillator();
+      drone2.type = 'triangle';
+      drone2.frequency.setValueAtTime(65, energyAudioCtx.currentTime); // C2
+      
+      const drone2Gain = energyAudioCtx.createGain();
+      drone2Gain.gain.setValueAtTime(0.2, energyAudioCtx.currentTime);
+      drone2.connect(drone2Gain);
+      drone2Gain.connect(masterGain);
+      energyOscillators.push(drone2);
+      energyGains.push(drone2Gain);
+      
+      // High shimmer - ethereal quality
+      const shimmer = energyAudioCtx.createOscillator();
+      shimmer.type = 'sine';
+      shimmer.frequency.setValueAtTime(262, energyAudioCtx.currentTime); // C4 (middle C)
+      
+      // Slight detuning for movement
+      const shimmerLFO = energyAudioCtx.createOscillator();
+      shimmerLFO.type = 'sine';
+      shimmerLFO.frequency.setValueAtTime(0.5, energyAudioCtx.currentTime);
+      const shimmerLFOGain = energyAudioCtx.createGain();
+      shimmerLFOGain.gain.setValueAtTime(10, energyAudioCtx.currentTime);
+      shimmerLFO.connect(shimmerLFOGain);
+      shimmerLFOGain.connect(shimmer.frequency);
+      
+      const shimmerGain = energyAudioCtx.createGain();
+      shimmerGain.gain.setValueAtTime(0.05, energyAudioCtx.currentTime);
+      shimmer.connect(shimmerGain);
+      shimmerGain.connect(masterGain);
+      energyOscillators.push(shimmer);
+      energyOscillators.push(shimmerLFO);
+      energyGains.push(shimmerGain);
+      
+      // Start all oscillators
+      energyLFO.start(energyAudioCtx.currentTime);
+      shimmerLFO.start(energyAudioCtx.currentTime);
+      drone1.start(energyAudioCtx.currentTime);
+      drone2.start(energyAudioCtx.currentTime);
+      shimmer.start(energyAudioCtx.currentTime);
+      
+      // Fire crackling effect - random bursts every 1-3 seconds
+      const playCrackle = () => {
+        if (!energyAudioCtx || !isEnergyPlaying) return;
+        
+        // Create multiple small crackle bursts
+        const numCrackles = Math.floor(Math.random() * 4) + 2; // 2-5 crackles
+        
+        for (let i = 0; i < numCrackles; i++) {
+          const delay = Math.random() * 0.3; // Spread over 300ms
+          
+          // Create noise buffer for crackle
+          const bufferSize = energyAudioCtx.sampleRate * 0.05; // 50ms burst
+          const noiseBuffer = energyAudioCtx.createBuffer(1, bufferSize, energyAudioCtx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          
+          // Generate crackling noise with random spikes
+          for (let j = 0; j < bufferSize; j++) {
+            // Create spiky, crackly texture
+            const spike = Math.random() > 0.7 ? (Math.random() * 2 - 1) * 2 : 0;
+            output[j] = (Math.random() * 2 - 1) * 0.3 + spike;
+          }
+          
+          const noise = energyAudioCtx.createBufferSource();
+          noise.buffer = noiseBuffer;
+          
+          // Bandpass filter for fire-like crackling tone
+          const filter = energyAudioCtx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(800 + Math.random() * 1200, energyAudioCtx.currentTime); // 800-2000Hz
+          filter.Q.setValueAtTime(1.5, energyAudioCtx.currentTime);
+          
+          // Sharp attack, quick decay envelope
+          const crackleGain = energyAudioCtx.createGain();
+          const startTime = energyAudioCtx.currentTime + delay;
+          crackleGain.gain.setValueAtTime(0, startTime);
+          crackleGain.gain.linearRampToValueAtTime(0.08 + Math.random() * 0.06, startTime + 0.005);
+          crackleGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.04 + Math.random() * 0.03);
+          
+          noise.connect(filter);
+          filter.connect(crackleGain);
+          crackleGain.connect(masterGain);
+          
+          noise.start(startTime);
+          noise.stop(startTime + 0.1);
+        }
+      };
+      
+      // Initial crackle after a short delay
+      setTimeout(playCrackle, 500);
+      
+      // Set up random interval for crackling (every 1-3 seconds)
+      const scheduleCrackle = () => {
+        if (!isEnergyPlaying) return;
+        const nextDelay = 1000 + Math.random() * 2000; // 1-3 seconds
+        crackleInterval = setTimeout(() => {
+          playCrackle();
+          scheduleCrackle();
+        }, nextDelay);
+      };
+      scheduleCrackle();
+      
+      isEnergyPlaying = true;
+      
+    } catch (e) {
+      // Audio not supported, silently ignore
+    }
+  }
+  
+  function stopEnergyHum() {
+    if (!isEnergyPlaying || !energyAudioCtx) return;
+    
+    try {
+      const fadeTime = 0.5;
+      const currentTime = energyAudioCtx.currentTime;
+      
+      // Fade out master gain
+      if (energyGains[0]) {
+        energyGains[0].gain.setValueAtTime(energyGains[0].gain.value, currentTime);
+        energyGains[0].gain.linearRampToValueAtTime(0, currentTime + fadeTime);
+      }
+      
+      // Stop and disconnect after fade
+      setTimeout(() => {
+        energyOscillators.forEach(osc => {
+          try { osc.stop(); } catch (e) {}
+        });
+        if (energyLFO) {
+          try { energyLFO.stop(); } catch (e) {}
+        }
+        if (crackleInterval) {
+          clearTimeout(crackleInterval);
+          crackleInterval = null;
+        }
+        if (energyAudioCtx) {
+          energyAudioCtx.close();
+          energyAudioCtx = null;
+        }
+        energyOscillators = [];
+        energyGains = [];
+        energyLFO = null;
+        isEnergyPlaying = false;
+      }, fadeTime * 1000 + 100);
+      
+    } catch (e) {
+      // Silently ignore
+    }
+  }
+  
+  // Check if hero section is visible
+  function isHeroVisible(): boolean {
+    if (!heroSection || !browser) return false;
+    const rect = heroSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    // Consider visible if at least 30% of hero is in viewport
+    return rect.top < windowHeight * 0.7 && rect.bottom > windowHeight * 0.3;
+  }
+  
+  // Reactive statement to handle scroll-based sound control
+  // Using scrollY to trigger reactivity on scroll changes
+  $: if (browser && supernovaComplete && scrollY >= 0) {
+    if (isHeroVisible()) {
+      if (!isEnergyPlaying) {
+        startEnergyHum();
+      }
+    } else {
+      if (isEnergyPlaying) {
+        stopEnergyHum();
+      }
     }
   }
   
