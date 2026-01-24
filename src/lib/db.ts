@@ -2,14 +2,14 @@ import { neon } from '@neondatabase/serverless';
 import { env } from '$env/dynamic/private';
 
 /**
- * Creates a Neon database client using the DATABASE_URL from environment variables.
+ * Creates a Neon database client using the POSTGRES_URL from environment variables.
  * Uses the pooled connection URL for better performance.
  */
 export function getDb() {
-    const databaseUrl = env.DATABASE_URL;
+    const databaseUrl = env.POSTGRES_URL;
     
     if (!databaseUrl) {
-        throw new Error('DATABASE_URL environment variable is not set');
+        throw new Error('POSTGRES_URL environment variable is not set');
     }
     
     return neon(databaseUrl);

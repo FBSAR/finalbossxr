@@ -2,6 +2,7 @@
   import { page } from '$app/stores';
   import { marked } from 'marked';
   import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
+  import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
   
   export let data;
   
@@ -198,6 +199,9 @@
       </div>
     </section>
   {/if}
+
+  <!-- Newsletter Section -->
+  <NewsletterSection />
 
   <!-- Kickstarter Promo -->
   <KickstarterPromo />
