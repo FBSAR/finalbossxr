@@ -1003,14 +1003,6 @@
     </div>
   {/if}
   
-  <!-- Drag Hint -->
-  {#if typewriterComplete && collectedShapes === 0 && !isSupernova}
-    <div class="drag-hint">
-      <span class="hint-icon">✨</span>
-      <span>Drag the glowing shapes to the center!</span>
-    </div>
-  {/if}
-  
   <!-- Geometric Shapes -->
   {#each shapes as shape (shape.id)}
     {#if !shape.collected}
