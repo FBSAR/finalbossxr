@@ -283,16 +283,18 @@
   }
 
   let shapes: Shape[] = [
-    { id: 1, type: 'hexagon', x: 15, y: 20, size: 80, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.15)', parallaxSpeed: 0.3, collected: false, draggable: true },
-    { id: 2, type: 'triangle', x: 85, y: 15, size: 60, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.12)', parallaxSpeed: 0.5, collected: false, draggable: true },
-    { id: 3, type: 'square', x: 10, y: 70, size: 50, rotation: 0, baseRotation: 45, color: 'rgba(255, 215, 0, 0.1)', parallaxSpeed: 0.2, collected: false, draggable: true },
-    { id: 4, type: 'diamond', x: 90, y: 75, size: 70, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.4, collected: false, draggable: true },
-    { id: 5, type: 'circle', x: 75, y: 45, size: 100, rotation: 0, baseRotation: 0, color: 'rgba(138, 43, 226, 0.08)', parallaxSpeed: 0.15, collected: false, draggable: true },
+    // Draggable shapes (circles and squares only)
+    { id: 1, type: 'circle', x: 15, y: 20, size: 70, rotation: 0, baseRotation: 0, color: 'rgba(255, 215, 0, 0.08)', parallaxSpeed: 0.3, collected: false, draggable: true },
+    { id: 2, type: 'square', x: 85, y: 15, size: 55, rotation: 0, baseRotation: 45, color: 'rgba(255, 215, 0, 0.1)', parallaxSpeed: 0.5, collected: false, draggable: true },
+    { id: 3, type: 'square', x: 10, y: 70, size: 60, rotation: 0, baseRotation: 0, color: 'rgba(255, 215, 0, 0.08)', parallaxSpeed: 0.2, collected: false, draggable: true },
+    { id: 4, type: 'circle', x: 90, y: 75, size: 50, rotation: 0, baseRotation: 0, color: 'rgba(255, 215, 0, 0.1)', parallaxSpeed: 0.4, collected: false, draggable: true },
+    { id: 5, type: 'square', x: 75, y: 45, size: 80, rotation: 0, baseRotation: 0, color: 'rgba(255, 215, 0, 0.08)', parallaxSpeed: 0.15, collected: false, draggable: true },
+    // Decorative shapes (not draggable)
     { id: 6, type: 'hexagon', x: 25, y: 85, size: 55, rotation: 0, baseRotation: 15, color: 'rgba(0, 196, 0, 0.08)', parallaxSpeed: 0.35, collected: false, draggable: false },
     { id: 7, type: 'triangle', x: 5, y: 45, size: 45, rotation: 0, baseRotation: -20, color: 'rgba(255, 215, 0, 0.08)', parallaxSpeed: 0.45, collected: false, draggable: false },
-    { id: 8, type: 'square', x: 70, y: 85, size: 40, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.25, collected: false, draggable: false },
-    { id: 9, type: 'diamond', x: 50, y: 10, size: 35, rotation: 0, baseRotation: 45, color: 'rgba(138, 43, 226, 0.1)', parallaxSpeed: 0.55, collected: false, draggable: false },
-    { id: 10, type: 'hexagon', x: 95, y: 50, size: 65, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.06)', parallaxSpeed: 0.2, collected: false, draggable: false },
+    { id: 8, type: 'diamond', x: 70, y: 85, size: 40, rotation: 0, baseRotation: 0, color: 'rgba(0, 196, 0, 0.1)', parallaxSpeed: 0.25, collected: false, draggable: false },
+    { id: 9, type: 'hexagon', x: 50, y: 10, size: 35, rotation: 0, baseRotation: 45, color: 'rgba(138, 43, 226, 0.1)', parallaxSpeed: 0.55, collected: false, draggable: false },
+    { id: 10, type: 'triangle', x: 95, y: 50, size: 65, rotation: 0, baseRotation: 30, color: 'rgba(0, 196, 0, 0.06)', parallaxSpeed: 0.2, collected: false, draggable: false },
   ];
 
   let shapeTransforms: { [key: number]: { translateX: number; translateY: number; rotation: number; scale: number } } = {};
