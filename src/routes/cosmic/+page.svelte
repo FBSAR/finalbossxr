@@ -2,7 +2,8 @@
   import { onMount } from 'svelte';
   import { navigating } from '$app/stores';
   import ContactForm from '$lib/components/ContactForm.svelte';
-  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
+  // HIDDEN: Kickstarter campaign ended
+  // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
     import { Button } from 'flowbite-svelte';
     import { AppleSolid } from 'flowbite-svelte-icons';
 
@@ -474,8 +475,8 @@
   <!-- Spacer -->
   <div class="mb-20 border-b-8 border-[#ffffff10]"></div>
 
-  <!-- Kickstarter -->
-  <KickstarterPromo variant="cosmic" />
+  <!-- HIDDEN: Kickstarter campaign ended -->
+  <!-- <KickstarterPromo variant="cosmic" /> -->
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>

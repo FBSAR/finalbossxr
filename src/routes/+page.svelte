@@ -16,7 +16,8 @@
   import NextProject from '$lib/components/landing/NextProject.svelte';
   import BlogSection from '$lib/components/landing/BlogSection.svelte';
   import JobsSection from '$lib/components/landing/JobsSection.svelte';
-  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
+  // HIDDEN: Kickstarter campaign ended
+  // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import OurStorySection from '$lib/components/landing/OurStorySection.svelte';
 
   let scrollY = 0;
@@ -245,8 +246,8 @@
     onTimelineClick={scrollToTimeline}
   />
 
-  <!-- Kickstarter Promo -->
-  <KickstarterPromo />
+  <!-- HIDDEN: Kickstarter campaign ended -->
+  <!-- <KickstarterPromo /> -->
 
   <!-- Contact Us -->
   <section class="contact-section" aria-label="Contact Us">

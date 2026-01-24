@@ -1,6 +1,6 @@
 <script lang="ts">
   import NewsletterSignup from '$lib/components/NewsletterSignup.svelte';
-  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
+  // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import { navigating } from '$app/stores';
 
   // Loading state for navigation
@@ -85,7 +85,7 @@
   </div>
 
   <!-- Kickstarter Promo -->
-  <KickstarterPromo />
+  <!-- <KickstarterPromo /> -->
 </main>
 
 <style>

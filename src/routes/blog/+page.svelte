@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
+  // HIDDEN: Kickstarter campaign ended
+  // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
   
   export let data;
@@ -312,8 +313,8 @@
   <!-- Newsletter Section -->
   <NewsletterSection />
 
-  <!-- Kickstarter Promo -->
-  <KickstarterPromo />
+  <!-- HIDDEN: Kickstarter campaign ended -->
+  <!-- <KickstarterPromo /> -->
 </div>
 
 <style>
