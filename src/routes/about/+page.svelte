@@ -1,6 +1,7 @@
 <script lang="ts">
   import { LinkedinSolid } from 'flowbite-svelte-icons'
   import ContactForm from '$lib/components/ContactForm.svelte';
+  import OurStorySection from '$lib/components/landing/OurStorySection.svelte';
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import { navigating } from '$app/stores';
 
@@ -180,6 +181,9 @@
       </div>
     </div>
   {/if}
+
+  <!-- Our Story Section -->
+  <OurStorySection animationProgress={1} />
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
