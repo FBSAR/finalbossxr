@@ -4,6 +4,7 @@
   import { fly } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
   import { enhance } from '$app/forms';
+  import BotProtection from '$lib/components/BotProtection.svelte';
 
   // ⚠️ DEV MODE - Set to true to auto-fill form fields for testing
   const devMode = false;
@@ -111,6 +112,7 @@
 
   // Handle form submission
   let isSubmitting = false;
+  let captchaValid = false;
   
   function handleFormSubmit() {
     return async ({ result, update }: { result: any; update: () => Promise<void> }) => {
@@ -177,6 +179,12 @@
     if (applicationData.resume.size > 5 * 1024 * 1024) {
       event.preventDefault();
       return showErrorToast('Resume file must be less than 5MB');
+    }
+
+    // Check CAPTCHA
+    if (!captchaValid) {
+      event.preventDefault();
+      return showErrorToast('Please complete the bot protection challenge');
     }
     
     isSubmitting = true;
@@ -432,10 +440,13 @@
                 </div>
               </div>
 
+              <!-- Bot Protection CAPTCHA -->
+              <BotProtection bind:isValid={captchaValid} />
+
               <!-- Submit Button -->
               <button
                 type="submit"
-                disabled={isSubmitting || !applicationData.name || !applicationData.email || !applicationData.experience || !applicationData.whyJoin || !applicationData.resume}
+                disabled={isSubmitting || !applicationData.name || !applicationData.email || !applicationData.experience || !applicationData.whyJoin || !applicationData.resume || !captchaValid}
                 class="submit-button"
               >
                 {#if isSubmitting}

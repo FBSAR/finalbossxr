@@ -1,8 +1,10 @@
 <script lang="ts">
     import { showSuccessToast ,showErrorToast } from '$lib/stores/toastStore';  
     import { Badge, FloatingLabelInput, Textarea } from 'flowbite-svelte';
+    import BotProtection from './BotProtection.svelte';
 
     export let isLoading = false;
+    let captchaValid = false;
 
     // TailwindCSS Classes
     const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';   
@@ -22,6 +24,11 @@
           contactInfo.email == '' || 
           contactInfo.message == '' ) 
         { return showErrorToast('Please fill out the entire form') }
+
+      // Check CAPTCHA
+      if (!captchaValid) {
+        return showErrorToast('Please complete the bot protection challenge');
+      }
 
         // Fetch Slack API Request
         const response = await fetch(form.action, {
@@ -120,9 +127,12 @@
             <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" />
           </div>
           
+          <!-- Bot Protection CAPTCHA -->
+          <BotProtection bind:isValid={captchaValid} />
+          
           <button
             type="submit"
-            disabled={contactInfo.name === '' || contactInfo.email === '' || contactInfo.message === ''}
+            disabled={contactInfo.name === '' || contactInfo.email === '' || contactInfo.message === '' || !captchaValid}
             class="submit-btn"
           >
             Submit

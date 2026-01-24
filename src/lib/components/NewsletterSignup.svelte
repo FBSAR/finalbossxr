@@ -2,6 +2,7 @@
     import { showSuccessToast, showErrorToast } from '$lib/stores/toastStore';
     import { FloatingLabelInput } from 'flowbite-svelte';
     import { slide } from 'svelte/transition';
+    import BotProtection from './BotProtection.svelte';
 
     export let variant: 'inline' | 'stacked' | 'expandable' = 'inline';
     export let placeholder = 'Enter your email for updates';
@@ -14,6 +15,7 @@
     let isSubmitting = false;
     let isExpanded = false;
     let isSubscribed = false;
+    let captchaValid = false;
 
     const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
 
@@ -30,6 +32,12 @@
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             showErrorToast('Please enter a valid email address');
+            return;
+        }
+
+        // Check CAPTCHA
+        if (!captchaValid) {
+            showErrorToast('Please complete the bot protection challenge');
             return;
         }
 
@@ -118,6 +126,9 @@
                     </FloatingLabelInput>
                 </div>
                 
+                <!-- Bot Protection CAPTCHA -->
+                <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
+                
                 <div class="expandable-actions">
                     <button
                         type="button"
@@ -128,7 +139,7 @@
                     </button>
                     <button
                         type="submit"
-                        disabled={!email || isSubmitting}
+                        disabled={!email || isSubmitting || !captchaValid}
                         class="subscribe-btn"
                     >
                         {#if isSubmitting}
@@ -154,9 +165,13 @@
                 >
                     {placeholder}
                 </FloatingLabelInput>
+            </div>
+            <!-- Bot Protection CAPTCHA -->
+            <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
+            <div class="inline-submit">
                 <button
                     type="submit"
-                    disabled={!email || isSubmitting}
+                    disabled={!email || isSubmitting || !captchaValid}
                     class="subscribe-btn"
                 >
                     {#if isSubmitting}
@@ -197,9 +212,11 @@
             </FloatingLabelInput>
             <!-- Spacer -->
             <div class="my-2"></div>
+            <!-- Bot Protection CAPTCHA -->
+            <BotProtection bind:isValid={captchaValid} label="Verify you're human" />
             <button
                 type="submit"
-                disabled={!email || isSubmitting}
+                disabled={!email || isSubmitting || !captchaValid}
                 class="subscribe-btn full-width"
             >
                 {#if isSubmitting}
