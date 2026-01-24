@@ -544,8 +544,104 @@
     }, 600);
   }
   
+  // Epic supernova explosion sound
+  function playSupernovaSound() {
+    try {
+      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      
+      // Rising sweep - building energy
+      const sweep = audioCtx.createOscillator();
+      const sweepGain = audioCtx.createGain();
+      sweep.connect(sweepGain);
+      sweepGain.connect(audioCtx.destination);
+      
+      sweep.type = 'sawtooth';
+      sweep.frequency.setValueAtTime(80, audioCtx.currentTime);
+      sweep.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.8);
+      sweep.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 1.5);
+      
+      sweepGain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      sweepGain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.6);
+      sweepGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
+      
+      sweep.start(audioCtx.currentTime);
+      sweep.stop(audioCtx.currentTime + 2);
+      
+      // Impact bass hit
+      const bass = audioCtx.createOscillator();
+      const bassGain = audioCtx.createGain();
+      bass.connect(bassGain);
+      bassGain.connect(audioCtx.destination);
+      
+      bass.type = 'sine';
+      bass.frequency.setValueAtTime(120, audioCtx.currentTime + 0.6);
+      bass.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 1.5);
+      
+      bassGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      bassGain.gain.setValueAtTime(0.4, audioCtx.currentTime + 0.6);
+      bassGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
+      
+      bass.start(audioCtx.currentTime);
+      bass.stop(audioCtx.currentTime + 2);
+      
+      // Shimmer/sparkle layer
+      const shimmer = audioCtx.createOscillator();
+      const shimmerGain = audioCtx.createGain();
+      shimmer.connect(shimmerGain);
+      shimmerGain.connect(audioCtx.destination);
+      
+      shimmer.type = 'sine';
+      shimmer.frequency.setValueAtTime(600, audioCtx.currentTime + 0.5);
+      shimmer.frequency.setValueAtTime(800, audioCtx.currentTime + 0.7);
+      shimmer.frequency.setValueAtTime(1000, audioCtx.currentTime + 0.9);
+      shimmer.frequency.setValueAtTime(800, audioCtx.currentTime + 1.1);
+      shimmer.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 2);
+      
+      shimmerGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      shimmerGain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.6);
+      shimmerGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2.2);
+      
+      shimmer.start(audioCtx.currentTime);
+      shimmer.stop(audioCtx.currentTime + 2.2);
+      
+      // White noise burst for explosion texture
+      const bufferSize = audioCtx.sampleRate * 2;
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+      
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = noiseBuffer;
+      
+      const noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = 'lowpass';
+      noiseFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
+      noiseFilter.frequency.linearRampToValueAtTime(3000, audioCtx.currentTime + 0.6);
+      noiseFilter.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 2);
+      
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      noiseGain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.6);
+      noiseGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
+      
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(audioCtx.destination);
+      noise.start(audioCtx.currentTime);
+      noise.stop(audioCtx.currentTime + 2);
+      
+    } catch (e) {
+      // Audio not supported, silently ignore
+    }
+  }
+  
   function triggerSupernova() {
     isSupernova = true;
+    
+    // Play epic supernova sound
+    playSupernovaSound();
     
     // After supernova animation completes
     setTimeout(() => {
