@@ -467,9 +467,55 @@
     window.removeEventListener('mouseup', handleDragEnd);
   }
   
+  // Video game-style collect sound (coin/power-up feel)
+  function playCollectSound() {
+    try {
+      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      
+      // Main tone - pleasant mid-range frequency
+      const osc1 = audioCtx.createOscillator();
+      const gain1 = audioCtx.createGain();
+      osc1.connect(gain1);
+      gain1.connect(audioCtx.destination);
+      
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
+      osc1.frequency.setValueAtTime(523, audioCtx.currentTime + 0.08); // C5
+      osc1.frequency.setValueAtTime(659, audioCtx.currentTime + 0.16); // E5
+      
+      gain1.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+      
+      osc1.start(audioCtx.currentTime);
+      osc1.stop(audioCtx.currentTime + 0.35);
+      
+      // Harmony tone - adds richness
+      const osc2 = audioCtx.createOscillator();
+      const gain2 = audioCtx.createGain();
+      osc2.connect(gain2);
+      gain2.connect(audioCtx.destination);
+      
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(330, audioCtx.currentTime); // E4
+      osc2.frequency.setValueAtTime(392, audioCtx.currentTime + 0.08); // G4
+      osc2.frequency.setValueAtTime(494, audioCtx.currentTime + 0.16); // B4
+      
+      gain2.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      
+      osc2.start(audioCtx.currentTime);
+      osc2.stop(audioCtx.currentTime + 0.3);
+    } catch (e) {
+      // Audio not supported, silently ignore
+    }
+  }
+  
   function collectShape(shapeId: number) {
     const shapeIndex = shapes.findIndex(s => s.id === shapeId);
     if (shapeIndex === -1) return;
+    
+    // Play video game collect sound
+    playCollectSound();
     
     // Mark shape as collected (will animate it being absorbed)
     shapes[shapeIndex].collected = true;
