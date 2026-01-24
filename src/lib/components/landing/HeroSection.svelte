@@ -26,6 +26,7 @@
   let dragStartY = 0;
   let dragOffsetX = 0;
   let dragOffsetY = 0;
+  let isHoveringDraggable = false;
 
   // ============================================
   // CONSTELLATION PARTICLE SYSTEM - Cherry on top!
@@ -671,6 +672,8 @@
         "
         on:mousedown={(e) => handleShapeMouseDown(e, shape.id)}
         on:touchstart={(e) => handleShapeTouchStart(e, shape.id)}
+        on:mouseenter={() => { if (shape.draggable && !isSupernova) isHoveringDraggable = true; }}
+        on:mouseleave={() => { isHoveringDraggable = false; }}
         role={shape.draggable ? "button" : "presentation"}
         tabindex={shape.draggable ? 0 : -1}
         aria-label={shape.draggable ? `Drag ${shape.type} shape to center` : undefined}
@@ -683,9 +686,6 @@
             --shape-color: {shape.color};
           "
         ></div>
-        {#if shape.draggable && !isSupernova}
-          <div class="drag-indicator">⤳</div>
-        {/if}
       </div>
     {:else}
       <!-- Absorbed shape animation -->
@@ -724,6 +724,7 @@
       class:reacting={xrArtReacting}
       class:supernova={isSupernova}
       class:golden-state={supernovaComplete}
+      class:hint-glow={isHoveringDraggable && !isSupernova}
       bind:this={xrArtElement}
       style="--reaction-intensity: {reactionIntensity};"
     >
@@ -911,26 +912,6 @@
       transform: translate(-50%, -50%) scale(0) rotate(360deg);
     }
   }
-  
-  .drag-indicator {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    font-size: 1.25rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    animation: dragHint 2s ease-in-out infinite;
-  }
-  
-  .geo-shape-wrapper.draggable:hover .drag-indicator {
-    opacity: 1;
-  }
-  
-  @keyframes dragHint {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(-5px, 5px); }
-  }
 
   @media (max-width: 768px) {
     .geo-shape-wrapper {
@@ -1105,6 +1086,21 @@
   .xr-art-hero.revealed {
     opacity: 1;
     transform: translateY(0);
+  }
+  
+  /* Subtle hint glow when hovering over a draggable shape */
+  .xr-art-hero.hint-glow {
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.2));
+    animation: hintPulse 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes hintPulse {
+    0%, 100% { 
+      filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.2));
+    }
+    50% { 
+      filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 45px rgba(255, 215, 0, 0.3));
+    }
   }
   
   /* XR Art Reactions when shapes approach */
