@@ -26,20 +26,20 @@
   export const timelineItems: TimelineItem[] = [
     {
       year: '2021',
-      title: 'Early Ideas',
-      description: 'Founded with a dream to push the boundaries of immersive technology and create experiences that matter.',
+      title: 'The Spark',
+      description: 'It started with a simple idea — a VR game inspired by Dynasty Warriors, built while studying Unreal Engine 4. Later that year, an Epic Games Educators Accelerator deepened Eddie\'s immersion in the Unreal ecosystem and developer community. This was based off of a belief that XR would be the future, not only in video games, but in many other industries as well.',
       media: [
         {
           type: 'image',
-          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='xMidYMid meet'%3E%3Cdefs%3E%3ClinearGradient id='bulbG' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300c400'/%3E%3Cstop offset='100%25' stop-color='%238a2be2'/%3E%3C/linearGradient%3E%3CradialGradient id='glow' cx='50%25' cy='43%25' r='30%25'%3E%3Cstop offset='0%25' stop-color='%2300c400' stop-opacity='0.5'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3CradialGradient id='innerGlow' cx='50%25' cy='35%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%2300c400' stop-opacity='0.4'/%3E%3Cstop offset='50%25' stop-color='%238a2be2' stop-opacity='0.2'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect fill='%230a1628' width='200' height='200' rx='12'/%3E%3Cellipse cx='100' cy='86' rx='28' ry='32' fill='url(%23glow)'%3E%3Canimate attributeName='opacity' values='0.5;1;0.5' dur='2s' repeatCount='indefinite'/%3E%3C/ellipse%3E%3Cpath d='M100 56 C78 56 70 73 70 86 C70 99 78 107 83 114 L83 123 L117 123 L117 114 C122 107 130 99 130 86 C130 73 122 56 100 56Z' fill='url(%23innerGlow)' stroke='url(%23bulbG)' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cline x1='86' y1='129' x2='114' y2='129' stroke='%2300c400' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='88' y1='137' x2='112' y2='137' stroke='%238a2be2' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='92' y1='145' x2='108' y2='145' stroke='%2300c400' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E",
-          badge: 'The Spark'
+          src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='xMidYMid meet'%3E%3Cdefs%3E%3ClinearGradient id='bulbG' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300c400'%3E%3Canimate attributeName='stop-color' values='%2300c400;%2300e600;%2300c400' dur='3s' repeatCount='indefinite'/%3E%3C/stop%3E%3Cstop offset='100%25' stop-color='%238a2be2'%3E%3Canimate attributeName='stop-color' values='%238a2be2;%239f4ded;%238a2be2' dur='3s' repeatCount='indefinite'/%3E%3C/stop%3E%3C/linearGradient%3E%3CradialGradient id='glow' cx='50%25' cy='43%25' r='30%25'%3E%3Cstop offset='0%25' stop-color='%2300c400' stop-opacity='0.5'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3CradialGradient id='innerGlow' cx='50%25' cy='35%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%2300c400' stop-opacity='0.4'/%3E%3Cstop offset='50%25' stop-color='%238a2be2' stop-opacity='0.2'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3Cfilter id='bulbGlow' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='3' result='blur'/%3E%3CfeMerge%3E%3CfeMergeNode in='blur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Crect fill='%230a1628' width='200' height='200' rx='12'/%3E%3Cellipse cx='100' cy='86' rx='28' ry='32' fill='url(%23glow)'%3E%3Canimate attributeName='opacity' values='0.4;0.8;0.4' dur='2s' repeatCount='indefinite'/%3E%3Canimate attributeName='rx' values='26;30;26' dur='2s' repeatCount='indefinite'/%3E%3Canimate attributeName='ry' values='30;34;30' dur='2s' repeatCount='indefinite'/%3E%3C/ellipse%3E%3Cg filter='url(%23bulbGlow)'%3E%3Cpath d='M100 56 C78 56 70 73 70 86 C70 99 78 107 83 114 L83 123 L117 123 L117 114 C122 107 130 99 130 86 C130 73 122 56 100 56Z' fill='url(%23innerGlow)' stroke='url(%23bulbG)' stroke-width='2.5' stroke-linejoin='round'%3E%3Canimate attributeName='opacity' values='0.9;1;0.9' dur='1.5s' repeatCount='indefinite'/%3E%3C/path%3E%3C/g%3E%3Cline x1='86' y1='129' x2='114' y2='129' stroke='%2300c400' stroke-width='2.5' stroke-linecap='round'%3E%3Canimate attributeName='opacity' values='0.7;1;0.7' dur='1.2s' repeatCount='indefinite'/%3E%3C/line%3E%3Cline x1='88' y1='137' x2='112' y2='137' stroke='%238a2be2' stroke-width='2.5' stroke-linecap='round'%3E%3Canimate attributeName='opacity' values='0.7;1;0.7' dur='1.2s' repeatCount='indefinite' begin='0.2s'/%3E%3C/line%3E%3Cline x1='92' y1='145' x2='108' y2='145' stroke='%2300c400' stroke-width='2.5' stroke-linecap='round'%3E%3Canimate attributeName='opacity' values='0.7;1;0.7' dur='1.2s' repeatCount='indefinite' begin='0.4s'/%3E%3C/line%3E%3Ccircle cx='100' cy='80' r='4' fill='%2300c400' opacity='0.6'%3E%3Canimate attributeName='opacity' values='0.3;0.8;0.3' dur='1s' repeatCount='indefinite'/%3E%3Canimate attributeName='r' values='3;5;3' dur='1s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E",
+          badge: 'Summer 2021'
         }
       ]
     },
     {
       year: '2022',
-      title: 'First Prototypes',
-      description: 'Teaching Unreal Basecamp with Journi was a big catalyst. We built early prototypes exploring game development and immersive experiences.',
+      title: 'The Catalyst - Unreal Basecamp',
+      description: 'Drawing from five years as a Tech Educator, Eddie taught a class called Unreal Basecamp as an instructor for a nonprofit named Journi — a course blending Unreal Engine, AR, and the Magic Leap One. This sparked a bigger vision: Final Boss Studios, started with Keith Dunklin, Demekco Eberhardt, Richard Davis III, and Aaron Goodson. Together, we built Gameball, our first AR prototype on Magic Leap.',
       media: [
         {
           type: 'video',
@@ -57,7 +57,7 @@
     {
       year: '2023',
       title: 'Expanding Horizons',
-      description: 'Began development on XR productivity tools and enterprise solutions, bringing our vision to new industries.',
+      description: 'We built an AR demo of Monopoly as a team-building exercise — and it opened doors. Clients approached us for XR prototypes, and we partnered with nonprofits to teach Unreal Engine workshops, growing our network and spreading XR education across the community.',
       media: [
         {
           type: 'video',
@@ -88,8 +88,8 @@
     },
     {
       year: '2024',
-      title: 'AR Innovations',
-      description: 'Launched augmented reality experiences pushing the boundaries of mobile gaming.',
+      title: 'Re-evaluation',
+      description: 'By this point, we took a small break to reflect on our journey and plan the next steps for Final Boss Studios. We knew that we no longer wanted to make software as contractors for other companies, but instead focus on creating our own XR experiences and products.',
       media: [
         {
           type: 'image',
@@ -100,8 +100,8 @@
     },
     {
       year: '2025',
-      title: 'Building Cosmic Collisions',
-      description: 'Growing the team and expanding our reach into enterprise XR solutions.',
+      title: 'Building Our First IP',
+      description: 'In 2025, we focused on building our first intellectual property: an AR mobile game. This marked a significant shift from contract work to creating our own XR experiences, allowing us to fully explore our creative potential and establish our brand in the XR space.',
       media: [
         {
           type: 'image',
@@ -112,8 +112,8 @@
     },
     {
       year: '2026',
-      title: 'Building the Future',
-      description: 'Continuing to innovate at the intersection of gaming, AI, and spatial computing.',
+      title: 'Cosmic Collisions releases on iOS/Android',
+      description: 'In 2026, we released our first AR mobile game, Cosmic Collisions, on iOS and Android. This milestone marked the culmination of our efforts to transition from contract work to creating our own XR experiences, and it allowed us to showcase our creative vision to a wider audience.',
       isActive: true,
       media: [
         {
