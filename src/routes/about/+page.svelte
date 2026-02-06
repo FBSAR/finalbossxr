@@ -1,6 +1,7 @@
 <script lang="ts">
   import { LinkedinSolid } from 'flowbite-svelte-icons'
-  import ContactForm from '$lib/components/ContactForm.svelte';
+  // HIDDEN: Contact form temporarily disabled
+  // import ContactForm from '$lib/components/ContactForm.svelte';
   import OurStorySection from '$lib/components/landing/OurStorySection.svelte';
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import { navigating } from '$app/stores';
@@ -188,7 +189,8 @@
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
 
-  <ContactForm />
+  <!-- HIDDEN: Contact form temporarily disabled -->
+  <!-- <ContactForm /> -->
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>

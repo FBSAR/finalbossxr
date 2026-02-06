@@ -2,7 +2,8 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { navigating } from '$app/stores';
-  import ContactForm from '$lib/components/ContactForm.svelte';
+  // HIDDEN: Contact form temporarily disabled
+  // import ContactForm from '$lib/components/ContactForm.svelte';
   import { get } from 'svelte/store';
 
   type SurvivalEntry = {
@@ -378,7 +379,8 @@
 
 <!-- Spacer -->
 <div class="h-10"></div>
-<ContactForm />
+<!-- HIDDEN: Contact form temporarily disabled -->
+<!-- <ContactForm /> -->
 
 <style>
   /* Container */

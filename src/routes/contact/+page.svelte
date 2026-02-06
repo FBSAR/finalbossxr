@@ -1,12 +1,14 @@
 <script lang="ts">
-  import ContactForm from '$lib/components/ContactForm.svelte';
+  // HIDDEN: Contact form temporarily disabled
+  // import ContactForm from '$lib/components/ContactForm.svelte';
   import { navigating } from '$app/stores';
 
   // Loading state for navigation
   $: isLoading = $navigating !== null;
 </script>
 <main>
-  <ContactForm {isLoading} />
+  <!-- HIDDEN: Contact form temporarily disabled -->
+  <!-- <ContactForm {isLoading} /> -->
 </main>
 <style>
 </style>

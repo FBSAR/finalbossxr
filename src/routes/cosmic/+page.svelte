@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { navigating } from '$app/stores';
-  import ContactForm from '$lib/components/ContactForm.svelte';
+  // HIDDEN: Contact form temporarily disabled
+  // import ContactForm from '$lib/components/ContactForm.svelte';
   // HIDDEN: Kickstarter campaign ended
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
     import { Button } from 'flowbite-svelte';
@@ -482,13 +483,12 @@
   <div class="h-10 lg:h-32"></div>
   {/if}
 
-  <!-- Contact Form -->
-  <div class="relative z-10">
+  <!-- HIDDEN: Contact form temporarily disabled -->
+  <!-- <div class="relative z-10">
     <ContactForm isLoading={isLoading} />
 
-    <!-- Spacer -->
     <div class="h-10 lg:h-32"></div>
-  </div>
+  </div> -->
 </main>
 <style>
   :global(html) {
