@@ -52,7 +52,8 @@
     { href: '/project_v', label: 'PROJECT_V', icon: '🔥', isImage: false },
     { href: '/blog', label: 'BLOG', icon: '📝', isImage: false },
     { href: '/about', label: 'ABOUT US', icon: '👥', isImage: false },
-    { href: '/contact', label: 'CONTACT', icon: '✉️', isImage: false },
+    // HIDDEN: Contact form temporarily disabled
+    // { href: '/contact', label: 'CONTACT', icon: '✉️', isImage: false },
   ];
  
 </script>
@@ -164,7 +165,8 @@
         <NavLi href="/about" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>ABOUT US</NavLi>
         <!-- <NavLi href="/education" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>EDUCATION</NavLi> -->
         <!-- <NavLi href="/crowdfunding" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CROWDFUNDING</NavLi> -->
-        <NavLi href="/contact" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CONTACT</NavLi>
+        <!-- HIDDEN: Contact form temporarily disabled -->
+        <!-- <NavLi href="/contact" activeClass={activeNavLink} nonActiveClass={nonActiveNavLink}>CONTACT</NavLi> -->
       </NavUl>
     </div> 
   </Navbar>
