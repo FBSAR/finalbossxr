@@ -1080,7 +1080,9 @@
       bind:this={xrArtElement}
       style="--reaction-intensity: {reactionIntensity};"
     >
-      <XRAbstractArt size="lg" />
+      {#if xrArtRevealed}
+        <XRAbstractArt size="lg" />
+      {/if}
       <!-- Drop Zone Indicator -->
       <div class="drop-zone" class:active={xrArtReacting}></div>
       <!-- Golden Aura - Super Saiyan State -->
