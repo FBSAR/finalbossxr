@@ -6,8 +6,9 @@
   import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import { navigating } from '$app/stores';
 
-  // Loading state for navigation
-  $: isLoading = $navigating !== null;
+  // Show skeleton only when navigating TO this page, not when leaving
+  $: isNavigatingHere = $navigating?.to?.route?.id === '/about';
+  $: showContent = !isNavigatingHere;
   
   let founders = [
       {
@@ -54,7 +55,7 @@
     <p class="sm:w-1/2 lg:w-1/2">Introducing the Final Boss team.</p>
   </div>
 
-  {#if isLoading}
+  {#if !showContent}
     <!-- Skeleton Loading State -->
     <!-- Founders Skeleton -->
     <div class="mx-auto my-4 w-11/12">
@@ -178,7 +179,28 @@
   {/if}
 
   <!-- Our Story Section -->
-  <OurStorySection animationProgress={1} />
+  {#if showContent}
+    <OurStorySection animationProgress={1} />
+  {:else}
+    <!-- Our Story Section Skeleton -->
+    <div class="mx-auto my-4 w-11/12">
+      <div class="skeleton-text skeleton-section-title" style="width: 200px;"></div>
+      <div class="skeleton-story-container">
+        {#each Array(3) as _}
+          <div class="skeleton-timeline-item">
+            <div class="skeleton-timeline-dot"></div>
+            <div class="flex-1">
+              <div class="skeleton-text skeleton-year"></div>
+              <div class="skeleton-text skeleton-story-title"></div>
+              <div class="skeleton-text skeleton-story-desc"></div>
+              <div class="skeleton-text skeleton-story-desc" style="width: 85%;"></div>
+              <div class="skeleton-media-placeholder"></div>
+            </div>
+          </div>
+        {/each}
+      </div>
+    </div>
+  {/if}
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
@@ -353,6 +375,72 @@
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
+  }
+
+  /* OurStorySection Skeleton */
+  .skeleton-story-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .skeleton-timeline-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+  }
+
+  .skeleton-timeline-dot {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    margin-top: 0.25rem;
+  }
+
+  .skeleton-year {
+    width: 80px;
+    height: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .skeleton-story-title {
+    width: 60%;
+    height: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .skeleton-story-desc {
+    width: 95%;
+    height: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .skeleton-media-placeholder {
+    width: 100%;
+    height: 300px;
+    border-radius: 0.5rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    margin-top: 1rem;
   }
 
   /* Mobile Responsive */
