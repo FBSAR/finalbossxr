@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
+  import { onMount } from 'svelte';
   // HIDDEN: Kickstarter campaign ended
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
@@ -11,6 +12,16 @@
   $: regularPosts = posts.filter((p: any) => p.id !== featuredPost?.id);
   
   let searchQuery = '';
+  let isLoadingSearch = false;
+  let searchTimeout: ReturnType<typeof setTimeout>;
+  let isPageLoaded = false;
+  
+  onMount(() => {
+    // Brief skeleton display during hydration
+    setTimeout(() => {
+      isPageLoaded = true;
+    }, 600);
+  });
   
   // Pagination
   const POSTS_PER_PAGE = 6;
@@ -31,6 +42,16 @@
   
   // Reset to page 1 when search changes
   $: if (searchQuery) currentPage = 1;
+  
+  // Simulate search loading with debounce
+  function handleSearch(e: any) {
+    searchQuery = e.target.value;
+    isLoadingSearch = true;
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      isLoadingSearch = false;
+    }, 300);
+  }
   
   function goToPage(page: number) {
     if (page >= 1 && page <= totalPages) {
@@ -158,7 +179,8 @@
       <div class="relative max-w-md mx-auto">
         <input
           type="text"
-          bind:value={searchQuery}
+          value={searchQuery}
+          on:input={handleSearch}
           placeholder="Search articles..."
           class="w-full px-5 py-3 pl-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#00c400]/50 focus:ring-2 focus:ring-[#00c400]/20 transition-all"
         />
@@ -180,6 +202,39 @@
           </div>
           <h2 class="text-2xl font-semibold text-white mb-2">No posts yet</h2>
           <p class="text-gray-400">Check back soon for updates and articles!</p>
+        </div>
+      {:else if !isPageLoaded}
+        <!-- Full Page Skeleton -->
+        <div class="mb-12">
+          <div class="skeleton-text skeleton-text-xs" style="width: 80px; margin-bottom: 1rem;"></div>
+          <div class="featured-card">
+            <div class="featured-image skeleton-loader"></div>
+            <div class="featured-content">
+              <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                <div class="skeleton-text skeleton-text-sm" style="width: 70px;"></div>
+                <div class="skeleton-text skeleton-text-sm" style="width: 100px;"></div>
+              </div>
+              <div class="skeleton-text" style="width: 65%; height: 1.75rem; margin-bottom: 0.75rem;"></div>
+              <div class="skeleton-text skeleton-text-sm" style="width: 90%; margin-bottom: 0.5rem;"></div>
+              <div class="skeleton-text skeleton-text-sm" style="width: 75%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="skeleton-text skeleton-text-xs" style="width: 60px; margin-bottom: 1.5rem;"></div>
+        <div class="blog-grid">
+          {#each Array(6) as _}
+            <div class="blog-card">
+              <div class="blog-image skeleton-loader"></div>
+              <div class="blog-content">
+                <div class="skeleton-text skeleton-text-xs" style="width: 55%; margin-bottom: 0.75rem;"></div>
+                <div class="skeleton-text" style="width: 85%; margin-bottom: 0.5rem;"></div>
+                <div class="skeleton-text skeleton-text-sm" style="width: 95%; margin-bottom: 0.5rem;"></div>
+                <div class="skeleton-text skeleton-text-sm" style="width: 70%; margin-bottom: 1rem;"></div>
+                <div class="skeleton-text skeleton-text-xs" style="width: 80px;"></div>
+              </div>
+            </div>
+          {/each}
         </div>
       {:else}
         <!-- Featured Post -->
@@ -526,6 +581,13 @@
     flex-direction: column;
   }
 
+  @media (min-width: 768px) {
+    .featured-card {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+
   .featured-card:hover {
     border-color: rgba(0, 196, 0, 0.3);
     box-shadow: 0 20px 40px -20px rgba(0, 196, 0, 0.2);
@@ -533,9 +595,17 @@
 
   .featured-image {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, rgba(0, 100, 0, 0.15) 100%);
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 768px) {
+    .featured-image {
+      width: 40%;
+      aspect-ratio: 1 / 1;
+    }
   }
 
   .featured-image-img {
@@ -552,11 +622,15 @@
 
   .featured-content {
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   @media (min-width: 768px) {
     .featured-content {
       padding: 2.5rem;
+      width: 60%;
     }
   }
 
@@ -664,5 +738,47 @@
       height: 36px;
       font-size: 0.8rem;
     }
+  }
+
+  /* Skeleton Loader Styles */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .skeleton-loader {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .skeleton-text {
+    height: 1rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 0.5rem;
+  }
+
+  .skeleton-text-sm {
+    height: 0.75rem;
+  }
+
+  .skeleton-text-xs {
+    height: 0.5rem;
   }
 </style>

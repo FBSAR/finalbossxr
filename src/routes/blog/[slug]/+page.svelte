@@ -58,6 +58,7 @@
   
   // Parse markdown content
   $: renderedContent = post.content ? marked(post.content) : '';
+  $: isLoading = !post;
   
   let copied = false;
 
@@ -165,7 +166,13 @@
   </section>
 
   <!-- Featured Image -->
-  {#if post.feature_image_url}
+  {#if isLoading}
+    <section class="px-4 pb-8">
+      <div class="max-w-3xl mx-auto">
+        <div class="post-featured-image skeleton-loader"></div>
+      </div>
+    </section>
+  {:else if post.feature_image_url}
     <section class="px-4 pb-8">
       <div class="max-w-3xl mx-auto">
         <div class="post-featured-image">
@@ -183,19 +190,36 @@
   <section class="px-4 pb-2">
     <div class="max-w-3xl mx-auto">
       
-      <!-- Excerpt -->
-      {#if post.excerpt}
-        <p class="text-xl text-gray-400 my-6">
-          {post.excerpt}
-        </p>
-      {/if}
+      {#if isLoading}
+        <!-- Skeleton Content -->
+        <div class="space-y-4">
+          <div class="skeleton-text skeleton-text-lg" style="width: 60%;"></div>
+          <div class="skeleton-text" style="width: 100%;"></div>
+          <div class="skeleton-text" style="width: 100%;"></div>
+          <div class="skeleton-text" style="width: 95%;"></div>
+          <div class="skeleton-text skeleton-text-sm" style="width: 40%;"></div>
+          <div class="mt-8 space-y-4">
+            <div class="skeleton-text" style="width: 100%;"></div>
+            <div class="skeleton-text" style="width: 100%;"></div>
+            <div class="skeleton-text" style="width: 85%;"></div>
+          </div>
+        </div>
+      {:else}
+        <!-- Excerpt -->
+        {#if post.excerpt}
+          <p class="text-xl text-gray-400 my-6">
+            {post.excerpt}
+          </p>
+        {/if}
 
-      <article class="prose">
-        {@html renderedContent}
-      </article>
+        <article class="prose">
+          {@html renderedContent}
+        </article>
+      {/if}
       
       <!-- Share Buttons -->
-      <div class="mt-12 pt-8 border-t border-white/10">
+      {#if !isLoading}
+        <div class="mt-12 pt-8 border-t border-white/10">
         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Share this post</h3>
         <div class="flex gap-3">
           <button
@@ -234,11 +258,30 @@
           </button>
         </div>
       </div>
+      {/if}
     </div>
   </section>
 
   <!-- Related Posts -->
-  {#if relatedPosts.length > 0}
+  {#if isLoading}
+    <section class="px-4 pb-20">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-2xl gradient-text mb-8">Related Posts</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {#each Array(3) as _}
+            <div class="related-post-card">
+              <div class="related-post-image skeleton-loader"></div>
+              <div class="related-post-content">
+                <div class="skeleton-text skeleton-text-xs mb-2" style="width: 50%;"></div>
+                <div class="skeleton-text mb-2" style="width: 90%;"></div>
+                <div class="skeleton-text skeleton-text-sm" style="width: 70%;"></div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+    </section>
+  {:else if relatedPosts.length > 0}
     <section class="px-4 pb-20">
       <div class="max-w-6xl mx-auto">
         <h2 class="text-2xl gradient-text mb-8">Related Posts</h2>
@@ -643,5 +686,47 @@
 
   .prose :global(tr:hover td) {
     background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* Skeleton Loader Styles */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .skeleton-loader {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .skeleton-text {
+    height: 1rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 0.5rem;
+  }
+
+  .skeleton-text-lg {
+    height: 1.5rem;
+  }
+
+  .skeleton-text-sm {
+    height: 0.75rem;
   }
 </style>

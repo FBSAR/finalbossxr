@@ -57,6 +57,7 @@
   
   // Parse markdown content
   $: renderedContent = post.content ? marked(post.content) : '';
+  $: isLoading = !post;
   
   let copied = false;
 
@@ -173,7 +174,13 @@
   </section>
 
   <!-- Featured Image -->
-  {#if post.feature_image_url}
+  {#if isLoading}
+    <section class="px-4 pb-8">
+      <div class="max-w-3xl mx-auto">
+        <div class="post-featured-image skeleton-loader"></div>
+      </div>
+    </section>
+  {:else if post.feature_image_url}
     <section class="px-4 pb-8">
       <div class="max-w-3xl mx-auto">
         <div class="post-featured-image">
@@ -191,19 +198,36 @@
   <section class="px-4 pb-2">
     <div class="max-w-3xl mx-auto">
       
-      <!-- Excerpt -->
-      {#if post.excerpt}
-        <p class="text-xl text-gray-400 my-6">
-          {post.excerpt}
-        </p>
-      {/if}
+      {#if isLoading}
+        <!-- Skeleton Content -->
+        <div class="space-y-4">
+          <div class="skeleton-text skeleton-text-lg" style="width: 60%;"></div>
+          <div class="skeleton-text" style="width: 100%;"></div>
+          <div class="skeleton-text" style="width: 100%;"></div>
+          <div class="skeleton-text" style="width: 95%;"></div>
+          <div class="skeleton-text skeleton-text-sm" style="width: 40%;"></div>
+          <div class="mt-8 space-y-4">
+            <div class="skeleton-text" style="width: 100%;"></div>
+            <div class="skeleton-text" style="width: 100%;"></div>
+            <div class="skeleton-text" style="width: 85%;"></div>
+          </div>
+        </div>
+      {:else}
+        <!-- Excerpt -->
+        {#if post.excerpt}
+          <p class="text-xl text-gray-400 my-6">
+            {post.excerpt}
+          </p>
+        {/if}
 
-      <article class="prose">
-        {@html renderedContent}
-      </article>
+        <article class="prose">
+          {@html renderedContent}
+        </article>
+      {/if}
       
       <!-- Draft Actions -->
-      <div class="mt-12 pt-8 border-t border-white/10">
+      {#if !isLoading}
+        <div class="mt-12 pt-8 border-t border-white/10">
         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Draft Actions</h3>
         <div class="flex gap-3">
           <button
@@ -232,7 +256,8 @@
             Edit Draft
           </a>
         </div>
-      </div>
+        </div>
+      {/if}
     </div>
   </section>
 
@@ -436,5 +461,47 @@
     height: 1px;
     background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
     margin: 3rem 0;
+  }
+
+  /* Skeleton Loader Styles */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .skeleton-loader {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .skeleton-text {
+    height: 1rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 0.5rem;
+  }
+
+  .skeleton-text-lg {
+    height: 1.5rem;
+  }
+
+  .skeleton-text-sm {
+    height: 0.75rem;
   }
 </style>
