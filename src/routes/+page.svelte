@@ -9,8 +9,7 @@
    */
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
-  // HIDDEN: Contact form temporarily disabled
-  // import ContactForm from '$lib/components/ContactForm.svelte';
+  import ContactForm from '$lib/components/ContactForm.svelte';
   import HeroSection from '$lib/components/landing/HeroSection.svelte';
   import FeaturedProject from '$lib/components/landing/FeaturedProject.svelte';
   import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
@@ -252,12 +251,11 @@
   <!-- HIDDEN: Kickstarter campaign ended -->
   <!-- <KickstarterPromo /> -->
 
-  <!-- HIDDEN: Contact form temporarily disabled -->
-  <!-- <section class="contact-section" aria-label="Contact Us">
+  <section class="contact-section" aria-label="Contact Us">
     <div class="contact-container">
       <ContactForm />
     </div>
-  </section> -->
+  </section>
 </main>
 
 <style>
