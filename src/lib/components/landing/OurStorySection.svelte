@@ -968,13 +968,6 @@
     50% { transform: translateY(-5px) scale(1.05); }
   }
 
-  .quote-icon {
-    width: 40px;
-    height: 40px;
-    stroke: rgba(0, 196, 0, 0.5);
-    margin-bottom: 1.5rem;
-  }
-
   .mission-text {
     position: relative;
     font-size: clamp(1.125rem, 2vw, 1.375rem);

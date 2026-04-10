@@ -304,17 +304,7 @@
     transform: translateZ(0);
   }
 
-  /* Contact Section */
-  .contact-section {
-    padding: 6rem 2rem;
-    contain: layout paint;
-  }
-
   @media (max-width: 768px) {
-    .contact-section {
-      padding: 4rem 1rem;
-    }
-    
     /* Reduce animation complexity on mobile for better performance */
     .landing-page :global(.floating-shapes .shape) {
       animation-play-state: paused;
@@ -326,10 +316,5 @@
         animation-play-state: running;
       }
     }
-  }
-
-  .contact-container {
-    max-width: 800px;
-    margin: 0 auto;
   }
 </style>
