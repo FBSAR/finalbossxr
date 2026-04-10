@@ -9,8 +9,16 @@
   $: post = data.post;
   $: relatedPosts = data.relatedPosts;
   
-  // Custom image renderer to support height syntax: ![alt](url){height=300px}
-  const imageRenderer = (token: any) => {
+  // List of video file extensions
+  const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.mkv', '.avi', '.flv', '.wmv'];
+  
+  // Check if URL is a video file
+  const isVideoFile = (url: string): boolean => {
+    return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
+  };
+  
+  // Custom renderer to support images and videos with height syntax: ![alt{height=300px}](url)
+  const mediaRenderer = (token: any) => {
     const { text, href, title } = token;
     let height = '';
     let finalText = text;
@@ -25,6 +33,14 @@
     const heightStyle = height ? ` style="height: ${height}; width: auto;"` : '';
     const titleAttr = title ? ` title="${title}"` : '';
     
+    // Check if it's a video file
+    if (isVideoFile(href)) {
+      const controls = 'controls';
+      const preload = 'metadata';
+      return `<video ${controls} ${preload}${heightStyle}><source src="${href}" type="video/mp4"><p>Your browser doesn't support HTML5 video.</p></video>`;
+    }
+    
+    // Otherwise render as image
     return `<img src="${href}" alt="${finalText}"${titleAttr}${heightStyle} />`;
   };
   
@@ -34,9 +50,9 @@
     gfm: true
   });
   
-  // Override the image renderer
+  // Override the image renderer with media renderer (handles both images and videos)
   const renderer = new marked.Renderer();
-  renderer.image = imageRenderer;
+  renderer.image = mediaRenderer;
   marked.setOptions({ renderer });
   
   // Parse markdown content
@@ -456,6 +472,14 @@
     border-radius: 1rem;
     margin: 2rem 0;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .prose :global(video) {
+    width: 100%;
+    border-radius: 1rem;
+    margin: 2rem 0;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
   }
 
   .prose :global(a) {

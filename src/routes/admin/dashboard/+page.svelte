@@ -847,6 +847,10 @@
                     <code>![alt](url)</code>
                   </div>
                   <div class="markdown-guide-item">
+                    <strong>Image Height</strong>
+                    <code>![alt{'{'} height=300px{'}'}](url)</code>
+                  </div>
+                  <div class="markdown-guide-item">
                     <strong>List</strong>
                     <code>- item</code>
                   </div>
@@ -871,9 +875,13 @@
                     <code>~~text~~</code>
                   </div>
                   <div class="markdown-guide-item">
-                    <strong>Image Height</strong>
-                    <code>![alt{'{'} height=300px{'}'}](url)</code>
+                    <strong>Video</strong>
+                    <code>![alt](video.mp4)</code>
                   </div>
+                  <!-- <div class="markdown-guide-item">
+                    <strong>Video Height</strong>
+                    <code>![alt{'{'} height=400px{'}'}](video.mp4)</code>
+                  </div> -->
                 </div>
               </div>
             {/if}
