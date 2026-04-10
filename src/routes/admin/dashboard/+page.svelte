@@ -870,6 +870,10 @@
                     <strong>Strikethrough</strong>
                     <code>~~text~~</code>
                   </div>
+                  <div class="markdown-guide-item">
+                    <strong>Image Height</strong>
+                    <code>![alt{'{'} height=300px{'}'}](url)</code>
+                  </div>
                 </div>
               </div>
             {/if}

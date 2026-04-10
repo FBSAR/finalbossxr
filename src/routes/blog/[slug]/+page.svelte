@@ -9,11 +9,35 @@
   $: post = data.post;
   $: relatedPosts = data.relatedPosts;
   
+  // Custom image renderer to support height syntax: ![alt](url){height=300px}
+  const imageRenderer = (token: any) => {
+    const { text, href, title } = token;
+    let height = '';
+    let finalText = text;
+    
+    // Parse height from text if present: text{height=300px}
+    const heightMatch = text.match(/\{height=([^}]+)\}/);
+    if (heightMatch) {
+      height = heightMatch[1];
+      finalText = text.replace(/\s*\{height=[^}]+\}/, '');
+    }
+    
+    const heightStyle = height ? ` style="height: ${height}; width: auto;"` : '';
+    const titleAttr = title ? ` title="${title}"` : '';
+    
+    return `<img src="${href}" alt="${finalText}"${titleAttr}${heightStyle} />`;
+  };
+  
   // Configure marked for GitHub-flavored markdown
   marked.setOptions({
     breaks: true,
     gfm: true
   });
+  
+  // Override the image renderer
+  const renderer = new marked.Renderer();
+  renderer.image = imageRenderer;
+  marked.setOptions({ renderer });
   
   // Parse markdown content
   $: renderedContent = post.content ? marked(post.content) : '';
