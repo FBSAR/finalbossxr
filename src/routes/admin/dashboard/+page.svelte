@@ -9,6 +9,10 @@
   let editingBlog: any = null;
   let expandedApp: number | null = null;
   
+  // Loading state
+  let isSubmitting = false;
+  let deletingIds: Set<string | number> = new Set();
+  
   // Jobs state
   let showJobModal = false;
   let editingJob: any = null;
@@ -155,6 +159,16 @@
 </svelte:head>
 
 <div class="admin-container">
+  <!-- Loading Spinner Overlay -->
+  {#if isSubmitting}
+    <div class="loading-overlay">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+        <p class="spinner-text">Saving...</p>
+      </div>
+    </div>
+  {/if}
+
   <!-- Toast Notification -->
   {#if toast}
     <div class="toast" class:error={toast.type === 'error'} class:success={toast.type === 'success'}>
@@ -374,17 +388,34 @@
                   {/if}
                   <button class="btn-sm" on:click={() => openBlogModal(blog)}>Edit</button>
                   <form method="POST" action="?/deleteBlog" use:enhance={() => {
-                    return async ({ result, update }) => {
+                    return async ({ result, update, formData }) => {
+                      const blogId = String(blog.id);
+                      deletingIds.add(blogId);
+                      deletingIds = deletingIds;
+                      
                       if (result.type === 'success') {
                         showToast('Blog deleted successfully', 'success');
                         await update();
+                        // Keep spinner visible until item is actually gone from the list
+                        // The update() re-fetches data, so the item should be gone now
+                        deletingIds.delete(blogId);
+                        deletingIds = deletingIds;
                       } else if (result.type === 'failure' || result.type === 'error') {
                         showToast('Failed to delete blog', 'error');
+                        await update();
+                        deletingIds.delete(blogId);
+                        deletingIds = deletingIds;
                       }
                     };
                   }} style="display:inline;">
                     <input type="hidden" name="id" value={blog.id} />
-                    <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this blog?')}>🗑</button>
+                    <button type="submit" class="btn-sm btn-danger" disabled={deletingIds.has(String(blog.id))} on:click={(e) => confirmDelete(e, 'Delete this blog?')}>
+                      {#if deletingIds.has(String(blog.id))}
+                        <span class="btn-spinner"></span>
+                      {:else}
+                        🗑
+                      {/if}
+                    </button>
                   </form>
                 </div>
               </div>
@@ -425,17 +456,34 @@
               <div class="job-actions">
                 <button class="btn-sm" on:click={() => openJobModal(job)}>Edit</button>
                 <form method="POST" action="?/deleteJob" use:enhance={() => {
-                  return async ({ result, update }) => {
+                  return async ({ result, update, formData }) => {
+                    const jobId = String(job.id);
+                    deletingIds.add(jobId);
+                    deletingIds = deletingIds;
+                    
                     if (result.type === 'success') {
                       showToast('Job deleted successfully', 'success');
                       await update();
+                      // Keep spinner visible until item is actually gone from the list
+                      // The update() re-fetches data, so the item should be gone now
+                      deletingIds.delete(jobId);
+                      deletingIds = deletingIds;
                     } else if (result.type === 'failure' || result.type === 'error') {
                       showToast('Failed to delete job', 'error');
+                      await update();
+                      deletingIds.delete(jobId);
+                      deletingIds = deletingIds;
                     }
                   };
                 }} style="display:inline;">
                   <input type="hidden" name="id" value={job.id} />
-                  <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this job?')}>🗑</button>
+                  <button type="submit" class="btn-sm btn-danger" disabled={deletingIds.has(String(job.id))} on:click={(e) => confirmDelete(e, 'Delete this job?')}>
+                    {#if deletingIds.has(String(job.id))}
+                      <span class="btn-spinner"></span>
+                    {:else}
+                      🗑
+                    {/if}
+                  </button>
                 </form>
               </div>
             </div>
@@ -709,17 +757,18 @@
           <button class="close-btn" on:click={closeDraftModal}>×</button>
         </div>
         <form method="POST" action={editingDraft ? '?/updateDraft' : '?/createDraft'} use:enhance={() => {
+          isSubmitting = true;
           return async ({ result, update }) => {
             if (result.type === 'success') {
               closeDraftModal();
               showToast(editingDraft ? 'Draft updated!' : 'Draft created!', 'success');
-              await update();
             } else if (result.type === 'failure') {
               const data = result.data;
               const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
               showToast(errorMessage, 'error');
-              await update();
             }
+            await update();
+            isSubmitting = false;
           };
         }}>
           {#if editingDraft}
@@ -771,18 +820,19 @@
           <button class="close-btn" on:click={closeBlogModal}>×</button>
         </div>
         <form method="POST" action={editingBlog ? '?/updateBlog' : '?/createBlog'} use:enhance={() => {
+          isSubmitting = true;
           return async ({ result, update }) => {
             if (result.type === 'success') {
               closeBlogModal();
               showToast(editingBlog ? 'Blog updated successfully!' : 'Blog created successfully!', 'success');
-              await update();
             } else if (result.type === 'failure') {
               // Show error toast but keep modal open
               const data = result.data;
               const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
               showToast(errorMessage, 'error');
-              await update();
             }
+            await update();
+            isSubmitting = false;
           };
         }}>
           {#if editingBlog}
@@ -923,18 +973,19 @@
       <div class="modal" role="document" on:click|stopPropagation on:keydown|stopPropagation>
         <h2>{editingJob ? 'Edit Job' : 'Create New Job'}</h2>
         <form method="POST" action={editingJob ? '?/updateJob' : '?/createJob'} use:enhance={() => {
+          isSubmitting = true;
           return async ({ result, update }) => {
             if (result.type === 'success') {
               closeJobModal();
               showToast(editingJob ? 'Job updated successfully!' : 'Job created successfully!', 'success');
-              await update();
             } else if (result.type === 'failure') {
               // Show error toast but keep modal open
               const data = result.data;
               const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
               showToast(errorMessage, 'error');
-              await update();
             }
+            await update();
+            isSubmitting = false;
           };
         }}>
           {#if editingJob}
@@ -1938,7 +1989,7 @@
     border: 1px solid rgba(0, 196, 0, 0.3);
     border-radius: 0.75rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 196, 0, 0.1);
-    z-index: 200;
+    z-index: 9999;
     animation: slideIn 0.3s ease;
     max-width: 400px;
   }
@@ -2420,5 +2471,63 @@
   select option {
     background: #12121a;
     color: #e0e0e0;
+  }
+
+  /* Loading Spinner */
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+
+  .spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(0, 196, 0, 0.2);
+    border-top-color: #00c400;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spinner-text {
+    font-size: 1rem;
+    color: #00c400;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  /* Button Spinner */
+  .btn-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  button[type="submit"]:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 </style>

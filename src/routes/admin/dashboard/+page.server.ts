@@ -32,7 +32,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
     blogs = await db`
       SELECT id, title, slug, excerpt, content, feature_image_url, published, featured, created_at, updated_at
       FROM blogs
-      ORDER BY created_at DESC
+      ORDER BY featured DESC, created_at DESC
     `;
   } catch (e) {
     // blogs table may not exist yet
