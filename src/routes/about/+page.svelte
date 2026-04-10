@@ -3,7 +3,7 @@
   // HIDDEN: Contact form temporarily disabled
   // import ContactForm from '$lib/components/ContactForm.svelte';
   import OurStorySection from '$lib/components/landing/OurStorySection.svelte';
-  // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
+  import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import { navigating } from '$app/stores';
 
   // Loading state for navigation
@@ -18,18 +18,12 @@
       },
       {
         name: 'Keith Dunklin',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/keith-pic.jpg',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/Keith_Pro_Pic.jpg',
         title: 'COO / Co-Founder / Game Developer',
         linkedin: 'https://www.linkedin.com/in/keith-dunklin-9a838543/',
       }
   ]
   let advisors = [
-      {
-        name: 'Edward Kim',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/ed-pic-2.jpeg',
-        title: 'Business Advisor',
-        linkedin: "https://www.linkedin.com/in/edwardkim1/",
-      },
       {
         name: 'Terrell Thomas',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/terrel_pic.png',
@@ -196,8 +190,7 @@
   <div class="h-10 lg:h-32"></div>
 
   <!-- Kickstarter Promo -->
-  <!-- Kickstarter Promo -->
-  <!-- <KickstarterPromo /> -->
+  <KickstarterPromo />
 
 </main>
 <style>
