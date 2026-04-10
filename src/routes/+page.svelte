@@ -21,6 +21,8 @@
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import OurStorySection from '$lib/components/landing/OurStorySection.svelte';
 
+  export let data;
+
   let scrollY = 0;
   let windowWidth = 0;
   
@@ -232,7 +234,7 @@
   />
 
   <!-- Blog Section -->
-  <BlogSection />
+  <BlogSection blogs={data.blogs} />
 
   <!-- Job Postings -->
   <JobsSection />

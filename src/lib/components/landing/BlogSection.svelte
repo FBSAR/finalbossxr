@@ -1,5 +1,24 @@
 <script lang="ts">
   // Blog section component
+  interface BlogPost {
+    id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    author: string;
+    published: boolean;
+    created_at: string;
+  }
+
+  export let blogs: BlogPost[] = [];
+
+  function formatDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
 </script>
 
 <section class="blog-section" aria-label="Blog">
@@ -10,80 +29,38 @@
     </div>
 
     <div class="blog-grid">
-      <!-- Blog Card 1 -->
-      <article class="blog-card">
-        <div class="blog-image">
-          <div class="blog-image-placeholder">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <circle cx="8.5" cy="8.5" r="1.5"></circle>
-              <polyline points="21 15 16 10 5 21"></polyline>
-            </svg>
-          </div>
-          <span class="blog-category">Development</span>
+      {#if blogs.length > 0}
+        {#each blogs as blog (blog.id)}
+          <article class="blog-card">
+            <div class="blog-image">
+              <div class="blog-image-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+              </div>
+              <span class="blog-category">{blog.author}</span>
+            </div>
+            <div class="blog-content">
+              <span class="blog-date">{formatDate(blog.created_at)}</span>
+              <h3 class="blog-title">{blog.title}</h3>
+              <p class="blog-excerpt">{blog.excerpt}</p>
+              <a href="/blog/{blog.slug}" class="blog-link">
+                Read More
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+        {/each}
+      {:else}
+        <div class="no-blogs">
+          <h3>No Blog Posts Yet</h3>
+          <p>Check back soon for our latest updates and insights!</p>
         </div>
-        <div class="blog-content">
-          <span class="blog-date">Jan 15, 2026</span>
-          <h3 class="blog-title">Building Immersive Experiences with Unreal Engine 5</h3>
-          <p class="blog-excerpt">Explore how we leverage the latest UE5 features to create stunning XR applications...</p>
-          <a href="/blog/placeholder-1" class="blog-link">
-            Read More
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-      </article>
-
-      <!-- Blog Card 2 -->
-      <article class="blog-card">
-        <div class="blog-image">
-          <div class="blog-image-placeholder">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <circle cx="8.5" cy="8.5" r="1.5"></circle>
-              <polyline points="21 15 16 10 5 21"></polyline>
-            </svg>
-          </div>
-          <span class="blog-category">XR Insights</span>
-        </div>
-        <div class="blog-content">
-          <span class="blog-date">Jan 10, 2026</span>
-          <h3 class="blog-title">The Future of Spatial Computing in Enterprise</h3>
-          <p class="blog-excerpt">How businesses are adopting XR technologies to transform workflows and collaboration...</p>
-          <a href="/blog/placeholder-2" class="blog-link">
-            Read More
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-      </article>
-
-      <!-- Blog Card 3 -->
-      <article class="blog-card">
-        <div class="blog-image">
-          <div class="blog-image-placeholder">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <circle cx="8.5" cy="8.5" r="1.5"></circle>
-              <polyline points="21 15 16 10 5 21"></polyline>
-            </svg>
-          </div>
-          <span class="blog-category">Behind the Scenes</span>
-        </div>
-        <div class="blog-content">
-          <span class="blog-date">Jan 5, 2026</span>
-          <h3 class="blog-title">Cosmic Collisions: From Concept to Launch</h3>
-          <p class="blog-excerpt">A deep dive into the creative process behind our first mobile game release...</p>
-          <a href="/blog/placeholder-3" class="blog-link">
-            Read More
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-      </article>
+      {/if}
     </div>
   </div>
 </section>
@@ -237,6 +214,26 @@
 
   .blog-link:hover {
     gap: 0.75rem;
+  }
+
+  .no-blogs {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+  }
+
+  .no-blogs h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .no-blogs p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.95rem;
   }
 
 </style>
