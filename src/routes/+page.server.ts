@@ -15,35 +15,34 @@ export async function load() {
 	try {
 		const sql = neon(env.DATABASE_URL);
 		
-		// Fetch featured blog
-		const featuredBlog = await sql`
-			SELECT id, title, slug, excerpt, feature_image_url, published, featured, created_at
-			FROM blogs
-			WHERE published = true AND featured = true
-			LIMIT 1
-		`;
-
-		// Fetch 2 most recent blogs
-		const recentBlogs = await sql`
-			SELECT id, title, slug, excerpt, feature_image_url, published, featured, created_at
-			FROM blogs
-			WHERE published = true
-			ORDER BY created_at DESC
-			LIMIT 2
-		`;
+		// Run all queries in parallel for faster page loads
+		const [featuredBlog, recentBlogs, jobs] = await Promise.all([
+			sql`
+				SELECT id, title, slug, excerpt, feature_image_url, published, featured, created_at
+				FROM blogs
+				WHERE published = true AND featured = true
+				LIMIT 1
+			`,
+			sql`
+				SELECT id, title, slug, excerpt, feature_image_url, published, featured, created_at
+				FROM blogs
+				WHERE published = true
+				ORDER BY created_at DESC
+				LIMIT 2
+			`,
+			sql`
+				SELECT id, title, department, job_type, location, description, published, created_at
+				FROM jobs
+				WHERE published = true
+				ORDER BY created_at DESC
+			`
+		]);
 
 		// Combine: featured first, then recent blogs (and filter out featured if it was in recent)
 		const blogs = [
 			...(featuredBlog.length > 0 ? featuredBlog : []),
 			...recentBlogs.filter(blog => featuredBlog.length === 0 || blog.id !== featuredBlog[0].id)
 		];
-
-		const jobs = await sql`
-			SELECT id, title, department, job_type, location, description, icon, published, created_at
-			FROM jobs
-			WHERE published = true
-			ORDER BY created_at DESC
-		`;
 
 		return {
 			blogs: blogs as Array<{
@@ -63,7 +62,6 @@ export async function load() {
 				job_type: string;
 				location: string;
 				description: string;
-				icon: string;
 				published: boolean;
 				created_at: string;
 			}>

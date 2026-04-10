@@ -43,7 +43,6 @@ export async function load() {
 				job_type: string;
 				location: string;
 				description: string;
-				icon: string;
 				published: boolean;
 				created_at: string;
 			}>
