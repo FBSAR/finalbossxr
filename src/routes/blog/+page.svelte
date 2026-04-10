@@ -433,6 +433,7 @@
   }
 
   .blog-title {
+    font-family: "Raleway", sans-serif;
     font-size: 1.125rem;
     font-weight: 400;
     color: #fff;

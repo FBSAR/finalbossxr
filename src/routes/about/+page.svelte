@@ -311,6 +311,7 @@
   }
 
   .card-name {
+    font-family: "Raleway", sans-serif;
     font-size: 1.35rem;
     font-weight: 700;
     margin-bottom: 0.375rem;

@@ -98,4 +98,20 @@ try {
   console.log('Done: 006_add_feature_image_to_blogs (column already exists)');
 }
 
+// 007_create_jobs
+await sql`CREATE TABLE IF NOT EXISTS jobs (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  department VARCHAR(100) NOT NULL,
+  job_type VARCHAR(50) NOT NULL,
+  location VARCHAR(100) DEFAULT 'Remote',
+  description TEXT NOT NULL,
+  icon VARCHAR(10) DEFAULT '💼',
+  published BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+)`;
+await sql`CREATE INDEX IF NOT EXISTS idx_jobs_published ON jobs(published)`;
+console.log('Done: 007_create_jobs');
+
 console.log('All migrations complete!');

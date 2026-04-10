@@ -4,10 +4,15 @@
   export let data;
   export let form;
 
-  let activeTab: 'applications' | 'blogs' | 'newsletter' = 'applications';
+  let activeTab: 'applications' | 'blogs' | 'newsletter' | 'jobs' = 'applications';
   let showBlogModal = false;
   let editingBlog: any = null;
   let expandedApp: number | null = null;
+  
+  // Jobs state
+  let showJobModal = false;
+  let editingJob: any = null;
+  let jobForm = { title: '', department: '', job_type: '', location: 'Remote', description: '', icon: '💼', published: true };
   
   // Newsletter state
   let showDraftModal = false;
@@ -94,6 +99,23 @@
     blogForm.slug = blogForm.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
   }
 
+  // Job modal functions
+  function openJobModal(job?: any) {
+    if (job) {
+      editingJob = job;
+      jobForm = { ...job };
+    } else {
+      editingJob = null;
+      jobForm = { title: '', department: '', job_type: '', location: 'Remote', description: '', icon: '💼', published: true };
+    }
+    showJobModal = true;
+  }
+
+  function closeJobModal() {
+    showJobModal = false;
+    editingJob = null;
+  }
+
   // Newsletter draft functions
   function openDraftModal(draft?: any) {
     if (draft) {
@@ -163,6 +185,11 @@
         <span class="tab-icon">📋</span>
         <span class="tab-text">Applications</span>
         <span class="tab-count">({data.jobApplications.length})</span>
+      </button>
+      <button class:active={activeTab === 'jobs'} on:click={() => activeTab = 'jobs'}>
+        <span class="tab-icon">💼</span>
+        <span class="tab-text">Jobs</span>
+        <span class="tab-count">({data.jobs.length})</span>
       </button>
       <button class:active={activeTab === 'blogs'} on:click={() => activeTab = 'blogs'}>
         <span class="tab-icon">📝</span>
@@ -356,6 +383,56 @@
                     <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this blog?')}>🗑</button>
                   </form>
                 </div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      {/if}
+    </div>
+  {/if}
+
+  <!-- Jobs Tab -->
+  {#if activeTab === 'jobs'}
+    <div class="section">
+      <div class="section-header">
+        <button class="btn-primary" on:click={() => openJobModal()}>+ New Job</button>
+      </div>
+      
+      {#if data.jobs.length === 0}
+        <div class="empty-state">No jobs posted yet. Create your first opening!</div>
+      {:else}
+        <div class="jobs-list">
+          {#each data.jobs as job}
+            <div class="job-card admin-view">
+              <div class="job-meta">
+                {#if job.published}<span class="tag green">Published</span>{:else}<span class="tag">Draft</span>{/if}
+              </div>
+              <div class="job-header">
+                <div>
+                  <h3>{job.icon} {job.title}</h3>
+                  <div class="job-info">
+                    <span class="department">{job.department}</span>
+                    <span class="job-type">{job.job_type}</span>
+                    <span class="location">{job.location}</span>
+                  </div>
+                </div>
+              </div>
+              <p class="description">{job.description}</p>
+              <div class="job-actions">
+                <button class="btn-sm" on:click={() => openJobModal(job)}>Edit</button>
+                <form method="POST" action="?/deleteJob" use:enhance={() => {
+                  return async ({ result, update }) => {
+                    if (result.type === 'success') {
+                      showToast('Job deleted successfully', 'success');
+                      await update();
+                    } else if (result.type === 'failure' || result.type === 'error') {
+                      showToast('Failed to delete job', 'error');
+                    }
+                  };
+                }} style="display:inline;">
+                  <input type="hidden" name="id" value={job.id} />
+                  <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Delete this job?')}>🗑</button>
+                </form>
               </div>
             </div>
           {/each}
@@ -749,6 +826,75 @@
           <div class="form-actions">
             <button type="button" class="btn-secondary" on:click={closeBlogModal}>Cancel</button>
             <button type="submit" class="btn-primary">{editingBlog ? 'Update' : 'Create'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {/if}
+
+  <!-- Job Modal -->
+  {#if showJobModal}
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <div class="modal-overlay" role="dialog" aria-modal="true" on:click={closeJobModal} on:keydown={(e) => e.key === 'Escape' && closeJobModal()}>
+      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+      <div class="modal" role="document" on:click|stopPropagation on:keydown|stopPropagation>
+        <h2>{editingJob ? 'Edit Job' : 'Create New Job'}</h2>
+        <form method="POST" action={editingJob ? '?/updateJob' : '?/createJob'} use:enhance={() => {
+          return async ({ result, update }) => {
+            if (result.type === 'success') {
+              closeJobModal();
+              showToast(editingJob ? 'Job updated successfully!' : 'Job created successfully!', 'success');
+              await update();
+            } else if (result.type === 'failure') {
+              // Show error toast but keep modal open
+              const data = result.data;
+              const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
+              showToast(errorMessage, 'error');
+              await update();
+            }
+          };
+        }}>
+          {#if editingJob}
+            <input type="hidden" name="id" value={editingJob.id} />
+          {/if}
+
+          <div class="form-group">
+            <label for="job-icon">Icon</label>
+            <input type="text" id="job-icon" name="icon" bind:value={jobForm.icon} maxlength="2" placeholder="e.g., 💼" required />
+          </div>
+
+          <div class="form-group">
+            <label for="job-title">Job Title</label>
+            <input type="text" id="job-title" name="title" bind:value={jobForm.title} placeholder="e.g., Game Developer" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="job-department">Department</label>
+              <input type="text" id="job-department" name="department" bind:value={jobForm.department} placeholder="e.g., Engineering" required />
+            </div>
+            <div class="form-group">
+              <label for="job-type">Type</label>
+              <input type="text" id="job-type" name="job_type" bind:value={jobForm.job_type} placeholder="e.g., Full-time" required />
+            </div>
+            <div class="form-group">
+              <label for="job-location">Location</label>
+              <input type="text" id="job-location" name="location" bind:value={jobForm.location} placeholder="e.g., Remote" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="job-description">Description</label>
+            <textarea id="job-description" name="description" bind:value={jobForm.description} placeholder="Job description..." rows="6" required></textarea>
+          </div>
+
+          <div class="form-row-inline">
+            <label><input type="checkbox" name="published" value="true" bind:checked={jobForm.published} /> Published</label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" on:click={closeJobModal}>Cancel</button>
+            <button type="submit" class="btn-primary">{editingJob ? 'Update' : 'Create'}</button>
           </div>
         </form>
       </div>
@@ -1271,6 +1417,61 @@
   }
   .date { color: #555; font-size: 0.75rem; }
   .blog-actions { display: flex; gap: 0.35rem; }
+
+  /* Jobs List */
+  .jobs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .job-card.admin-view {
+    padding: 1.25rem;
+    background: linear-gradient(145deg, #12121a 0%, #0d0d14 100%);
+    border: 1px solid #1a1a24;
+    border-radius: 0.75rem;
+    transition: all 0.25s ease;
+  }
+  .job-card.admin-view:hover {
+    border-color: rgba(147, 51, 234, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transform: translateX(2px);
+  }
+  .job-header {
+    margin-bottom: 1rem;
+  }
+  .job-header h3 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+    color: #f0f0f0;
+  }
+  .job-info {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .job-info span {
+    font-size: 0.85rem;
+    color: #888;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .job-card.admin-view .description {
+    color: #999;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .job-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
 
   /* Modal */
   .modal-overlay {

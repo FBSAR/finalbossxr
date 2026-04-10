@@ -9,17 +9,25 @@ export const prerender = false;
 const DISCORD_WEBHOOK_URL = env.DISCORD_CONTACT_FORM_HOOK_URL;
 
 /**
- * Loads the last 3 published blog posts from the database
+ * Loads the last 3 published blog posts and all published jobs from the database
  */
 export async function load() {
 	try {
 		const sql = neon(env.DATABASE_URL);
+		
 		const blogs = await sql`
 			SELECT id, title, slug, excerpt, feature_image_url, published, created_at
 			FROM blogs
 			WHERE published = true
 			ORDER BY created_at DESC
 			LIMIT 3
+		`;
+
+		const jobs = await sql`
+			SELECT id, title, department, job_type, location, description, icon, published, created_at
+			FROM jobs
+			WHERE published = true
+			ORDER BY created_at DESC
 		`;
 
 		return {
@@ -31,12 +39,24 @@ export async function load() {
 				feature_image_url: string | null;
 				published: boolean;
 				created_at: string;
+			}>,
+			jobs: jobs as Array<{
+				id: number;
+				title: string;
+				department: string;
+				job_type: string;
+				location: string;
+				description: string;
+				icon: string;
+				published: boolean;
+				created_at: string;
 			}>
 		};
 	} catch (error) {
-		console.error('Error fetching blogs:', error);
+		console.error('Error fetching blogs or jobs:', error);
 		return {
-			blogs: []
+			blogs: [],
+			jobs: []
 		};
 	}
 }

@@ -1,6 +1,8 @@
 import { fail } from '@sveltejs/kit';
 import { getDb, initializeJobApplicationsTable, saveCapturedBot, addToEmailList } from '$lib/db';
 import { sendApplicationConfirmationEmail } from '$lib/email';
+import { env } from '$env/dynamic/private';
+import { neon } from '@neondatabase/serverless';
 import type { Actions } from './$types';
 
 export const prerender = false;
@@ -18,6 +20,40 @@ async function ensureTableExists() {
             // Don't throw - the table might already exist
         }
     }
+}
+
+/**
+ * Loads all published jobs from the database
+ */
+export async function load() {
+	try {
+		const sql = neon(env.DATABASE_URL);
+		const jobs = await sql`
+			SELECT id, title, department, job_type, location, description, icon, published, created_at
+			FROM jobs
+			WHERE published = true
+			ORDER BY created_at DESC
+		`;
+
+		return {
+			jobs: jobs as Array<{
+				id: number;
+				title: string;
+				department: string;
+				job_type: string;
+				location: string;
+				description: string;
+				icon: string;
+				published: boolean;
+				created_at: string;
+			}>
+		};
+	} catch (error) {
+		console.error('Error fetching jobs:', error);
+		return {
+			jobs: []
+		};
+	}
 }
 
 export const actions: Actions = {

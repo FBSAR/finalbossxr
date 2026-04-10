@@ -6,6 +6,8 @@
   import { enhance } from '$app/forms';
   import BotProtection from '$lib/components/BotProtection.svelte';
 
+  export let data;
+
   // ⚠️ DEV MODE - Set to true to auto-fill form fields for testing
   const devMode = false;
 
@@ -13,39 +15,19 @@
   let currentSlide = 0;
   let sliderContainer: HTMLDivElement;
 
-  // Job Listings
-  const jobs = [
-    {
-      id: 1,
-      title: 'Game Developer',
-      department: 'Engineering',
-      icon: '🎮',
-      location: 'Remote',
-      type: 'Part-time',
-      description: 'Join our team to build immersive XR gaming experiences using Unreal Engine. You\'ll work on cutting-edge VR/AR projects and help shape the future of interactive entertainment.',
-      requirements: [
-        'Proficiency in Unreal Engine 5 and C++',
-        'Experience with VR/AR development',
-        'Strong understanding of game mechanics and physics',
-        'Portfolio of shipped games or prototypes'
-      ]
-    },
-    {
-      id: 2,
-      title: 'Graphic Designer & Illustrator',
-      department: 'Design',
-      icon: '🎨',
-      location: 'Remote',
-      type: 'Project-based',
-      description: 'Design intuitive and visually stunning interfaces for our XR applications. Create experiences that push the boundaries of spatial computing and immersive design.',
-      requirements: [
-        'Strong portfolio showcasing UI/UX work',
-        'Experience with Figma or similar tools',
-        'Understanding of XR design principles',
-        'Eye for modern, accessible design'
-      ]
-    }
-  ];
+  // Job Listings from server
+  let jobs: Array<{
+    id: number;
+    title: string;
+    department: string;
+    job_type: string;
+    location: string;
+    description: string;
+    icon: string;
+    published: boolean;
+    created_at: string;
+    requirements?: string[];
+  }> = data.jobs || [];
 
   // Selected Job
   let selectedJob: typeof jobs[0] | null = null;
@@ -246,7 +228,7 @@
                 <div class="job-card-header">
                   <span class="job-icon">{job.icon}</span>
                   <div class="job-badges">
-                    <Badge color="green">{job.type}</Badge>
+                    <Badge color="green">{job.job_type}</Badge>
                     <Badge color="purple">{job.location}</Badge>
                   </div>
                 </div>
@@ -287,11 +269,13 @@
             <div class="requirements-section">
               <h3 class="requirements-title">Position Requirements</h3>
               <p class="job-description-full">{selectedJob.description}</p>
-              <ul class="requirements-list">
-                {#each selectedJob.requirements as req}
-                  <li>{req}</li>
-                {/each}
-              </ul>
+              {#if selectedJob?.requirements && selectedJob.requirements.length > 0}
+                <ul class="requirements-list">
+                  {#each selectedJob.requirements as req}
+                    <li>{req}</li>
+                  {/each}
+                </ul>
+              {/if}
             </div>
 
             <form 

@@ -1,5 +1,15 @@
 <script lang="ts">
-  // Jobs section component
+  export let jobs: Array<{
+    id: number;
+    title: string;
+    department: string;
+    job_type: string;
+    location: string;
+    description: string;
+    icon: string;
+    published: boolean;
+    created_at: string;
+  }> = [];
 </script>
 
 <section class="jobs-section" aria-label="Job Postings">
@@ -12,60 +22,54 @@
       </p>
     </div>
 
-    <div class="jobs-grid">
-      <!-- Job Card 1: Game Developer -->
-      <article class="job-card">
-        <div class="job-icon">🎮</div>
-        <div class="job-meta">
-          <span class="job-department">Engineering</span>
-          <span class="job-type">Part-time</span>
-        </div>
-        <h3 class="job-title">Game Developer</h3>
-        <p class="job-location">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
-          </svg>
-          Remote
-        </p>
-        <p class="job-description">
-          Join our team to build immersive XR gaming experiences using Unreal Engine. Work on cutting-edge VR/AR projects.
-        </p>
-      </article>
+    {#if jobs.length > 0}
+      <div class="jobs-grid">
+        {#each jobs as job (job.id)}
+          <article class="job-card">
+            <div class="job-icon">{job.icon}</div>
+            <div class="job-meta">
+              <span class="job-department">{job.department}</span>
+              <span class="job-type">{job.job_type}</span>
+            </div>
+            <h3 class="job-title">{job.title}</h3>
+            <p class="job-location">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              {job.location}
+            </p>
+            <p class="job-description">
+              {job.description}
+            </p>
+          </article>
+        {/each}
+      </div>
 
-      <!-- Job Card 2: Graphic Designer -->
-      <article class="job-card">
-        <div class="job-icon">🎨</div>
-        <div class="job-meta">
-          <span class="job-department">Design</span>
-          <span class="job-type">Project-based</span>
-        </div>
-        <h3 class="job-title">Graphic Designer & Illustrator</h3>
-        <p class="job-location">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
+      <div class="jobs-cta">
+        <a href="/jobs" class="view-all-jobs">
+          View All Open Positions
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
-          Remote
-        </p>
-        <p class="job-description">
-          Design intuitive and visually stunning interfaces for our XR applications. Push the boundaries of spatial computing.
-        </p>
-      </article>
-    </div>
-
-    <div class="jobs-cta">
-      <a href="/jobs" class="view-all-jobs">
-        View All Open Positions
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
+        </a>
+      </div>
+    {:else}
+      <div class="empty-state">
+        <p>No open positions at this time. Check back soon!</p>
+      </div>
+    {/if}
   </div>
 </section>
 
 <style>
+  .empty-state {
+    text-align: center;
+    color: #999;
+    padding: 3rem 2rem;
+    font-size: 1.125rem;
+  }
+
   /* Jobs Section */
   .jobs-section {
     padding: 6rem 2rem;
@@ -173,6 +177,7 @@
   }
 
   .job-title {
+    font-family: "Raleway", sans-serif;
     font-size: 1.25rem;
     font-weight: 600;
     color: white;

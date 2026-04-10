@@ -98,10 +98,23 @@ export const load: PageServerLoad = async ({ cookies }) => {
     console.log('Newsletter drafts table error:', e);
   }
 
+  // Fetch jobs
+  let jobs: any[] = [];
+  try {
+    jobs = await db`
+      SELECT id, title, department, job_type, location, description, icon, published, created_at, updated_at
+      FROM jobs
+      ORDER BY created_at DESC
+    `;
+  } catch (e) {
+    console.log('Jobs table not found, skipping...');
+  }
+
   return {
     adminEmail,
     jobApplications,
     blogs,
+    jobs,
     subscribers,
     newsletterDrafts,
     archivedNewsletters
@@ -390,5 +403,72 @@ export const actions: Actions = {
 
     await db`UPDATE newsletter_drafts SET archived = FALSE, updated_at = NOW() WHERE id = ${id}`;
     return { success: true, message: 'Newsletter restored' };
+  },
+
+  // Job Actions
+  createJob: async ({ request, cookies }) => {
+    const adminEmail = cookies.get('admin_auth');
+    if (!adminEmail || !ALLOWED_ADMINS.includes(adminEmail)) {
+      throw redirect(303, '/admin');
+    }
+
+    const data = await request.formData();
+    const title = data.get('title') as string;
+    const department = data.get('department') as string;
+    const job_type = data.get('job_type') as string;
+    const location = data.get('location') as string || 'Remote';
+    const description = data.get('description') as string;
+    const icon = data.get('icon') as string || '💼';
+    const published = data.get('published') === 'on';
+    const db = getDb();
+
+    await db`
+      INSERT INTO jobs (title, department, job_type, location, description, icon, published)
+      VALUES (${title}, ${department}, ${job_type}, ${location}, ${description}, ${icon}, ${published})
+    `;
+
+    return { success: true, message: 'Job created' };
+  },
+
+  updateJob: async ({ request, cookies }) => {
+    const adminEmail = cookies.get('admin_auth');
+    if (!adminEmail || !ALLOWED_ADMINS.includes(adminEmail)) {
+      throw redirect(303, '/admin');
+    }
+
+    const data = await request.formData();
+    const id = data.get('id');
+    const title = data.get('title') as string;
+    const department = data.get('department') as string;
+    const job_type = data.get('job_type') as string;
+    const location = data.get('location') as string || 'Remote';
+    const description = data.get('description') as string;
+    const icon = data.get('icon') as string || '💼';
+    const published = data.get('published') === 'on';
+    const db = getDb();
+
+    await db`
+      UPDATE jobs 
+      SET title = ${title}, department = ${department}, job_type = ${job_type}, 
+          location = ${location}, description = ${description}, icon = ${icon}, 
+          published = ${published}, updated_at = NOW()
+      WHERE id = ${id}
+    `;
+
+    return { success: true, message: 'Job updated' };
+  },
+
+  deleteJob: async ({ request, cookies }) => {
+    const adminEmail = cookies.get('admin_auth');
+    if (!adminEmail || !ALLOWED_ADMINS.includes(adminEmail)) {
+      throw redirect(303, '/admin');
+    }
+
+    const data = await request.formData();
+    const id = data.get('id');
+    const db = getDb();
+
+    await db`DELETE FROM jobs WHERE id = ${id}`;
+    return { success: true, message: 'Job deleted' };
   }
 };

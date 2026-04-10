@@ -237,7 +237,7 @@
   <BlogSection blogs={data.blogs} />
 
   <!-- Job Postings -->
-  <JobsSection />
+  <JobsSection jobs={data.jobs} />
   
   <!-- Our Story Section -->
   <OurStorySection 
