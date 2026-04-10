@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { navigating } from '$app/stores';
   // HIDDEN: Contact form temporarily disabled
   // import ContactForm from '$lib/components/ContactForm.svelte';
   // HIDDEN: Kickstarter campaign ended
@@ -8,9 +7,11 @@
     import { Button } from 'flowbite-svelte';
     import { AppleSolid } from 'flowbite-svelte-icons';
 
-  // Loading state for navigation
-  $: isLoading = $navigating !== null;
-
+  // Show skeleton while videos/images load
+  let showCharacters = false;
+  let videosLoaded = 0;
+  const totalVideos = 5; // 5 character videos
+  
   // Contact Form Submission
   function testerLink() {
        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
@@ -66,6 +67,22 @@
   let demoVideo: HTMLVideoElement;
 
   onMount(() => {
+    // Initialize video loading tracking
+    videosLoaded = 0;
+    showCharacters = true;
+    
+    // Only show skeleton if videos haven't loaded after 100ms (not cached)
+    let skeletonTimer = setTimeout(() => {
+      if (videosLoaded < totalVideos) {
+        showCharacters = false; // Videos are slow, show skeleton
+      }
+    }, 100);
+    
+    // Fallback: reveal content after 5s
+    let fallbackTimer = setTimeout(() => {
+      showCharacters = true;
+    }, 5000);
+    
     if (demoVideo) {
       // Ensure metadata is loaded
       const startVideo = () => {
@@ -82,71 +99,22 @@
         demoVideo.addEventListener('loadedmetadata', startVideo);
       }
     }
+    
+    return () => {
+      clearTimeout(skeletonTimer);
+      clearTimeout(fallbackTimer);
+    };
   });
+  
+  function handleVideoLoad() {
+    videosLoaded++;
+    if (videosLoaded >= totalVideos) {
+      showCharacters = true;
+    }
+  }
 </script>
 <main>
-  {#if isLoading}
-    <!-- Skeleton Loading State -->
-    <div class="skeleton-container">
-      <!-- Hero Skeleton -->
-      <div class="skeleton-hero">
-        <div class="skeleton-hero-content">
-          <div class="skeleton-logo"></div>
-          <div class="skeleton-card-large">
-            <div class="skeleton-badge"></div>
-            <div class="skeleton-title-large"></div>
-            <div class="skeleton-text-line"></div>
-            <div class="skeleton-tags">
-              <div class="skeleton-tag"></div>
-              <div class="skeleton-tag"></div>
-              <div class="skeleton-tag"></div>
-            </div>
-            <div class="skeleton-text-block"></div>
-            <div class="skeleton-buttons">
-              <div class="skeleton-button"></div>
-              <div class="skeleton-button"></div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Demo Section Skeleton -->
-      <div class="skeleton-section">
-        <div class="skeleton-demo-grid">
-          <div class="skeleton-card-large">
-            <div class="skeleton-badge"></div>
-            <div class="skeleton-title-large"></div>
-            <div class="skeleton-text-line"></div>
-            <div class="skeleton-tags">
-              <div class="skeleton-tag"></div>
-              <div class="skeleton-tag"></div>
-              <div class="skeleton-tag"></div>
-            </div>
-            <div class="skeleton-text-block"></div>
-            <div class="skeleton-button-full"></div>
-            <div class="skeleton-button-full"></div>
-          </div>
-          <div class="skeleton-phone"></div>
-        </div>
-      </div>
-
-      <!-- Characters Section Skeleton -->
-      <div class="skeleton-section">
-        <div class="skeleton-section-title"></div>
-        {#each Array(3) as _}
-          <div class="skeleton-character-card">
-            <div class="skeleton-character-image"></div>
-            <div class="skeleton-character-info">
-              <div class="skeleton-character-name"></div>
-              <div class="skeleton-character-title"></div>
-              <div class="skeleton-character-special"></div>
-              <div class="skeleton-text-block"></div>
-            </div>
-          </div>
-        {/each}
-      </div>
-    </div>
-  {:else}
   <!-- Header -->
    <div class="relative w-full overflow-hidden min-h-[70vh] lg:min-h-[100vh]">
     <!-- Background Video -->
@@ -345,52 +313,72 @@
       Characters
     </h1>
   </div>
-  <div class="w-11/12 lg:w-1/2 mx-auto h-auto lg:h-auto"> 
-    {#each characters as character, index}
-      <div class="pilot-card group w-full my-4 rounded-xl lg:w-full p-5 backdrop-blur-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/20 text-white flex gap-5 hover:border-[#FFD700]/40 relative overflow-hidden">
-        <!-- Subtle gradient overlay on hover -->
-        <div class="absolute inset-0 bg-gradient-to-r from-[#FFD700]/5 to-[#00c400]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        
-        <!-- Left column - Video/Image -->
-        <div class="flex-shrink-0 relative z-10">
-          <div class="relative">
-            <video
-              autoplay
-              playsinline 
-              muted
-              loop
-              class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-all duration-300"
-              poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
-            >
-              <source src="{character.video}" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-            <!-- Character number badge -->
-            <div class="absolute -top-2 -left-2 w-7 h-7 bg-gradient-to-br from-[#FFD700] to-[#FFA500] rounded-full flex items-center justify-center text-black font-bold text-sm shadow-lg">
-              {index + 1}
+  
+  {#if !showCharacters}
+    <!-- Character Skeleton Loading -->
+    <div class="w-11/12 lg:w-1/2 mx-auto h-auto lg:h-auto">
+      {#each Array(5) as _}
+        <div class="skeleton-character-card my-4 rounded-xl p-5 backdrop-blur-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/20 flex gap-5">
+          <div class="skeleton-video flex-shrink-0"></div>
+          <div class="flex-1 flex flex-col justify-center space-y-3">
+            <div class="skeleton-text skeleton-name"></div>
+            <div class="skeleton-text skeleton-title"></div>
+            <div class="skeleton-text skeleton-special"></div>
+            <div class="skeleton-text skeleton-description"></div>
+            <div class="skeleton-text skeleton-description" style="width: 80%;"></div>
+          </div>
+        </div>
+      {/each}
+    </div>
+  {:else}
+    <div class="w-11/12 lg:w-1/2 mx-auto h-auto lg:h-auto"> 
+      {#each characters as character, index}
+        <div class="pilot-card group w-full my-4 rounded-xl lg:w-full p-5 backdrop-blur-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/20 text-white flex gap-5 hover:border-[#FFD700]/40 relative overflow-hidden">
+          <!-- Subtle gradient overlay on hover -->
+          <div class="absolute inset-0 bg-gradient-to-r from-[#FFD700]/5 to-[#00c400]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          <!-- Left column - Video/Image -->
+          <div class="flex-shrink-0 relative z-10">
+            <div class="relative">
+              <video
+                autoplay
+                playsinline 
+                muted
+                loop
+                on:loadedmetadata={handleVideoLoad}
+                class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-all duration-300"
+                poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
+              >
+                <source src="{character.video}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <!-- Character number badge -->
+              <div class="absolute -top-2 -left-2 w-7 h-7 bg-gradient-to-br from-[#FFD700] to-[#FFA500] rounded-full flex items-center justify-center text-black font-bold text-sm shadow-lg">
+                {index + 1}
+              </div>
             </div>
           </div>
-        </div>
-      
-        <!-- Right column - Character Info -->
-        <div class="flex-1 relative z-10 flex flex-col justify-center">
-          <div class="flex items-center gap-2 mb-1">
-            <h1 class="text-2xl lg:text-4xl gold-header-text tracking-tight">{character.name}</h1>
+        
+          <!-- Right column - Character Info -->
+          <div class="flex-1 relative z-10 flex flex-col justify-center">
+            <div class="flex items-center gap-2 mb-1">
+              <h1 class="text-2xl lg:text-4xl gold-header-text tracking-tight">{character.name}</h1>
+            </div>
+            <h2 class="text-lg lg:text-xl green-header-text font-medium mb-2">{character.title}</h2>
+            
+            <!-- Special ability with icon -->
+            <div class="bg-black/30 rounded-lg px-3 py-2 mb-3 border-l-4 border-[#00c400]">
+              <p class="text-xs lg:text-sm text-gray-300">
+                <span class="text-[#00c400] font-semibold">Special:</span> {character.special}
+              </p>
+            </div>
+            
+            <p class="text-xs lg:text-sm text-gray-400 leading-relaxed line-clamp-3 lg:line-clamp-none">{character.description}</p>
           </div>
-          <h2 class="text-lg lg:text-xl green-header-text font-medium mb-2">{character.title}</h2>
-          
-          <!-- Special ability with icon -->
-          <div class="bg-black/30 rounded-lg px-3 py-2 mb-3 border-l-4 border-[#00c400]">
-            <p class="text-xs lg:text-sm text-gray-300">
-              <span class="text-[#00c400] font-semibold">Special:</span> {character.special}
-            </p>
-          </div>
-          
-          <p class="text-xs lg:text-sm text-gray-400 leading-relaxed line-clamp-3 lg:line-clamp-none">{character.description}</p>
         </div>
-      </div>
     {/each}
-  </div>
+    </div>
+  {/if}
   <div class="w-11/12 lg:w-1/2 mx-auto mt-4 p-4 rounded-lg border-2 border-[#FFD700]/50 bg-[#FFD700]/10 backdrop-blur-lg">
     <div class="flex items-start gap-3">
       <div>
@@ -481,7 +469,6 @@
 
   <!-- Spacer -->
   <div class="h-10 lg:h-32"></div>
-  {/if}
 
   <!-- HIDDEN: Contact form temporarily disabled -->
   <!-- <div class="relative z-10">
@@ -553,236 +540,29 @@
     }
   }
 
-  .skeleton-container {
-    padding: 1rem;
-  }
-
-  .skeleton-hero {
-    min-height: 70vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-
-  .skeleton-hero-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    width: 100%;
-    max-width: 1200px;
-  }
-
-  @media (min-width: 1024px) {
-    .skeleton-hero-content {
-      flex-direction: row;
-      justify-content: center;
-    }
-  }
-
-  .skeleton-logo {
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-card-large {
-    width: 100%;
-    max-width: 500px;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-  }
-
-  .skeleton-badge {
-    width: 180px;
-    height: 2rem;
-    border-radius: 9999px;
-    margin-bottom: 1.25rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-title-large {
-    width: 70%;
-    height: 2.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 0.25rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-text-line {
-    width: 50%;
-    height: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 0.25rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-tags {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .skeleton-tag {
-    width: 80px;
-    height: 1.75rem;
-    border-radius: 9999px;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-text-block {
-    width: 100%;
-    height: 4rem;
-    margin-bottom: 1rem;
-    border-radius: 0.25rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-buttons {
-    display: flex;
-    gap: 0.75rem;
-  }
-
-  .skeleton-button {
-    flex: 1;
-    height: 2.5rem;
-    border-radius: 0.5rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-button-full {
-    width: 100%;
-    height: 2.75rem;
-    margin-bottom: 0.75rem;
-    border-radius: 0.5rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-section {
-    width: 91.666%;
-    max-width: 800px;
-    margin: 3rem auto;
-  }
-
-  .skeleton-demo-grid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  @media (min-width: 1024px) {
-    .skeleton-demo-grid {
-      flex-direction: row;
-      justify-content: center;
-    }
-  }
-
-  .skeleton-phone {
-    width: 256px;
-    height: 500px;
-    border-radius: 3rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  .skeleton-section-title {
-    width: 150px;
-    height: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 0.25rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
+  /* Skeleton Loading Styles for Characters */
   .skeleton-character-card {
-    display: flex;
-    gap: 1.25rem;
-    padding: 1.25rem;
-    margin-bottom: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.75rem;
+    pointer-events: none;
   }
 
-  .skeleton-character-image {
-    width: 6rem;
-    height: 6rem;
-    flex-shrink: 0;
+  .skeleton-text {
+    display: block;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 0.25rem;
+  }
+
+  .skeleton-video {
+    width: 96px;
+    height: 96px;
     border-radius: 0.75rem;
+    flex-shrink: 0;
     background: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0.06) 25%,
@@ -793,59 +573,27 @@
     animation: shimmer 1.5s infinite;
   }
 
-  @media (min-width: 1024px) {
-    .skeleton-character-image {
-      width: 9rem;
-      height: 9rem;
-    }
-  }
-
-  .skeleton-character-info {
-    flex: 1;
-  }
-
-  .skeleton-character-name {
+  .skeleton-name {
     width: 60%;
     height: 1.75rem;
     margin-bottom: 0.5rem;
-    border-radius: 0.25rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
   }
 
-  .skeleton-character-title {
-    width: 40%;
-    height: 1.25rem;
+  .skeleton-title {
+    width: 50%;
+    height: 1.35rem;
     margin-bottom: 0.75rem;
-    border-radius: 0.25rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
   }
 
-  .skeleton-character-special {
+  .skeleton-special {
     width: 100%;
     height: 2.5rem;
     margin-bottom: 0.75rem;
-    border-radius: 0.5rem;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.06) 25%,
-      rgba(255, 255, 255, 0.12) 50%,
-      rgba(255, 255, 255, 0.06) 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton-description {
+    width: 95%;
+    height: 1rem;
+    margin-bottom: 0.5rem;
   }
 </style>
