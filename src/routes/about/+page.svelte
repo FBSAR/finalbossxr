@@ -1,14 +1,45 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { LinkedinSolid } from 'flowbite-svelte-icons'
   // HIDDEN: Contact form temporarily disabled
   // import ContactForm from '$lib/components/ContactForm.svelte';
   import OurStorySection from '$lib/components/landing/OurStorySection.svelte';
   import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
-  import { navigating } from '$app/stores';
 
-  // Show skeleton only when navigating TO this page, not when leaving
-  $: isNavigatingHere = $navigating?.to?.route?.id === '/about';
-  $: showContent = !isNavigatingHere;
+  // Show skeleton only if images are slow to load (not cached)
+  let showContent = true; // Start with content visible
+  let imagesLoaded = 0;
+  const totalImages = 5; // 2 founders + 1 advisor + 2 team members
+  
+  onMount(() => {
+    // Reset counter on mount
+    imagesLoaded = 0;
+    showContent = true;
+    
+    // Only show skeleton if images haven't loaded after 50ms (not cached)
+    let skeletonTimer = setTimeout(() => {
+      if (imagesLoaded < totalImages) {
+        showContent = false; // Images are slow, show skeleton
+      }
+    }, 50);
+    
+    // Fallback: reveal content after 3s
+    let fallbackTimer = setTimeout(() => {
+      showContent = true;
+    }, 3000);
+    
+    return () => {
+      clearTimeout(skeletonTimer);
+      clearTimeout(fallbackTimer);
+    };
+  });
+  
+  function handleImageLoad() {
+    imagesLoaded++;
+    if (imagesLoaded >= totalImages) {
+      showContent = true;
+    }
+  }
   
   let founders = [
       {
@@ -112,7 +143,8 @@
               <img 
                 src={founder.photo} 
                 class="card-image" 
-                alt="{founder.name}" 
+                alt="{founder.name}"
+                on:load={handleImageLoad}
               />
             </div>
             <div class="card-content">
@@ -137,7 +169,8 @@
               <img 
                 src={member.photo} 
                 class="card-image" 
-                alt="{member.name}" 
+                alt="{member.name}"
+                on:load={handleImageLoad}
               />
             </div>
             <div class="card-content">
@@ -162,7 +195,8 @@
               <img 
                 src={advisor.photo} 
                 class="card-image" 
-                alt="{advisor.name}" 
+                alt="{advisor.name}"
+                on:load={handleImageLoad}
               />
             </div>
             <div class="card-content">
