@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ params }) => {
     
     // Fetch related posts (other published posts, prioritizing featured and recent)
     const relatedPosts = await sql`
-      SELECT id, title, slug, excerpt, created_at, featured
+      SELECT id, title, slug, excerpt, feature_image_url, created_at, featured
       FROM blogs
       WHERE published = true AND slug != ${slug}
       ORDER BY featured DESC, created_at DESC

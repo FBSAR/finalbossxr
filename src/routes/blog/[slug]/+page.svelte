@@ -178,11 +178,19 @@
               class="related-post-card group"
             >
               <div class="related-post-image">
-                <div class="related-post-placeholder">
-                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                  </svg>
-                </div>
+                {#if relatedPost.feature_image_url}
+                  <img 
+                    src={relatedPost.feature_image_url} 
+                    alt={relatedPost.title}
+                    class="related-post-img"
+                  />
+                {:else}
+                  <div class="related-post-placeholder">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                  </div>
+                {/if}
                 {#if relatedPost.featured}
                   <span class="related-post-badge">Featured</span>
                 {/if}
@@ -242,6 +250,18 @@
     position: relative;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+  }
+
+  .related-post-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+  }
+
+  .related-post-card:hover .related-post-img {
+    transform: scale(1.05);
   }
 
   .related-post-placeholder {
