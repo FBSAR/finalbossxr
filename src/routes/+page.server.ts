@@ -9,19 +9,34 @@ export const prerender = false;
 const DISCORD_WEBHOOK_URL = env.DISCORD_CONTACT_FORM_HOOK_URL;
 
 /**
- * Loads the last 3 published blog posts and all published jobs from the database
+ * Loads the featured blog post, the 2 most recent blog posts, and all published jobs from the database
  */
 export async function load() {
 	try {
 		const sql = neon(env.DATABASE_URL);
 		
-		const blogs = await sql`
-			SELECT id, title, slug, excerpt, feature_image_url, published, created_at
+		// Fetch featured blog
+		const featuredBlog = await sql`
+			SELECT id, title, slug, excerpt, feature_image_url, published, featured, created_at
+			FROM blogs
+			WHERE published = true AND featured = true
+			LIMIT 1
+		`;
+
+		// Fetch 2 most recent blogs
+		const recentBlogs = await sql`
+			SELECT id, title, slug, excerpt, feature_image_url, published, featured, created_at
 			FROM blogs
 			WHERE published = true
 			ORDER BY created_at DESC
-			LIMIT 3
+			LIMIT 2
 		`;
+
+		// Combine: featured first, then recent blogs (and filter out featured if it was in recent)
+		const blogs = [
+			...(featuredBlog.length > 0 ? featuredBlog : []),
+			...recentBlogs.filter(blog => featuredBlog.length === 0 || blog.id !== featuredBlog[0].id)
+		];
 
 		const jobs = await sql`
 			SELECT id, title, department, job_type, location, description, icon, published, created_at
@@ -38,6 +53,7 @@ export async function load() {
 				excerpt: string;
 				feature_image_url: string | null;
 				published: boolean;
+				featured?: boolean;
 				created_at: string;
 			}>,
 			jobs: jobs as Array<{

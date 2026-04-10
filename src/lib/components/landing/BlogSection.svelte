@@ -7,6 +7,7 @@
     excerpt: string;
     feature_image_url: string | null;
     published: boolean;
+    featured?: boolean;
     created_at: string;
   }
 
@@ -19,6 +20,10 @@
       day: 'numeric'
     });
   }
+
+  // Get featured blog and other blogs
+  $: featuredBlog = blogs.find(blog => blog.featured) || blogs[0];
+  $: otherBlogs = blogs.filter(blog => !blog.featured);
 </script>
 
 <section class="blog-section" aria-label="Blog">
@@ -28,42 +33,85 @@
       <h2 class="section-title gradient-text">From Our Blog</h2>
     </div>
 
-    <div class="blog-grid">
-      {#if blogs.length > 0}
-        {#each blogs as blog (blog.id)}
-          <article class="blog-card">
-            <div class="blog-image">
-              {#if blog.feature_image_url}
-                <img src={blog.feature_image_url} alt={blog.title} class="blog-image-img" />
-              {:else}
-                <div class="blog-image-placeholder">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                    <polyline points="21 15 16 10 5 21"></polyline>
-                  </svg>
-                </div>
-              {/if}
-            </div>
-            <div class="blog-content">
-              <span class="blog-date">{formatDate(blog.created_at)}</span>
-              <h3 class="blog-title">{blog.title}</h3>
-              <p class="blog-excerpt">{blog.excerpt}</p>
-              <a href="/blog/{blog.slug}" class="blog-link">
-                Read More
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
+    {#if blogs.length > 0}
+      <!-- Featured Blog -->
+      {#if featuredBlog}
+        <article class="featured-blog-card">
+          <div class="featured-blog-image">
+            {#if featuredBlog.feature_image_url}
+              <img src={featuredBlog.feature_image_url} alt={featuredBlog.title} class="featured-blog-image-img" />
+            {:else}
+              <div class="featured-blog-image-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
-              </a>
-            </div>
-          </article>
-        {/each}
-      {:else}
-        <div class="no-blogs">
-          <h3>No Blog Posts Yet</h3>
-          <p>Check back soon for our latest updates and insights!</p>
+              </div>
+            {/if}
+            <span class="featured-badge">Featured</span>
+          </div>
+          <div class="featured-blog-content">
+            <span class="featured-blog-date">{formatDate(featuredBlog.created_at)}</span>
+            <h3 class="featured-blog-title">{featuredBlog.title}</h3>
+            <p class="featured-blog-excerpt">{featuredBlog.excerpt}</p>
+            <a href="/blog/{featuredBlog.slug}" class="featured-blog-link">
+              Read Full Article
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+      {/if}
+
+      <!-- Other Blogs Grid -->
+      {#if otherBlogs.length > 0}
+        <div class="blog-grid">
+          {#each otherBlogs as blog (blog.id)}
+            <article class="blog-card">
+              <div class="blog-image">
+                {#if blog.feature_image_url}
+                  <img src={blog.feature_image_url} alt={blog.title} class="blog-image-img" />
+                {:else}
+                  <div class="blog-image-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                  </div>
+                {/if}
+              </div>
+              <div class="blog-content">
+                <span class="blog-date">{formatDate(blog.created_at)}</span>
+                <h3 class="blog-title">{blog.title}</h3>
+                <p class="blog-excerpt">{blog.excerpt}</p>
+                <a href="/blog/{blog.slug}" class="blog-link">
+                  Read More
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+            </article>
+          {/each}
         </div>
       {/if}
+    {:else}
+      <div class="no-blogs">
+        <h3>No Blog Posts Yet</h3>
+        <p>Check back soon for our latest updates and insights!</p>
+      </div>
+    {/if}
+
+    <div class="blog-footer">
+      <a href="/blog" class="view-all-link">
+        View All Articles
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
     </div>
   </div>
 </section>
@@ -110,15 +158,125 @@
     font-weight: 700;
   }
 
+  /* Featured Blog Card */
+  .featured-blog-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    margin-bottom: 4rem;
+    transition: all 0.3s ease;
+  }
+
+  .featured-blog-card:hover {
+    border-color: rgba(0, 196, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 1024px) {
+    .featured-blog-card {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .featured-blog-image {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .featured-blog-image-placeholder {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .featured-blog-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 196, 0, 0.9);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 0.5rem;
+  }
+
+  .featured-blog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .featured-blog-date {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-blog-title {
+    font-family: "Raleway", sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: white;
+    margin: 0.75rem 0;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  .featured-blog-excerpt {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+
+  .featured-blog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #00c400;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    width: fit-content;
+  }
+
+  .featured-blog-link:hover {
+    gap: 1rem;
+    color: #00ff00;
+  }
+
+  /* Blog Grid (for other posts) */
   .blog-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
   }
 
   @media (max-width: 1024px) {
     .blog-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;
     }
   }
 
@@ -203,34 +361,53 @@
     align-items: center;
     gap: 0.5rem;
     color: #00c400;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
-    transition: gap 0.3s ease;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
   }
 
   .blog-link:hover {
     gap: 0.75rem;
+    color: #00ff00;
   }
 
   .no-blogs {
-    grid-column: 1 / -1;
     text-align: center;
-    padding: 3rem 2rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px dashed rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
+    padding: 4rem 2rem;
+    color: rgba(255, 255, 255, 0.5);
   }
 
   .no-blogs h3 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    color: rgba(255, 255, 255, 0.7);
   }
 
-  .no-blogs p {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.95rem;
+  /* Blog Footer */
+  .blog-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
   }
 
+  .view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(0, 196, 0, 0.1);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 0.75rem;
+    color: #00c400;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .view-all-link:hover {
+    background: rgba(0, 196, 0, 0.2);
+    border-color: rgba(0, 196, 0, 0.5);
+    gap: 1rem;
+    color: #00ff00;
+  }
 </style>
