@@ -102,7 +102,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   let jobs: any[] = [];
   try {
     jobs = await db`
-      SELECT id, title, department, job_type, location, description, icon, published, created_at, updated_at
+      SELECT id, title, department, job_type, location, description, published, created_at, updated_at
       FROM jobs
       ORDER BY created_at DESC
     `;
@@ -418,13 +418,12 @@ export const actions: Actions = {
     const job_type = data.get('job_type') as string;
     const location = data.get('location') as string || 'Remote';
     const description = data.get('description') as string;
-    const icon = data.get('icon') as string || '💼';
     const published = data.get('published') === 'on';
     const db = getDb();
 
     await db`
-      INSERT INTO jobs (title, department, job_type, location, description, icon, published)
-      VALUES (${title}, ${department}, ${job_type}, ${location}, ${description}, ${icon}, ${published})
+      INSERT INTO jobs (title, department, job_type, location, description, published)
+      VALUES (${title}, ${department}, ${job_type}, ${location}, ${description}, ${published})
     `;
 
     return { success: true, message: 'Job created' };
@@ -443,14 +442,13 @@ export const actions: Actions = {
     const job_type = data.get('job_type') as string;
     const location = data.get('location') as string || 'Remote';
     const description = data.get('description') as string;
-    const icon = data.get('icon') as string || '💼';
     const published = data.get('published') === 'on';
     const db = getDb();
 
     await db`
       UPDATE jobs 
       SET title = ${title}, department = ${department}, job_type = ${job_type}, 
-          location = ${location}, description = ${description}, icon = ${icon}, 
+          location = ${location}, description = ${description}, 
           published = ${published}, updated_at = NOW()
       WHERE id = ${id}
     `;

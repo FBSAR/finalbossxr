@@ -6,7 +6,6 @@
     job_type: string;
     location: string;
     description: string;
-    icon: string;
     published: boolean;
     created_at: string;
   }> = [];
@@ -26,7 +25,6 @@
       <div class="jobs-grid">
         {#each jobs as job (job.id)}
           <article class="job-card">
-            <div class="job-icon">{job.icon}</div>
             <div class="job-meta">
               <span class="job-department">{job.department}</span>
               <span class="job-type">{job.job_type}</span>
@@ -119,16 +117,16 @@
   }
 
   .jobs-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 2rem;
-    margin-bottom: 3rem;
+    justify-content: center;
+    margin: 0 auto 3rem;
+    max-width: 1000px;
   }
 
-  @media (max-width: 768px) {
-    .jobs-grid {
-      grid-template-columns: 1fr;
-    }
+  .jobs-grid .job-card {
+    flex: 0 1 450px;
   }
 
   .job-card {
@@ -137,17 +135,13 @@
     border-radius: 1rem;
     padding: 2rem;
     transition: all 0.3s ease;
+    width: 100%;
   }
 
   .job-card:hover {
     border-color: rgba(0, 196, 0, 0.3);
     transform: translateY(-2px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  }
-
-  .job-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
   }
 
   .job-meta {

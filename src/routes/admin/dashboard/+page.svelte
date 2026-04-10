@@ -16,7 +16,7 @@
   // Jobs state
   let showJobModal = false;
   let editingJob: any = null;
-  let jobForm = { title: '', department: '', job_type: '', location: 'Remote', description: '', icon: '💼', published: true };
+  let jobForm = { title: '', department: '', job_type: '', location: 'Remote', description: '', published: true };
   
   // Newsletter state
   let showDraftModal = false;
@@ -111,7 +111,7 @@
       jobForm = { ...job };
     } else {
       editingJob = null;
-      jobForm = { title: '', department: '', job_type: '', location: 'Remote', description: '', icon: '💼', published: true };
+      jobForm = { title: '', department: '', job_type: '', location: 'Remote', description: '', published: true };
     }
     showJobModal = true;
   }
@@ -444,7 +444,7 @@
               </div>
               <div class="job-header">
                 <div>
-                  <h3>{job.icon} {job.title}</h3>
+                  <h3>{job.title}</h3>
                   <div class="job-info">
                     <span class="department">{job.department}</span>
                     <span class="job-type">{job.job_type}</span>
@@ -987,45 +987,57 @@
             await update();
             isSubmitting = false;
           };
-        }}>
+        }} class="job-form">
           {#if editingJob}
             <input type="hidden" name="id" value={editingJob.id} />
           {/if}
 
-          <div class="form-group">
-            <label for="job-icon">Icon</label>
-            <input type="text" id="job-icon" name="icon" bind:value={jobForm.icon} maxlength="2" placeholder="e.g., 💼" required />
-          </div>
-
-          <div class="form-group">
-            <label for="job-title">Job Title</label>
-            <input type="text" id="job-title" name="title" bind:value={jobForm.title} placeholder="e.g., Game Developer" required />
-          </div>
-
-          <div class="form-row">
+          <!-- Title Section -->
+          <div class="form-section">
+            <h3>Position</h3>
             <div class="form-group">
-              <label for="job-department">Department</label>
-              <input type="text" id="job-department" name="department" bind:value={jobForm.department} placeholder="e.g., Engineering" required />
-            </div>
-            <div class="form-group">
-              <label for="job-type">Type</label>
-              <input type="text" id="job-type" name="job_type" bind:value={jobForm.job_type} placeholder="e.g., Full-time" required />
-            </div>
-            <div class="form-group">
-              <label for="job-location">Location</label>
-              <input type="text" id="job-location" name="location" bind:value={jobForm.location} placeholder="e.g., Remote" />
+              <label for="job-title">Job Title</label>
+              <input type="text" id="job-title" name="title" bind:value={jobForm.title} placeholder="e.g., Game Developer" required />
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="job-description">Description</label>
-            <textarea id="job-description" name="description" bind:value={jobForm.description} placeholder="Job description..." rows="6" required></textarea>
+          <!-- Details Section -->
+          <div class="form-section">
+            <h3>Job Details</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="job-department">Department</label>
+                <input type="text" id="job-department" name="department" bind:value={jobForm.department} placeholder="e.g., Engineering" required />
+              </div>
+              <div class="form-group">
+                <label for="job-type">Employment Type</label>
+                <input type="text" id="job-type" name="job_type" bind:value={jobForm.job_type} placeholder="e.g., Full-time" required />
+              </div>
+              <div class="form-group">
+                <label for="job-location">Location</label>
+                <input type="text" id="job-location" name="location" bind:value={jobForm.location} placeholder="e.g., Remote" />
+              </div>
+            </div>
           </div>
 
-          <div class="form-row-inline">
-            <label><input type="checkbox" name="published" value="true" bind:checked={jobForm.published} /> Published</label>
+          <!-- Description Section -->
+          <div class="form-section">
+            <h3>Description</h3>
+            <div class="form-group">
+              <label for="job-description">Job Description</label>
+              <textarea id="job-description" name="description" bind:value={jobForm.description} placeholder="Enter comprehensive job description..." rows="10" required></textarea>
+            </div>
           </div>
 
+          <!-- Status Section -->
+          <div class="form-section">
+            <div class="form-checkbox-group">
+              <input type="checkbox" id="job-published" name="published" value="true" bind:checked={jobForm.published} />
+              <label for="job-published">Published</label>
+            </div>
+          </div>
+
+          <!-- Actions -->
           <div class="form-actions">
             <button type="button" class="btn-secondary" on:click={closeJobModal}>Cancel</button>
             <button type="submit" class="btn-primary">{editingJob ? 'Update' : 'Create'}</button>
@@ -1559,52 +1571,77 @@
     gap: 1rem;
   }
   .job-card.admin-view {
-    padding: 1.25rem;
+    padding: 1.75rem;
     background: linear-gradient(145deg, #12121a 0%, #0d0d14 100%);
     border: 1px solid #1a1a24;
-    border-radius: 0.75rem;
+    border-radius: 0.875rem;
     transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
+
   .job-card.admin-view:hover {
-    border-color: rgba(147, 51, 234, 0.25);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    transform: translateX(2px);
+    border-color: rgba(0, 196, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 196, 0, 0.1), 0 0 30px rgba(0, 196, 0, 0.05);
+    transform: translateY(-2px);
+    background: linear-gradient(145deg, #14141f 0%, #0f0f16 100%);
   }
+
+  .job-meta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 0.25rem;
+  }
+
   .job-header {
-    margin-bottom: 1rem;
-  }
-  .job-header h3 {
-    font-size: 1.1rem;
-    margin: 0 0 0.5rem;
-    color: #f0f0f0;
-  }
-  .job-info {
     display: flex;
     gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .job-header h3 {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+    color: #f0f0f0;
+    font-weight: 600;
+  }
+
+  .job-info {
+    display: flex;
+    gap: 0.75rem;
     flex-wrap: wrap;
+    margin-bottom: 0.5rem;
   }
+
   .job-info span {
-    font-size: 0.85rem;
-    color: #888;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 0.35rem 0.75rem;
-    border-radius: 0.375rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.8rem;
+    color: #999;
+    background: rgba(0, 196, 0, 0.08);
+    padding: 0.4rem 0.85rem;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(0, 196, 0, 0.15);
   }
+
   .job-card.admin-view .description {
     color: #999;
     font-size: 0.9rem;
-    line-height: 1.5;
-    margin: 0 0 1rem;
+    line-height: 1.6;
+    margin: 0.5rem 0 1rem;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
   .job-actions {
     display: flex;
     gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 0.5rem;
   }
 
   /* Modal */
@@ -1627,7 +1664,7 @@
   }
   .modal {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     max-height: 90vh;
     overflow-y: auto;
     background: linear-gradient(180deg, #14141e 0%, #0d0d14 100%);
@@ -1769,7 +1806,114 @@
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
   }
 
-  .modal form { padding: 1.25rem; }
+  .modal form { 
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Job Form Specific Styling */
+  .job-form h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #00c400;
+    margin: 0 0 1rem 0;
+  }
+
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.85rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.625rem;
+    color: #f0f0f0;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: #555;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: rgba(0, 196, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 3px rgba(0, 196, 0, 0.1), inset 0 0 0 1px rgba(0, 196, 0, 0.1);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 250px;
+    line-height: 1.6;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .form-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .form-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(0, 196, 0, 0.05);
+    border: 1px solid rgba(0, 196, 0, 0.15);
+    border-radius: 0.625rem;
+    font-size: 0.9rem;
+  }
+
+  .form-checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #00c400;
+    cursor: pointer;
+  }
+
+  .form-checkbox-group label {
+    cursor: pointer;
+    color: #e0e0e0;
+    margin: 0;
+  }
+
   .form-row { margin-bottom: 1.25rem; }
   .form-row label {
     display: block;

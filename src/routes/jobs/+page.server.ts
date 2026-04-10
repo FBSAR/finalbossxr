@@ -29,7 +29,7 @@ export async function load() {
 	try {
 		const sql = neon(env.DATABASE_URL);
 		const jobs = await sql`
-			SELECT id, title, department, job_type, location, description, icon, published, created_at
+   SELECT id, title, department, job_type, location, description, published, created_at
 			FROM jobs
 			WHERE published = true
 			ORDER BY created_at DESC

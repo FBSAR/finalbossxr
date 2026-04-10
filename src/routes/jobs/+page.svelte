@@ -226,7 +226,6 @@
                 on:click={() => selectJob(job)}
               >
                 <div class="job-card-header">
-                  <span class="job-icon">{job.icon}</span>
                   <div class="job-badges">
                     <Badge color="green">{job.job_type}</Badge>
                     <Badge color="purple">{job.location}</Badge>
@@ -256,7 +255,6 @@
             </button>
 
             <div class="application-header">
-              <span class="job-icon-large">{selectedJob.icon}</span>
               <div>
                 <h2 class="font-bold text-white raleway-700">
                   Apply for {selectedJob.title}
@@ -654,7 +652,7 @@
   .slide-content {
     max-width: 900px;
     margin: 0 auto;
-    padding-bottom: 2rem;
+    padding: 0 1rem 2rem 1rem;
   }
 
   /* Section Title */
@@ -682,20 +680,18 @@
 
   /* Job Cards */
   .jobs-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 900px;
+    width: 100%;
   }
 
   @media (min-width: 640px) {
     .jobs-grid {
       gap: 1.5rem;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .jobs-grid {
-      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -710,6 +706,8 @@
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    flex: 0 1 400px;
+    max-width: 100%;
   }
 
   @media (min-width: 640px) {
@@ -744,18 +742,7 @@
     }
   }
 
-  .job-icon {
-    font-size: 2rem;
-    flex-shrink: 0;
-  }
-
-  @media (min-width: 640px) {
-    .job-icon {
-      font-size: 2.5rem;
-    }
-  }
-
-  .job-badges {
+.job-badges {
     display: flex;
     gap: 0.35rem;
     flex-wrap: wrap;
@@ -920,17 +907,7 @@
     }
   }
 
-  .job-icon-large {
-    font-size: 2.5rem;
-  }
-
-  @media (min-width: 640px) {
-    .job-icon-large {
-      font-size: 3rem;
-    }
-  }
-
-  /* Requirements Section on Slide 2 */
+/* Requirements Section on Slide 2 */
   .requirements-section {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
