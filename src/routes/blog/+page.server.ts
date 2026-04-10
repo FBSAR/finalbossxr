@@ -7,7 +7,7 @@ export const load: PageServerLoad = async () => {
   
   try {
     const posts = await sql`
-      SELECT id, title, slug, excerpt, content, author, published, featured, created_at, updated_at
+      SELECT id, title, slug, excerpt, content, feature_image_url, author, published, featured, created_at, updated_at
       FROM blogs
       WHERE published = true
       ORDER BY created_at DESC

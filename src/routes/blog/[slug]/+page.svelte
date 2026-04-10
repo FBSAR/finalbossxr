@@ -95,6 +95,19 @@
     </div>
   </section>
 
+  <!-- Featured Image -->
+  {#if post.feature_image_url}
+    <section class="px-4 pb-8">
+      <div class="max-w-3xl mx-auto">
+        <img 
+          src={post.feature_image_url} 
+          alt={post.title}
+          class="w-full h-48 md:h-72 object-cover object-center rounded-lg border border-white/10"
+        />
+      </div>
+    </section>
+  {/if}
+
   <!-- Content -->
   <section class="px-4 pb-2">
     <div class="max-w-3xl mx-auto">

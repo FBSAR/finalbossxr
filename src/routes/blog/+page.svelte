@@ -190,6 +190,15 @@
               href="/blog/{featuredPost.slug}"
               class="featured-card group block"
             >
+              {#if featuredPost.feature_image_url}
+                <div class="featured-image">
+                  <img 
+                    src={featuredPost.feature_image_url} 
+                    alt={featuredPost.title}
+                    class="featured-image-img"
+                  />
+                </div>
+              {/if}
               <div class="featured-content">
                 <div class="flex items-center gap-3 mb-4">
                   <span class="featured-badge">
@@ -236,13 +245,21 @@
                   <article class="blog-card">
                     <a href="/blog/{post.slug}" class="blog-card-link">
                       <div class="blog-image">
-                        <div class="blog-image-placeholder">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                            <polyline points="21 15 16 10 5 21"></polyline>
-                          </svg>
-                        </div>
+                        {#if post.feature_image_url}
+                          <img 
+                            src={post.feature_image_url} 
+                            alt={post.title}
+                            class="blog-image-img"
+                          />
+                        {:else}
+                          <div class="blog-image-placeholder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                              <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                          </div>
+                        {/if}
                         <span class="blog-category">Article</span>
                       </div>
                       <div class="blog-content">
@@ -392,14 +409,33 @@
 
   .blog-image {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 10;
+    height: 180px;
     overflow: hidden;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, rgba(0, 100, 0, 0.15) 100%);
+  }
+
+  @media (min-width: 640px) {
+    .blog-image {
+      height: 220px;
+    }
+  }
+
+  .blog-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+  }
+
+  .blog-card:hover .blog-image-img {
+    transform: scale(1.05);
   }
 
   .blog-image-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, rgba(0, 100, 0, 0.15) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -486,11 +522,32 @@
     border-radius: 1rem;
     overflow: hidden;
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
   }
 
   .featured-card:hover {
     border-color: rgba(0, 196, 0, 0.3);
     box-shadow: 0 20px 40px -20px rgba(0, 196, 0, 0.2);
+  }
+
+  .featured-image {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.1) 0%, rgba(0, 100, 0, 0.15) 100%);
+  }
+
+  .featured-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+  }
+
+  .featured-card:hover .featured-image-img {
+    transform: scale(1.05);
   }
 
   .featured-content {
