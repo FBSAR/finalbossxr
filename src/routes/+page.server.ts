@@ -15,7 +15,7 @@ export async function load() {
 	try {
 		const sql = neon(env.DATABASE_URL);
 		const blogs = await sql`
-			SELECT id, title, slug, excerpt, author, published, created_at
+			SELECT id, title, slug, excerpt, feature_image_url, published, created_at
 			FROM blogs
 			WHERE published = true
 			ORDER BY created_at DESC
@@ -28,7 +28,7 @@ export async function load() {
 				title: string;
 				slug: string;
 				excerpt: string;
-				author: string;
+				feature_image_url: string | null;
 				published: boolean;
 				created_at: string;
 			}>

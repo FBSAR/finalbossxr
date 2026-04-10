@@ -5,7 +5,7 @@
     title: string;
     slug: string;
     excerpt: string;
-    author: string;
+    feature_image_url: string | null;
     published: boolean;
     created_at: string;
   }
@@ -33,14 +33,17 @@
         {#each blogs as blog (blog.id)}
           <article class="blog-card">
             <div class="blog-image">
-              <div class="blog-image-placeholder">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                  <polyline points="21 15 16 10 5 21"></polyline>
-                </svg>
-              </div>
-              <span class="blog-category">{blog.author}</span>
+              {#if blog.feature_image_url}
+                <img src={blog.feature_image_url} alt={blog.title} class="blog-image-img" />
+              {:else}
+                <div class="blog-image-placeholder">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                </div>
+              {/if}
             </div>
             <div class="blog-content">
               <span class="blog-date">{formatDate(blog.created_at)}</span>
@@ -152,17 +155,11 @@
     color: rgba(255, 255, 255, 0.2);
   }
 
-  .blog-category {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    padding: 0.25rem 0.75rem;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(0, 196, 0, 0.3);
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    color: #00c400;
-    font-weight: 500;
+  .blog-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
   .blog-content {
@@ -177,8 +174,7 @@
   }
 
   .blog-title {
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-size: 1.5rem;
     color: white;
     margin: 0.75rem 0;
     line-height: 1.4;

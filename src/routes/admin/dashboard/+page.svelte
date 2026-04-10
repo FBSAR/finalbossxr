@@ -72,7 +72,7 @@
   }
 
   // Blog form state
-  let blogForm = { title: '', slug: '', excerpt: '', content: '', author: 'FinalBoss XR', published: false, featured: false };
+  let blogForm = { title: '', slug: '', excerpt: '', content: '', feature_image_url: '', published: false, featured: false };
 
   function openBlogModal(blog?: any) {
     if (blog) {
@@ -80,7 +80,7 @@
       blogForm = { ...blog };
     } else {
       editingBlog = null;
-      blogForm = { title: '', slug: '', excerpt: '', content: '', author: 'FinalBoss XR', published: false, featured: false };
+      blogForm = { title: '', slug: '', excerpt: '', content: '', feature_image_url: '', published: false, featured: false };
     }
     showBlogModal = true;
   }
@@ -729,8 +729,16 @@
           </div>
           
           <div class="form-row">
-            <label for="blog-author">Author</label>
-            <input id="blog-author" type="text" name="author" bind:value={blogForm.author} />
+            <div class="form-label-group">
+              <label for="blog-feature-image">Feature Image URL</label>
+              <span class="form-hint">Recommended: 1200x600px</span>
+            </div>
+            <input id="blog-feature-image" type="url" name="feature_image_url" bind:value={blogForm.feature_image_url} placeholder="https://example.com/image.jpg" />
+            {#if blogForm.feature_image_url}
+              <div class="image-preview">
+                <img src={blogForm.feature_image_url} alt="Feature preview" />
+              </div>
+            {/if}
           </div>
           
           <div class="form-row-inline">
@@ -1437,6 +1445,26 @@
     letter-spacing: 0.03em;
     font-weight: 500;
   }
+
+  .form-label-group {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-label-group label {
+    margin-bottom: 0;
+  }
+
+  .form-hint {
+    font-size: 0.7rem;
+    color: #00c400;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
   .form-row input, .form-row textarea {
     width: 100%;
     padding: 0.7rem 0.85rem;
@@ -1480,6 +1508,23 @@
     height: 18px;
     accent-color: #00c400;
   }
+
+  .image-preview {
+    margin-top: 0.75rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid rgba(0, 196, 0, 0.2);
+    max-width: 200px;
+  }
+
+  .image-preview img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 150px;
+    object-fit: cover;
+  }
+
   .form-actions {
     display: flex;
     justify-content: flex-end;

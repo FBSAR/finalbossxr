@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   let blogs: any[] = [];
   try {
     blogs = await db`
-      SELECT id, title, slug, excerpt, content, author, published, featured, created_at, updated_at
+      SELECT id, title, slug, excerpt, content, feature_image_url, published, featured, created_at, updated_at
       FROM blogs
       ORDER BY created_at DESC
     `;
@@ -139,7 +139,7 @@ export const actions: Actions = {
     const baseSlug = data.get('slug') as string || title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
     const excerpt = data.get('excerpt') as string;
     const content = data.get('content') as string;
-    const author = data.get('author') as string || 'FinalBoss XR';
+    const feature_image_url = data.get('feature_image_url') as string || null;
     const published = data.get('published') === 'true';
     const featured = data.get('featured') === 'true';
 
@@ -164,8 +164,8 @@ export const actions: Actions = {
     }
     
     await db`
-      INSERT INTO blogs (title, slug, excerpt, content, author, published, featured)
-      VALUES (${title}, ${slug}, ${excerpt}, ${content}, ${author}, ${published}, ${featured})
+      INSERT INTO blogs (title, slug, excerpt, content, feature_image_url, published, featured)
+      VALUES (${title}, ${slug}, ${excerpt}, ${content}, ${feature_image_url}, ${published}, ${featured})
     `;
 
     return { success: true, message: 'Blog created' };
@@ -183,7 +183,7 @@ export const actions: Actions = {
     const slug = data.get('slug') as string;
     const excerpt = data.get('excerpt') as string;
     const content = data.get('content') as string;
-    const author = data.get('author') as string;
+    const feature_image_url = data.get('feature_image_url') as string || null;
     const published = data.get('published') === 'true';
     const featured = data.get('featured') === 'true';
 
@@ -203,7 +203,7 @@ export const actions: Actions = {
     await db`
       UPDATE blogs 
       SET title = ${title}, slug = ${slug}, excerpt = ${excerpt}, content = ${content},
-          author = ${author}, published = ${published}, featured = ${featured}, updated_at = NOW()
+          feature_image_url = ${feature_image_url}, published = ${published}, featured = ${featured}, updated_at = NOW()
       WHERE id = ${id}
     `;
 

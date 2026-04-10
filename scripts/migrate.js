@@ -12,6 +12,7 @@ await sql`CREATE TABLE IF NOT EXISTS blogs (
   slug VARCHAR(255) UNIQUE NOT NULL,
   excerpt TEXT,
   content TEXT NOT NULL,
+  feature_image_url TEXT,
   author VARCHAR(100) DEFAULT 'FinalBoss XR',
   published BOOLEAN DEFAULT FALSE,
   featured BOOLEAN DEFAULT FALSE,
@@ -87,5 +88,14 @@ await sql`CREATE TABLE IF NOT EXISTS captured_bots (
 await sql`CREATE INDEX IF NOT EXISTS idx_captured_bots_form_type ON captured_bots(form_type)`;
 await sql`CREATE INDEX IF NOT EXISTS idx_captured_bots_created_at ON captured_bots(created_at)`;
 console.log('Done: 005_create_captured_bots');
+
+// 006_add_feature_image_to_blogs
+try {
+  await sql`ALTER TABLE blogs ADD COLUMN feature_image_url TEXT`;
+  console.log('Done: 006_add_feature_image_to_blogs (column added)');
+} catch (e) {
+  // Column likely already exists
+  console.log('Done: 006_add_feature_image_to_blogs (column already exists)');
+}
 
 console.log('All migrations complete!');
