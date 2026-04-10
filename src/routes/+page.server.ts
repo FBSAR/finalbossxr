@@ -1,11 +1,8 @@
 import { env } from '$env/dynamic/private';
 import { fail } from '@sveltejs/kit';
-import { Pool } from '@neondatabase/serverless';
+import { neon } from '@neondatabase/serverless';
 
 export const prerender = false;
-
-// Initialize the database pool
-const pool = new Pool({ connectionString: env.DATABASE_URL });
 
 // NOTE: The DISCORD_CONTACT_FORM_HOOK_URL should be defined in your .env.private file.
 // For demonstration, we'll use the environment variable name provided.
@@ -16,16 +13,17 @@ const DISCORD_WEBHOOK_URL = env.DISCORD_CONTACT_FORM_HOOK_URL;
  */
 export async function load() {
 	try {
-		const result = await pool.query(
-			`SELECT id, title, slug, excerpt, author, published, created_at
-			 FROM blogs
-			 WHERE published = true
-			 ORDER BY created_at DESC
-			 LIMIT 3`
-		);
+		const sql = neon(env.DATABASE_URL);
+		const blogs = await sql`
+			SELECT id, title, slug, excerpt, author, published, created_at
+			FROM blogs
+			WHERE published = true
+			ORDER BY created_at DESC
+			LIMIT 3
+		`;
 
 		return {
-			blogs: result.rows as Array<{
+			blogs: blogs as Array<{
 				id: string;
 				title: string;
 				slug: string;

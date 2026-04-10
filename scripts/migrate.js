@@ -38,6 +38,54 @@ await sql`CREATE TABLE IF NOT EXISTS newsletter_drafts (
 await sql`CREATE INDEX IF NOT EXISTS idx_newsletter_drafts_status ON newsletter_drafts(status)`;
 console.log('Done: 002_create_newsletter_drafts');
 
-console.log('All migrations complete!');
+// 003_create_job_applications
+await sql`CREATE TABLE IF NOT EXISTS job_applications (
+  id SERIAL PRIMARY KEY,
+  job_id INTEGER NOT NULL,
+  job_title VARCHAR(255) NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(20),
+  linkedin VARCHAR(255),
+  portfolio VARCHAR(255),
+  experience TEXT NOT NULL,
+  why_join TEXT NOT NULL,
+  resume_filename VARCHAR(255),
+  resume_data BYTEA,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+)`;
+await sql`CREATE INDEX IF NOT EXISTS idx_job_applications_job_id ON job_applications(job_id)`;
+await sql`CREATE INDEX IF NOT EXISTS idx_job_applications_email ON job_applications(email)`;
+console.log('Done: 003_create_job_applications');
+
+// 004_create_email_list
+await sql`CREATE TABLE IF NOT EXISTS email_list (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  name VARCHAR(100),
+  source VARCHAR(50) NOT NULL,
+  subscribed_to_newsletter BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+)`;
+await sql`CREATE INDEX IF NOT EXISTS idx_email_list_email ON email_list(email)`;
+await sql`CREATE INDEX IF NOT EXISTS idx_email_list_source ON email_list(source)`;
+console.log('Done: 004_create_email_list');
+
+// 005_create_captured_bots
+await sql`CREATE TABLE IF NOT EXISTS captured_bots (
+  id SERIAL PRIMARY KEY,
+  form_type VARCHAR(50) NOT NULL,
+  honeypot_field VARCHAR(50) NOT NULL,
+  honeypot_value TEXT,
+  form_data JSONB,
+  ip_address VARCHAR(45),
+  user_agent TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+)`;
+await sql`CREATE INDEX IF NOT EXISTS idx_captured_bots_form_type ON captured_bots(form_type)`;
+await sql`CREATE INDEX IF NOT EXISTS idx_captured_bots_created_at ON captured_bots(created_at)`;
+console.log('Done: 005_create_captured_bots');
 
 console.log('All migrations complete!');
