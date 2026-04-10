@@ -28,6 +28,7 @@
   let subscribersExpanded = true;
   let draftsExpanded = true;
   let archivedExpanded = false;
+  let markdownHelpExpanded = false;
   let archivedPage = 1;
   const ARCHIVED_PER_PAGE = 30;
   
@@ -801,7 +802,74 @@
           </div>
           
           <div class="form-row">
-            <label for="blog-content">Content (Markdown)</label>
+            <div class="markdown-label-group">
+              <label for="blog-content">Content (Markdown)</label>
+              <button 
+                type="button" 
+                class="markdown-toggle-btn" 
+                on:click={() => markdownHelpExpanded = !markdownHelpExpanded}
+                title="Toggle markdown syntax guide"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Markdown Guide
+              </button>
+            </div>
+            {#if markdownHelpExpanded}
+              <div class="markdown-guide">
+                <div class="markdown-guide-grid">
+                  <div class="markdown-guide-item">
+                    <strong>Bold</strong>
+                    <code>**text**</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Italic</strong>
+                    <code>*text*</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Heading 1</strong>
+                    <code># Heading</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Heading 2</strong>
+                    <code>## Heading</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Link</strong>
+                    <code>[text](url)</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Image</strong>
+                    <code>![alt](url)</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>List</strong>
+                    <code>- item</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Code</strong>
+                    <code>`code`</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Code Block</strong>
+                    <code>```code block```</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Quote</strong>
+                    <code>&gt; quote</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Line Break</strong>
+                    <code>---</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Strikethrough</strong>
+                    <code>~~text~~</code>
+                  </div>
+                </div>
+              </div>
+            {/if}
             <textarea id="blog-content" name="content" bind:value={blogForm.content} rows="10" required></textarea>
           </div>
           
@@ -1664,6 +1732,100 @@
     font-weight: 400;
     letter-spacing: 0;
     text-transform: none;
+  }
+
+  .markdown-label-group {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 0.4rem;
+  }
+
+  .markdown-label-group label {
+    margin-bottom: 0;
+  }
+
+  .markdown-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    background: rgba(0, 196, 0, 0.1);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 0.3rem;
+    color: #00c400;
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .markdown-toggle-btn:hover {
+    background: rgba(0, 196, 0, 0.2);
+    border-color: rgba(0, 196, 0, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 196, 0, 0.15);
+  }
+
+  .markdown-toggle-btn svg {
+    transition: transform 0.2s ease;
+  }
+
+  .markdown-guide {
+    margin-bottom: 0.75rem;
+    padding: 1rem;
+    background: rgba(0, 196, 0, 0.05);
+    border: 1px solid rgba(0, 196, 0, 0.2);
+    border-radius: 0.5rem;
+    animation: slideDown 0.2s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .markdown-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .markdown-guide-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 196, 0, 0.15);
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .markdown-guide-item strong {
+    color: #00c400;
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .markdown-guide-item code {
+    padding: 0.3rem 0.4rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0.25rem;
+    color: #88ff88;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.65rem;
+    word-break: break-word;
   }
 
   .form-row input, .form-row textarea {
