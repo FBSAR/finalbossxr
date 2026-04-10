@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { marked } from 'marked';
+  import { onMount } from 'svelte';
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
   
@@ -37,7 +38,7 @@
     if (isVideoFile(href)) {
       const controls = 'controls';
       const preload = 'metadata';
-      return `<video ${controls} ${preload}${heightStyle}><source src="${href}" type="video/mp4"><p>Your browser doesn't support HTML5 video.</p></video>`;
+      return `<video ${controls} ${preload} muted${heightStyle} class="auto-play-video"><source src="${href}" type="video/mp4"><p>Your browser doesn't support HTML5 video.</p></video>`;
     }
     
     // Otherwise render as image
@@ -90,6 +91,34 @@
     const url = encodeURIComponent(window.location.href);
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
   }
+
+  // Setup Intersection Observer for autoplay when videos enter viewport
+  onMount(() => {
+    const videos = document.querySelectorAll('.auto-play-video');
+    
+    if ('IntersectionObserver' in window) {
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {
+              // Autoplay may be blocked by browser policy, that's ok
+            });
+          } else {
+            video.pause();
+          }
+        });
+      }, {
+        threshold: 0.5 // Play when 50% of video is visible
+      });
+
+      videos.forEach(video => videoObserver.observe(video));
+
+      return () => {
+        videos.forEach(video => videoObserver.unobserve(video));
+      };
+    }
+  });
 </script>
 
 <svelte:head>
