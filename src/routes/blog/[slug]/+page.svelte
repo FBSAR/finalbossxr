@@ -10,6 +10,15 @@
   $: post = data.post;
   $: relatedPosts = data.relatedPosts;
   
+  let isPageLoaded = false;
+  
+  onMount(() => {
+    // Brief skeleton display during hydration
+    setTimeout(() => {
+      isPageLoaded = true;
+    }, 600);
+  });
+  
   // List of video file extensions
   const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.mkv', '.avi', '.flv', '.wmv'];
   
@@ -58,7 +67,6 @@
   
   // Parse markdown content
   $: renderedContent = post.content ? marked(post.content) : '';
-  $: isLoading = !post;
   
   let copied = false;
 
@@ -95,30 +103,40 @@
 
   // Setup Intersection Observer for autoplay when videos enter viewport
   onMount(() => {
-    const videos = document.querySelectorAll('.auto-play-video');
-    
-    if ('IntersectionObserver' in window) {
-      const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          const video = entry.target as HTMLVideoElement;
-          if (entry.isIntersecting) {
-            video.play().catch(() => {
-              // Autoplay may be blocked by browser policy, that's ok
-            });
-          } else {
-            video.pause();
-          }
+    const setupVideoObserver = () => {
+      const videos = document.querySelectorAll('.auto-play-video');
+      
+      if ('IntersectionObserver' in window && videos.length > 0) {
+        const videoObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const video = entry.target as HTMLVideoElement;
+            if (entry.isIntersecting) {
+              video.play().catch(() => {
+                // Autoplay may be blocked by browser policy, that's ok
+              });
+            } else {
+              video.pause();
+            }
+          });
+        }, {
+          threshold: 0.5 // Play when 50% of video is visible
         });
-      }, {
-        threshold: 0.5 // Play when 50% of video is visible
-      });
 
-      videos.forEach(video => videoObserver.observe(video));
+        videos.forEach(video => videoObserver.observe(video));
 
-      return () => {
-        videos.forEach(video => videoObserver.unobserve(video));
-      };
-    }
+        return () => {
+          videos.forEach(video => videoObserver.unobserve(video));
+        };
+      }
+    };
+
+    // Setup observer immediately and when content finishes loading
+    setupVideoObserver();
+    
+    // Also setup after isPageLoaded to catch rendered videos
+    const timer = setTimeout(setupVideoObserver, 650);
+    
+    return () => clearTimeout(timer);
   });
 </script>
 
@@ -147,26 +165,33 @@
         Back to Blog
       </a>
       
-      <!-- Meta -->
-      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-400">
-        <span>{formatDate(post.created_at)}</span>
-        <span>·</span>
-        <span>{calculateReadTime(post.content)} min read</span>
-        {#if post.author}
+      {#if !isPageLoaded}
+        <!-- Meta Skeleton -->
+        <div class="skeleton-text skeleton-text-xs" style="width: 200px; margin-bottom: 1.5rem;"></div>
+        <!-- Title Skeleton -->
+        <div class="skeleton-text" style="width: 70%; height: 2.5rem; margin-top: 1.5rem;"></div>
+      {:else}
+        <!-- Meta -->
+        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-400">
+          <span>{formatDate(post.created_at)}</span>
           <span>·</span>
-          <span>By {post.author}</span>
-        {/if}
-      </div>
+          <span>{calculateReadTime(post.content)} min read</span>
+          {#if post.author}
+            <span>·</span>
+            <span>By {post.author}</span>
+          {/if}
+        </div>
 
-      <!-- Title -->
-      <h1 class="text-4xl md:text-5xl font-bold gradient-text mt-6">
-        {post.title}
-      </h1>
+        <!-- Title -->
+        <h1 class="text-4xl md:text-5xl font-bold gradient-text mt-6">
+          {post.title}
+        </h1>
+      {/if}
     </div>
   </section>
 
   <!-- Featured Image -->
-  {#if isLoading}
+  {#if !isPageLoaded}
     <section class="px-4 pb-8">
       <div class="max-w-3xl mx-auto">
         <div class="post-featured-image skeleton-loader"></div>
@@ -190,7 +215,7 @@
   <section class="px-4 pb-2">
     <div class="max-w-3xl mx-auto">
       
-      {#if isLoading}
+      {#if !isPageLoaded}
         <!-- Skeleton Content -->
         <div class="space-y-4">
           <div class="skeleton-text skeleton-text-lg" style="width: 60%;"></div>
@@ -218,7 +243,7 @@
       {/if}
       
       <!-- Share Buttons -->
-      {#if !isLoading}
+      {#if isPageLoaded}
         <div class="mt-12 pt-8 border-t border-white/10">
         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Share this post</h3>
         <div class="flex gap-3">
@@ -263,7 +288,7 @@
   </section>
 
   <!-- Related Posts -->
-  {#if isLoading}
+  {#if !isPageLoaded}
     <section class="px-4 pb-20">
       <div class="max-w-6xl mx-auto">
         <h2 class="text-2xl gradient-text mb-8">Related Posts</h2>
