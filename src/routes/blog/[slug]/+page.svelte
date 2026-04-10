@@ -99,11 +99,13 @@
   {#if post.feature_image_url}
     <section class="px-4 pb-8">
       <div class="max-w-3xl mx-auto">
-        <img 
-          src={post.feature_image_url} 
-          alt={post.title}
-          class="w-full h-48 md:h-72 object-cover object-center rounded-lg border border-white/10"
-        />
+        <div class="post-featured-image">
+          <img 
+            src={post.feature_image_url} 
+            alt={post.title}
+            class="post-featured-image-img"
+          />
+        </div>
       </div>
     </section>
   {/if}
@@ -229,6 +231,29 @@
 </div>
 
 <style>
+  /* Post Featured Image */
+  .post-featured-image {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    height: 12rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media (min-width: 768px) {
+    .post-featured-image {
+      height: 18rem;
+    }
+  }
+
+  .post-featured-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
   /* Related Posts Styles */
   .related-post-card {
     display: block;
