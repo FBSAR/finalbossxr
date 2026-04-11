@@ -1132,10 +1132,7 @@
     margin: 0;
   }
   .admin-inner h2,
-  .admin-inner h3,
-  .admin-inner h4,
-  .admin-inner h5,
-  .admin-inner h6 {
+  .admin-inner h3 {
     font-family: "Raleway", sans-serif;
   }
   .stat { 
