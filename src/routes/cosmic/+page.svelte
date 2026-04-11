@@ -383,13 +383,24 @@
     <div class="flex items-start gap-3">
       <div>
         <h1 class="text-[#FFD700] text-sm lg:text-3xl mb-1">We're Hiring!</h1>
-        <p class="text-gray-300 text-xs lg:text-sm mb-2">
-          We're looking for a talented <span class="text-purple-400 font-semibold">Graphic Designer & Illustrator</span> to create original character concepts and game lore settings. 
-          We've used AI-generated concepts as a starting point, but now we need an artist to finalize designs and develop additional assets. Ideal candidates are passionate about sci-fi and space themes, with experience in 
-          <span class="text-purple-400 font-semibold">comic book-style illustration</span>.
+        <p class="text-gray-300 text-xs lg:text-sm mb-3">
+          We're looking for a passionate <span class="text-purple-400 font-semibold">Unreal Developer</span> with AR experience to help build the future of XR gaming. 
         </p>
+        <div class="text-gray-300 text-xs lg:text-sm mb-3 space-y-2">
+          <p><span class="text-green-400 font-semibold">Required:</span></p>
+          <ul class="list-disc list-inside ml-2 space-y-1">
+            <li>Unreal Engine experience (Unity is Acceptable as well)</li>
+            <li>AR development experience</li>
+          </ul>
+          <p class="mt-2"><span class="text-purple-400 font-semibold">Details:</span></p>
+          <ul class="list-disc list-inside ml-2 space-y-1">
+            <li>Equity position (will transition to paid as we secure funding)</li>
+            <li>5–8 hours per week</li>
+            <li>Startup funded through grants and partnerships</li>
+          </ul>
+        </div>
         <a href="/jobs" class="inline-flex items-center text-[#00c400] hover:text-[#00ff00] text-sm font-medium transition-colors">
-          View Open Positions →
+          View Full Details & Apply →
         </a>
       </div>
     </div>
