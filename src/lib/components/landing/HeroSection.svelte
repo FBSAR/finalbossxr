@@ -273,7 +273,7 @@
           2: { x: 75, y: 2 },
           3: { x: 15, y: 7 },
           4: { x: 85, y: 7 },
-          5: { x: 50, y: 12 },
+          5: { x: 50, y: 4 }, // Moved down below "ENERGY COLLECTED" UI
         };
         shapes = shapes.map(s => {
           if (s.draggable && mobilePositions[s.id]) {
