@@ -757,8 +757,8 @@
   .timeline-media-badge {
     display: block;
     text-align: center;
-    margin-top: 0.5rem;
-    padding: 0.35rem 0.7rem;
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.85rem;
     background: linear-gradient(135deg, rgba(0, 196, 0, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
     border: 1px solid rgba(0, 196, 0, 0.3);
     border-radius: 2rem;
@@ -769,7 +769,10 @@
     color: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    white-space: nowrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
+    max-width: 180px;
   }
 
   /* Responsive adjustments for integrated layout */
