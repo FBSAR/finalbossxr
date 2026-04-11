@@ -62,7 +62,8 @@
     pulseOffset: number;
   }
 
-  const PARTICLE_COUNT = 60;
+  const PARTICLE_COUNT_DESKTOP = 60;
+  const PARTICLE_COUNT_MOBILE = 25;
   const CONNECTION_DISTANCE = 150;
   const MOUSE_INFLUENCE_RADIUS = 200;
   const COLORS = ['#00c400', '#00ff88', '#8a2be2', '#aa66ff', '#ffd700'];
@@ -82,8 +83,9 @@
   }
 
   function initParticles() {
+    const count = isMobile ? PARTICLE_COUNT_MOBILE : PARTICLE_COUNT_DESKTOP;
     particles = [];
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       particles.push(createParticle());
     }
   }
@@ -96,15 +98,18 @@
     
     // Update and draw particles
     particles.forEach((p, i) => {
-      // Mouse influence - attract particles slightly toward cursor
-      const dx = mouseX - p.x;
-      const dy = mouseY - p.y;
-      const distToMouse = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distToMouse < MOUSE_INFLUENCE_RADIUS && distToMouse > 0) {
-        const influence = (1 - distToMouse / MOUSE_INFLUENCE_RADIUS) * 0.005;
-        p.vx += dx * influence;
-        p.vy += dy * influence;
+      // Mouse influence - attract particles slightly toward cursor (skip on mobile)
+      let distToMouse = Infinity;
+      if (!isMobile) {
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        distToMouse = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distToMouse < MOUSE_INFLUENCE_RADIUS && distToMouse > 0) {
+          const influence = (1 - distToMouse / MOUSE_INFLUENCE_RADIUS) * 0.005;
+          p.vx += dx * influence;
+          p.vy += dy * influence;
+        }
       }
       
       // Apply velocity with damping (higher = more friction = slower)
@@ -139,8 +144,8 @@
         }
       }
       
-      // Draw mouse connection lines
-      if (distToMouse < CONNECTION_DISTANCE * 1.5) {
+      // Draw mouse connection lines (desktop only)
+      if (!isMobile && distToMouse < CONNECTION_DISTANCE * 1.5) {
         const lineAlpha = (1 - distToMouse / (CONNECTION_DISTANCE * 1.5)) * 0.4;
         c.beginPath();
         c.moveTo(p.x, p.y);
@@ -200,7 +205,7 @@
   let heroRevealTimeout: ReturnType<typeof setTimeout>;
   
   // XR Art reveal animation
-  let xrArtRevealed = false;
+  let xrArtRevealed = true;
   let xrArtRevealTimeout: ReturnType<typeof setTimeout>;
   
   // Typewriter effect state
@@ -1170,9 +1175,7 @@
       bind:this={xrArtElement}
       style="--reaction-intensity: {reactionIntensity};"
     >
-      {#if xrArtRevealed}
-        <XRAbstractArt size="lg" />
-      {/if}
+      <XRAbstractArt size="lg" interactive={!isMobile} />
       <!-- Drop Zone Indicator -->
       <div class="drop-zone" class:active={xrArtReacting}></div>
       <!-- Golden Aura - Super Saiyan State -->
