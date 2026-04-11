@@ -28,6 +28,10 @@
   let dragOffsetY = 0;
   let isHoveringDraggable = false;
 
+  // Mobile detection and tap-to-collect
+  let isMobile = false;
+  let flyingShapeId: number | null = null;
+
   // Persistent energy sound state
   let energyAudioCtx: AudioContext | null = null;
   let energyOscillators: OscillatorNode[] = [];
@@ -182,6 +186,15 @@
     }
   }
 
+  function checkMobile() {
+    isMobile = browser && window.innerWidth < 768;
+  }
+
+  function handleResize() {
+    resizeCanvas();
+    checkMobile();
+  }
+
   // Hero text reveal animation
   let heroRevealed = false;
   let heroRevealTimeout: ReturnType<typeof setTimeout>;
@@ -245,13 +258,34 @@
   }
 
   onMount(() => {
+    if (browser) {
+      checkMobile();
+      
+      // Apply mobile-friendly positions for draggable shapes
+      if (isMobile) {
+        const mobilePositions: Record<number, {x: number, y: number}> = {
+          1: { x: 25, y: 2 },
+          2: { x: 75, y: 2 },
+          3: { x: 15, y: 7 },
+          4: { x: 85, y: 7 },
+          5: { x: 50, y: 12 },
+        };
+        shapes = shapes.map(s => {
+          if (s.draggable && mobilePositions[s.id]) {
+            return { ...s, x: mobilePositions[s.id].x, y: mobilePositions[s.id].y, size: s.size * 0.65 };
+          }
+          return s;
+        });
+      }
+    }
+    
     if (browser && canvas) {
       ctx = canvas.getContext('2d');
       resizeCanvas();
       initParticles();
       drawParticles(0);
       
-      window.addEventListener('resize', resizeCanvas);
+      window.addEventListener('resize', handleResize);
     }
     
     // Reveal XR art after 1500ms
@@ -270,7 +304,7 @@
   onDestroy(() => {
     if (browser) {
       if (animationId) cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', handleResize);
       clearTimeout(heroRevealTimeout);
       clearTimeout(xrArtRevealTimeout);
       // Stop energy hum if playing
@@ -867,12 +901,67 @@
     }, 2500);
   }
   
-  // Touch support for mobile
+  // ============================================
+  // MOBILE TAP-TO-COLLECT
+  // ============================================
+  function handleMobileTap(shapeId: number) {
+    const shape = shapes.find(s => s.id === shapeId);
+    if (!shape || !shape.draggable || shape.collected || isSupernova || flyingShapeId !== null) return;
+    
+    flyingShapeId = shapeId;
+    xrArtReacting = true;
+    reactionIntensity = 0.8;
+    
+    // Calculate XR art center position as percentage of hero section
+    let targetX = 50;
+    let targetY = 35;
+    if (xrArtElement && heroSection) {
+      const heroRect = heroSection.getBoundingClientRect();
+      const xrRect = xrArtElement.getBoundingClientRect();
+      targetX = ((xrRect.left + xrRect.width / 2 - heroRect.left) / heroRect.width) * 100;
+      targetY = ((xrRect.top + xrRect.height / 2 - heroRect.top) / heroRect.height) * 100;
+    }
+    
+    const startX = shape.x;
+    const startY = shape.y;
+    const duration = 450;
+    const startTime = performance.now();
+    
+    function animateFly(now: number) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3); // Ease-out cubic
+      
+      const shapeIndex = shapes.findIndex(s => s.id === shapeId);
+      if (shapeIndex !== -1) {
+        shapes[shapeIndex].x = startX + (targetX - startX) * eased;
+        shapes[shapeIndex].y = startY + (targetY - startY) * eased;
+        shapes = [...shapes];
+      }
+      
+      if (t < 1) {
+        requestAnimationFrame(animateFly);
+      } else {
+        collectShape(shapeId);
+        flyingShapeId = null;
+      }
+    }
+    
+    requestAnimationFrame(animateFly);
+  }
+
+  // Touch support for mobile & desktop
   function handleShapeTouchStart(e: TouchEvent, shapeId: number) {
     const shape = shapes.find(s => s.id === shapeId);
     if (!shape || !shape.draggable || shape.collected || isSupernova) return;
     
     e.preventDefault();
+    
+    // On mobile, use tap-to-collect instead of drag
+    if (isMobile) {
+      handleMobileTap(shapeId);
+      return;
+    }
     
     const touch = e.touches[0];
     isDragging = true;
@@ -1011,6 +1100,7 @@
         class="geo-shape-wrapper"
         class:draggable={shape.draggable && !isSupernova}
         class:dragging={draggedShapeId === shape.id}
+        class:flying={flyingShapeId === shape.id}
         style="
           left: {shape.x}%;
           top: {shape.y}%;
@@ -1020,7 +1110,7 @@
             translateX({isDragging && draggedShapeId === shape.id ? 0 : (shapeTransforms[shape.id]?.translateX || 0)}px) 
             translateY({isDragging && draggedShapeId === shape.id ? 0 : (shapeTransforms[shape.id]?.translateY || 0)}px) 
             scale({draggedShapeId === shape.id ? 1.3 : (shapeTransforms[shape.id]?.scale || 1)});
-          z-index: {draggedShapeId === shape.id ? 100 : 1};
+          z-index: {draggedShapeId === shape.id ? 100 : 15};
         "
         on:mousedown={(e) => handleShapeMouseDown(e, shape.id)}
         on:touchstart={(e) => handleShapeTouchStart(e, shape.id)}
@@ -1093,6 +1183,14 @@
       {/if}
     </div>
 
+    <!-- Game Hint -->
+    {#if !isSupernova && !supernovaComplete && heroRevealed && collectedShapes === 0}
+      <div class="game-hint">
+        <span class="hint-icon">✨</span>
+        <span>{isMobile ? 'Tap the glowing shapes!' : 'Drag shapes to the center!'}</span>
+      </div>
+    {/if}
+    
     <div class="hero-badge" class:revealed={heroRevealed}>
       <span class="badge-dot"></span>
       <span>Immersive Technology Studio</span>
@@ -1125,7 +1223,6 @@
 
     <div class="hero-cta" class:revealed={typewriterComplete}>
       <a href="/cosmic" class="btn-primary">
-        <span class="btn-badge btn-badge-primary">Video Game</span>
         <span>Cosmic Collisions</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -1268,14 +1365,36 @@
   }
 
   @media (max-width: 768px) {
-    .geo-shape-wrapper {
-      opacity: 0.5;
-      transform: scale(0.6) translateZ(0) !important;
+    .geo-shape-wrapper:not(.draggable) {
+      opacity: 0.3;
+      transform: translate(-50%, -50%) scale(0.6) translateZ(0) !important;
     }
     
     .geo-shape-wrapper.draggable {
-      opacity: 0.8;
-      transform: scale(0.8) translateZ(0) !important;
+      opacity: 1;
+      cursor: pointer;
+      animation: mobileTapPulse 2s ease-in-out infinite;
+      transform: translate(-50%, -50%) scale(0.75) translateZ(0) !important;
+    }
+    
+    .geo-shape-wrapper.dragging {
+      transform: translate(-50%, -50%) scale(0.98) translateZ(0) !important;
+    }
+    
+    .geo-shape-wrapper.draggable.flying {
+      filter: brightness(2) drop-shadow(0 0 20px rgba(0, 196, 0, 0.8)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.5));
+      animation: none;
+      pointer-events: none;
+      z-index: 100;
+    }
+  }
+
+  @keyframes mobileTapPulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
+    }
+    50% {
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.5));
     }
   }
 
@@ -2205,6 +2324,43 @@
     font-weight: 500;
   }
   
+  /* Game Hint */
+  .game-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 196, 0, 0.3);
+    border-radius: 9999px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.8rem;
+    z-index: 50;
+    animation: fadeIn 0.5s ease-out, gameHintPulse 3s ease-in-out infinite;
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+    margin-bottom: 0.75rem;
+  }
+
+  @keyframes gameHintPulse {
+    0%, 100% { 
+      border-color: rgba(0, 196, 0, 0.3);
+      box-shadow: 0 0 0 0 rgba(0, 196, 0, 0);
+    }
+    50% { 
+      border-color: rgba(0, 196, 0, 0.6);
+      box-shadow: 0 0 20px 5px rgba(0, 196, 0, 0.2);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .game-hint {
+      font-size: 0.75rem;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.625rem;
+    }
+  }
+
   /* Drag Hint */
   .drag-hint {
     position: absolute;
