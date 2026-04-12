@@ -144,6 +144,8 @@
                 src={founder.photo} 
                 class="card-image" 
                 alt="{founder.name}"
+                loading="lazy"
+                decoding="async"
                 on:load={handleImageLoad}
               />
             </div>
@@ -170,6 +172,8 @@
                 src={member.photo} 
                 class="card-image" 
                 alt="{member.name}"
+                loading="lazy"
+                decoding="async"
                 on:load={handleImageLoad}
               />
             </div>
@@ -196,6 +200,8 @@
                 src={advisor.photo} 
                 class="card-image" 
                 alt="{advisor.name}"
+                loading="lazy"
+                decoding="async"
                 on:load={handleImageLoad}
               />
             </div>

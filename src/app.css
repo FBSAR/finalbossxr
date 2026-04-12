@@ -2,12 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Inter var';
-  src: url('https://rsms.me/inter/inter-var.woff2?wght@100;200;300;400;500;600;700;800;900') format('woff2');
-  font-weight: 1 999; /* Include all weights */
-  font-display: swap;  /* Ensures smooth font loading */
-}
+/* Inter var removed — Raleway is the primary body font. Fallback to system sans-serif. */
 
 :root {
   --red: #dd0000;
@@ -136,7 +131,7 @@ h1, h2, h3, h4, h5 {
 }
 p {
   color: #fff;
-  font-family: 'Inter var', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 ul {
   color: white;

@@ -141,6 +141,8 @@
               src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
               class="w-64 lg:w-80 mx-auto drop-shadow-2xl" 
               alt="Cosmic Collisions Logo"
+              fetchpriority="high"
+              decoding="async"
             >
             <!-- Glow effect behind logo -->
             <div class="absolute inset-0 blur-3xl bg-[#00c400]/20 -z-10 scale-150"></div>
@@ -346,6 +348,7 @@
                 on:loadedmetadata={handleVideoLoad}
                 class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-colors duration-300"
                 poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
+                preload="none"
               >
                 <source src="{character.video}" type="video/mp4">
                 Your browser does not support the video tag.
@@ -416,7 +419,8 @@
       autoplay
       loop
       playsinline 
-      muted>
+      muted
+      preload="none">
     </video>
     <!-- Dark overlay for better text readability -->
     <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent"></div>

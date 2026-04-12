@@ -1,9 +1,9 @@
 <script lang='ts'>
   import { goto } from '$app/navigation';
   import { Button, Badge, FloatingLabelInput, Textarea } from 'flowbite-svelte';
-  import { LinkedinSolid, AppleSolid, DiscordSolid, FacebookSolid, XSolid} from 'flowbite-svelte-icons'
+  import { LinkedinSolid, DiscordSolid, FacebookSolid, XSolid} from 'flowbite-svelte-icons'
   import { enhance } from '$app/forms';
-  import { showSuccessToast ,showErrorToast } from '$lib/stores/toastStore';
+  import { showSuccessToast, showErrorToast } from '$lib/stores/toastStore';
 
   // TailwindCSS Classes
   const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';

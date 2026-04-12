@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import { page } from '$app/stores';
-  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Footer, FooterBrand, FooterCopyright, FooterIcon, FooterLink, FooterLinkGroup, Toast  } from 'flowbite-svelte';
+  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Footer, FooterCopyright, FooterLink, FooterLinkGroup, Toast } from 'flowbite-svelte';
   import { toast } from '$lib/stores/toastStore'; // Adjust path based on your project structure
   import { CheckCircleOutline, CloseCircleOutline } from "flowbite-svelte-icons";
   import { fly, fade } from 'svelte/transition';
