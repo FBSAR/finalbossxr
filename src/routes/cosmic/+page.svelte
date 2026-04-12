@@ -333,9 +333,7 @@
   {:else}
     <div class="w-11/12 lg:w-1/2 mx-auto h-auto lg:h-auto"> 
       {#each characters as character, index}
-        <div class="pilot-card group w-full my-4 rounded-xl lg:w-full p-5 backdrop-blur-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/20 text-white flex gap-5 hover:border-[#FFD700]/40 relative overflow-hidden">
-          <!-- Subtle gradient overlay on hover -->
-          <div class="absolute inset-0 bg-gradient-to-r from-[#FFD700]/5 to-[#00c400]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="pilot-card group w-full my-4 rounded-xl lg:w-full p-5 backdrop-blur-lg bg-gradient-to-br from-white/5 to-white/10 border border-white/20 text-white flex gap-5 hover:border-[#FFD700]/40 relative overflow-hidden" style="contain: paint;">
           
           <!-- Left column - Video/Image -->
           <div class="flex-shrink-0 relative z-10">
@@ -346,7 +344,7 @@
                 muted
                 loop
                 on:loadedmetadata={handleVideoLoad}
-                class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-all duration-300"
+                class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-colors duration-300"
                 poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
               >
                 <source src="{character.video}" type="video/mp4">
@@ -532,12 +530,12 @@
 
     /* Pilot Card */
     .pilot-card {
-      transition: all 300ms ease-out;
-      transform: translateY(0);
+      transition: border-color 300ms ease-out, background 300ms ease-out;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));
     }
     .pilot-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px -15px rgba(255, 215, 0, 0.15);
+      border-color: rgba(255, 215, 0, 0.4);
+      background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(0,196,0,0.08));
     }
   }
 
