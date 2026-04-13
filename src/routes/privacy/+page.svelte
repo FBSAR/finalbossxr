@@ -212,32 +212,32 @@
       <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
       <form method="POST" use:enhance on:submit|preventDefault={handleSubmit}>
       <FloatingLabelInput 
-        maxlength="100"
+        maxlength={100}
         bind:value={contactInfo.name}
         name="name"
-        classInput={inputClass}
-        defaultClass={"mb-2 bg-red-900"} style="filled" type="text">
+        class={inputClass}
+        style="filled" type="text">
         First & Last Name
       </FloatingLabelInput>
       <!-- Spacer -->
       <div class="h-4"></div>
       <FloatingLabelInput
-        maxlength="100"
+        maxlength={100}
         bind:value={contactInfo.email}
         name="email"
-        classInput={inputClass}
-        defaultClass={"mb-2"} style="filled" color="base" type="email">
+        class={inputClass}
+        style="filled" color="base" type="email">
         Email
       </FloatingLabelInput>
 
       <!-- Spacer -->
       <div class="h-4"></div>
       <Textarea 
-        maxlength="500"
+        maxlength={500}
         bind:value={contactInfo.message}
         name="message"
         class={inputClass}
-        placeholder="Your message" rows="6"  
+        placeholder="Your message" rows={6}
       />
       <!--         style="background: var(--green-gradient);" 
  -->
