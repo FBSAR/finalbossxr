@@ -4,6 +4,26 @@
 
 /* Inter var removed — Raleway is the primary body font. Fallback to system sans-serif. */
 
+body {
+  background: #111;
+}
+
+/* Cover gap below fixed navbar when mobile browser chrome collapses */
+@media (max-width: 1023px) {
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: #1b023d;
+    z-index: 40;
+    transform: translateY(100%);
+    pointer-events: none;
+  }
+}
+
 :root {
   --red: #dd0000;
   --green: #00ff00;

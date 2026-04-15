@@ -82,6 +82,9 @@
       </button>
   </Navbar>
 
+  <!-- Fills gap below navbar when mobile browser chrome collapses during scroll -->
+  <div class="block lg:hidden fixed bottom-0 left-0 right-0 h-24 z-40 translate-y-full pointer-events-none" style="background: #1b023d;" aria-hidden="true"></div>
+
   <!-- Bottom Drawer Overlay -->
   {#if bottomDrawerOpen}
     <button 
