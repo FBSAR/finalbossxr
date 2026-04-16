@@ -130,28 +130,31 @@
     <!-- Dark overlay for better text readability -->
     <div class="hidden lg:block absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/0"></div>
     
-    <div class="relative z-10 w-11/12 lg:w-10/12 flex flex-col mx-auto py-12 lg:py-24 h-full">
+    <div class="relative z-10 w-11/12 lg:w-10/12 flex flex-col mx-auto py-12 lg:py-24 h-full justify-center">
 
-      <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+      <!-- Unified Hero Card -->
+      <div class="header-card backdrop-blur-xl bg-black/40 lg:bg-white/5 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
         
-        <!-- Logo Column -->
-        <div class="w-full lg:w-1/3 flex justify-center lg:justify-end">
-          <div class="relative">
-            <img 
-              src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
-              class="w-64 lg:w-80 mx-auto drop-shadow-2xl" 
-              alt="Cosmic Collisions Logo"
-              fetchpriority="high"
-              decoding="async"
-            >
-            <!-- Glow effect behind logo -->
-            <div class="absolute inset-0 blur-3xl bg-[#00c400]/20 -z-10 scale-150"></div>
+        <!-- Flex container: Logo + Info (stacked on mobile, side-by-side on desktop) -->
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-8">
+          
+          <!-- Logo Section -->
+          <div class="w-full lg:w-1/3 flex items-center justify-center p-6 lg:p-8 bg-gradient-to-b from-black/20 to-transparent lg:bg-none">
+            <div class="relative flex-shrink-0">
+              <img 
+                src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
+                class="w-48 lg:w-56 mx-auto drop-shadow-2xl" 
+                alt="Cosmic Collisions Logo"
+                fetchpriority="high"
+                decoding="async"
+              >
+              <!-- Glow effect behind logo -->
+              <div class="absolute inset-0 blur-3xl bg-[#00c400]/20 -z-10 scale-150 rounded-full"></div>
+            </div>
           </div>
-        </div>
 
-        <!-- Info Card Column -->
-        <div class="w-full lg:w-1/2">
-          <div class="header-card p-6 lg:p-8 space-y-5 backdrop-blur-xl bg-black/40 lg:bg-white/5 border border-white/10 rounded-2xl shadow-2xl">
+          <!-- Info Section -->
+          <div class="w-full lg:max-w-xl space-y-5 p-6 lg:p-8 lg:pr-8">
             
             <!-- Platform Badge -->
             <div class="flex items-center gap-3">
@@ -188,8 +191,9 @@
               <Button href="#demo" color="dark" class="flex-1 justify-center border border-white/20 hover:border-[#00c400]/50">Play Demo</Button>
             </div>
           </div>
+
         </div>
-        
+
       </div>
 
     </div>
