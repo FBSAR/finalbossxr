@@ -213,6 +213,7 @@
               loop 
               muted 
               playsinline
+              preload="none"
               class="demo-video"
             >
               <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/Game-trailer-Attempt-3.mp4" type="video/mp4" />

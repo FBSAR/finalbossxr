@@ -249,18 +249,19 @@
                               loop={!media.endTime}
                               muted 
                               playsinline
+                              preload="none"
                               on:loadedmetadata={(e) => { if (media.startTime) e.currentTarget.currentTime = media.startTime; }}
                               on:timeupdate={(e) => { if (media.endTime && e.currentTarget.currentTime >= media.endTime) e.currentTarget.currentTime = media.startTime || 0; }}
                             >
                               <source src={media.src} type="video/mp4" />
                             </video>
                           {:else}
-                            <img src={media.src} alt={media.badge || 'Media'} />
+                            <img src={media.src} alt={media.badge || 'Media'} loading="lazy" decoding="async" />
                           {/if}
                         </div>
                         {#if media.companionPhoto}
                           <div class="companion-photo-frame">
-                            <img src={media.companionPhoto} alt="Event group" />
+                            <img src={media.companionPhoto} alt="Event group" loading="lazy" decoding="async" />
                           </div>
                         {/if}
                       </div>
