@@ -239,6 +239,10 @@
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
           class="w-32 lg:w-30 mx-auto lg:mx-0 drop-shadow-2xl" 
           alt="Cosmic Collisions Logo"
+          loading="lazy"
+          decoding="async"
+          width="128"
+          height="128"
         >
         
         <h3 class="lg:text-6xl gradient-text">Cosmic Collisions</h3>

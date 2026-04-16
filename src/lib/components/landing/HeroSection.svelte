@@ -1554,6 +1554,7 @@
     /* Initial hidden state */
     opacity: 0;
     transform: translateY(40px);
+    will-change: transform, filter;
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
                 transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
                 filter 0.3s ease;
@@ -1698,6 +1699,7 @@
     animation: auraFlicker 0.1s ease-in-out infinite, auraPulse 2s ease-in-out infinite;
     pointer-events: none;
     z-index: -1;
+    will-change: transform, filter;
   }
   
   @keyframes auraFlicker {
@@ -2250,12 +2252,10 @@
     0% { 
       transform: scale(0); 
       opacity: 1;
-      border-width: 3px;
     }
     100% { 
       transform: scale(15); 
       opacity: 0;
-      border-width: 1px;
     }
   }
   

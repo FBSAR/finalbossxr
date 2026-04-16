@@ -39,7 +39,7 @@
         <article class="featured-blog-card">
           <div class="featured-blog-image">
             {#if featuredBlog.feature_image_url}
-              <img src={featuredBlog.feature_image_url} alt={featuredBlog.title} class="featured-blog-image-img" />
+              <img src={featuredBlog.feature_image_url} alt={featuredBlog.title} class="featured-blog-image-img" loading="lazy" decoding="async" />
             {:else}
               <div class="featured-blog-image-placeholder">
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
@@ -72,7 +72,7 @@
             <article class="blog-card">
               <div class="blog-image">
                 {#if blog.feature_image_url}
-                  <img src={blog.feature_image_url} alt={blog.title} class="blog-image-img" />
+                  <img src={blog.feature_image_url} alt={blog.title} class="blog-image-img" loading="lazy" decoding="async" />
                 {:else}
                   <div class="blog-image-placeholder">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">

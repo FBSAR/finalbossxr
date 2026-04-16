@@ -1,10 +1,34 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+
   export let animationProgress = 0;
   export let storySection: HTMLElement | undefined = undefined;
   export let activeTimelineIndex = -1;
   export let windowWidth = 0;
   export let timelineRowElements: HTMLElement[] = [];
   export let onTimelineClick: ((index: number) => void) | undefined = undefined;
+
+  // Intersection Observer action: play video only when visible
+  function lazyPlay(node: HTMLVideoElement) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            node.play().catch(() => {});
+          } else {
+            node.pause();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(node);
+    return {
+      destroy() {
+        observer.disconnect();
+      }
+    };
+  }
 
   // Timeline data
   interface TimelineItem {
@@ -245,7 +269,7 @@
                           {/if}
                           {#if media.type === 'video'}
                             <video 
-                              autoplay 
+                              use:lazyPlay
                               loop={!media.endTime}
                               muted 
                               playsinline
@@ -303,6 +327,8 @@
           src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" 
           alt="Final Boss Logo" 
           class="mission-logo"
+          loading="lazy"
+          decoding="async"
         />
       </div>
       
@@ -1002,11 +1028,12 @@
     background: linear-gradient(90deg, transparent, #00c400, #8a2be2, transparent);
     opacity: 0.6;
     animation: underlineShimmer 3s ease-in-out infinite;
+    will-change: transform, opacity;
   }
 
   @keyframes underlineShimmer {
-    0%, 100% { opacity: 0.4; width: 50%; }
-    50% { opacity: 0.8; width: 70%; }
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) scaleX(0.83); }
+    50% { opacity: 0.8; transform: translateX(-50%) scaleX(1.17); }
   }
 
   @media (max-width: 768px) {
