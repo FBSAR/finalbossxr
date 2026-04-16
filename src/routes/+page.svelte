@@ -283,10 +283,10 @@
     contain: layout paint;
   }
 
-  /* GPU-accelerated animations hint */
-  .landing-page :global([style*="transform"]),
-  .landing-page :global([style*="opacity"]) {
-    will-change: transform, opacity;
+  /* GPU-accelerated animations hint — scoped to animated elements only */
+  .landing-page :global(.geo-shape),
+  .landing-page :global(.golden-aura),
+  .landing-page :global(.xr-art-hero) {
     backface-visibility: hidden;
     transform: translateZ(0);
   }

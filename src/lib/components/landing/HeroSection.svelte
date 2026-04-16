@@ -46,7 +46,7 @@
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D | null;
   let particles: Particle[] = [];
-  let animationId: number;
+  let animationId: number | null;
   let canvasWidth = 0;
   let canvasHeight = 0;
 
@@ -291,6 +291,24 @@
       drawParticles(0);
       
       window.addEventListener('resize', handleResize);
+
+      // Pause particle loop when hero scrolls out of view
+      const heroObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (!animationId) drawParticles(0);
+            } else {
+              if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+              }
+            }
+          });
+        },
+        { threshold: 0 }
+      );
+      if (heroSection) heroObserver.observe(heroSection);
     }
     
     // Reveal XR art after 1500ms
