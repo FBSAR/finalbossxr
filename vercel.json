@@ -3,11 +3,6 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": "sveltekit",
   "regions": ["sfo1"],
-  "functions": {
-    "api/**/*.ts": {
-      "maxDuration": 60
-    }
-  },
   "headers": [
     {
       "source": "/assets/(.*)",
