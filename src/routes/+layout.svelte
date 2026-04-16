@@ -172,7 +172,7 @@
     </div> 
   </Navbar>
 
-  <main class="scrollbar min-h-screen pt-4 pb-20 lg:py-20" style="background: var(--dark-purple-gradient);">
+  <main class="scrollbar min-h-screen pt-4 pb-20 lg:py-20" style="background: linear-gradient(45deg, #27035a 5%, #111 25%, #111 75%, #27035a 100%);">
     <slot></slot>
     
     <!-- Success Toast -->
