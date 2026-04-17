@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { EMAIL_SERVER, EMAIL_PORT, EMAIL_USERNAME, EMAIL_PASSWORD } from '$env/static/private';
+import { EMAIL_SERVER, EMAIL_PORT, EMAIL_USERNAME, EMAIL_PASSWORD, ADMIN_EMAIL_01, ADMIN_EMAIL_02 } from '$env/static/private';
 
 // Create reusable transporter using SMTP
 const transporter = nodemailer.createTransport({
@@ -404,6 +404,183 @@ The Final Boss Studios Team
         
     } catch (error) {
         console.error('Error sending confirmation email:', error);
+        return { success: false, error };
+    }
+}
+
+export async function sendApplicationAdminNotificationEmail(data: ApplicationEmailData & { applicationId?: number; jobId?: number }) {
+    const { applicantName, applicantEmail, jobTitle, phone, linkedin, portfolio, experience, whyJoin, applicationId } = data;
+    
+    const adminEmails = [ADMIN_EMAIL_01, ADMIN_EMAIL_02].filter(email => email); // Filter out any undefined emails
+    
+    if (adminEmails.length === 0) {
+        console.warn('No admin emails configured for job application notifications');
+        return { success: false, error: 'No admin emails configured' };
+    }
+    
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>New Job Application</title>
+    ${getEmailStyles()}
+</head>
+<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 20px;">
+                            <img class="logo-dark" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" alt="Final Boss Studios" width="60" style="display: block;">
+                            <img class="logo-light" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_Black.png" alt="Final Boss Studios" width="60" style="display: none;">
+                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">🚀 New Job Application!</h1>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 20px 40px;">
+                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                                A new applicant has submitted an application for the <strong class="text-accent" style="color: #00ff00;">${jobTitle}</strong> position.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Applicant Details -->
+                    <tr>
+                        <td style="padding: 0 40px 30px;">
+                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Applicant Information</h2>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Name</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantName}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Email</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantEmail}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Position</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${jobTitle}</span>
+                                        </td>
+                                    </tr>
+                                    ${phone ? `
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Phone</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${phone}</span>
+                                        </td>
+                                    </tr>
+                                    ` : ''}
+                                    ${linkedin ? `
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">LinkedIn</span><br>
+                                            <a href="${linkedin}" class="text-accent" style="color: #00ff00; font-size: 15px; text-decoration: none;">${linkedin}</a>
+                                        </td>
+                                    </tr>
+                                    ` : ''}
+                                    ${portfolio ? `
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Portfolio</span><br>
+                                            <a href="${portfolio}" class="text-accent" style="color: #00ff00; font-size: 15px; text-decoration: none;">${portfolio}</a>
+                                        </td>
+                                    </tr>
+                                    ` : ''}
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Experience</span><br>
+                                            <span class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1.5; display: block; margin-top: 8px;">${experience}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px 0;">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Why They Want to Join</span><br>
+                                            <span class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1.5; display: block; margin-top: 8px;">${whyJoin}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- CTA -->
+                    <tr>
+                        <td align="center" style="padding: 20px 40px 30px;">
+                            <a href="https://finalbossxr.com/admin/applications${applicationId ? `?id=${applicationId}` : ''}" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">View Application in Dashboard</a>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 0; text-align: center;">
+                                © ${new Date().getFullYear()} Final Boss Studios. Admin notification system.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+    `;
+
+    const textContent = `
+NEW JOB APPLICATION NOTIFICATION
+================================
+
+Applicant: ${applicantName}
+Email: ${applicantEmail}
+Position: ${jobTitle}
+${phone ? `Phone: ${phone}` : ''}
+${linkedin ? `LinkedIn: ${linkedin}` : ''}
+${portfolio ? `Portfolio: ${portfolio}` : ''}
+
+EXPERIENCE:
+${experience}
+
+WHY THEY WANT TO JOIN:
+${whyJoin}
+
+================================
+
+Visit the admin dashboard to review this application.
+
+© ${new Date().getFullYear()} Final Boss Studios.
+    `;
+
+    try {
+        const info = await transporter.sendMail({
+            from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
+            to: adminEmails.join(', '),
+            subject: `New Application: ${applicantName} for ${jobTitle}`,
+            text: textContent,
+            html: htmlContent
+        });
+
+        console.log('Admin notification email sent successfully:', info.messageId);
+        return { success: true, messageId: info.messageId };
+        
+    } catch (error) {
+        console.error('Error sending admin notification email:', error);
         return { success: false, error };
     }
 }

@@ -1,6 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { getDb, initializeJobApplicationsTable, saveCapturedBot, addToEmailList } from '$lib/db';
-import { sendApplicationConfirmationEmail } from '$lib/email';
+import { sendApplicationConfirmationEmail, sendApplicationAdminNotificationEmail } from '$lib/email';
 import { env } from '$env/dynamic/private';
 import { neon } from '@neondatabase/serverless';
 import type { Actions } from './$types';
@@ -209,6 +209,22 @@ export const actions: Actions = {
             
             if (!emailResult.success) {
                 console.warn('Failed to send confirmation email, but application was saved:', emailResult.error);
+            }
+            
+            // Send admin notification email
+            const adminEmailResult = await sendApplicationAdminNotificationEmail({
+                applicantName: name,
+                applicantEmail: email,
+                jobTitle: jobTitle || 'Unknown Position',
+                phone,
+                linkedin,
+                portfolio,
+                experience,
+                whyJoin
+            });
+            
+            if (!adminEmailResult.success) {
+                console.warn('Failed to send admin notification email, but application was saved:', adminEmailResult.error);
             }
             
             return { 
