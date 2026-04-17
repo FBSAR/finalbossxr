@@ -236,7 +236,7 @@
         "
       >
         <img 
-          src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
+          src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.webp" 
           class="w-32 lg:w-30 mx-auto lg:mx-0 drop-shadow-2xl" 
           alt="Cosmic Collisions Logo"
           loading="lazy"

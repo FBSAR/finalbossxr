@@ -47,7 +47,7 @@ describe('Cosmic Page', () => {
       
       const logo = document.querySelector('img[alt="Cosmic Collisions Logo"]');
       expect(logo).toBeInTheDocument();
-      expect(logo?.getAttribute('src')).toContain('CC_LogoAnimated.gif');
+      expect(logo?.getAttribute('src')).toContain('CC_LogoAnimated.webp');
     });
 
     it('should render the game title', () => {

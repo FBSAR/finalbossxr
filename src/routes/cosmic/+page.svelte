@@ -142,7 +142,7 @@
           <div class="w-full lg:w-1/3 flex items-center justify-center p-6 lg:p-8 bg-gradient-to-b from-black/20 to-transparent lg:bg-none">
             <div class="relative flex-shrink-0">
               <img 
-                src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif" 
+                src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.webp" 
                 class="w-48 lg:w-56 mx-auto drop-shadow-2xl" 
                 alt="Cosmic Collisions Logo"
                 fetchpriority="high"

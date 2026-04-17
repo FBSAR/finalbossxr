@@ -142,7 +142,7 @@
       media: [
         {
           type: 'image',
-          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.gif',
+          src: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.webp',
           badge: 'Cosmic Collisions'
         },
         {
