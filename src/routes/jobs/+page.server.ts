@@ -204,7 +204,9 @@ export const actions: Actions = {
                 linkedin,
                 portfolio,
                 experience,
-                whyJoin
+                whyJoin,
+                resumeFilename: resume.name,
+                resumeBuffer: resumeBuffer
             });
             
             if (!emailResult.success) {
@@ -220,7 +222,9 @@ export const actions: Actions = {
                 linkedin,
                 portfolio,
                 experience,
-                whyJoin
+                whyJoin,
+                resumeFilename: resume.name,
+                resumeBuffer: resumeBuffer
             });
             
             if (!adminEmailResult.success) {

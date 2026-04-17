@@ -77,6 +77,8 @@ interface ApplicationEmailData {
     portfolio?: string | null;
     experience: string;
     whyJoin: string;
+    resumeFilename?: string;
+    resumeBuffer?: Buffer;
 }
 
 interface ContactEmailData {
@@ -391,13 +393,25 @@ The Final Boss Studios Team
     `;
 
     try {
-        const info = await transporter.sendMail({
+        const mailOptions: any = {
             from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
             to: applicantEmail,
             subject: `Application Received - ${jobTitle} at Final Boss Studios`,
             text: textContent,
             html: htmlContent
-        });
+        };
+
+        // Add resume attachment if provided
+        if (data.resumeBuffer && data.resumeFilename) {
+            mailOptions.attachments = [
+                {
+                    filename: data.resumeFilename,
+                    content: data.resumeBuffer
+                }
+            ];
+        }
+
+        const info = await transporter.sendMail(mailOptions);
 
         console.log('Confirmation email sent successfully:', info.messageId);
         return { success: true, messageId: info.messageId };
@@ -568,13 +582,25 @@ Visit the admin dashboard to review this application.
     `;
 
     try {
-        const info = await transporter.sendMail({
+        const mailOptions: any = {
             from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
             to: adminEmails.join(', '),
             subject: `New Application: ${applicantName} for ${jobTitle}`,
             text: textContent,
             html: htmlContent
-        });
+        };
+
+        // Add resume attachment if provided
+        if (data.resumeBuffer && data.resumeFilename) {
+            mailOptions.attachments = [
+                {
+                    filename: data.resumeFilename,
+                    content: data.resumeBuffer
+                }
+            ];
+        }
+
+        const info = await transporter.sendMail(mailOptions);
 
         console.log('Admin notification email sent successfully:', info.messageId);
         return { success: true, messageId: info.messageId };
