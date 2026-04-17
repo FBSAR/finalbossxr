@@ -952,8 +952,8 @@
           </div>
           
           <div class="form-row-inline">
-            <label><input type="checkbox" name="published" value="true" bind:checked={blogForm.published} /> Published</label>
-            <label><input type="checkbox" name="featured" value="true" bind:checked={blogForm.featured} /> Featured</label>
+            <label><input type="checkbox" name="published" bind:checked={blogForm.published} /> Published</label>
+            <label><input type="checkbox" name="featured" bind:checked={blogForm.featured} /> Featured</label>
           </div>
           
           <div class="form-actions">
@@ -1032,7 +1032,7 @@
           <!-- Status Section -->
           <div class="form-section">
             <div class="form-checkbox-group">
-              <input type="checkbox" id="job-published" name="published" value="true" bind:checked={jobForm.published} />
+              <input type="checkbox" id="job-published" name="published" bind:checked={jobForm.published} />
               <label for="job-published">Published</label>
             </div>
           </div>
