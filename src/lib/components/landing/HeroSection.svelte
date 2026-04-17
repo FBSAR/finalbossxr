@@ -62,10 +62,10 @@
     pulseOffset: number;
   }
 
-  const PARTICLE_COUNT_DESKTOP = 60;
-  const PARTICLE_COUNT_MOBILE = 25;
-  const CONNECTION_DISTANCE = 150;
-  const MOUSE_INFLUENCE_RADIUS = 200;
+  const PARTICLE_COUNT_DESKTOP = 30;
+  const PARTICLE_COUNT_MOBILE = 15;
+  const CONNECTION_DISTANCE = 100;
+  const MOUSE_INFLUENCE_RADIUS = 180;
   const COLORS = ['#00c400', '#00ff88', '#8a2be2', '#aa66ff', '#ffd700'];
 
   function createParticle(): Particle {
@@ -127,44 +127,15 @@
       // Pulsing alpha
       p.alpha = p.baseAlpha + Math.sin(time * 0.002 + p.pulseOffset) * 0.2;
       
-      // Draw connections to nearby particles
-      for (let j = i + 1; j < particles.length; j++) {
-        const p2 = particles[j];
-        const dist = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
-        
-        if (dist < CONNECTION_DISTANCE) {
-          const lineAlpha = (1 - dist / CONNECTION_DISTANCE) * 0.3;
-          
-          c.beginPath();
-          c.moveTo(p.x, p.y);
-          c.lineTo(p2.x, p2.y);
-          c.strokeStyle = `rgba(0, 196, 0, ${lineAlpha})`;
-          c.lineWidth = 0.5;
-          c.stroke();
-        }
-      }
+      // Connection lines are batched below after the particle loop
       
-      // Draw mouse connection lines (desktop only)
-      if (!isMobile && distToMouse < CONNECTION_DISTANCE * 1.5) {
-        const lineAlpha = (1 - distToMouse / (CONNECTION_DISTANCE * 1.5)) * 0.4;
-        c.beginPath();
-        c.moveTo(p.x, p.y);
-        c.lineTo(mouseX, mouseY);
-        c.strokeStyle = `rgba(138, 43, 226, ${lineAlpha})`;
-        c.lineWidth = 0.8;
-        c.stroke();
-      }
-      
-      // Draw particle with glow
+      // Draw particle (soft outer ring + solid core — no per-particle gradient)
       c.beginPath();
-      c.arc(p.x, p.y, p.radius * 2, 0, Math.PI * 2);
-      const glowGradient = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 2);
-      glowGradient.addColorStop(0, p.color);
-      glowGradient.addColorStop(1, 'transparent');
-      c.fillStyle = glowGradient;
-      c.globalAlpha = p.alpha * 0.5;
+      c.arc(p.x, p.y, p.radius * 2.5, 0, Math.PI * 2);
+      c.fillStyle = p.color;
+      c.globalAlpha = p.alpha * 0.25;
       c.fill();
-      
+
       // Draw core
       c.beginPath();
       c.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -173,7 +144,42 @@
       c.fill();
       c.globalAlpha = 1;
     });
-    
+
+    // Batch all green connection lines into a single stroke call
+    c.beginPath();
+    c.strokeStyle = 'rgba(0, 196, 0, 0.3)';
+    c.lineWidth = 0.5;
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const dx = p.x - p2.x;
+        const dy = p.y - p2.y;
+        if (dx * dx + dy * dy < CONNECTION_DISTANCE * CONNECTION_DISTANCE) {
+          c.moveTo(p.x, p.y);
+          c.lineTo(p2.x, p2.y);
+        }
+      }
+    }
+    c.stroke();
+
+    // Batch mouse connection lines (desktop only)
+    if (!isMobile) {
+      c.beginPath();
+      c.strokeStyle = 'rgba(138, 43, 226, 0.4)';
+      c.lineWidth = 0.8;
+      const mouseDist2 = CONNECTION_DISTANCE * CONNECTION_DISTANCE * 2.25; // (1.5x)²
+      for (const p of particles) {
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        if (dx * dx + dy * dy < mouseDist2) {
+          c.moveTo(p.x, p.y);
+          c.lineTo(mouseX, mouseY);
+        }
+      }
+      c.stroke();
+    }
+
     animationId = requestAnimationFrame((t) => drawParticles(t));
   }
 
