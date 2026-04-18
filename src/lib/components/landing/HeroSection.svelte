@@ -2316,8 +2316,8 @@
   }
   
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   .progress-label {
@@ -2363,7 +2363,7 @@
     color: rgba(255, 255, 255, 0.9);
     font-size: 0.8rem;
     z-index: 50;
-    animation: fadeIn 0.5s ease-out, gameHintPulse 3s ease-in-out infinite;
+    animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), gameHintPulse 4s ease-in-out infinite 0.6s;
     backdrop-filter: blur(10px);
     white-space: nowrap;
     margin-bottom: 0.75rem;
@@ -2371,12 +2371,12 @@
 
   @keyframes gameHintPulse {
     0%, 100% { 
-      border-color: rgba(0, 196, 0, 0.3);
-      box-shadow: 0 0 0 0 rgba(0, 196, 0, 0);
+      border-color: rgba(0, 196, 0, 0.25);
+      box-shadow: 0 0 8px rgba(0, 196, 0, 0.1);
     }
     50% { 
-      border-color: rgba(0, 196, 0, 0.6);
-      box-shadow: 0 0 20px 5px rgba(0, 196, 0, 0.2);
+      border-color: rgba(0, 196, 0, 0.5);
+      box-shadow: 0 0 16px rgba(0, 196, 0, 0.25);
     }
   }
 
