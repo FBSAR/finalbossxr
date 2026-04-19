@@ -22,6 +22,7 @@
     department: string;
     job_type: string;
     location: string;
+    summary: string;
     description: string;
     published: boolean;
     created_at: string;
@@ -233,7 +234,7 @@
                 
                 <h3 class="job-title">{job.title}</h3>
                 <p class="job-department">{job.department}</p>
-                <p class="job-description">{job.description}</p>
+                <p class="job-description">{job.summary}</p>
 
                 <div class="job-cta">
                   <span>Apply Now</span>
@@ -792,6 +793,7 @@
     line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    white-space: pre-line;
   }
 
   @media (min-width: 640px) {
@@ -946,6 +948,7 @@
     font-size: 0.85rem;
     line-height: 1.6;
     margin-bottom: 0.75rem;
+    white-space: pre-line;
   }
 
   @media (min-width: 640px) {

@@ -187,3 +187,20 @@ export async function subscribeToNewsletter(email: string, name?: string | null)
         subscribedToNewsletter: true
     });
 }
+
+/**
+ * Adds the summary column to jobs table if it doesn't exist.
+ */
+export async function addSummaryColumnToJobs() {
+    const sql = getDb();
+    
+    try {
+        await sql`
+            ALTER TABLE jobs 
+            ADD COLUMN IF NOT EXISTS summary TEXT DEFAULT '';
+        `;
+        console.log('Summary column added to jobs table');
+    } catch (error) {
+        console.log('Summary column already exists or error occurred:', error);
+    }
+}

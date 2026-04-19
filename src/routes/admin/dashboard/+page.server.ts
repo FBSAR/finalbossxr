@@ -1,4 +1,4 @@
-import { getDb } from '$lib/db';
+import { getDb, addSummaryColumnToJobs } from '$lib/db';
 import { sendNewsletterEmail } from '$lib/email';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
@@ -17,6 +17,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
   }
 
   const db = getDb();
+  
+  // Ensure jobs table has summary column
+  await addSummaryColumnToJobs();
   
   // Fetch job applications (without resume binary data for performance)
   const jobApplications = await db`
@@ -102,7 +105,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   let jobs: any[] = [];
   try {
     jobs = await db`
-      SELECT id, title, department, job_type, location, description, published, created_at, updated_at
+      SELECT id, title, department, job_type, location, summary, description, published, created_at, updated_at
       FROM jobs
       ORDER BY created_at DESC
     `;
@@ -417,13 +420,14 @@ export const actions: Actions = {
     const department = data.get('department') as string;
     const job_type = data.get('job_type') as string;
     const location = data.get('location') as string || 'Remote';
+    const summary = data.get('summary') as string;
     const description = data.get('description') as string;
     const published = data.get('published') === 'on';
     const db = getDb();
 
     await db`
-      INSERT INTO jobs (title, department, job_type, location, description, published)
-      VALUES (${title}, ${department}, ${job_type}, ${location}, ${description}, ${published})
+      INSERT INTO jobs (title, department, job_type, location, summary, description, published)
+      VALUES (${title}, ${department}, ${job_type}, ${location}, ${summary}, ${description}, ${published})
     `;
 
     return { success: true, message: 'Job created' };
@@ -441,6 +445,7 @@ export const actions: Actions = {
     const department = data.get('department') as string;
     const job_type = data.get('job_type') as string;
     const location = data.get('location') as string || 'Remote';
+    const summary = data.get('summary') as string;
     const description = data.get('description') as string;
     const published = data.get('published') === 'on';
     const db = getDb();
@@ -448,7 +453,7 @@ export const actions: Actions = {
     await db`
       UPDATE jobs 
       SET title = ${title}, department = ${department}, job_type = ${job_type}, 
-          location = ${location}, description = ${description}, 
+          location = ${location}, summary = ${summary}, description = ${description}, 
           published = ${published}, updated_at = NOW()
       WHERE id = ${id}
     `;

@@ -16,7 +16,7 @@
   // Jobs state
   let showJobModal = false;
   let editingJob: any = null;
-  let jobForm = { title: '', department: '', job_type: '', location: 'Remote', description: '', published: true };
+  let jobForm = { title: '', department: '', job_type: '', location: 'Remote', summary: '', description: '', published: true };
   
   // Newsletter state
   let showDraftModal = false;
@@ -111,7 +111,7 @@
       jobForm = { ...job };
     } else {
       editingJob = null;
-      jobForm = { title: '', department: '', job_type: '', location: 'Remote', description: '', published: true };
+      jobForm = { title: '', department: '', job_type: '', location: 'Remote', summary: '', description: '', published: true };
     }
     showJobModal = true;
   }
@@ -452,7 +452,7 @@
                   </div>
                 </div>
               </div>
-              <p class="description">{job.description}</p>
+              <p class="description">{job.summary}</p>
               <div class="job-actions">
                 <button class="btn-sm" on:click={() => openJobModal(job)}>Edit</button>
                 <form method="POST" action="?/deleteJob" use:enhance={() => {
@@ -1022,7 +1022,11 @@
 
           <!-- Description Section -->
           <div class="form-section">
-            <h3>Description</h3>
+            <h3>Summary & Description</h3>
+            <div class="form-group">
+              <label for="job-summary">Job Summary</label>
+              <textarea id="job-summary" name="summary" bind:value={jobForm.summary} placeholder="Enter a brief summary of the position (2-3 sentences)..." rows="3" required></textarea>
+            </div>
             <div class="form-group">
               <label for="job-description">Job Description</label>
               <textarea id="job-description" name="description" bind:value={jobForm.description} placeholder="Enter comprehensive job description..." rows="10" required></textarea>
@@ -1638,6 +1642,7 @@
     line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    white-space: pre-line;
   }
 
   .job-actions {
