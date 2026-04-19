@@ -533,7 +533,7 @@ export async function sendApplicationAdminNotificationEmail(data: ApplicationEma
                     <!-- CTA -->
                     <tr>
                         <td align="center" style="padding: 20px 40px 30px;">
-                            <a href="https://finalbossxr.com/admin/applications${applicationId ? `?id=${applicationId}` : ''}" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">View Application in Dashboard</a>
+                            <a href="https://finalbossxr.com/admin/dashboard" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">View Application in Dashboard</a>
                         </td>
                     </tr>
                     
