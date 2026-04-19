@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { subscribeToNewsletter, saveCapturedBot } from '$lib/db';
+import { sendNewsletterAdminNotificationEmail } from '$lib/email';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -36,6 +37,9 @@ export const POST: RequestHandler = async ({ request }) => {
 
         // Subscribe to newsletter
         await subscribeToNewsletter(email, name);
+
+        // Send admin notification
+        await sendNewsletterAdminNotificationEmail({ email, name });
 
         return json({ success: true, message: 'Successfully subscribed!' });
 

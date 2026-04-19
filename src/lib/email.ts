@@ -112,8 +112,7 @@ export async function sendContactConfirmationEmail(data: ContactEmailData) {
                     <!-- Header -->
                     <tr>
                         <td align="center" style="padding: 40px 40px 20px;">
-                            <img class="logo-dark" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <img class="logo-light" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_Black.png" alt="Final Boss Studios" width="60" style="display: none;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
                             <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">Thanks for Reaching Out! 📬</h1>
                         </td>
                     </tr>
@@ -252,8 +251,7 @@ export async function sendApplicationConfirmationEmail(data: ApplicationEmailDat
                     <!-- Header -->
                     <tr>
                         <td align="center" style="padding: 40px 40px 20px;">
-                            <img class="logo-dark" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <img class="logo-light" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_Black.png" alt="Final Boss Studios" width="60" style="display: none;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
                             <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">Application Received! 🎮</h1>
                         </td>
                     </tr>
@@ -452,8 +450,7 @@ export async function sendApplicationAdminNotificationEmail(data: ApplicationEma
                     <!-- Header -->
                     <tr>
                         <td align="center" style="padding: 40px 40px 20px;">
-                            <img class="logo-dark" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <img class="logo-light" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_Black.png" alt="Final Boss Studios" width="60" style="display: none;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
                             <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">🚀 New Job Application!</h1>
                         </td>
                     </tr>
@@ -645,8 +642,7 @@ export async function sendNewsletterEmail(data: NewsletterEmailData) {
                     <!-- Header -->
                     <tr>
                         <td align="center" style="padding: 40px 40px 20px;">
-                            <img class="logo-dark" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_White.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <img class="logo-light" src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/F_Logo_Black.png" alt="Final Boss Studios" width="60" style="display: none;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
                             <h1 class="text-accent" style="color: #00ff00; font-size: 24px; margin: 20px 0 10px; font-weight: 700;">${subject}</h1>
                         </td>
                     </tr>
@@ -719,6 +715,135 @@ You're receiving this because you subscribed to our newsletter.
         
     } catch (error) {
         console.error('Error sending newsletter email to:', recipientEmail, error);
+        return { success: false, error };
+    }
+}
+
+export async function sendNewsletterAdminNotificationEmail(data: { email: string; name?: string | null }) {
+    const { email, name } = data;
+    
+    const adminEmails = [ADMIN_EMAIL_01, ADMIN_EMAIL_02].filter(email => email);
+    
+    if (adminEmails.length === 0) {
+        console.warn('No admin emails configured for newsletter notifications');
+        return { success: false, error: 'No admin emails configured' };
+    }
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>New Newsletter Subscription</title>
+    ${getEmailStyles()}
+</head>
+<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 20px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
+                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">📧 New Newsletter Subscriber</h1>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 20px 40px;">
+                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                                A new user has subscribed to your newsletter!
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Subscriber Details -->
+                    <tr>
+                        <td style="padding: 0 40px 30px;">
+                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Subscriber Information</h2>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Email</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${email}</span>
+                                        </td>
+                                    </tr>
+                                    ${name ? `
+                                    <tr>
+                                        <td style="padding: 8px 0;">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Name</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${name}</span>
+                                        </td>
+                                    </tr>
+                                    ` : ''}
+                                    <tr>
+                                        <td style="padding: 8px 0;">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Subscribed</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${new Date().toLocaleString()}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
+                                View all subscribers in your <a href="https://finalbossxr.com/admin/dashboard" class="text-accent" style="color: #00ff00; text-decoration: none;">admin dashboard</a>
+                            </p>
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                                © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+    `;
+
+    const textContent = `
+New Newsletter Subscriber
+
+Email: ${email}
+${name ? `Name: ${name}` : ''}
+Subscribed: ${new Date().toLocaleString()}
+
+---
+
+View all subscribers in your admin dashboard:
+https://finalbossxr.com/admin/dashboard
+
+© ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
+    `;
+
+    try {
+        const info = await transporter.sendMail({
+            from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
+            to: adminEmails.join(', '),
+            subject: `New Newsletter Subscriber: ${name || email}`,
+            text: textContent,
+            html: htmlContent
+        });
+
+        console.log('Newsletter subscription notification sent to admins:', info.messageId);
+        return { success: true, messageId: info.messageId };
+        
+    } catch (error) {
+        console.error('Error sending newsletter subscription notification:', error);
         return { success: false, error };
     }
 }
