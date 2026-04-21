@@ -11,6 +11,33 @@
   // Track loading state for each video
   let loadingVideos = new Set<string>();
 
+  // Track which timeline rows are visible in viewport
+  let visibleTimelineRows = new Set<number>();
+
+  // Intersection Observer action: reveal timeline rows when scrolled into view
+  function observeTimelineRow(node: HTMLElement, index: number) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            visibleTimelineRows.add(index);
+            visibleTimelineRows = visibleTimelineRows; // Trigger reactivity
+          } else {
+            visibleTimelineRows.delete(index);
+            visibleTimelineRows = visibleTimelineRows; // Trigger reactivity
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+    observer.observe(node);
+    return {
+      destroy() {
+        observer.disconnect();
+      }
+    };
+  }
+
   // Intersection Observer action: play video only when visible
   function lazyPlay(node: HTMLVideoElement) {
     const observer = new IntersectionObserver(
@@ -248,7 +275,9 @@
             class="timeline-row" 
             class:has-media={item.media && item.media.length > 0}
             class:media-active={activeTimelineIndex === index || activeTimelineIndex === -1}
+            class:visible={visibleTimelineRows.has(index)}
             class:clickable={isClickable}
+            use:observeTimelineRow={index}
             bind:this={timelineRowElements[index]}
             style="opacity: {progress}; transform: translateY({(1 - progress) * 40}px);"
             on:click={() => isClickable && onTimelineClick?.(index)}
@@ -557,6 +586,13 @@
     will-change: transform, opacity;
     transform: translateZ(0);
     backface-visibility: hidden;
+    /* Initially hidden until scrolled into view */
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .timeline-row.visible {
+    opacity: 1;
   }
 
   .timeline-row.clickable {
@@ -618,9 +654,17 @@
     padding: 1.25rem;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
-    transform: translateZ(0);
     backface-visibility: hidden;
     overflow: hidden;
+    /* Initially hidden for scroll-into-view reveal */
+    opacity: 0;
+    transform: translateY(20px) translateZ(0);
+  }
+
+  .timeline-row.visible .timeline-text-block {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .timeline-text-block::before {
@@ -635,7 +679,7 @@
   .timeline-row:hover .timeline-text-block {
     background: rgba(10, 22, 40, 0.95);
     border-color: rgba(0, 196, 0, 0.4);
-    transform: scale(1.02);
+    transform: translateY(0) scale(1.02) translateZ(0);
     box-shadow: 
       0 10px 40px rgba(0, 0, 0, 0.3),
       0 0 30px rgba(0, 196, 0, 0.15),
@@ -686,13 +730,20 @@
     will-change: transform, opacity;
     opacity: 0;
     transform: translateX(30px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
     pointer-events: none;
   }
 
   .timeline-media-grid.media-visible {
     opacity: 1;
     transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .timeline-row.visible .timeline-media-grid {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
     pointer-events: auto;
   }
 
