@@ -664,7 +664,7 @@
   .timeline-row.visible .timeline-text-block {
     opacity: 1;
     transform: translateY(0) translateZ(0);
-    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s;
   }
 
   .timeline-text-block::before {
@@ -743,7 +743,7 @@
   .timeline-row.visible .timeline-media-grid {
     opacity: 1;
     transform: translateX(0);
-    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s;
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
     pointer-events: auto;
   }
 

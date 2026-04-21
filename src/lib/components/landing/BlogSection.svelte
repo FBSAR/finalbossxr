@@ -13,6 +13,28 @@
 
   export let blogs: BlogPost[] = [];
 
+  let isVisible = false;
+
+  // Intersection Observer action: reveal section when scrolled into view
+  function observeSection(node: HTMLElement) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            isVisible = true;
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+    observer.observe(node);
+    return {
+      destroy() {
+        observer.disconnect();
+      }
+    };
+  }
+
   function formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -26,7 +48,7 @@
   $: otherBlogs = blogs.filter(blog => !blog.featured);
 </script>
 
-<section class="blog-section" aria-label="Blog">
+<section class="blog-section" class:visible={isVisible} use:observeSection aria-label="Blog">
   <div class="blog-container">
     <div class="blog-header">
       <span class="section-label">Latest Updates</span>
@@ -121,6 +143,16 @@
   .blog-section {
     padding: 6rem 2rem;
     background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+    /* Initially hidden for scroll-into-view reveal */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .blog-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
   }
 
   @media (max-width: 768px) {

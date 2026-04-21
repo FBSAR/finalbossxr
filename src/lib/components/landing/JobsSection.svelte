@@ -9,9 +9,31 @@
     published: boolean;
     created_at: string;
   }> = [];
+
+  let isVisible = false;
+
+  // Intersection Observer action: reveal section when scrolled into view
+  function observeSection(node: HTMLElement) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            isVisible = true;
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+    observer.observe(node);
+    return {
+      destroy() {
+        observer.disconnect();
+      }
+    };
+  }
 </script>
 
-<section class="jobs-section" aria-label="Job Postings">
+<section class="jobs-section" class:visible={isVisible} use:observeSection aria-label="Job Postings">
   <div class="jobs-container">
     <div class="jobs-header">
       <span class="section-label">Join Our Team</span>
@@ -71,6 +93,16 @@
   /* Jobs Section */
   .jobs-section {
     padding: 6rem 2rem;
+    /* Initially hidden for scroll-into-view reveal */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .jobs-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
   }
 
   @media (max-width: 768px) {

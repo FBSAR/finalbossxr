@@ -1,8 +1,30 @@
 <script lang="ts">
   import NewsletterSignup from '$lib/components/NewsletterSignup.svelte';
+
+  let isVisible = false;
+
+  // Intersection Observer action: reveal section when scrolled into view
+  function observeSection(node: HTMLElement) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            isVisible = true;
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+    observer.observe(node);
+    return {
+      destroy() {
+        observer.disconnect();
+      }
+    };
+  }
 </script>
 
-<section class="newsletter-section" aria-label="Newsletter">
+<section class="newsletter-section" class:visible={isVisible} use:observeSection aria-label="Newsletter">
   <div class="newsletter-bg">
     <div class="newsletter-glow"></div>
   </div>
@@ -71,6 +93,16 @@
     position: relative;
     padding: 6rem 2rem;
     overflow: hidden;
+    /* Initially hidden for scroll-into-view reveal */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .newsletter-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.2s;
   }
 
   @media (max-width: 768px) {
