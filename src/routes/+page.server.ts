@@ -31,7 +31,7 @@ export async function load() {
 				LIMIT 2
 			`,
 			sql`
-				SELECT id, title, department, job_type, location, description, published, created_at
+				SELECT id, title, department, job_type, location, summary, published, created_at
 				FROM jobs
 				WHERE published = true
 				ORDER BY created_at DESC
@@ -61,7 +61,7 @@ export async function load() {
 				department: string;
 				job_type: string;
 				location: string;
-				description: string;
+				summary: string;
 				published: boolean;
 				created_at: string;
 			}>

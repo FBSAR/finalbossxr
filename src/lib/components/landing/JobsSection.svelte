@@ -5,7 +5,7 @@
     department: string;
     job_type: string;
     location: string;
-    description: string;
+    summary: string;
     published: boolean;
     created_at: string;
   }> = [];
@@ -38,7 +38,7 @@
               {job.location}
             </p>
             <p class="job-description">
-              {job.description}
+              {job.summary}
             </p>
           </article>
         {/each}
