@@ -191,9 +191,10 @@
     }
   });
 
-  // Disable scrollbar when Response Template modal is open
+  // Disable scrollbar when any modal is open
   $: if (typeof document !== 'undefined') {
-    document.body.style.overflow = showPresetMessagesModal ? 'hidden' : 'auto';
+    const isAnyModalOpen = showBlogModal || showJobModal || showDraftModal || showApplicationResponseModal || showPresetMessagesModal;
+    document.body.style.overflow = isAnyModalOpen ? 'hidden' : 'auto';
   }
 
   function openPresetMessagesModal() {
@@ -930,7 +931,8 @@
           <h2>{editingDraft ? 'Edit Draft' : 'New Newsletter Draft'}</h2>
           <button class="close-btn" on:click={closeDraftModal}>×</button>
         </div>
-        <form method="POST" action={editingDraft ? '?/updateDraft' : '?/createDraft'} use:enhance={() => {
+        <div class="modal-body">
+          <form method="POST" action={editingDraft ? '?/updateDraft' : '?/createDraft'} use:enhance={() => {
           isSubmitting = true;
           return async ({ result, update }) => {
             if (result.type === 'success') {
@@ -978,7 +980,8 @@
             <button type="button" class="btn-secondary" on:click={closeDraftModal}>Cancel</button>
             <button type="submit" class="btn-primary">{editingDraft ? 'Update' : 'Save Draft'}</button>
           </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   {/if}
@@ -993,22 +996,23 @@
           <h2>{editingBlog ? 'Edit Blog' : 'New Blog'}</h2>
           <button class="close-btn" on:click={closeBlogModal}>×</button>
         </div>
-        <form method="POST" action={editingBlog ? '?/updateBlog' : '?/createBlog'} use:enhance={() => {
-          isSubmitting = true;
-          return async ({ result, update }) => {
-            if (result.type === 'success') {
-              closeBlogModal();
-              showToast(editingBlog ? 'Blog updated successfully!' : 'Blog created successfully!', 'success');
-            } else if (result.type === 'failure') {
-              // Show error toast but keep modal open
-              const data = result.data;
-              const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
-              showToast(errorMessage, 'error');
-            }
-            await update();
-            isSubmitting = false;
-          };
-        }}>
+        <div class="modal-body">
+          <form method="POST" action={editingBlog ? '?/updateBlog' : '?/createBlog'} use:enhance={() => {
+            isSubmitting = true;
+            return async ({ result, update }) => {
+              if (result.type === 'success') {
+                closeBlogModal();
+                showToast(editingBlog ? 'Blog updated successfully!' : 'Blog created successfully!', 'success');
+              } else if (result.type === 'failure') {
+                // Show error toast but keep modal open
+                const data = result.data;
+                const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
+                showToast(errorMessage, 'error');
+              }
+              await update();
+              isSubmitting = false;
+            };
+          }}>
           {#if editingBlog}
             <input type="hidden" name="id" value={editingBlog.id} />
           {/if}
@@ -1130,11 +1134,12 @@
             <label><input type="checkbox" name="featured" bind:checked={blogForm.featured} /> Featured</label>
           </div>
           
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" on:click={closeBlogModal}>Cancel</button>
-            <button type="submit" class="btn-primary">{editingBlog ? 'Update' : 'Create'}</button>
-          </div>
-        </form>
+            <div class="form-actions">
+              <button type="button" class="btn-secondary" on:click={closeBlogModal}>Cancel</button>
+              <button type="submit" class="btn-primary">{editingBlog ? 'Update' : 'Create'}</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   {/if}
@@ -1145,9 +1150,13 @@
     <div class="modal-overlay" role="dialog" aria-modal="true" on:click={closeJobModal} on:keydown={(e) => e.key === 'Escape' && closeJobModal()}>
       <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
       <div class="modal" role="document" on:click|stopPropagation on:keydown|stopPropagation>
-        <h2>{editingJob ? 'Edit Job' : 'Create New Job'}</h2>
-        <form method="POST" action={editingJob ? '?/updateJob' : '?/createJob'} use:enhance={() => {
-          isSubmitting = true;
+        <div class="modal-header">
+          <h2>{editingJob ? 'Edit Job' : 'Create New Job'}</h2>
+          <button class="close-btn" on:click={closeJobModal}>×</button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action={editingJob ? '?/updateJob' : '?/createJob'} use:enhance={() => {
+            isSubmitting = true;
           return async ({ result, update }) => {
             if (result.type === 'success') {
               closeJobModal();
@@ -1220,7 +1229,8 @@
             <button type="button" class="btn-secondary" on:click={closeJobModal}>Cancel</button>
             <button type="submit" class="btn-primary">{editingJob ? 'Update' : 'Create'}</button>
           </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   {/if}
@@ -1979,6 +1989,7 @@
     z-index: 100;
     padding: 0;
   }
+
   @media (min-width: 640px) {
     .modal-overlay {
       align-items: center;
@@ -1995,6 +2006,7 @@
     border: 1px solid rgba(0, 196, 0, 0.15);
     border-radius: 1rem 1rem 0 0;
     box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
   }
   @media (min-width: 640px) {
     .modal {
@@ -2042,7 +2054,25 @@
   .modal-body {
     padding: 1.5rem;
     overflow-y: auto;
-    max-height: calc(90vh - 180px);
+    flex: 1;
+    min-height: 0;
+  }
+
+  .modal-body form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .modal-body .form-actions {
+    margin-top: auto;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    margin-bottom: -1.5rem;
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(12, 12, 18, 0.5) 0%, #0d0d14 100%);
+    flex-shrink: 0;
   }
 
   .modal-footer {
