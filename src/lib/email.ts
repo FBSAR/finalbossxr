@@ -953,15 +953,6 @@ export async function sendJobApplicationRejectionEmail(data: { applicantName: st
                         </td>
                     </tr>
                     
-                    <!-- Encouragement -->
-                    <tr>
-                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 0 40px 32px;">
-                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                                We encourage you to stay updated with our open positions, and we hope our paths may cross again in the future. We wish you the best of luck in your career!
-                            </p>
-                        </td>
-                    </tr>
-                    
                     <!-- CTA Button -->
                     <tr>
                         <td bgcolor="#ffffff" align="center" style="background-color: #ffffff; padding: 0 40px 32px;">
@@ -993,8 +984,6 @@ export async function sendJobApplicationRejectionEmail(data: { applicantName: st
 Hi ${firstName},
 
 ${customMessage}
-
-We encourage you to stay updated with our open positions, and we hope our paths may cross again in the future. We wish you the best of luck in your career!
 
 Best of luck in your future endeavors!
 Visit us at finalbossxr.com

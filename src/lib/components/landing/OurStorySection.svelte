@@ -8,6 +8,9 @@
   export let timelineRowElements: HTMLElement[] = [];
   export let onTimelineClick: ((index: number) => void) | undefined = undefined;
 
+  // Track loading state for each video
+  let loadingVideos = new Set<string>();
+
   // Intersection Observer action: play video only when visible
   function lazyPlay(node: HTMLVideoElement) {
     const observer = new IntersectionObserver(
@@ -28,6 +31,17 @@
         observer.disconnect();
       }
     };
+  }
+
+  // Handle video loading state
+  function handleVideoLoadStart(src: string) {
+    loadingVideos.add(src);
+    loadingVideos = loadingVideos; // Trigger reactivity
+  }
+
+  function handleVideoCanPlay(src: string) {
+    loadingVideos.delete(src);
+    loadingVideos = loadingVideos; // Trigger reactivity
   }
 
   // Timeline data
@@ -268,17 +282,28 @@
                             <div class="phone-notch"></div>
                           {/if}
                           {#if media.type === 'video'}
-                            <video 
-                              use:lazyPlay
-                              loop={!media.endTime}
-                              muted 
-                              playsinline
-                              preload="none"
-                              on:loadedmetadata={(e) => { if (media.startTime) e.currentTarget.currentTime = media.startTime; }}
-                              on:timeupdate={(e) => { if (media.endTime && e.currentTarget.currentTime >= media.endTime) e.currentTarget.currentTime = media.startTime || 0; }}
-                            >
-                              <source src={media.src} type="video/mp4" />
-                            </video>
+                            <div class="video-wrapper">
+                              <video 
+                                use:lazyPlay
+                                loop={!media.endTime}
+                                muted 
+                                playsinline
+                                preload="none"
+                                on:loadedmetadata={(e) => { if (media.startTime) e.currentTarget.currentTime = media.startTime; handleVideoCanPlay(media.src); }}
+                                on:loadstart={() => handleVideoLoadStart(media.src)}
+                                on:canplay={() => handleVideoCanPlay(media.src)}
+                                on:timeupdate={(e) => { if (media.endTime && e.currentTarget.currentTime >= media.endTime) e.currentTarget.currentTime = media.startTime || 0; }}
+                              >
+                                <source src={media.src} type="video/mp4" />
+                              </video>
+                              {#if loadingVideos.has(media.src)}
+                                <div class="video-loading-spinner" aria-label="Loading video">
+                                  <div class="spinner-ring"></div>
+                                  <div class="spinner-ring"></div>
+                                  <div class="spinner-ring"></div>
+                                </div>
+                              {/if}
+                            </div>
                           {:else}
                             <img src={media.src} alt={media.badge || 'Media'} loading="lazy" decoding="async" />
                           {/if}
@@ -705,6 +730,58 @@
     border-radius: 0.75rem;
     overflow: hidden;
     background: #1a1a2e;
+    position: relative;
+  }
+
+  .timeline-media-item .video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .timeline-media-item .video-loading-spinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 22, 40, 0.85);
+    backdrop-filter: blur(4px);
+    border-radius: 0.75rem;
+    z-index: 20;
+  }
+
+  .spinner-ring {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 3px solid transparent;
+    border-top-color: #00c400;
+    border-right-color: #8a2be2;
+    border-radius: 50%;
+    animation: spinRing 1s linear infinite;
+  }
+
+  .spinner-ring:nth-child(2) {
+    width: 55px;
+    height: 55px;
+    border-top-color: #8a2be2;
+    border-right-color: #00c400;
+    animation-delay: -0.33s;
+  }
+
+  .spinner-ring:nth-child(3) {
+    width: 70px;
+    height: 70px;
+    border-top-color: rgba(0, 196, 0, 0.5);
+    border-right-color: rgba(138, 43, 226, 0.5);
+    animation-delay: -0.66s;
+  }
+
+  @keyframes spinRing {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .timeline-media-item .companion-photo-frame {
