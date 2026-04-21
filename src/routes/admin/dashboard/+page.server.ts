@@ -1,5 +1,5 @@
-import { getDb, addSummaryColumnToJobs } from '$lib/db';
-import { sendNewsletterEmail } from '$lib/email';
+import { getDb, addSummaryColumnToJobs, addStatusColumnsToApplications } from '$lib/db';
+import { sendNewsletterEmail, sendJobApplicationAcceptanceEmail, sendJobApplicationRejectionEmail, sendApplicationResponseNotificationEmail } from '$lib/email';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -21,10 +21,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Ensure jobs table has summary column
   await addSummaryColumnToJobs();
   
+  // Ensure job_applications table has status columns
+  await addStatusColumnsToApplications();
+  
   // Fetch job applications (without resume binary data for performance)
   const jobApplications = await db`
     SELECT id, job_id, job_title, name, email, phone, linkedin, portfolio, 
-           experience, why_join, resume_filename, created_at, updated_at
+           experience, why_join, resume_filename, status, response_message, 
+           response_sent_at, created_at, updated_at
     FROM job_applications
     ORDER BY created_at DESC
   `;
@@ -473,5 +477,82 @@ export const actions: Actions = {
 
     await db`DELETE FROM jobs WHERE id = ${id}`;
     return { success: true, message: 'Job deleted' };
+  },
+
+  // Application Response Actions
+  respondToApplication: async ({ request, cookies }) => {
+    const adminEmail = cookies.get('admin_auth');
+    if (!adminEmail || !ALLOWED_ADMINS.includes(adminEmail)) {
+      throw redirect(303, '/admin');
+    }
+
+    const data = await request.formData();
+    const applicationId = data.get('applicationId');
+    const status = data.get('status') as string; // 'accepted' or 'rejected'
+    const customMessage = data.get('customMessage') as string;
+    const nextSteps = data.get('nextSteps') as string || '';
+
+    if (!applicationId || !status || !customMessage) {
+      return fail(400, { error: true, message: 'Missing required fields' });
+    }
+
+    if (!['accepted', 'rejected'].includes(status)) {
+      return fail(400, { error: true, message: 'Invalid status' });
+    }
+
+    const db = getDb();
+
+    try {
+      // Get application details
+      const application = await db`
+        SELECT id, name, email, job_title
+        FROM job_applications
+        WHERE id = ${applicationId}
+      `;
+
+      if (application.length === 0) {
+        return fail(404, { error: true, message: 'Application not found' });
+      }
+
+      const app = application[0];
+
+      // Update application status in database
+      await db`
+        UPDATE job_applications
+        SET status = ${status}, response_message = ${customMessage}, response_sent_at = NOW(), updated_at = NOW()
+        WHERE id = ${applicationId}
+      `;
+
+      // Send appropriate email to applicant
+      if (status === 'accepted') {
+        await sendJobApplicationAcceptanceEmail({
+          applicantName: app.name,
+          applicantEmail: app.email,
+          jobTitle: app.job_title,
+          customMessage,
+          nextSteps
+        });
+      } else {
+        await sendJobApplicationRejectionEmail({
+          applicantName: app.name,
+          applicantEmail: app.email,
+          jobTitle: app.job_title,
+          customMessage
+        });
+      }
+
+      // Send notification to admins
+      await sendApplicationResponseNotificationEmail({
+        status: status as 'accepted' | 'rejected',
+        applicantName: app.name,
+        applicantEmail: app.email,
+        jobTitle: app.job_title
+      });
+
+      return { success: true, message: `Application ${status}. Email sent to applicant and admins.` };
+    } catch (error) {
+      console.error('Error responding to application:', error);
+      return fail(500, { error: true, message: 'Failed to send response' });
+    }
   }
 };

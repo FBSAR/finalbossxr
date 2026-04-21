@@ -204,3 +204,40 @@ export async function addSummaryColumnToJobs() {
         console.log('Summary column already exists or error occurred:', error);
     }
 }
+
+export async function addStatusColumnsToApplications() {
+    const sql = getDb();
+    
+    try {
+        // Add status column with enum-like behavior using VARCHAR
+        await sql`
+            ALTER TABLE job_applications
+            ADD COLUMN IF NOT EXISTS status VARCHAR(20) DEFAULT 'pending';
+        `;
+        console.log('Status column added to job_applications table');
+    } catch (error) {
+        console.log('Status column already exists or error occurred:', error);
+    }
+    
+    try {
+        // Add response_message column
+        await sql`
+            ALTER TABLE job_applications
+            ADD COLUMN IF NOT EXISTS response_message TEXT;
+        `;
+        console.log('Response message column added to job_applications table');
+    } catch (error) {
+        console.log('Response message column already exists or error occurred:', error);
+    }
+    
+    try {
+        // Add response_sent_at column
+        await sql`
+            ALTER TABLE job_applications
+            ADD COLUMN IF NOT EXISTS response_sent_at TIMESTAMP WITH TIME ZONE;
+        `;
+        console.log('Response sent at column added to job_applications table');
+    } catch (error) {
+        console.log('Response sent at column already exists or error occurred:', error);
+    }
+}

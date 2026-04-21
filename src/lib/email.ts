@@ -847,3 +847,418 @@ https://finalbossxr.com/admin/dashboard
         return { success: false, error };
     }
 }
+
+export async function sendJobApplicationAcceptanceEmail(data: { applicantName: string; applicantEmail: string; jobTitle: string; customMessage: string; nextSteps: string }) {
+    const { applicantName, applicantEmail, jobTitle, customMessage, nextSteps } = data;
+    
+    const firstName = applicantName.split(' ')[0];
+    
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>Congratulations - You're Accepted!</title>
+    ${getEmailStyles()}
+</head>
+<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 20px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
+                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">🎉 Congratulations!</h1>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 20px 40px;">
+                            <p class="text-primary" style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                                Hi ${firstName},
+                            </p>
+                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                                We're thrilled to inform you that you've been selected for the <strong class="text-accent" style="color: #00ff00;">${jobTitle}</strong> position at <strong class="text-accent" style="color: #00ff00;">Final Boss Studios</strong>!
+                            </p>
+                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 30px;">
+                                Your skills and experience impressed our team, and we can't wait to have you join us.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Admin Message -->
+                    <tr>
+                        <td style="padding: 0 40px 30px;">
+                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 15px; font-weight: 600;">Message from Our Team</h2>
+                                <p class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 16px; line-height: 1.6; margin: 0; white-space: pre-line;">${customMessage}</p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Next Steps -->
+                    <tr>
+                        <td style="padding: 0 40px 30px;">
+                            <div class="summary-box" style="background: rgba(0, 255, 0, 0.05); border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 12px; padding: 24px;">
+                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 15px; font-weight: 600;">🚀 Next Steps</h2>
+                                <p class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 16px; line-height: 1.6; margin: 0; white-space: pre-line;">${nextSteps}</p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- CTA Button -->
+                    <tr>
+                        <td align="center" style="padding: 10px 40px 30px;">
+                            <a href="https://finalbossxr.com" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">Visit Our Website</a>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
+                                We look forward to working with you!<br>
+                                <a href="https://finalbossxr.com" class="text-accent" style="color: #00ff00; text-decoration: none;">finalbossxr.com</a>
+                            </p>
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                                © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+    `;
+
+    const textContent = `
+Hi ${firstName},
+
+We're thrilled to inform you that you've been selected for the ${jobTitle} position at Final Boss Studios!
+
+Your skills and experience impressed our team, and we can't wait to have you join us.
+
+---
+
+Message from Our Team:
+
+${customMessage}
+
+---
+
+Next Steps:
+
+${nextSteps}
+
+---
+
+We look forward to working with you!
+Visit us at finalbossxr.com
+
+© ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
+    `;
+
+    try {
+        const info = await transporter.sendMail({
+            from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
+            to: applicantEmail,
+            subject: `Congratulations! Your Application for ${jobTitle} has been Accepted`,
+            text: textContent,
+            html: htmlContent
+        });
+
+        console.log('Job application acceptance email sent to:', applicantEmail, info.messageId);
+        return { success: true, messageId: info.messageId };
+        
+    } catch (error) {
+        console.error('Error sending job application acceptance email to:', applicantEmail, error);
+        return { success: false, error };
+    }
+}
+
+export async function sendJobApplicationRejectionEmail(data: { applicantName: string; applicantEmail: string; jobTitle: string; customMessage: string }) {
+    const { applicantName, applicantEmail, jobTitle, customMessage } = data;
+    
+    const firstName = applicantName.split(' ')[0];
+    
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>Application Status Update</title>
+    ${getEmailStyles()}
+</head>
+<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 20px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
+                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">Application Status</h1>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 20px 40px;">
+                            <p class="text-primary" style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                                Hi ${firstName},
+                            </p>
+                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                                Thank you for your interest in the <strong class="text-accent" style="color: #00ff00;">${jobTitle}</strong> position at <strong class="text-accent" style="color: #00ff00;">Final Boss Studios</strong>. We appreciate the time and effort you invested in your application.
+                            </p>
+                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 30px;">
+                                We've reviewed all applications carefully, and while we were impressed with your qualifications, we've decided to move forward with other candidates at this time.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Admin Message -->
+                    <tr>
+                        <td style="padding: 0 40px 30px;">
+                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 15px; font-weight: 600;">Message from Our Team</h2>
+                                <p class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 16px; line-height: 1.6; margin: 0; white-space: pre-line;">${customMessage}</p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Encouragement -->
+                    <tr>
+                        <td style="padding: 20px 40px;">
+                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0;">
+                                We encourage you to stay updated with our open positions, and we hope our paths may cross again in the future. We wish you the best of luck in your career!
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- CTA Button -->
+                    <tr>
+                        <td align="center" style="padding: 10px 40px 30px;">
+                            <a href="https://finalbossxr.com" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">Visit Our Website</a>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
+                                Best of luck in your future endeavors!<br>
+                                <a href="https://finalbossxr.com" class="text-accent" style="color: #00ff00; text-decoration: none;">finalbossxr.com</a>
+                            </p>
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                                © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+    `;
+
+    const textContent = `
+Hi ${firstName},
+
+Thank you for your interest in the ${jobTitle} position at Final Boss Studios. We appreciate the time and effort you invested in your application.
+
+We've reviewed all applications carefully, and while we were impressed with your qualifications, we've decided to move forward with other candidates at this time.
+
+---
+
+Message from Our Team:
+
+${customMessage}
+
+---
+
+We encourage you to stay updated with our open positions, and we hope our paths may cross again in the future. We wish you the best of luck in your career!
+
+Best of luck in your future endeavors!
+Visit us at finalbossxr.com
+
+© ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
+    `;
+
+    try {
+        const info = await transporter.sendMail({
+            from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
+            to: applicantEmail,
+            subject: `Application Status - ${jobTitle} Position`,
+            text: textContent,
+            html: htmlContent
+        });
+
+        console.log('Job application rejection email sent to:', applicantEmail, info.messageId);
+        return { success: true, messageId: info.messageId };
+        
+    } catch (error) {
+        console.error('Error sending job application rejection email to:', applicantEmail, error);
+        return { success: false, error };
+    }
+}
+
+export async function sendApplicationResponseNotificationEmail(data: { status: 'accepted' | 'rejected'; applicantName: string; applicantEmail: string; jobTitle: string }) {
+    const { status, applicantName, applicantEmail, jobTitle } = data;
+    
+    const adminEmails = [ADMIN_EMAIL_01, ADMIN_EMAIL_02].filter(email => email);
+    
+    if (adminEmails.length === 0) {
+        console.warn('No admin emails configured for application response notifications');
+        return { success: false, error: 'No admin emails configured' };
+    }
+
+    const statusLabel = status === 'accepted' ? 'ACCEPTED' : 'REJECTED';
+    const statusColor = status === 'accepted' ? '#00ff00' : '#ff6b6b';
+    const statusEmoji = status === 'accepted' ? '✅' : '❌';
+    
+    const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>Application Response Sent</title>
+    ${getEmailStyles()}
+</head>
+<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 20px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
+                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">${statusEmoji} Application Response Sent</h1>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 20px 40px;">
+                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                                You have sent an application response to a candidate.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Response Details -->
+                    <tr>
+                        <td style="padding: 0 40px 30px;">
+                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Response Details</h2>
+                                
+                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Status</span><br>
+                                            <span style="color: ${statusColor}; font-size: 15px; font-weight: 600;">${statusLabel}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Applicant Name</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantName}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Email</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantEmail}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0;">
+                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Position</span><br>
+                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${jobTitle}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
+                                View all applications in your <a href="https://finalbossxr.com/admin/dashboard" class="text-accent" style="color: #00ff00; text-decoration: none;">admin dashboard</a>
+                            </p>
+                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                                © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+    `;
+
+    const textContent = `
+Application Response Sent
+
+You have sent an application response to a candidate.
+
+---
+
+Response Details:
+
+Status: ${statusLabel}
+Applicant Name: ${applicantName}
+Email: ${applicantEmail}
+Position: ${jobTitle}
+
+---
+
+View all applications in your admin dashboard:
+https://finalbossxr.com/admin/dashboard
+
+© ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
+    `;
+
+    try {
+        const info = await transporter.sendMail({
+            from: `"Final Boss Studios" <${EMAIL_USERNAME}>`,
+            to: adminEmails.join(', '),
+            subject: `[${statusLabel}] Application Response Sent - ${applicantName} - ${jobTitle}`,
+            text: textContent,
+            html: htmlContent
+        });
+
+        console.log('Application response notification sent to admins:', info.messageId);
+        return { success: true, messageId: info.messageId };
+        
+    } catch (error) {
+        console.error('Error sending application response notification:', error);
+        return { success: false, error };
+    }
+}

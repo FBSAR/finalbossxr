@@ -376,7 +376,7 @@
                     maxlength={1000}
                     bind:value={applicationData.experience}
                     name="experience"
-                    class={inputClass}
+                    class="textarea-white"
                     placeholder="Tell us about your background, skills, and relevant projects..."
                     rows={4}
                   />
@@ -395,7 +395,7 @@
                     maxlength={1000}
                     bind:value={applicationData.whyJoin}
                     name="whyJoin"
-                    class={inputClass}
+                    class="textarea-white"
                     placeholder="What excites you about working with us..."
                     rows={4}
                   />
@@ -1245,6 +1245,59 @@
     to {
       transform: rotate(360deg);
     }
+  }
+
+  /* Textarea Styling */
+  :global(textarea) {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+
+  :global(textarea::placeholder) {
+    color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  :global(textarea:focus) {
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid #00ff00 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(0, 255, 0, 0.1) !important;
+  }
+
+  /* Override Tailwind focus classes on textarea */
+  :global(.focus\:bg-white\/20:focus) {
+    background-color: white !important;
+  }
+
+  /* Custom textarea class for application form */
+  :global(.textarea-white) {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  :global(.textarea-white:focus) {
+    background-color: white !important;
+    color: black !important;
+    border-color: #00ff00 !important;
+  }
+
+  /* Input Fields - Green Border on Focus */
+  :global(input:focus) {
+    border-color: #00ff00 !important;
+    outline: none !important;
+    border-width: 2px !important;
+  }
+
+  :global(input[type="text"]:focus),
+  :global(input[type="email"]:focus),
+  :global(input[type="tel"]:focus),
+  :global(input[type="url"]:focus) {
+    border-color: #00ff00 !important;
+    outline: none !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 0 3px rgba(0, 255, 0, 0.1) !important;
   }
 
   .no-job-selected {

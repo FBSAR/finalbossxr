@@ -152,6 +152,88 @@
       btn.form?.requestSubmit(btn);
     }, 'danger');
   }
+
+  // Application Response State
+  let showApplicationResponseModal = false;
+  let selectedApplication: any = null;
+  let responseForm = { customMessage: '', nextSteps: '', status: '' };
+  let isRespondingToApplication = false;
+
+  // Preset Messages State
+  let showPresetMessagesModal = false;
+  let presetMessages = {
+    acceptance: "We were impressed with your background and experience. We'd like to move forward with your application. Here's what to expect next...",
+    rejection: "Thank you for your interest in joining Final Boss Studios. We appreciate the time you took to apply. Unfortunately, we've decided to move forward with other candidates at this time. We encourage you to apply again in the future."
+  };
+  let presetNextSteps = "We will be in touch soon with interview details.";
+
+  function openPresetMessagesModal() {
+    showPresetMessagesModal = true;
+  }
+
+  function closePresetMessagesModal() {
+    showPresetMessagesModal = false;
+  }
+
+  function savePresetMessages() {
+    showToast('Preset messages updated successfully', 'success');
+    closePresetMessagesModal();
+  }
+
+  function openApplicationResponseModal(app: any, status: 'accepted' | 'rejected') {
+    selectedApplication = app;
+    
+    responseForm = { 
+      customMessage: status === 'accepted' ? presetMessages.acceptance : presetMessages.rejection, 
+      nextSteps: status === 'accepted' ? presetNextSteps : '', 
+      status 
+    };
+    showApplicationResponseModal = true;
+  }
+
+  function closeApplicationResponseModal() {
+    showApplicationResponseModal = false;
+    selectedApplication = null;
+    responseForm = { customMessage: '', nextSteps: '', status: '' };
+  }
+
+  async function submitApplicationResponse() {
+    if (!responseForm.customMessage.trim()) {
+      showToast('Please provide a message', 'error');
+      return;
+    }
+
+    isRespondingToApplication = true;
+    const formData = new FormData();
+    formData.append('applicationId', selectedApplication.id);
+    formData.append('status', responseForm.status);
+    formData.append('customMessage', responseForm.customMessage);
+    if (responseForm.status === 'accepted') {
+      formData.append('nextSteps', responseForm.nextSteps);
+    }
+
+    try {
+      const response = await fetch('?/respondToApplication', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+      if (result.type === 'success') {
+        showToast(result.data?.message || `Application ${responseForm.status}!`, 'success');
+        closeApplicationResponseModal();
+        // Optionally reload the page to see updated status
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        showToast(result.data?.message || 'Failed to respond to application', 'error');
+      }
+    } catch (error) {
+      showToast('An error occurred', 'error');
+      console.error(error);
+    } finally {
+      isRespondingToApplication = false;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -221,6 +303,12 @@
     <!-- Applications Tab -->
     {#if activeTab === 'applications'}
       <div class="section">
+        <div class="section-header">
+          <h2 style="margin: 0;">Job Applications</h2>
+          <button class="btn-secondary btn-sm" on:click={openPresetMessagesModal} title="Manage response message templates">
+            ⚙️ Response Templates
+          </button>
+        </div>
         {#if data.jobApplications.length === 0}
           <div class="empty-state">No job applications yet</div>
         {:else}
@@ -245,6 +333,19 @@
                   {#if app.linkedin}<a href={app.linkedin} target="_blank" class="link-icon">in</a>{/if}
                 </div>
                 <div class="app-card-actions">
+                  <div class="app-status">
+                    {#if app.status === 'pending'}
+                      <span class="status-badge pending">Pending</span>
+                    {:else if app.status === 'accepted'}
+                      <span class="status-badge accepted">✓ Accepted</span>
+                    {:else if app.status === 'rejected'}
+                      <span class="status-badge rejected">✗ Rejected</span>
+                    {/if}
+                  </div>
+                  {#if app.status === 'pending'}
+                    <button class="btn-sm btn-success" on:click={() => openApplicationResponseModal(app, 'accepted')}>👍 Accept</button>
+                    <button class="btn-sm btn-warning" on:click={() => openApplicationResponseModal(app, 'rejected')}>👎 Reject</button>
+                  {/if}
                   <button class="btn-sm btn-expand" on:click={() => expandedApp = expandedApp === app.id ? null : app.id}>
                     {expandedApp === app.id ? '▲ Less' : '▼ More'}
                   </button>
@@ -315,6 +416,17 @@
                       {/if}
                     </td>
                     <td class="actions">
+                      {#if app.status === 'pending'}
+                        <span class="status-badge-small pending">Pending</span>
+                      {:else if app.status === 'accepted'}
+                        <span class="status-badge-small accepted">✓ Accepted</span>
+                      {:else if app.status === 'rejected'}
+                        <span class="status-badge-small rejected">✗ Rejected</span>
+                      {/if}
+                      {#if app.status === 'pending'}
+                        <button class="btn-xs" title="Accept" on:click={() => openApplicationResponseModal(app, 'accepted')}>✓</button>
+                        <button class="btn-xs" title="Reject" on:click={() => openApplicationResponseModal(app, 'rejected')}>✗</button>
+                      {/if}
                       <button class="btn-sm" on:click={() => expandedApp = expandedApp === app.id ? null : app.id}>
                         {expandedApp === app.id ? '▲' : '▼'}
                       </button>
@@ -1088,6 +1200,153 @@
   </div>
 </div>
 
+  <!-- Application Response Modal -->
+  {#if showApplicationResponseModal && selectedApplication}
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <div class="modal-overlay" role="dialog" aria-modal="true" on:click={closeApplicationResponseModal} on:keydown={(e) => e.key === 'Escape' && closeApplicationResponseModal()}>
+      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+      <div class="modal" role="document" on:click|stopPropagation on:keydown|stopPropagation style="max-width: 600px;">
+        <div class="modal-header">
+          <h2 class="modal-title">
+            {#if responseForm.status === 'accepted'}
+              ✓ Accept Application
+            {:else}
+              ✗ Reject Application
+            {/if}
+          </h2>
+          <button type="button" class="modal-close" on:click={closeApplicationResponseModal} aria-label="Close">×</button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="app-details-card">
+            <h3 class="app-detail-heading">Application Details</h3>
+            <div class="app-detail-row">
+              <span class="app-detail-label">Name:</span>
+              <span class="app-detail-value">{selectedApplication.name}</span>
+            </div>
+            <div class="app-detail-row">
+              <span class="app-detail-label">Position:</span>
+              <span class="app-detail-value">{selectedApplication.job_title}</span>
+            </div>
+            <div class="app-detail-row">
+              <span class="app-detail-label">Email:</span>
+              <span class="app-detail-value"><a href="mailto:{selectedApplication.email}">{selectedApplication.email}</a></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="response-message">Message to Applicant</label>
+            <textarea 
+              id="response-message" 
+              bind:value={responseForm.customMessage}
+              rows="6"
+              required
+            ></textarea>
+            <small>This message will be sent directly to the applicant.</small>
+          </div>
+
+          {#if responseForm.status === 'accepted'}
+            <div class="form-group">
+              <label for="next-steps">Next Steps (Optional)</label>
+              <textarea 
+                id="next-steps" 
+                bind:value={responseForm.nextSteps}
+                placeholder="e.g., 'We'll follow up with an interview schedule within 2-3 business days. Please check your email...'"
+                rows="4"
+              ></textarea>
+              <small>Include any details about the interview process, timeline, or next steps.</small>
+            </div>
+          {/if}
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" on:click={closeApplicationResponseModal} disabled={isRespondingToApplication}>
+            Cancel
+          </button>
+          <button 
+            type="button" 
+            class={responseForm.status === 'accepted' ? 'btn-primary' : 'btn-warning'}
+            on:click={submitApplicationResponse}
+            disabled={isRespondingToApplication}
+          >
+            {#if isRespondingToApplication}
+              Sending...
+            {:else if responseForm.status === 'accepted'}
+              Send Acceptance
+            {:else}
+              Send Rejection
+            {/if}
+          </button>
+        </div>
+      </div>
+    </div>
+  {/if}
+
+  <!-- Preset Messages Modal -->
+  {#if showPresetMessagesModal}
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <div class="modal-overlay" role="dialog" aria-modal="true" on:click={closePresetMessagesModal} on:keydown={(e) => e.key === 'Escape' && closePresetMessagesModal()}>
+      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+      <div class="modal" role="document" on:click|stopPropagation on:keydown|stopPropagation style="max-width: 700px;">
+        <div class="modal-header">
+          <h2 class="modal-title">⚙️ Response Message Templates</h2>
+          <button type="button" class="modal-close" on:click={closePresetMessagesModal} aria-label="Close">×</button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="preset-template-group">
+            <div class="preset-header">
+              <h3 class="preset-label">✓ Acceptance Message</h3>
+              <p class="preset-description">This message will be used by default when accepting applications.</p>
+            </div>
+            <textarea 
+              id="preset-acceptance" 
+              bind:value={presetMessages.acceptance}
+              rows="5"
+            ></textarea>
+          </div>
+
+          <div class="preset-template-group">
+            <div class="preset-header">
+              <h3 class="preset-label">✗ Rejection Message</h3>
+              <p class="preset-description">This message will be used by default when rejecting applications.</p>
+            </div>
+            <textarea 
+              id="preset-rejection" 
+              bind:value={presetMessages.rejection}
+              rows="5"
+            ></textarea>
+          </div>
+
+          <div class="preset-template-group">
+            <div class="preset-header">
+              <h3 class="preset-label">📋 Next Steps (For Acceptances)</h3>
+              <p class="preset-description">Additional information to include when accepting candidates.</p>
+            </div>
+            <textarea 
+              id="preset-next-steps" 
+              bind:value={presetNextSteps}
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" on:click={closePresetMessagesModal}>
+            Cancel
+          </button>
+          <button 
+            type="button" 
+            class="btn-primary"
+            on:click={savePresetMessages}
+          >
+            Save Templates
+          </button>
+        </div>
+      </div>
+    </div>
+  {/if}
+
 <style>
   .admin-container {
     min-height: 100vh;
@@ -1257,7 +1516,13 @@
 
   /* Section */
   .section { margin-top: 1.25rem; }
-  .section-header { margin-bottom: 1rem; }
+  .section-header { 
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
   .empty-state {
     text-align: center;
     padding: 3rem 1rem;
@@ -1484,6 +1749,11 @@
     box-shadow: 0 4px 20px rgba(0, 196, 0, 0.3);
     transform: translateY(-1px);
   }
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
   .btn-secondary {
     padding: 0.5rem 1rem;
     background: transparent;
@@ -1675,7 +1945,8 @@
     width: 100%;
     max-width: 700px;
     max-height: 90vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     background: linear-gradient(180deg, #14141e 0%, #0d0d14 100%);
     border: 1px solid rgba(0, 196, 0, 0.15);
     border-radius: 1rem 1rem 0 0;
@@ -1722,6 +1993,28 @@
     background: rgba(255, 100, 100, 0.1);
     border-color: rgba(255, 100, 100, 0.25);
     color: #f87171;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(90vh - 180px);
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(12, 12, 18, 0.5) 0%, #0d0d14 100%);
+    position: sticky;
+    bottom: 0;
+  }
+
+  .modal-footer button {
+    min-width: 120px;
+    transition: all 0.25s ease;
   }
 
   /* Confirmation Modal */
@@ -1885,6 +2178,66 @@
     resize: vertical;
     min-height: 250px;
     line-height: 1.6;
+  }
+
+  /* Preset Template Styles */
+  .preset-template-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    background: rgba(0, 196, 0, 0.03);
+    border: 1px solid rgba(0, 196, 0, 0.15);
+    border-radius: 0.75rem;
+  }
+
+  .preset-template-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .preset-header {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(0, 196, 0, 0.1);
+  }
+
+  .preset-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00ff00;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: 0.02em;
+  }
+
+  .preset-description {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .preset-template-group textarea {
+    width: 100%;
+    padding: 0.85rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.625rem;
+    color: #f0f0f0;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    resize: vertical;
+  }
+
+  .preset-template-group textarea::placeholder {
+    color: #555;
+  }
+
+  .preset-template-group textarea:focus {
+    outline: none;
+    border-color: rgba(0, 196, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 3px rgba(0, 196, 0, 0.1), inset 0 0 0 1px rgba(0, 196, 0, 0.1);
   }
 
   .form-grid {
@@ -2682,5 +3035,165 @@
   button[type="submit"]:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+  }
+
+  /* Application Status Badges */
+  .status-badge {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .status-badge.pending {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+  }
+
+  .status-badge.accepted {
+    background: rgba(0, 196, 0, 0.2);
+    color: #00ff00;
+    border: 1px solid rgba(0, 196, 0, 0.3);
+  }
+
+  .status-badge.rejected {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+  }
+
+  .status-badge-small {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .status-badge-small.pending {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+  }
+
+  .status-badge-small.accepted {
+    background: rgba(0, 196, 0, 0.2);
+    color: #00ff00;
+    border: 1px solid rgba(0, 196, 0, 0.3);
+  }
+
+  .status-badge-small.rejected {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+  }
+
+  .app-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Application Details Card in Modal */
+  .app-details-card {
+    background: rgba(0, 196, 0, 0.05);
+    border: 1px solid rgba(0, 196, 0, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .app-detail-heading {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #00ff00;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .app-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 196, 0, 0.1);
+  }
+
+  .app-detail-row:last-child {
+    border-bottom: none;
+  }
+
+  .app-detail-label {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+  }
+
+  .app-detail-value {
+    color: #f0f0f0;
+    font-size: 0.85rem;
+  }
+
+  .app-detail-value a {
+    color: #00ff00;
+    text-decoration: none;
+  }
+
+  .app-detail-value a:hover {
+    text-decoration: underline;
+  }
+
+  /* Extra small button */
+  .btn-xs {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
+    height: auto;
+    line-height: 1;
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+    color: #000;
+    border: none;
+  }
+
+  .btn-success:hover:not(:disabled) {
+    background: linear-gradient(135deg, #00ff00 0%, #00bb00 100%);
+  }
+
+  .btn-warning {
+    padding: 0.6rem 1.25rem;
+    background: linear-gradient(135deg, #ff9800 0%, #ff7700 100%);
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 10px rgba(255, 152, 0, 0.2);
+  }
+
+  .btn-warning:hover:not(:disabled) {
+    background: linear-gradient(135deg, #ffb366 0%, #ff8811 100%);
+    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .btn-warning:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  small {
+    display: block;
+    margin-top: 0.4rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
   }
 </style>
