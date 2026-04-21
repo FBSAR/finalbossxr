@@ -34,6 +34,93 @@
 </script>
 
 <section class="jobs-section" class:visible={isVisible} use:observeSection aria-label="Job Postings">
+  <div class="jobs-background"></div>
+  
+  <!-- Floating Cosmic Shapes -->
+  <div class="floating-shapes">
+    <!-- 4-Point Star -->
+    <svg class="shape shape-1" viewBox="0 0 100 100" fill="none">
+      <path d="M50,5 L55,45 L95,50 L55,55 L50,95 L45,55 L5,50 L45,45 Z" stroke="rgba(0, 196, 0, 0.2)" stroke-width="1.5" fill="none"/>
+    </svg>
+    
+    <!-- Planet with Ring -->
+    <svg class="shape shape-2" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="25" stroke="rgba(147, 51, 234, 0.2)" stroke-width="2" fill="rgba(147, 51, 234, 0.03)"/>
+      <ellipse cx="50" cy="50" rx="45" ry="12" stroke="rgba(147, 51, 234, 0.15)" stroke-width="1.5" fill="none" transform="rotate(-20 50 50)"/>
+    </svg>
+    
+    <!-- Comet -->
+    <svg class="shape shape-3" viewBox="0 0 100 100" fill="none">
+      <circle cx="75" cy="30" r="8" stroke="rgba(0, 196, 0, 0.25)" stroke-width="2" fill="rgba(0, 196, 0, 0.05)"/>
+      <path d="M70,35 Q40,50 10,80" stroke="rgba(0, 196, 0, 0.15)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M68,38 Q35,55 5,75" stroke="rgba(0, 196, 0, 0.08)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    
+    <!-- Crescent Moon -->
+    <svg class="shape shape-4" viewBox="0 0 100 100" fill="none">
+      <path d="M60,15 A35,35 0 1,1 60,85 A28,28 0 1,0 60,15" stroke="rgba(147, 51, 234, 0.2)" stroke-width="2" fill="rgba(147, 51, 234, 0.03)"/>
+    </svg>
+    
+    <!-- Twinkling Star (small) -->
+    <svg class="shape shape-5" viewBox="0 0 100 100" fill="none">
+      <path d="M50,20 L53,47 L80,50 L53,53 L50,80 L47,53 L20,50 L47,47 Z" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1" fill="none"/>
+    </svg>
+    
+    <!-- Orbit Path -->
+    <svg class="shape shape-6" viewBox="0 0 100 100" fill="none">
+      <ellipse cx="50" cy="50" rx="40" ry="20" stroke="rgba(147, 51, 234, 0.12)" stroke-width="1" stroke-dasharray="6 4" fill="none"/>
+      <circle cx="85" cy="58" r="4" fill="rgba(147, 51, 234, 0.2)"/>
+    </svg>
+    
+    <!-- Galaxy Spiral -->
+    <svg class="shape shape-7" viewBox="0 0 100 100" fill="none">
+      <path d="M50,50 Q60,30 80,35 Q90,50 75,65 Q55,75 45,60 Q35,45 50,35 Q65,25 75,40" stroke="rgba(0, 196, 0, 0.12)" stroke-width="1.5" fill="none"/>
+      <circle cx="50" cy="50" r="5" fill="rgba(0, 196, 0, 0.15)"/>
+    </svg>
+    
+    <!-- Asteroid -->
+    <svg class="shape shape-8" viewBox="0 0 100 100" fill="none">
+      <path d="M30,50 Q25,30 45,25 Q70,20 80,40 Q85,60 70,75 Q50,85 35,70 Q20,60 30,50" stroke="rgba(0, 196, 0, 0.15)" stroke-width="2" fill="none"/>
+      <circle cx="55" cy="40" r="3" fill="rgba(0, 196, 0, 0.1)"/>
+      <circle cx="65" cy="55" r="2" fill="rgba(0, 196, 0, 0.08)"/>
+    </svg>
+    
+    <!-- 6-Point Star -->
+    <svg class="shape shape-9" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,10 58,40 88,40 64,58 72,88 50,70 28,88 36,58 12,40 42,40" stroke="rgba(147, 51, 234, 0.12)" stroke-width="1.5" fill="none"/>
+    </svg>
+    
+    <!-- Nebula Cloud -->
+    <svg class="shape shape-10" viewBox="0 0 100 100" fill="none">
+      <ellipse cx="50" cy="50" rx="35" ry="25" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1" fill="rgba(147, 51, 234, 0.02)"/>
+      <ellipse cx="40" cy="45" rx="20" ry="15" stroke="rgba(147, 51, 234, 0.08)" stroke-width="1" fill="none"/>
+      <ellipse cx="60" cy="55" rx="18" ry="12" stroke="rgba(0, 196, 0, 0.08)" stroke-width="1" fill="none"/>
+    </svg>
+    
+    <!-- PROMINENT: Large Planet with Rings -->
+    <svg class="shape shape-11 shape-prominent" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="30" stroke="rgba(0, 196, 0, 0.4)" stroke-width="2" fill="rgba(0, 196, 0, 0.05)"/>
+      <ellipse cx="50" cy="50" rx="48" ry="15" stroke="rgba(0, 196, 0, 0.25)" stroke-width="2" fill="none" transform="rotate(-25 50 50)"/>
+      <ellipse cx="50" cy="50" rx="42" ry="10" stroke="rgba(0, 196, 0, 0.15)" stroke-width="1" fill="none" transform="rotate(-25 50 50)"/>
+    </svg>
+    
+    <!-- PROMINENT: Supernova -->
+    <svg class="shape shape-12 shape-prominent" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="15" stroke="rgba(147, 51, 234, 0.5)" stroke-width="2" fill="rgba(147, 51, 234, 0.1)"/>
+      <circle cx="50" cy="50" r="25" stroke="rgba(147, 51, 234, 0.25)" stroke-width="1" fill="none"/>
+      <circle cx="50" cy="50" r="35" stroke="rgba(147, 51, 234, 0.1)" stroke-width="1" fill="none"/>
+      <path d="M50,10 L50,5 M50,90 L50,95 M10,50 L5,50 M90,50 L95,50 M22,22 L17,17 M78,78 L83,83 M78,22 L83,17 M22,78 L17,83" stroke="rgba(147, 51, 234, 0.3)" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    
+    <!-- PROMINENT: Galaxy -->
+    <svg class="shape shape-13 shape-prominent" viewBox="0 0 100 100" fill="none">
+      <ellipse cx="50" cy="50" rx="40" ry="20" stroke="rgba(0, 196, 0, 0.3)" stroke-width="2" fill="rgba(0, 196, 0, 0.03)" transform="rotate(-30 50 50)"/>
+      <ellipse cx="50" cy="50" rx="30" ry="12" stroke="rgba(0, 196, 0, 0.2)" stroke-width="1.5" fill="none" transform="rotate(-30 50 50)"/>
+      <ellipse cx="50" cy="50" rx="18" ry="6" stroke="rgba(147, 51, 234, 0.25)" stroke-width="1" fill="none" transform="rotate(-30 50 50)"/>
+      <circle cx="50" cy="50" r="6" fill="rgba(0, 196, 0, 0.2)"/>
+    </svg>
+  </div>
+
   <div class="jobs-container">
     <div class="jobs-header">
       <span class="section-label">Join Our Team</span>
@@ -90,9 +177,15 @@
     font-size: 1.125rem;
   }
 
-  /* Jobs Section */
+  /* Jobs Section - Performance Optimized */
   .jobs-section {
+    position: relative;
     padding: 6rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    contain: layout paint;
+    isolation: isolate;
     /* Initially hidden for scroll-into-view reveal */
     opacity: 0;
     transform: translateY(40px);
@@ -111,9 +204,245 @@
     }
   }
 
+  .jobs-background {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 50%, rgba(0, 196, 0, 0.06) 0%, transparent 65%),
+                radial-gradient(ellipse at 20% 80%, rgba(147, 51, 234, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Floating Shapes - GPU Optimized */
+  .floating-shapes {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+    z-index: 0;
+  }
+
+  .shape {
+    position: absolute;
+    opacity: 0.5;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  .shape-1 {
+    width: 70px;
+    height: 70px;
+    top: 15%;
+    left: 8%;
+    animation: float-1 20s ease-in-out infinite, spin-slow 30s linear infinite;
+  }
+
+  .shape-2 {
+    width: 100px;
+    height: 100px;
+    top: 12%;
+    right: 10%;
+    animation: float-2 25s ease-in-out infinite;
+  }
+
+  .shape-3 {
+    width: 50px;
+    height: 50px;
+    bottom: 25%;
+    left: 12%;
+    animation: float-3 18s ease-in-out infinite, spin-slow 25s linear infinite reverse;
+  }
+
+  .shape-4 {
+    width: 80px;
+    height: 80px;
+    bottom: 15%;
+    right: 8%;
+    animation: float-1 22s ease-in-out infinite reverse;
+  }
+
+  .shape-5 {
+    width: 35px;
+    height: 35px;
+    top: 50%;
+    left: 5%;
+    animation: float-2 15s ease-in-out infinite;
+  }
+
+  .shape-6 {
+    width: 45px;
+    height: 45px;
+    top: 65%;
+    right: 15%;
+    animation: float-3 20s ease-in-out infinite, spin-slow 40s linear infinite;
+  }
+
+  .shape-7 {
+    width: 60px;
+    height: 60px;
+    bottom: 40%;
+    right: 22%;
+    animation: float-1 17s ease-in-out infinite;
+  }
+
+  .shape-8 {
+    width: 48px;
+    height: 48px;
+    top: 30%;
+    left: 18%;
+    animation: float-2 19s ease-in-out infinite, spin-slow 35s linear infinite;
+  }
+
+  .shape-9 {
+    width: 40px;
+    height: 40px;
+    top: 10%;
+    right: 28%;
+    animation: float-3 16s ease-in-out infinite;
+  }
+
+  .shape-10 {
+    width: 55px;
+    height: 55px;
+    top: 55%;
+    right: 5%;
+    animation: float-2 21s ease-in-out infinite;
+  }
+
+  /* PROMINENT: Large Planet with Rings */
+  .shape-11 {
+    width: 120px;
+    height: 120px;
+    top: 8%;
+    left: 3%;
+    animation: float-2 28s ease-in-out infinite, spin-slow 60s linear infinite;
+  }
+
+  /* PROMINENT: Supernova */
+  .shape-12 {
+    width: 110px;
+    height: 110px;
+    bottom: 12%;
+    right: 5%;
+    animation: float-1 26s ease-in-out infinite reverse;
+  }
+
+  /* PROMINENT: Galaxy */
+  .shape-13 {
+    width: 115px;
+    height: 115px;
+    top: 25%;
+    right: 2%;
+    animation: float-3 30s ease-in-out infinite, spin-slow 70s linear infinite reverse;
+  }
+
+  /* Prominent shape glow effect */
+  .shape-prominent {
+    filter: drop-shadow(0 0 15px currentColor);
+  }
+
+  @keyframes float-1 {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(15px, -20px);
+    }
+    50% {
+      transform: translate(-10px, -35px);
+    }
+    75% {
+      transform: translate(20px, -15px);
+    }
+  }
+
+  @keyframes float-2 {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    33% {
+      transform: translate(-20px, 25px);
+    }
+    66% {
+      transform: translate(15px, -20px);
+    }
+  }
+
+  @keyframes float-3 {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    20% {
+      transform: translate(25px, 10px);
+    }
+    40% {
+      transform: translate(-15px, 30px);
+    }
+    60% {
+      transform: translate(10px, -25px);
+    }
+    80% {
+      transform: translate(-20px, 5px);
+    }
+  }
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .shape {
+      opacity: 0.3;
+    }
+    .shape-1, .shape-3, .shape-5, .shape-8, .shape-9 {
+      display: none;
+    }
+    .shape-2 {
+      width: 70px;
+      height: 70px;
+    }
+    .shape-4 {
+      width: 55px;
+      height: 55px;
+    }
+    .shape-6, .shape-7, .shape-10 {
+      opacity: 0.2;
+    }
+    /* Keep prominent shapes visible but smaller on mobile */
+    .shape-prominent {
+      opacity: 0.4;
+    }
+    .shape-11 {
+      width: 70px;
+      height: 70px;
+      top: 5%;
+      left: 3%;
+    }
+    .shape-12 {
+      width: 65px;
+      height: 65px;
+      bottom: 10%;
+      right: 3%;
+    }
+    .shape-13 {
+      width: 70px;
+      height: 70px;
+      top: 20%;
+      right: 2%;
+    }
+  }
+
   .jobs-container {
     max-width: 1000px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
 
   .jobs-header {
