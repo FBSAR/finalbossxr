@@ -15,56 +15,17 @@ const transporter = nodemailer.createTransport({
     socketTimeout: 10000
 });
 
-// Shared email styles that support light/dark mode
+// Shared email styles - minimal resets only; all design uses inline styles + bgcolor attributes
 const getEmailStyles = () => `
 <style>
-    /* Default (Dark mode) */
-    :root {
-        color-scheme: light dark;
-    }
-    
-    .email-body {
-        background-color: #1b023d !important;
-    }
-    .email-container {
-        background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%) !important;
-    }
-    .text-primary { color: #ffffff !important; }
-    .text-secondary { color: rgba(255, 255, 255, 0.8) !important; }
-    .text-muted { color: rgba(255, 255, 255, 0.6) !important; }
-    .text-accent { color: #00ff00 !important; }
-    .summary-box {
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-    .border-subtle { border-color: rgba(255, 255, 255, 0.1) !important; }
-    
-    /* Light mode overrides */
-    @media (prefers-color-scheme: light) {
-        .email-body {
-            background-color: #f5f5f7 !important;
-        }
-        .email-container {
-            background: linear-gradient(180deg, #ffffff 0%, #f0f0f2 100%) !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
-        }
-        .text-primary { color: #1d1d1f !important; }
-        .text-secondary { color: #515154 !important; }
-        .text-muted { color: #86868b !important; }
-        .text-accent { color: #007a00 !important; }
-        .summary-box {
-            background: rgba(0, 0, 0, 0.03) !important;
-            border: 1px solid rgba(0, 0, 0, 0.1) !important;
-        }
-        .border-subtle { border-color: rgba(0, 0, 0, 0.1) !important; }
-        .logo-dark { display: none !important; }
-        .logo-light { display: block !important; }
-    }
-    
-    @media (prefers-color-scheme: dark) {
-        .logo-dark { display: block !important; }
-        .logo-light { display: none !important; }
-    }
+    /* Email client resets */
+    body { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0; }
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    table { border-collapse: collapse !important; }
+    /* Prevent iOS auto-linking phone numbers/addresses */
+    a[x-apple-data-detectors] { color: inherit !important; text-decoration: none !important; }
+    /* Prevent Gmail on Android from overriding link colors */
+    u + #body a { color: inherit; text-decoration: none; }
 </style>
 `;
 
@@ -98,78 +59,62 @@ export async function sendContactConfirmationEmail(data: ContactEmailData) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
     <title>Thanks for Contacting Us</title>
     ${getEmailStyles()}
 </head>
-<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+<body id="body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f4;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f0f0f4" style="background-color: #f0f0f4;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="border-radius: 12px; overflow: hidden; border: 1px solid #dddde6;">
                     
-                    <!-- Header -->
+                    <!-- Header: Dark Purple Branding -->
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px;">
-                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">Thanks for Reaching Out! 📬</h1>
+                        <td align="center" bgcolor="#2d0a5e" style="background-color: #2d0a5e; padding: 36px 40px 28px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block; margin: 0 auto 16px;">
+                            <h1 style="color: #00ff00; font-size: 26px; margin: 0; font-weight: 700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Thanks for Reaching Out! 📬</h1>
                         </td>
                     </tr>
                     
-                    <!-- Main Content -->
+                    <!-- Main Content: White Background -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-primary" style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                Hi ${firstName},
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
+                            <p style="color: #1d1d1f; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Hi ${firstName},</p>
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                Thank you for contacting <strong style="color: #1d1d1f;">Final Boss Studios</strong>! We've received your message and appreciate you taking the time to reach out.
                             </p>
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                Thank you for contacting <strong class="text-accent" style="color: #00ff00;">Final Boss Studios</strong>! We've received your message and appreciate you taking the time to reach out.
-                            </p>
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 30px;">
-                                Our team will review your message and get back to you as soon as possible, typically within <strong class="text-primary" style="color: #ffffff;">24-48 hours</strong>.
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                Our team will review your message and get back to you as soon as possible, typically within <strong style="color: #1d1d1f;">24-48 hours</strong>.
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Message Summary -->
+                    <!-- Message Summary: Light Grey Card -->
                     <tr>
-                        <td style="padding: 0 40px 30px;">
-                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Your Message</h2>
-                                
-                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Name</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${name}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Email</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${email}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 12px 0;">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Message</span><br>
-                                            <span class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1.5; display: block; margin-top: 8px;">${message}</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 32px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 16px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Your Message</h2>
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Name</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${name}</p>
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Email</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${email}</p>
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Message</p>
+                                        <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${message}</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
-                                In the meantime, feel free to explore our work at<br>
-                                <a href="https://finalbossxr.com" class="text-accent" style="color: #00ff00; text-decoration: none;">finalbossxr.com</a>
+                        <td bgcolor="#f5f5f7" style="background-color: #f5f5f7; padding: 24px 40px; text-align: center; border-top: 1px solid #e0e0e6;">
+                            <p style="color: #666666; font-size: 14px; line-height: 1.6; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                In the meantime, explore our work at <a href="https://finalbossxr.com" style="color: #007a00; text-decoration: none;">finalbossxr.com</a>
                             </p>
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                            <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
                             </p>
                         </td>
@@ -237,114 +182,86 @@ export async function sendApplicationConfirmationEmail(data: ApplicationEmailDat
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
     <title>Application Confirmation</title>
     ${getEmailStyles()}
 </head>
-<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+<body id="body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f4;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f0f0f4" style="background-color: #f0f0f4;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="border-radius: 12px; overflow: hidden; border: 1px solid #dddde6;">
                     
-                    <!-- Header -->
+                    <!-- Header: Dark Purple Branding -->
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px;">
-                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">Application Received! 🎮</h1>
+                        <td align="center" bgcolor="#2d0a5e" style="background-color: #2d0a5e; padding: 36px 40px 28px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block; margin: 0 auto 16px;">
+                            <h1 style="color: #00ff00; font-size: 26px; margin: 0; font-weight: 700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Application Received! 🎮</h1>
                         </td>
                     </tr>
                     
-                    <!-- Main Content -->
+                    <!-- Main Content: White Background -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-primary" style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                Hi ${firstName},
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
+                            <p style="color: #1d1d1f; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Hi ${firstName},</p>
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                Thank you for applying for the <strong style="color: #007a00;">${jobTitle}</strong> position at <strong style="color: #1d1d1f;">Final Boss Studios</strong>! We're excited to review your application.
                             </p>
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                Thank you for applying for the <strong class="text-accent" style="color: #00ff00;">${jobTitle}</strong> position at Final Boss Studios! We're excited to review your application.
-                            </p>
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 30px;">
-                                Our team will carefully review your application and get back to you within <strong class="text-primary" style="color: #ffffff;">5-7 business days</strong>. In the meantime, feel free to explore more about us at <a href="https://finalbossxr.com" class="text-accent" style="color: #00ff00; text-decoration: none;">finalbossxr.com</a>.
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                Our team will carefully review your application and get back to you within <strong style="color: #1d1d1f;">5-7 business days</strong>. In the meantime, feel free to explore more about us at <a href="https://finalbossxr.com" style="color: #007a00; text-decoration: none;">finalbossxr.com</a>.
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Application Summary -->
+                    <!-- Application Summary: Light Grey Card -->
                     <tr>
-                        <td style="padding: 0 40px 30px;">
-                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Your Application Summary</h2>
-                                
-                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Position</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${jobTitle}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Name</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantName}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Email</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantEmail}</span>
-                                        </td>
-                                    </tr>
-                                    ${phone ? `
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Phone</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${phone}</span>
-                                        </td>
-                                    </tr>
-                                    ` : ''}
-                                    ${linkedin ? `
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">LinkedIn</span><br>
-                                            <a href="${linkedin}" class="text-accent" style="color: #00ff00; font-size: 15px; text-decoration: none;">${linkedin}</a>
-                                        </td>
-                                    </tr>
-                                    ` : ''}
-                                    ${portfolio ? `
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Portfolio</span><br>
-                                            <a href="${portfolio}" class="text-accent" style="color: #00ff00; font-size: 15px; text-decoration: none;">${portfolio}</a>
-                                        </td>
-                                    </tr>
-                                    ` : ''}
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Your Experience</span><br>
-                                            <span class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1.5; display: block; margin-top: 8px;">${experience}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 12px 0;">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Why You Want to Join</span><br>
-                                            <span class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1.5; display: block; margin-top: 8px;">${whyJoin}</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 32px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 16px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Your Application Summary</h2>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Position</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${jobTitle}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Name</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${applicantName}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Email</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${applicantEmail}</p>
+                                        
+                                        ${phone ? `
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Phone</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${phone}</p>
+                                        ` : ''}
+                                        
+                                        ${linkedin ? `
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">LinkedIn</p>
+                                        <p style="margin: 0 0 14px; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><a href="${linkedin}" style="color: #007a00; font-size: 15px; text-decoration: none;">${linkedin}</a></p>
+                                        ` : ''}
+                                        
+                                        ${portfolio ? `
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Portfolio</p>
+                                        <p style="margin: 0 0 14px; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><a href="${portfolio}" style="color: #007a00; font-size: 15px; text-decoration: none;">${portfolio}</a></p>
+                                        ` : ''}
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Your Experience</p>
+                                        <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 14px; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${experience}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Why You Want to Join</p>
+                                        <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${whyJoin}</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
-                                If you have any questions, feel free to reach out to us at<br>
-                                <a href="mailto:eddie@finalbossxr.com" class="text-accent" style="color: #00ff00; text-decoration: none;">eddie@finalbossxr.com</a>
+                        <td bgcolor="#f5f5f7" style="background-color: #f5f5f7; padding: 24px 40px; text-align: center; border-top: 1px solid #e0e0e6;">
+                            <p style="color: #666666; font-size: 14px; line-height: 1.6; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                Questions? Reach out at <a href="mailto:eddie@finalbossxr.com" style="color: #007a00; text-decoration: none;">eddie@finalbossxr.com</a>
                             </p>
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                            <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
                             </p>
                         </td>
@@ -436,111 +353,86 @@ export async function sendApplicationAdminNotificationEmail(data: ApplicationEma
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
     <title>New Job Application</title>
     ${getEmailStyles()}
 </head>
-<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+<body id="body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f4;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f0f0f4" style="background-color: #f0f0f4;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="border-radius: 12px; overflow: hidden; border: 1px solid #dddde6;">
                     
-                    <!-- Header -->
+                    <!-- Header: Dark Purple Branding -->
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px;">
-                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">🚀 New Job Application!</h1>
+                        <td align="center" bgcolor="#2d0a5e" style="background-color: #2d0a5e; padding: 36px 40px 28px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block; margin: 0 auto 16px;">
+                            <h1 style="color: #00ff00; font-size: 26px; margin: 0; font-weight: 700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">🚀 New Job Application!</h1>
                         </td>
                     </tr>
                     
-                    <!-- Main Content -->
+                    <!-- Main Content: White Background -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                A new applicant has submitted an application for the <strong class="text-accent" style="color: #00ff00;">${jobTitle}</strong> position.
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                A new applicant has submitted an application for the <strong style="color: #007a00;">${jobTitle}</strong> position.
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Applicant Details -->
+                    <!-- Applicant Info Card -->
                     <tr>
-                        <td style="padding: 0 40px 30px;">
-                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Applicant Information</h2>
-                                
-                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Name</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantName}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Email</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantEmail}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Position</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${jobTitle}</span>
-                                        </td>
-                                    </tr>
-                                    ${phone ? `
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Phone</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${phone}</span>
-                                        </td>
-                                    </tr>
-                                    ` : ''}
-                                    ${linkedin ? `
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">LinkedIn</span><br>
-                                            <a href="${linkedin}" class="text-accent" style="color: #00ff00; font-size: 15px; text-decoration: none;">${linkedin}</a>
-                                        </td>
-                                    </tr>
-                                    ` : ''}
-                                    ${portfolio ? `
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Portfolio</span><br>
-                                            <a href="${portfolio}" class="text-accent" style="color: #00ff00; font-size: 15px; text-decoration: none;">${portfolio}</a>
-                                        </td>
-                                    </tr>
-                                    ` : ''}
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Experience</span><br>
-                                            <span class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1.5; display: block; margin-top: 8px;">${experience}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 12px 0;">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Why They Want to Join</span><br>
-                                            <span class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 14px; line-height: 1.5; display: block; margin-top: 8px;">${whyJoin}</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 32px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 16px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Applicant Information</h2>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Name</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${applicantName}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Email</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${applicantEmail}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Position</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${jobTitle}</p>
+                                        
+                                        ${phone ? `
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Phone</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${phone}</p>
+                                        ` : ''}
+                                        
+                                        ${linkedin ? `
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">LinkedIn</p>
+                                        <p style="margin: 0 0 14px; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><a href="${linkedin}" style="color: #007a00; font-size: 15px; text-decoration: none;">${linkedin}</a></p>
+                                        ` : ''}
+                                        
+                                        ${portfolio ? `
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Portfolio</p>
+                                        <p style="margin: 0 0 14px; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><a href="${portfolio}" style="color: #007a00; font-size: 15px; text-decoration: none;">${portfolio}</a></p>
+                                        ` : ''}
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Experience</p>
+                                        <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0 0 14px; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${experience}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Why They Want to Join</p>
+                                        <p style="color: #444444; font-size: 14px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${whyJoin}</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
-                    <!-- CTA -->
+                    <!-- CTA Button -->
                     <tr>
-                        <td align="center" style="padding: 20px 40px 30px;">
-                            <a href="https://finalbossxr.com/admin/dashboard" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">View Application in Dashboard</a>
+                        <td bgcolor="#ffffff" align="center" style="background-color: #ffffff; padding: 0 40px 32px;">
+                            <a href="https://finalbossxr.com/admin/dashboard" style="display: inline-block; background-color: #2d0a5e; color: #00ff00; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">View Application in Dashboard</a>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 0; text-align: center;">
+                        <td bgcolor="#f5f5f7" style="background-color: #f5f5f7; padding: 24px 40px; text-align: center; border-top: 1px solid #e0e0e6;">
+                            <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. Admin notification system.
                             </p>
                         </td>
@@ -628,52 +520,47 @@ export async function sendNewsletterEmail(data: NewsletterEmailData) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
     <title>${subject}</title>
     ${getEmailStyles()}
 </head>
-<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+<body id="body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f4;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f0f0f4" style="background-color: #f0f0f4;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="border-radius: 12px; overflow: hidden; border: 1px solid #dddde6;">
                     
-                    <!-- Header -->
+                    <!-- Header: Dark Purple Branding -->
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px;">
-                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <h1 class="text-accent" style="color: #00ff00; font-size: 24px; margin: 20px 0 10px; font-weight: 700;">${subject}</h1>
+                        <td align="center" bgcolor="#2d0a5e" style="background-color: #2d0a5e; padding: 36px 40px 28px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block; margin: 0 auto 16px;">
+                            <h1 style="color: #00ff00; font-size: 24px; margin: 0; font-weight: 700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${subject}</h1>
                         </td>
                     </tr>
                     
-                    <!-- Main Content -->
+                    <!-- Main Content: White Background -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-primary" style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                ${greeting},
-                            </p>
-                            <div class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 16px; line-height: 1.8;">
-                                ${content.split('\n').map(p => p.trim() ? `<p style="margin: 0 0 16px;">${p}</p>` : '').join('')}
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
+                            <p style="color: #1d1d1f; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${greeting},</p>
+                            <div style="color: #444444; font-size: 16px; line-height: 1.8; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                ${content.split('\n').map(p => p.trim() ? `<p style="margin: 0 0 16px; color: #444444; font-size: 16px; line-height: 1.8; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${p}</p>` : '').join('')}
                             </div>
                         </td>
                     </tr>
                     
                     <!-- CTA Button -->
                     <tr>
-                        <td align="center" style="padding: 10px 40px 30px;">
-                            <a href="https://finalbossxr.com" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">Visit Our Website</a>
+                        <td bgcolor="#ffffff" align="center" style="background-color: #ffffff; padding: 0 40px 32px;">
+                            <a href="https://finalbossxr.com" style="display: inline-block; background-color: #2d0a5e; color: #00ff00; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Visit Our Website</a>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
-                                You're receiving this because you subscribed to our newsletter.<br>
-                                <a href="https://finalbossxr.com" class="text-accent" style="color: #00ff00; text-decoration: none;">finalbossxr.com</a>
+                        <td bgcolor="#f5f5f7" style="background-color: #f5f5f7; padding: 24px 40px; text-align: center; border-top: 1px solid #e0e0e6;">
+                            <p style="color: #666666; font-size: 14px; line-height: 1.6; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                You're receiving this because you subscribed to our newsletter. <a href="https://finalbossxr.com" style="color: #007a00; text-decoration: none;">finalbossxr.com</a>
                             </p>
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                            <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
                             </p>
                         </td>
@@ -735,73 +622,63 @@ export async function sendNewsletterAdminNotificationEmail(data: { email: string
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
     <title>New Newsletter Subscription</title>
     ${getEmailStyles()}
 </head>
-<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+<body id="body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f4;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f0f0f4" style="background-color: #f0f0f4;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="border-radius: 12px; overflow: hidden; border: 1px solid #dddde6;">
                     
-                    <!-- Header -->
+                    <!-- Header: Dark Purple Branding -->
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px;">
-                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">📧 New Newsletter Subscriber</h1>
+                        <td align="center" bgcolor="#2d0a5e" style="background-color: #2d0a5e; padding: 36px 40px 28px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block; margin: 0 auto 16px;">
+                            <h1 style="color: #00ff00; font-size: 26px; margin: 0; font-weight: 700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">📧 New Newsletter Subscriber</h1>
                         </td>
                     </tr>
                     
-                    <!-- Main Content -->
+                    <!-- Main Content: White Background -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 A new user has subscribed to your newsletter!
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Subscriber Details -->
+                    <!-- Subscriber Info Card -->
                     <tr>
-                        <td style="padding: 0 40px 30px;">
-                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Subscriber Information</h2>
-                                
-                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Email</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${email}</span>
-                                        </td>
-                                    </tr>
-                                    ${name ? `
-                                    <tr>
-                                        <td style="padding: 8px 0;">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Name</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${name}</span>
-                                        </td>
-                                    </tr>
-                                    ` : ''}
-                                    <tr>
-                                        <td style="padding: 8px 0;">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Subscribed</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${new Date().toLocaleString()}</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 32px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 16px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Subscriber Information</h2>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Email</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${email}</p>
+                                        
+                                        ${name ? `
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Name</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${name}</p>
+                                        ` : ''}
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Subscribed</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0; font-weight: 500; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${new Date().toLocaleString()}</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
-                                View all subscribers in your <a href="https://finalbossxr.com/admin/dashboard" class="text-accent" style="color: #00ff00; text-decoration: none;">admin dashboard</a>
+                        <td bgcolor="#f5f5f7" style="background-color: #f5f5f7; padding: 24px 40px; text-align: center; border-top: 1px solid #e0e0e6;">
+                            <p style="color: #666666; font-size: 14px; line-height: 1.6; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                View all subscribers in your <a href="https://finalbossxr.com/admin/dashboard" style="color: #007a00; text-decoration: none;">admin dashboard</a>
                             </p>
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                            <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
                             </p>
                         </td>
@@ -859,75 +736,78 @@ export async function sendJobApplicationAcceptanceEmail(data: { applicantName: s
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
     <title>Congratulations - You're Accepted!</title>
     ${getEmailStyles()}
 </head>
-<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+<body id="body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f4;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f0f0f4" style="background-color: #f0f0f4;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="border-radius: 12px; overflow: hidden; border: 1px solid #dddde6;">
                     
-                    <!-- Header -->
+                    <!-- Header: Dark Purple Branding -->
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px;">
-                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">🎉 Congratulations!</h1>
+                        <td align="center" bgcolor="#2d0a5e" style="background-color: #2d0a5e; padding: 36px 40px 28px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block; margin: 0 auto 16px;">
+                            <h1 style="color: #00ff00; font-size: 26px; margin: 0; font-weight: 700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">🎉 Congratulations!</h1>
                         </td>
                     </tr>
                     
-                    <!-- Main Content -->
+                    <!-- Main Content: White Background -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-primary" style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                Hi ${firstName},
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
+                            <p style="color: #1d1d1f; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Hi ${firstName},</p>
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                We're thrilled to inform you that you've been selected for the <strong style="color: #007a00;">${jobTitle}</strong> position at <strong style="color: #1d1d1f;">Final Boss Studios</strong>!
                             </p>
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                We're thrilled to inform you that you've been selected for the <strong class="text-accent" style="color: #00ff00;">${jobTitle}</strong> position at <strong class="text-accent" style="color: #00ff00;">Final Boss Studios</strong>!
-                            </p>
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 30px;">
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 Your skills and experience impressed our team, and we can't wait to have you join us.
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Admin Message -->
+                    <!-- Message from Team -->
                     <tr>
-                        <td style="padding: 0 40px 30px;">
-                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 15px; font-weight: 600;">Message from Our Team</h2>
-                                <p class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 16px; line-height: 1.6; margin: 0; white-space: pre-line;">${customMessage}</p>
-                            </div>
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 16px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 12px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Message from Our Team</h2>
+                                        <p style="color: #444444; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-line; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${customMessage}</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- Next Steps -->
                     <tr>
-                        <td style="padding: 0 40px 30px;">
-                            <div class="summary-box" style="background: rgba(0, 255, 0, 0.05); border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 12px; padding: 24px;">
-                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 15px; font-weight: 600;">🚀 Next Steps</h2>
-                                <p class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 16px; line-height: 1.6; margin: 0; white-space: pre-line;">${nextSteps}</p>
-                            </div>
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 32px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#edfaed" style="background-color: #edfaed; border-radius: 8px; border: 1px solid #c3e6c3;">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 12px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">🚀 Next Steps</h2>
+                                        <p style="color: #1d4d1d; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-line; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${nextSteps}</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- CTA Button -->
                     <tr>
-                        <td align="center" style="padding: 10px 40px 30px;">
-                            <a href="https://finalbossxr.com" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">Visit Our Website</a>
+                        <td bgcolor="#ffffff" align="center" style="background-color: #ffffff; padding: 0 40px 32px;">
+                            <a href="https://finalbossxr.com" style="display: inline-block; background-color: #2d0a5e; color: #00ff00; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Visit Our Website</a>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
-                                We look forward to working with you!<br>
-                                <a href="https://finalbossxr.com" class="text-accent" style="color: #00ff00; text-decoration: none;">finalbossxr.com</a>
+                        <td bgcolor="#f5f5f7" style="background-color: #f5f5f7; padding: 24px 40px; text-align: center; border-top: 1px solid #e0e0e6;">
+                            <p style="color: #666666; font-size: 14px; line-height: 1.6; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                We look forward to working with you! <a href="https://finalbossxr.com" style="color: #007a00; text-decoration: none;">finalbossxr.com</a>
                             </p>
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                            <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
                             </p>
                         </td>
@@ -997,54 +877,54 @@ export async function sendJobApplicationRejectionEmail(data: { applicantName: st
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
     <title>Application Status Update</title>
     ${getEmailStyles()}
 </head>
-<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+<body id="body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f4;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f0f0f4" style="background-color: #f0f0f4;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="border-radius: 12px; overflow: hidden; border: 1px solid #dddde6;">
                     
-                    <!-- Header -->
+                    <!-- Header: Dark Purple Branding -->
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px;">
-                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">Application Status</h1>
+                        <td align="center" bgcolor="#2d0a5e" style="background-color: #2d0a5e; padding: 36px 40px 28px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block; margin: 0 auto 16px;">
+                            <h1 style="color: #00ff00; font-size: 26px; margin: 0; font-weight: 700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Application Status</h1>
                         </td>
                     </tr>
                     
-                    <!-- Main Content -->
+                    <!-- Main Content: White Background -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-primary" style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                Hi ${firstName},
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
+                            <p style="color: #1d1d1f; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Hi ${firstName},</p>
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                Thank you for your interest in the <strong style="color: #007a00;">${jobTitle}</strong> position at <strong style="color: #1d1d1f;">Final Boss Studios</strong>. We appreciate the time and effort you invested in your application.
                             </p>
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                                Thank you for your interest in the <strong class="text-accent" style="color: #00ff00;">${jobTitle}</strong> position at <strong class="text-accent" style="color: #00ff00;">Final Boss Studios</strong>. We appreciate the time and effort you invested in your application.
-                            </p>
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 30px;">
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 We've reviewed all applications carefully, and while we were impressed with your qualifications, we've decided to move forward with other candidates at this time.
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Admin Message -->
+                    <!-- Message from Team -->
                     <tr>
-                        <td style="padding: 0 40px 30px;">
-                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 15px; font-weight: 600;">Message from Our Team</h2>
-                                <p class="text-secondary" style="color: rgba(255, 255, 255, 0.9); font-size: 16px; line-height: 1.6; margin: 0; white-space: pre-line;">${customMessage}</p>
-                            </div>
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 24px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 12px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Message from Our Team</h2>
+                                        <p style="color: #444444; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-line; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${customMessage}</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- Encouragement -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0;">
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 0 40px 32px;">
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 We encourage you to stay updated with our open positions, and we hope our paths may cross again in the future. We wish you the best of luck in your career!
                             </p>
                         </td>
@@ -1052,19 +932,18 @@ export async function sendJobApplicationRejectionEmail(data: { applicantName: st
                     
                     <!-- CTA Button -->
                     <tr>
-                        <td align="center" style="padding: 10px 40px 30px;">
-                            <a href="https://finalbossxr.com" style="display: inline-block; background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000000; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px;">Visit Our Website</a>
+                        <td bgcolor="#ffffff" align="center" style="background-color: #ffffff; padding: 0 40px 32px;">
+                            <a href="https://finalbossxr.com" style="display: inline-block; background-color: #2d0a5e; color: #00ff00; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Visit Our Website</a>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
-                                Best of luck in your future endeavors!<br>
-                                <a href="https://finalbossxr.com" class="text-accent" style="color: #00ff00; text-decoration: none;">finalbossxr.com</a>
+                        <td bgcolor="#f5f5f7" style="background-color: #f5f5f7; padding: 24px 40px; text-align: center; border-top: 1px solid #e0e0e6;">
+                            <p style="color: #666666; font-size: 14px; line-height: 1.6; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                Best of luck in your future endeavors! <a href="https://finalbossxr.com" style="color: #007a00; text-decoration: none;">finalbossxr.com</a>
                             </p>
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                            <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
                             </p>
                         </td>
@@ -1139,77 +1018,64 @@ export async function sendApplicationResponseNotificationEmail(data: { status: '
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
     <title>Application Response Sent</title>
     ${getEmailStyles()}
 </head>
-<body class="email-body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1b023d;">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="email-body" style="background-color: #1b023d;">
+<body id="body" style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f4;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f0f0f4" style="background-color: #f0f0f4;">
         <tr>
             <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" class="email-container" style="background: linear-gradient(180deg, #2d0a5e 0%, #1b023d 100%); border-radius: 16px; overflow: hidden;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="border-radius: 12px; overflow: hidden; border: 1px solid #dddde6;">
                     
-                    <!-- Header -->
+                    <!-- Header: Dark Purple Branding -->
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px;">
-                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block;">
-                            <h1 class="text-accent" style="color: #00ff00; font-size: 28px; margin: 20px 0 10px; font-weight: 700;">${statusEmoji} Application Response Sent</h1>
+                        <td align="center" bgcolor="#2d0a5e" style="background-color: #2d0a5e; padding: 36px 40px 28px;">
+                            <img src="https://finalbossxr.s3.us-east-1.amazonaws.com/logos/FBS_Logo_Initial_Final_NoBG.png" alt="Final Boss Studios" width="60" style="display: block; margin: 0 auto 16px;">
+                            <h1 style="color: #00ff00; font-size: 26px; margin: 0; font-weight: 700; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${statusEmoji} Application Response Sent</h1>
                         </td>
                     </tr>
                     
-                    <!-- Main Content -->
+                    <!-- Main Content: White Background -->
                     <tr>
-                        <td style="padding: 20px 40px;">
-                            <p class="text-secondary" style="color: rgba(255, 255, 255, 0.8); font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
+                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 You have sent an application response to a candidate.
                             </p>
                         </td>
                     </tr>
                     
-                    <!-- Response Details -->
+                    <!-- Response Details Card -->
                     <tr>
-                        <td style="padding: 0 40px 30px;">
-                            <div class="summary-box" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-                                <h2 class="text-accent" style="color: #00ff00; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Response Details</h2>
-                                
-                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Status</span><br>
-                                            <span style="color: ${statusColor}; font-size: 15px; font-weight: 600;">${statusLabel}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Applicant Name</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantName}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-subtle" style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Email</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${applicantEmail}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 8px 0;">
-                                            <span class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Position</span><br>
-                                            <span class="text-primary" style="color: #ffffff; font-size: 15px;">${jobTitle}</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 32px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
+                                <tr>
+                                    <td style="padding: 20px 24px;">
+                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 16px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Response Details</h2>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Status</p>
+                                        <p style="color: ${statusColor}; font-size: 15px; margin: 0 0 14px; font-weight: 600; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${statusLabel}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Applicant Name</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${applicantName}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Email</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0 0 14px; font-weight: 500; border-bottom: 1px solid #e0e0e6; padding-bottom: 14px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${applicantEmail}</p>
+                                        
+                                        <p style="color: #666666; font-size: 12px; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Position</p>
+                                        <p style="color: #1d1d1f; font-size: 15px; margin: 0; font-weight: 500; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${jobTitle}</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     
                     <!-- Footer -->
                     <tr>
-                        <td class="border-subtle" style="padding: 30px 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.6); font-size: 14px; line-height: 1.6; margin: 0 0 15px; text-align: center;">
-                                View all applications in your <a href="https://finalbossxr.com/admin/dashboard" class="text-accent" style="color: #00ff00; text-decoration: none;">admin dashboard</a>
+                        <td bgcolor="#f5f5f7" style="background-color: #f5f5f7; padding: 24px 40px; text-align: center; border-top: 1px solid #e0e0e6;">
+                            <p style="color: #666666; font-size: 14px; line-height: 1.6; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                View all applications in your <a href="https://finalbossxr.com/admin/dashboard" style="color: #007a00; text-decoration: none;">admin dashboard</a>
                             </p>
-                            <p class="text-muted" style="color: rgba(255, 255, 255, 0.4); font-size: 12px; margin: 20px 0 0; text-align: center;">
+                            <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
                             </p>
                         </td>

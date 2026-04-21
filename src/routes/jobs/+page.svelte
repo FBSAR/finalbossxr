@@ -9,7 +9,7 @@
   export let data;
 
   // ⚠️ DEV MODE - Set to true to auto-fill form fields for testing
-  const devMode = false;
+  const devMode = true;
 
   // Slider State
   let currentSlide = 0;
