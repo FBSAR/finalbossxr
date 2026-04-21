@@ -241,3 +241,124 @@ export async function addStatusColumnsToApplications() {
         console.log('Response sent at column already exists or error occurred:', error);
     }
 }
+
+/**
+ * Initializes the response_templates table if it doesn't exist.
+ * Stores preset message templates for job application responses (acceptance/rejection).
+ */
+export async function initializeResponseTemplatesTable() {
+    const sql = getDb();
+    
+    try {
+        await sql`
+            CREATE TABLE IF NOT EXISTS response_templates (
+                id SERIAL PRIMARY KEY,
+                template_type VARCHAR(20) NOT NULL UNIQUE,
+                title VARCHAR(255) NOT NULL,
+                message TEXT NOT NULL,
+                next_steps TEXT,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            )
+        `;
+        console.log('Response templates table initialized successfully');
+        
+        // Initialize with default templates if they don't exist
+        await sql`
+            INSERT INTO response_templates (template_type, title, message, next_steps)
+            VALUES 
+                ('acceptance', 'Default Acceptance Message', 
+                 'We were impressed with your background and experience. We''d like to move forward with your application. Here''s what to expect next...', 
+                 'We will be in touch soon with interview details.'),
+                ('rejection', 'Default Rejection Message', 
+                 'Thank you for your interest in joining Final Boss Studios. We appreciate the time you took to apply. Unfortunately, we''ve decided to move forward with other candidates at this time. We encourage you to apply again in the future.',
+                 NULL)
+            ON CONFLICT (template_type) DO NOTHING
+        `;
+        console.log('Default response templates inserted');
+    } catch (error) {
+        console.log('Response templates table initialization error:', error);
+    }
+}
+
+export interface ResponseTemplate {
+    id: number;
+    template_type: 'acceptance' | 'rejection';
+    title: string;
+    message: string;
+    next_steps: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+/**
+ * Gets a response template by type (acceptance or rejection)
+ */
+export async function getResponseTemplate(templateType: 'acceptance' | 'rejection'): Promise<ResponseTemplate | null> {
+    const sql = getDb();
+    
+    try {
+        await initializeResponseTemplatesTable();
+        
+        const result = await sql`
+            SELECT id, template_type, title, message, next_steps, created_at, updated_at
+            FROM response_templates
+            WHERE template_type = ${templateType}
+        `;
+        
+        return result.length > 0 ? (result[0] as ResponseTemplate) : null;
+    } catch (error) {
+        console.error(`Error fetching response template for type ${templateType}:`, error);
+        return null;
+    }
+}
+
+/**
+ * Gets all response templates
+ */
+export async function getAllResponseTemplates(): Promise<ResponseTemplate[]> {
+    const sql = getDb();
+    
+    try {
+        await initializeResponseTemplatesTable();
+        
+        const result = await sql`
+            SELECT id, template_type, title, message, next_steps, created_at, updated_at
+            FROM response_templates
+            ORDER BY template_type
+        `;
+        
+        return result as ResponseTemplate[];
+    } catch (error) {
+        console.error('Error fetching all response templates:', error);
+        return [];
+    }
+}
+
+/**
+ * Updates a response template
+ */
+export async function updateResponseTemplate(
+    templateType: 'acceptance' | 'rejection',
+    title: string,
+    message: string,
+    nextSteps?: string | null
+): Promise<ResponseTemplate | null> {
+    const sql = getDb();
+    
+    try {
+        await initializeResponseTemplatesTable();
+        
+        const result = await sql`
+            UPDATE response_templates
+            SET title = ${title}, message = ${message}, next_steps = ${nextSteps || null}, updated_at = CURRENT_TIMESTAMP
+            WHERE template_type = ${templateType}
+            RETURNING id, template_type, title, message, next_steps, created_at, updated_at
+        `;
+        
+        return result.length > 0 ? (result[0] as ResponseTemplate) : null;
+    } catch (error) {
+        console.error(`Error updating response template for type ${templateType}:`, error);
+        return null;
+    }
+}

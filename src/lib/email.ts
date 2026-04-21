@@ -1,3 +1,74 @@
+/**
+ * Email Module - Final Boss Studios
+ * ===================================
+ * Centralized email sending system with 8 production email templates.
+ * All templates use light background (#ffffff) with dark text for universal mobile compatibility.
+ * 
+ * TESTING EMAILS
+ * ==============
+ * 
+ * Option 1: Via API Endpoint
+ * ---------------------------
+ * Send all 9 test emails at once:
+ *   GET /api/test-emails?email=your@email.com&template=all
+ * 
+ * Send a specific template:
+ *   GET /api/test-emails?email=your@email.com&template=contact
+ *   GET /api/test-emails?email=your@email.com&template=newsletter
+ *   GET /api/test-emails?email=your@email.com&template=jobAcceptance
+ * 
+ * Send multiple templates:
+ *   GET /api/test-emails?email=your@email.com&templates=contact,newsletter,jobAcceptance
+ * 
+ * Available templates:
+ *   - contact                        (Contact form confirmation)
+ *   - applicationConfirmation        (Job application confirmation to applicant)
+ *   - applicationAdminNotification   (Admin notification of new application)
+ *   - newsletter                     (Newsletter email)
+ *   - newsletterAdminNotification    (Newsletter subscriber notification to admin)
+ *   - jobAcceptance                  (Job acceptance email)
+ *   - jobRejection                   (Job rejection email)
+ *   - applicationResponseAccepted    (Admin: accepted response sent)
+ *   - applicationResponseRejected    (Admin: rejected response sent)
+ * 
+ * Option 2: From Code
+ * -------------------
+ * import { testAllEmailsAtOnce, testSelectedEmails } from '$lib/email-test';
+ * 
+ * Send all templates:
+ *   await testAllEmailsAtOnce('your@email.com');
+ * 
+ * Send specific templates:
+ *   await testSelectedEmails('your@email.com', ['contact', 'newsletter']);
+ * 
+ * Option 3: Add to Admin Dashboard
+ * ---------------------------------
+ * Create a test email form with email input and template selection.
+ * POST to /api/test-emails with: { email, template }
+ * See src/routes/api/test-emails/+server.ts for full API docs.
+ * 
+ * DESIGN NOTES
+ * ============
+ * - All emails use white/light backgrounds to ensure mobile readability
+ * - Header is dark purple (#2d0a5e) with green accent (#00ff00)
+ * - Content uses dark text (#1d1d1f) on white (#ffffff)
+ * - bgcolor HTML attributes + inline styles ensure compatibility across all email clients
+ * - NO CSS color rules (stripped by Gmail on Android)
+ * - NO rgba() colors (overridden by email client forced dark modes)
+ * - Only solid hex colors on bgcolor attributes and inline styles
+ * 
+ * EMAIL TEMPLATES
+ * ===============
+ * 1. sendContactConfirmationEmail     - User receives confirmation of contact form
+ * 2. sendApplicationConfirmationEmail - Applicant receives confirmation of job application
+ * 3. sendApplicationAdminNotificationEmail - Admin receives new application alert
+ * 4. sendNewsletterEmail              - Newsletter recipient receives newsletter content
+ * 5. sendNewsletterAdminNotificationEmail - Admin receives newsletter subscriber alert
+ * 6. sendJobApplicationAcceptanceEmail - Applicant receives job offer
+ * 7. sendJobApplicationRejectionEmail - Applicant receives rejection
+ * 8. sendApplicationResponseNotificationEmail - Admin notification of response sent
+ */
+
 import nodemailer from 'nodemailer';
 import { EMAIL_SERVER, EMAIL_PORT, EMAIL_USERNAME, EMAIL_PASSWORD, ADMIN_EMAIL_01, ADMIN_EMAIL_02 } from '$env/static/private';
 
@@ -28,6 +99,29 @@ const getEmailStyles = () => `
     u + #body a { color: inherit; text-decoration: none; }
 </style>
 `;
+
+/**
+ * Fetches response templates from the database.
+ * Used by email functions to get customizable acceptance/rejection messages.
+ */
+export async function getResponseTemplates() {
+    try {
+        const response = await fetch('/api/response-templates?all=true');
+        const data = await response.json();
+        
+        if (data.success && data.templates) {
+            const templates: Record<string, any> = {};
+            for (const template of data.templates) {
+                templates[template.template_type] = template;
+            }
+            return templates;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error fetching response templates:', error);
+        return null;
+    }
+}
 
 interface ApplicationEmailData {
     applicantName: string;
@@ -725,8 +819,8 @@ https://finalbossxr.com/admin/dashboard
     }
 }
 
-export async function sendJobApplicationAcceptanceEmail(data: { applicantName: string; applicantEmail: string; jobTitle: string; customMessage: string; nextSteps: string }) {
-    const { applicantName, applicantEmail, jobTitle, customMessage, nextSteps } = data;
+export async function sendJobApplicationAcceptanceEmail(data: { applicantName: string; applicantEmail: string; jobTitle: string; customMessage: string }) {
+    const { applicantName, applicantEmail, jobTitle, customMessage } = data;
     
     const firstName = applicantName.split(' ')[0];
     
@@ -757,40 +851,9 @@ export async function sendJobApplicationAcceptanceEmail(data: { applicantName: s
                     <tr>
                         <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
                             <p style="color: #1d1d1f; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Hi ${firstName},</p>
-                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                                We're thrilled to inform you that you've been selected for the <strong style="color: #007a00;">${jobTitle}</strong> position at <strong style="color: #1d1d1f;">Final Boss Studios</strong>!
-                            </p>
-                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                                Your skills and experience impressed our team, and we can't wait to have you join us.
-                            </p>
-                        </td>
-                    </tr>
-                    
-                    <!-- Message from Team -->
-                    <tr>
-                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 16px;">
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
-                                <tr>
-                                    <td style="padding: 20px 24px;">
-                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 12px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Message from Our Team</h2>
-                                        <p style="color: #444444; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-line; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${customMessage}</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    
-                    <!-- Next Steps -->
-                    <tr>
-                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 32px;">
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#edfaed" style="background-color: #edfaed; border-radius: 8px; border: 1px solid #c3e6c3;">
-                                <tr>
-                                    <td style="padding: 20px 24px;">
-                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 12px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">🚀 Next Steps</h2>
-                                        <p style="color: #1d4d1d; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-line; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${nextSteps}</p>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                ${customMessage.split('\n').map(p => p.trim() ? `<p style="margin: 0 0 12px; color: #444444; font-size: 16px; line-height: 1.6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${p}</p>` : '').join('')}
+                            </div>
                         </td>
                     </tr>
                     
@@ -824,21 +887,7 @@ export async function sendJobApplicationAcceptanceEmail(data: { applicantName: s
     const textContent = `
 Hi ${firstName},
 
-We're thrilled to inform you that you've been selected for the ${jobTitle} position at Final Boss Studios!
-
-Your skills and experience impressed our team, and we can't wait to have you join us.
-
----
-
-Message from Our Team:
-
 ${customMessage}
-
----
-
-Next Steps:
-
-${nextSteps}
 
 ---
 
@@ -898,26 +947,9 @@ export async function sendJobApplicationRejectionEmail(data: { applicantName: st
                     <tr>
                         <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
                             <p style="color: #1d1d1f; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Hi ${firstName},</p>
-                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                                Thank you for your interest in the <strong style="color: #007a00;">${jobTitle}</strong> position at <strong style="color: #1d1d1f;">Final Boss Studios</strong>. We appreciate the time and effort you invested in your application.
-                            </p>
-                            <p style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                                We've reviewed all applications carefully, and while we were impressed with your qualifications, we've decided to move forward with other candidates at this time.
-                            </p>
-                        </td>
-                    </tr>
-                    
-                    <!-- Message from Team -->
-                    <tr>
-                        <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 8px 40px 24px;">
-                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f5f5f7" style="background-color: #f5f5f7; border-radius: 8px; border: 1px solid #e0e0e6;">
-                                <tr>
-                                    <td style="padding: 20px 24px;">
-                                        <h2 style="color: #007a00; font-size: 17px; margin: 0 0 12px; font-weight: 600; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Message from Our Team</h2>
-                                        <p style="color: #444444; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-line; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${customMessage}</p>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div style="color: #444444; font-size: 16px; line-height: 1.6; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                ${customMessage.split('\n').map(p => p.trim() ? `<p style="margin: 0 0 12px; color: #444444; font-size: 16px; line-height: 1.6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${p}</p>` : '').join('')}
+                            </div>
                         </td>
                     </tr>
                     
@@ -960,17 +992,7 @@ export async function sendJobApplicationRejectionEmail(data: { applicantName: st
     const textContent = `
 Hi ${firstName},
 
-Thank you for your interest in the ${jobTitle} position at Final Boss Studios. We appreciate the time and effort you invested in your application.
-
-We've reviewed all applications carefully, and while we were impressed with your qualifications, we've decided to move forward with other candidates at this time.
-
----
-
-Message from Our Team:
-
 ${customMessage}
-
----
 
 We encourage you to stay updated with our open positions, and we hope our paths may cross again in the future. We wish you the best of luck in your career!
 

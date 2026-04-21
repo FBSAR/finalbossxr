@@ -490,7 +490,6 @@ export const actions: Actions = {
     const applicationId = data.get('applicationId');
     const status = data.get('status') as string; // 'accepted' or 'rejected'
     const customMessage = data.get('customMessage') as string;
-    const nextSteps = data.get('nextSteps') as string || '';
 
     if (!applicationId || !status || !customMessage) {
       return fail(400, { error: true, message: 'Missing required fields' });
@@ -529,8 +528,7 @@ export const actions: Actions = {
           applicantName: app.name,
           applicantEmail: app.email,
           jobTitle: app.job_title,
-          customMessage,
-          nextSteps
+          customMessage
         });
       } else {
         await sendJobApplicationRejectionEmail({

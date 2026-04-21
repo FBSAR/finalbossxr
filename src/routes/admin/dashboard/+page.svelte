@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { onMount } from 'svelte';
   
   export let data;
   export let form;
@@ -156,16 +157,44 @@
   // Application Response State
   let showApplicationResponseModal = false;
   let selectedApplication: any = null;
-  let responseForm = { customMessage: '', nextSteps: '', status: '' };
+  let responseForm = { customMessage: '', status: '' };
   let isRespondingToApplication = false;
 
   // Preset Messages State
   let showPresetMessagesModal = false;
-  let presetMessages = {
-    acceptance: "We were impressed with your background and experience. We'd like to move forward with your application. Here's what to expect next...",
-    rejection: "Thank you for your interest in joining Final Boss Studios. We appreciate the time you took to apply. Unfortunately, we've decided to move forward with other candidates at this time. We encourage you to apply again in the future."
+  let presetMessages: Record<string, any> = {
+    acceptance: { message: "", next_steps: "" },
+    rejection: { message: "", next_steps: "" }
   };
-  let presetNextSteps = "We will be in touch soon with interview details.";
+  let isLoadingTemplates = false;
+  let isSavingTemplates = false;
+
+  // Load response templates from database on mount
+  onMount(async () => {
+    isLoadingTemplates = true;
+    try {
+      const response = await fetch('/api/response-templates?all=true');
+      const data = await response.json();
+      if (data.success && data.templates) {
+        for (const template of data.templates) {
+          presetMessages[template.template_type] = {
+            message: template.message,
+            next_steps: template.next_steps || ""
+          };
+        }
+      }
+    } catch (error) {
+      console.error('Error loading response templates:', error);
+      showToast('Failed to load response templates', 'error');
+    } finally {
+      isLoadingTemplates = false;
+    }
+  });
+
+  // Disable scrollbar when Response Template modal is open
+  $: if (typeof document !== 'undefined') {
+    document.body.style.overflow = showPresetMessagesModal ? 'hidden' : 'auto';
+  }
 
   function openPresetMessagesModal() {
     showPresetMessagesModal = true;
@@ -175,17 +204,53 @@
     showPresetMessagesModal = false;
   }
 
-  function savePresetMessages() {
-    showToast('Preset messages updated successfully', 'success');
-    closePresetMessagesModal();
+  async function savePresetMessages() {
+    isSavingTemplates = true;
+    try {
+      // Save acceptance template
+      const acceptanceRes = await fetch('/api/response-templates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'acceptance',
+          title: 'Acceptance Message',
+          message: presetMessages.acceptance.message
+        })
+      });
+
+      if (!acceptanceRes.ok) throw new Error('Failed to save acceptance template');
+
+      // Save rejection template
+      const rejectionRes = await fetch('/api/response-templates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'rejection',
+          title: 'Rejection Message',
+          message: presetMessages.rejection.message
+        })
+      });
+
+      if (!rejectionRes.ok) throw new Error('Failed to save rejection template');
+
+      showToast('Response templates saved successfully', 'success');
+      closePresetMessagesModal();
+    } catch (error) {
+      console.error('Error saving response templates:', error);
+      showToast('Failed to save response templates', 'error');
+    } finally {
+      isSavingTemplates = false;
+    }
   }
 
   function openApplicationResponseModal(app: any, status: 'accepted' | 'rejected') {
     selectedApplication = app;
     
+    // Map 'accepted'/'rejected' to 'acceptance'/'rejection' to match template keys
+    const templateType = status === 'accepted' ? 'acceptance' : 'rejection';
+    
     responseForm = { 
-      customMessage: status === 'accepted' ? presetMessages.acceptance : presetMessages.rejection, 
-      nextSteps: status === 'accepted' ? presetNextSteps : '', 
+      customMessage: presetMessages[templateType]?.message || '', 
       status 
     };
     showApplicationResponseModal = true;
@@ -194,7 +259,7 @@
   function closeApplicationResponseModal() {
     showApplicationResponseModal = false;
     selectedApplication = null;
-    responseForm = { customMessage: '', nextSteps: '', status: '' };
+    responseForm = { customMessage: '', status: '' };
   }
 
   async function submitApplicationResponse() {
@@ -208,9 +273,6 @@
     formData.append('applicationId', selectedApplication.id);
     formData.append('status', responseForm.status);
     formData.append('customMessage', responseForm.customMessage);
-    if (responseForm.status === 'accepted') {
-      formData.append('nextSteps', responseForm.nextSteps);
-    }
 
     try {
       const response = await fetch('?/respondToApplication', {
@@ -1244,19 +1306,6 @@
             ></textarea>
             <small>This message will be sent directly to the applicant.</small>
           </div>
-
-          {#if responseForm.status === 'accepted'}
-            <div class="form-group">
-              <label for="next-steps">Next Steps (Optional)</label>
-              <textarea 
-                id="next-steps" 
-                bind:value={responseForm.nextSteps}
-                placeholder="e.g., 'We'll follow up with an interview schedule within 2-3 business days. Please check your email...'"
-                rows="4"
-              ></textarea>
-              <small>Include any details about the interview process, timeline, or next steps.</small>
-            </div>
-          {/if}
         </div>
 
         <div class="modal-footer">
@@ -1301,8 +1350,9 @@
             </div>
             <textarea 
               id="preset-acceptance" 
-              bind:value={presetMessages.acceptance}
+              bind:value={presetMessages.acceptance.message}
               rows="5"
+              disabled={isSavingTemplates}
             ></textarea>
           </div>
 
@@ -1313,34 +1363,28 @@
             </div>
             <textarea 
               id="preset-rejection" 
-              bind:value={presetMessages.rejection}
+              bind:value={presetMessages.rejection.message}
               rows="5"
-            ></textarea>
-          </div>
-
-          <div class="preset-template-group">
-            <div class="preset-header">
-              <h3 class="preset-label">📋 Next Steps (For Acceptances)</h3>
-              <p class="preset-description">Additional information to include when accepting candidates.</p>
-            </div>
-            <textarea 
-              id="preset-next-steps" 
-              bind:value={presetNextSteps}
-              rows="3"
+              disabled={isSavingTemplates}
             ></textarea>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn-secondary" on:click={closePresetMessagesModal}>
+          <button type="button" class="btn-secondary" on:click={closePresetMessagesModal} disabled={isSavingTemplates}>
             Cancel
           </button>
           <button 
             type="button" 
             class="btn-primary"
             on:click={savePresetMessages}
+            disabled={isSavingTemplates}
           >
-            Save Templates
+            {#if isSavingTemplates}
+              Saving...
+            {:else}
+              Save Templates
+            {/if}
           </button>
         </div>
       </div>
