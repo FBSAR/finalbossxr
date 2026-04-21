@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NewsletterSignup from '$lib/components/NewsletterSignup.svelte';
+  import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import { navigating } from '$app/stores';
 
@@ -76,10 +76,7 @@
       <p class="coming-soon-message gold-header-text">Coming Soon</p>
       <p class="coming-soon-subtitle">Our most ambitious project yet.</p>
       
-      <div class="newsletter-container">
-        <h3 class="newsletter-header">Subscribe to Newsletter</h3>
-        <NewsletterSignup variant="stacked" placeholder="Enter your email" buttonText="Subscribe" showName={true} />
-      </div>
+      <NewsletterSection />
       {/if}
     </div>
   </div>
@@ -239,30 +236,6 @@
     font-size: 1.25rem;
     color: rgba(255, 255, 255, 0.6);
     font-style: italic;
-  }
-
-  .newsletter-container {
-    margin-top: 2.5rem;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .newsletter-header {
-    font-family: "Raleway", sans-serif;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #00ff00;
-    text-transform: uppercase;
-    letter-spacing: 0.15rem;
-    margin-bottom: 1.25rem;
-  }
-
-  /* Add spacing between newsletter form elements */
-  .newsletter-container :global(.newsletter-form.stacked) {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
   }
 
   @media (max-width: 640px) {
