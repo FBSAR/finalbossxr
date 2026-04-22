@@ -1,4 +1,25 @@
-<section class="mission-statement-container">
+<script lang="ts">
+  import { onMount } from 'svelte';
+
+  let container: HTMLElement;
+  let visible = false;
+
+  onMount(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          visible = true;
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
+  });
+</script>
+
+<section class="mission-statement-container" class:visible bind:this={container}>
   <!-- Animated corner accents -->
   <div class="mission-corner top-left"></div>
   <div class="mission-corner top-right"></div>
@@ -46,6 +67,15 @@
       0 25px 80px -20px rgba(0, 0, 0, 0.6),
       0 0 60px -30px rgba(0, 196, 0, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    /* Initial hidden state */
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .mission-statement-container.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .mission-statement-container::before {
