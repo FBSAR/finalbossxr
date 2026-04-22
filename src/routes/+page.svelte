@@ -13,6 +13,7 @@
   import HeroSection from '$lib/components/landing/HeroSection.svelte';
   import MissionStatement from '$lib/components/landing/MissionStatement.svelte';
   import FeaturedProject from '$lib/components/landing/FeaturedProject.svelte';
+  import SpaceshipScroll from '$lib/components/landing/SpaceshipScroll.svelte';
   import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
   import NextProject from '$lib/components/landing/NextProject.svelte';
   import BlogSection from '$lib/components/landing/BlogSection.svelte';
@@ -226,6 +227,9 @@
     bind:projectSection={projectSection}
     animationProgress={projectAnimationProgress} 
   />
+
+  <!-- Spaceship 3D scroll section -->
+  <SpaceshipScroll />
 
   <!-- Newsletter -->
   <NewsletterSection />
