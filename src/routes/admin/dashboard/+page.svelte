@@ -1122,6 +1122,14 @@
                     <strong>Video w/ Height</strong>
                     <code>![alt {'{'} height=400px{'}'}](video.mp4)</code>
                   </div>
+                  <div class="markdown-guide-item">
+                    <strong>Audio</strong>
+                    <code>![audio description](audio.mp3)</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Audio Caption</strong>
+                    <code>![audio | caption](audio.mp3)</code>
+                  </div>
                 </div>
               </div>
             {/if}

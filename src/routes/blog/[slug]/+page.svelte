@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { marked } from 'marked';
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
   
@@ -12,19 +12,116 @@
   
   let isPageLoaded = false;
   
-  onMount(() => {
+  onMount(async () => {
     // Brief skeleton display during hydration
-    setTimeout(() => {
+    setTimeout(async () => {
       isPageLoaded = true;
+      await tick();
+      initAudioPlayers();
     }, 600);
   });
-  
+
+  function formatAudioTime(s: number): string {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + String(sec).padStart(2, '0');
+  }
+
+  function initAudioPlayers() {
+    document.querySelectorAll<HTMLElement>('.audio-player-wrapper:not([data-cap-init])').forEach(wrapper => {
+      wrapper.setAttribute('data-cap-init', 'true');
+      const audio = wrapper.querySelector<HTMLAudioElement>('.blog-audio-player');
+      const playBtn = wrapper.querySelector<HTMLButtonElement>('.cap-play-btn');
+      const iconPlay = wrapper.querySelector<HTMLElement>('.cap-icon-play');
+      const iconPause = wrapper.querySelector<HTMLElement>('.cap-icon-pause');
+      const track = wrapper.querySelector<HTMLElement>('.cap-track');
+      const fill = wrapper.querySelector<HTMLElement>('.cap-fill');
+      const thumb = wrapper.querySelector<HTMLElement>('.cap-thumb');
+      const timeEl = wrapper.querySelector<HTMLElement>('.cap-time');
+      if (!audio || !playBtn || !track || !fill || !thumb || !timeEl) return;
+
+      playBtn.addEventListener('click', () => {
+        if (audio.paused) audio.play();
+        else audio.pause();
+      });
+      audio.addEventListener('play', () => {
+        if (iconPlay) iconPlay.style.display = 'none';
+        if (iconPause) iconPause.style.display = '';
+        wrapper.classList.add('playing');
+      });
+      audio.addEventListener('pause', () => {
+        if (iconPlay) iconPlay.style.display = '';
+        if (iconPause) iconPause.style.display = 'none';
+        wrapper.classList.remove('playing');
+      });
+      audio.addEventListener('ended', () => {
+        if (iconPlay) iconPlay.style.display = '';
+        if (iconPause) iconPause.style.display = 'none';
+        wrapper.classList.remove('playing');
+      });
+      audio.addEventListener('timeupdate', () => {
+        const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+        fill.style.width = pct + '%';
+        thumb.style.left = pct + '%';
+        timeEl.textContent = formatAudioTime(audio.currentTime);
+      });
+      track.addEventListener('click', (e) => {
+        if (!audio.duration) return;
+        const rect = track.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        audio.currentTime = pct * audio.duration;
+      });
+      let dragging = false;
+      thumb.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        thumb.setPointerCapture(e.pointerId);
+        e.stopPropagation();
+      });
+      thumb.addEventListener('pointermove', (e) => {
+        if (!dragging || !audio.duration) return;
+        const rect = track.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        fill.style.width = (pct * 100) + '%';
+        thumb.style.left = (pct * 100) + '%';
+        audio.currentTime = pct * audio.duration;
+        timeEl.textContent = formatAudioTime(audio.currentTime);
+      });
+      thumb.addEventListener('pointerup', () => { dragging = false; });
+    });
+  }
+
   // List of video file extensions
   const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.mkv', '.avi', '.flv', '.wmv'];
+  
+  // List of audio file extensions
+  const audioExtensions = ['.mp3', '.wav', '.m4a', '.aac', '.flac', '.ogg', '.wma', '.opus'];
+  
+  // Map audio extensions to MIME types
+  const audioMimeTypes: { [key: string]: string } = {
+    '.mp3': 'audio/mpeg',
+    '.wav': 'audio/wav',
+    '.m4a': 'audio/mp4',
+    '.aac': 'audio/aac',
+    '.flac': 'audio/flac',
+    '.ogg': 'audio/ogg',
+    '.wma': 'audio/wav',
+    '.opus': 'audio/opus'
+  };
   
   // Check if URL is a video file
   const isVideoFile = (url: string): boolean => {
     return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
+  };
+  
+  // Check if URL is an audio file
+  const isAudioFile = (url: string): boolean => {
+    return audioExtensions.some(ext => url.toLowerCase().endsWith(ext));
+  };
+  
+  // Get MIME type for audio file
+  const getAudioMimeType = (url: string): string => {
+    const ext = audioExtensions.find(e => url.toLowerCase().endsWith(e));
+    return ext ? audioMimeTypes[ext] : 'audio/mpeg';
   };
   
   // Custom renderer to support images and videos with height syntax and captions
@@ -65,6 +162,12 @@
       const controls = 'controls';
       const preload = 'metadata';
       mediaElement = `<video ${controls} ${preload} muted${heightStyle} class="auto-play-video"><source src="${href}" type="video/mp4"><p>Your browser doesn't support HTML5 video.</p></video>`;
+    } else if (isAudioFile(href)) {
+      // Render as custom audio player
+      const mimeType = getAudioMimeType(href);
+      const playIcon = `<svg class="cap-icon-play" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><polygon points="6,3 20,12 6,21"/></svg>`;
+      const pauseIcon = `<svg class="cap-icon-pause" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="display:none"><rect x="5" y="4" width="4" height="16"/><rect x="15" y="4" width="4" height="16"/></svg>`;
+      mediaElement = `<div class="audio-player-wrapper"><audio preload="metadata" class="blog-audio-player"><source src="${href}" type="${mimeType}"></audio><div class="custom-audio-player"><button class="cap-play-btn" aria-label="Play/Pause">${playIcon}${pauseIcon}</button><div class="cap-track"><div class="cap-fill"></div><div class="cap-thumb"></div></div><span class="cap-time">0:00</span></div></div>`;
     } else {
       // Render as image
       mediaElement = `<img src="${href}" alt="${altText}"${titleAttr}${heightStyle} />`;
@@ -716,10 +819,10 @@
   }
 
   .prose :global(figcaption) {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
     text-align: center;
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
     font-style: italic;
   }
 
@@ -787,5 +890,133 @@
 
   .skeleton-text-sm {
     height: 0.75rem;
+  }
+
+  /* Custom Audio Player */
+  .prose :global(.audio-player-wrapper) {
+    margin: 1.5rem 0;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-left: 2px solid #9333ea;
+  }
+
+  .prose :global(audio.blog-audio-player) {
+    display: none;
+  }
+
+  .prose :global(.custom-audio-player) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+  }
+
+  .prose :global(.cap-play-btn) {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(147, 51, 234, 0.5);
+    background: transparent;
+    color: #9333ea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .prose :global(.cap-play-btn:hover) {
+    background: rgba(147, 51, 234, 0.12);
+    border-color: #9333ea;
+  }
+
+  .prose :global(.cap-track) {
+    flex: 1;
+    position: relative;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    border-radius: 1px;
+  }
+
+  .prose :global(.cap-fill) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: #9333ea;
+    border-radius: 1px;
+    pointer-events: none;
+  }
+
+  .prose :global(.cap-thumb) {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #9333ea;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+  }
+
+  .prose :global(.cap-thumb:active) {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  .prose :global(.cap-time) {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-variant-numeric: tabular-nums;
+    min-width: 2.5rem;
+    text-align: right;
+  }
+
+  /* Playing state — green theme */
+  .prose :global(.audio-player-wrapper.playing) {
+    border-left-color: #00c400;
+    background: linear-gradient(135deg, rgba(0, 196, 0, 0.12) 0%, rgba(255, 215, 0, 0.08) 50%, rgba(0, 196, 0, 0.12) 100%);
+    background-size: 200% auto;
+    animation: playerGradientShift 4s ease-in-out infinite;
+  }
+
+  @keyframes playerGradientShift {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+  }
+
+  .prose :global(.audio-player-wrapper.playing .cap-play-btn) {
+    border-color: rgba(0, 196, 0, 0.5);
+    color: #00c400;
+  }
+
+  .prose :global(.audio-player-wrapper.playing .cap-play-btn:hover) {
+    background: rgba(0, 196, 0, 0.12);
+    border-color: #00c400;
+  }
+
+  .prose :global(.audio-player-wrapper.playing .cap-fill) {
+    background: #00c400;
+  }
+
+  .prose :global(.audio-player-wrapper.playing .cap-thumb) {
+    background: #00c400;
+  }
+
+  /* Audio inside figure — adjust wrapper margin */
+  .prose :global(figure.media-figure .audio-player-wrapper) {
+    margin: 0;
+  }
+
+  /* Ensure figcaption displays properly */
+  .prose :global(figure.media-figure figcaption) {
+    display: block;
+    margin-top: 0.5rem;
   }
 </style>
