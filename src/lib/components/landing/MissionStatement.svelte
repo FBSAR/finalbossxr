@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import StarField from './StarField.svelte';
 
   let container: HTMLElement;
   let visible = false;
@@ -19,7 +20,10 @@
   });
 </script>
 
-<section class="mission-statement-container" class:visible bind:this={container}>
+<div class="mission-section" bind:this={container}>
+  <StarField />
+
+  <section class="mission-statement-container" class:visible>
   <!-- Animated corner accents -->
   <div class="mission-corner top-left"></div>
   <div class="mission-corner top-right"></div>
@@ -48,16 +52,25 @@
   
   <!-- Animated bottom line -->
   <div class="mission-underline"></div>
-</section>
+  </section>
+</div>
 
 <style>
+  /* Outer section — full width, hosts the star canvas */
+  .mission-section {
+    position: relative;
+    width: 100%;
+    padding: 5rem 1rem;
+    overflow: hidden;
+  }
+
   /* Mission Statement - Enhanced Cool Design */
   .mission-statement-container {
     position: relative;
     text-align: center;
-    max-width: 800px;
-    margin: 5rem auto;
-    padding: 3.5rem 3rem;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2.5rem 2.25rem;
     background: linear-gradient(135deg, rgba(10, 22, 40, 0.95) 0%, rgba(20, 10, 40, 0.9) 50%, rgba(10, 22, 40, 0.95) 100%);
     border: 1px solid rgba(0, 196, 0, 0.2);
     border-radius: 1.5rem;
@@ -215,7 +228,7 @@
 
   .mission-text {
     position: relative;
-    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-size: clamp(0.875rem, 1.5vw, 1.0625rem);
     color: rgba(255, 255, 255, 0.9);
     line-height: 1.9;
     font-weight: 300;
