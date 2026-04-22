@@ -395,17 +395,11 @@
   /* Post Featured Image */
   .post-featured-image {
     position: relative;
+    width: 100%;
     aspect-ratio: 16 / 9;
-    height: 12rem;
     overflow: hidden;
     border-radius: 0.5rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  @media (min-width: 768px) {
-    .post-featured-image {
-      height: 18rem;
-    }
   }
 
   .post-featured-image-img {
