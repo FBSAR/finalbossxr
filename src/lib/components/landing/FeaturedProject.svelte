@@ -3,6 +3,7 @@
   export let projectSection: HTMLElement | undefined = undefined;
   
   let projectVideo: HTMLVideoElement;
+  let videoLoading = false;
   
   // Reactive video play/pause based on progress
   $: if (projectVideo) {
@@ -11,6 +12,19 @@
     } else {
       projectVideo.pause();
     }
+  }
+  
+  // Video event handlers
+  function handleVideoLoadStart() {
+    videoLoading = true;
+  }
+  
+  function handleVideoCanPlay() {
+    videoLoading = false;
+  }
+  
+  function handleVideoError() {
+    videoLoading = false;
   }
 </script>
 
@@ -208,6 +222,13 @@
         <div class="iphone-frame">
           <div class="iphone-notch"></div>
           <div class="iphone-screen">
+            {#if videoLoading}
+              <div class="video-loader">
+                <div class="spinner-ring spinner-ring-1"></div>
+                <div class="spinner-ring spinner-ring-2"></div>
+                <div class="spinner-ring spinner-ring-3"></div>
+              </div>
+            {/if}
             <video 
               bind:this={projectVideo}
               loop 
@@ -215,6 +236,9 @@
               playsinline
               preload="none"
               class="demo-video"
+              on:loadstart={handleVideoLoadStart}
+              on:canplay={handleVideoCanPlay}
+              on:error={handleVideoError}
             >
               <source src="https://finalbossxr.s3.us-east-1.amazonaws.com/videos/Game-trailer-Attempt-3.mp4" type="video/mp4" />
               Your browser does not support the video tag.
@@ -726,11 +750,71 @@
     background: #000;
     border-radius: 38px;
     overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   @media (max-width: 768px) {
     .iphone-screen {
       border-radius: 30px;
+    }
+  }
+
+  .video-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    border-radius: 38px;
+  }
+
+  @media (max-width: 768px) {
+    .video-loader {
+      border-radius: 30px;
+    }
+  }
+
+  .spinner-ring {
+    position: absolute;
+    border: 2px solid rgba(0, 196, 0, 0.1);
+    border-radius: 50%;
+    animation: spin-bounce 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  }
+
+  .spinner-ring-1 {
+    width: 40px;
+    height: 40px;
+    border-top-color: #00c400;
+    animation-delay: 0s;
+  }
+
+  .spinner-ring-2 {
+    width: 60px;
+    height: 60px;
+    border-right-color: #00c400;
+    animation-delay: 0.33s;
+  }
+
+  .spinner-ring-3 {
+    width: 80px;
+    height: 80px;
+    border-bottom-color: #00c400;
+    animation-delay: 0.66s;
+  }
+
+  @keyframes spin-bounce {
+    0% {
+      transform: rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(360deg);
+      opacity: 0.3;
     }
   }
 

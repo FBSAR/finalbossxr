@@ -27,31 +27,55 @@
     return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
   };
   
-  // Custom renderer to support images and videos with height syntax: ![alt{height=300px}](url)
+  // Custom renderer to support images and videos with height syntax and captions
+  // Syntax: ![alt text | caption text {height=300px}](url)
+  // The pipe (|) separates alt text from caption text
   const mediaRenderer = (token: any) => {
     const { text, href, title } = token;
     let height = '';
-    let finalText = text;
+    let altText = text;
+    let caption = '';
     
     // Parse height from text if present: text{height=300px}
     const heightMatch = text.match(/\{height=([^}]+)\}/);
     if (heightMatch) {
       height = heightMatch[1];
-      finalText = text.replace(/\s*\{height=[^}]+\}/, '');
+    }
+    
+    // Parse caption from text if present: alt | caption {height=300px}
+    const pipeIndex = text.indexOf('|');
+    if (pipeIndex !== -1) {
+      altText = text.substring(0, pipeIndex).trim();
+      // Get caption and remove height syntax from it
+      caption = text.substring(pipeIndex + 1).trim();
+      if (heightMatch) {
+        caption = caption.replace(/\s*\{height=[^}]+\}/, '').trim();
+      }
+    } else if (heightMatch) {
+      // Remove height syntax from alt text if no caption
+      altText = text.replace(/\s*\{height=[^}]+\}/, '').trim();
     }
     
     const heightStyle = height ? ` style="height: ${height}; width: auto;"` : '';
     const titleAttr = title ? ` title="${title}"` : '';
     
+    let mediaElement = '';
     // Check if it's a video file
     if (isVideoFile(href)) {
       const controls = 'controls';
       const preload = 'metadata';
-      return `<video ${controls} ${preload} muted${heightStyle} class="auto-play-video"><source src="${href}" type="video/mp4"><p>Your browser doesn't support HTML5 video.</p></video>`;
+      mediaElement = `<video ${controls} ${preload} muted${heightStyle} class="auto-play-video"><source src="${href}" type="video/mp4"><p>Your browser doesn't support HTML5 video.</p></video>`;
+    } else {
+      // Render as image
+      mediaElement = `<img src="${href}" alt="${altText}"${titleAttr}${heightStyle} />`;
     }
     
-    // Otherwise render as image
-    return `<img src="${href}" alt="${finalText}"${titleAttr}${heightStyle} />`;
+    // Wrap in figure with optional figcaption
+    if (caption) {
+      return `<figure class="media-figure">${mediaElement}<figcaption>${caption}</figcaption></figure>`;
+    }
+    
+    return mediaElement;
   };
   
   // Configure marked for GitHub-flavored markdown
@@ -687,6 +711,22 @@
     height: 1px;
     background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
     margin: 3rem 0;
+  }
+
+  .prose :global(figure) {
+    margin: 2rem 0;
+  }
+
+  .prose :global(figure.media-figure) {
+    margin: 2rem 0;
+  }
+
+  .prose :global(figcaption) {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    margin-top: 0.75rem;
+    font-style: italic;
   }
 
   .prose :global(table) {
