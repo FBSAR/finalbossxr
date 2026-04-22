@@ -11,6 +11,7 @@
   import { browser } from '$app/environment';
   import ContactForm from '$lib/components/ContactForm.svelte';
   import HeroSection from '$lib/components/landing/HeroSection.svelte';
+  import MissionStatement from '$lib/components/landing/MissionStatement.svelte';
   import FeaturedProject from '$lib/components/landing/FeaturedProject.svelte';
   import NewsletterSection from '$lib/components/landing/NewsletterSection.svelte';
   import NextProject from '$lib/components/landing/NextProject.svelte';
@@ -216,6 +217,9 @@
 <main class="landing-page">
   <!-- Hero Section -->
   <HeroSection {scrollY} />
+
+  <!-- Mission Statement -->
+  <MissionStatement />
 
   <!-- Featured Project Section -->
   <FeaturedProject 
