@@ -22,26 +22,43 @@
     camera.lookAt(0, 0, 0);
 
     // --- Lighting ---
-    scene.add(new THREE.AmbientLight(0xaaaacc, 0.35));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 
-    const key = new THREE.DirectionalLight(0xffffff, 1.6);
+    // Strong front fill so the ship face is always readable
+    const fill = new THREE.DirectionalLight(0xffffff, 2.2);
+    fill.position.set(0, 4, 20);
+    scene.add(fill);
+
+    const key = new THREE.DirectionalLight(0xddeeff, 1.4);
     key.position.set(8, 10, 6);
     scene.add(key);
 
-    const rim = new THREE.DirectionalLight(0x00c400, 0.45);
-    rim.position.set(-6, -3, -5);
+    // Green rim from below-left for silhouette contrast
+    const rim = new THREE.DirectionalLight(0x00c400, 0.9);
+    rim.position.set(-10, -4, -4);
     scene.add(rim);
 
-    const engineGlow = new THREE.PointLight(0x8a2be2, 6, 8);
+    // Purple top-back rim for edge definition
+    const backRim = new THREE.DirectionalLight(0xbb66ff, 0.7);
+    backRim.position.set(0, 8, -10);
+    scene.add(backRim);
+
+    const engineGlow = new THREE.PointLight(0x8a2be2, 8, 10);
     scene.add(engineGlow);
 
     // --- Materials ---
-    const bodyMat    = new THREE.MeshStandardMaterial({ color: 0x12122e, metalness: 0.9, roughness: 0.15 });
-    const purpleMat  = new THREE.MeshStandardMaterial({ color: 0x8a2be2, metalness: 0.85, roughness: 0.1, emissive: new THREE.Color(0x250040) });
-    const wingMat    = new THREE.MeshStandardMaterial({ color: 0x0a0a1e, metalness: 0.8, roughness: 0.25, side: THREE.DoubleSide });
-    const accentMat  = new THREE.MeshBasicMaterial({ color: 0x00c400 });
-    const cockpitMat = new THREE.MeshStandardMaterial({ color: 0x00ee99, emissive: new THREE.Color(0x003322), metalness: 0.1, roughness: 0.05, transparent: true, opacity: 0.88 });
-    const exhaustMat = new THREE.MeshBasicMaterial({ color: 0x8a2be2, transparent: true, opacity: 0.8 });
+    // Light silver-white body so it reads against any dark background
+    const bodyMat    = new THREE.MeshStandardMaterial({ color: 0xc8cfe0, metalness: 0.75, roughness: 0.22 });
+    // Slightly darker panels for the wings — still clearly visible
+    const wingMat    = new THREE.MeshStandardMaterial({ color: 0x8898b8, metalness: 0.65, roughness: 0.30, side: THREE.DoubleSide });
+    // Purple nose/ring with a strong emissive so it self-glows
+    const purpleMat  = new THREE.MeshStandardMaterial({ color: 0x9b3ef5, metalness: 0.7, roughness: 0.15, emissive: new THREE.Color(0x4a0090), emissiveIntensity: 0.6 });
+    // Green accents — self-lit so they pop as bright lines
+    const accentMat  = new THREE.MeshBasicMaterial({ color: 0x00ff55 });
+    // Cockpit glass — bright teal emissive
+    const cockpitMat = new THREE.MeshStandardMaterial({ color: 0x44ffcc, emissive: new THREE.Color(0x00aa66), emissiveIntensity: 0.8, metalness: 0.05, roughness: 0.04, transparent: true, opacity: 0.92 });
+    // Engine exhaust — bright purple glow
+    const exhaustMat = new THREE.MeshBasicMaterial({ color: 0xcc66ff, transparent: true, opacity: 0.9 });
 
     // --- Build ship ---
     const ship = new THREE.Group();
@@ -98,10 +115,10 @@
     exhaust.position.x = -3.6;
     ship.add(exhaust);
 
-    // Purple hull stripe
+    // Purple hull stripe — emissive so it reads as a glowing accent line
     const stripe = new THREE.Mesh(
       new THREE.BoxGeometry(4.4, 0.07, 0.11),
-      new THREE.MeshBasicMaterial({ color: 0x5a10a0 })
+      new THREE.MeshStandardMaterial({ color: 0xaa44ff, emissive: new THREE.Color(0x6600cc), emissiveIntensity: 0.9, metalness: 0.5, roughness: 0.1 })
     );
     stripe.position.set(0.2, 0.34, 0);
     ship.add(stripe);
