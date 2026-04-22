@@ -108,7 +108,61 @@
 
     scene.add(ship);
 
-    // --- Scroll tracking (natural flow, no sticky trap) ---
+    // --- Asteroids ---
+    // Each flies right → left as scroll progresses (opposite of ship)
+    const asteroidMat = new THREE.MeshStandardMaterial({
+      color: 0x6b5a4e, roughness: 0.92, metalness: 0.05
+    });
+
+    type Asteroid = {
+      mesh: THREE.Mesh;
+      startX: number;
+      travel: number;  // total X distance covered across full scroll
+      rotAxis: THREE.Vector3;
+      rotSpeed: number; // radians per unit of progress
+    };
+
+    const ASTEROID_DEFS: Array<{ sx: number; y: number; z: number; scale: number; travel: number; rotSpeed: number }> = [
+      { sx: 28,  y:  2.5, z: -2,  scale: 0.55, travel: 58, rotSpeed: 4.2 },
+      { sx: 22,  y: -1.8, z:  1,  scale: 0.38, travel: 50, rotSpeed: 5.8 },
+      { sx: 35,  y:  0.4, z: -4,  scale: 0.70, travel: 65, rotSpeed: 3.1 },
+      { sx: 18,  y:  3.2, z:  2,  scale: 0.28, travel: 44, rotSpeed: 7.0 },
+      { sx: 30,  y: -2.8, z: -1,  scale: 0.45, travel: 55, rotSpeed: 4.8 },
+      { sx: 40,  y:  1.2, z:  3,  scale: 0.62, travel: 70, rotSpeed: 2.9 },
+      { sx: 24,  y: -0.5, z: -5,  scale: 0.32, travel: 48, rotSpeed: 6.2 },
+      { sx: 33,  y:  2.0, z:  0,  scale: 0.50, travel: 60, rotSpeed: 3.7 },
+    ];
+
+    const asteroids: Asteroid[] = ASTEROID_DEFS.map((d) => {
+      // Use low-poly icosahedron + slight non-uniform scale for rocky look
+      const geo = new THREE.IcosahedronGeometry(1, 1);
+      // Perturb vertices for irregular shape
+      const pos = geo.attributes.position;
+      for (let i = 0; i < pos.count; i++) {
+        pos.setXYZ(
+          i,
+          pos.getX(i) * (0.82 + Math.random() * 0.36),
+          pos.getY(i) * (0.82 + Math.random() * 0.36),
+          pos.getZ(i) * (0.82 + Math.random() * 0.36)
+        );
+      }
+      geo.computeVertexNormals();
+
+      const mesh = new THREE.Mesh(geo, asteroidMat);
+      mesh.scale.setScalar(d.scale);
+      mesh.position.set(d.sx, d.y, d.z);
+      // Random initial rotation
+      mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      scene.add(mesh);
+
+      return {
+        mesh,
+        startX: d.sx,
+        travel: d.travel,
+        rotAxis: new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize(),
+        rotSpeed: d.rotSpeed,
+      };
+    });
     // Progress = how far the section has passed through the viewport
     // 0 = section bottom just entered; 1 = section top just left
     const X_START = -20;
@@ -155,6 +209,13 @@
       // Banking & yaw
       ship.rotation.z = THREE.MathUtils.clamp(-delta * 100, -0.38, 0.38);
       ship.rotation.y = -0.2 + THREE.MathUtils.clamp(delta * 40, -0.25, 0.25);
+
+      // Asteroids: move right → left (negative X) as progress increases
+      for (const a of asteroids) {
+        a.mesh.position.x = a.startX - smoothProgress * a.travel;
+        // Spin driven by scroll delta (feels physical)
+        a.mesh.rotateOnAxis(a.rotAxis, delta * a.rotSpeed);
+      }
 
       // Engine light
       engineGlow.position.set(ship.position.x - 3.2, ship.position.y, 0);
