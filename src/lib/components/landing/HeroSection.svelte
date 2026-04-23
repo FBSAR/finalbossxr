@@ -217,7 +217,7 @@
   // Typewriter effect state
   const titleLine1 = 'Shaping the Future of';
   const titleLine2 = 'Extended Reality';
-  const subtitleText = 'We build proprietary XR software and (sometimes) AI-powered spatial experiences — from immersive games, and other industries. We are a creative studio that wants to truly innovate the way people interact with technology.';
+  const subtitleText = 'We are a creative studio that wants to truly innovate the way people interact with Augmented and Mixed Reality, starting with Video Games.';
   
   let typedTitle1 = '';
   let typedTitle2 = '';
@@ -1218,11 +1218,6 @@
       </div>
     {/if}
     
-    <div class="hero-badge" class:revealed={heroRevealed}>
-      <span class="badge-dot"></span>
-      <span>Immersive Technology Studio</span>
-    </div>
-    
     <h1 class="hero-title" class:revealed={heroRevealed}>
       <span class="title-line">{typedTitle1}<span class="typewriter-cursor" class:hidden={typedTitle1.length === titleLine1.length}></span></span>
       <span class="title-line gradient-text">{typedTitle2}<span class="typewriter-cursor" class:hidden={typedTitle2.length !== titleLine2.length || typewriterComplete}></span></span>
@@ -1231,35 +1226,6 @@
     <p class="hero-subtitle" class:revealed={heroRevealed}>
       {typedSubtitle}<span class="typewriter-cursor subtitle-cursor" class:hidden={typewriterComplete}></span>
     </p>
-
-    <!-- Value Props -->
-    <div class="value-props" class:revealed={typewriterComplete}>
-      <div class="value-prop">
-        <span class="prop-icon">🎮</span>
-        <span class="prop-text">Immersive Games</span>
-      </div>
-      <div class="value-prop">
-        <span class="prop-icon">🧠</span>
-        <span class="prop-text">AI Integration</span>
-      </div>
-      <div class="value-prop">
-        <span class="prop-icon">👓</span>
-        <span class="prop-text">XR Platform</span>
-      </div>
-    </div>
-
-    <div class="hero-cta" class:revealed={typewriterComplete}>
-      <a href="/cosmic" class="btn-primary">
-        <span>Cosmic Collisions</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </a>
-      <a href="/project_v" class="btn-secondary">
-        <span class="btn-badge">Coming Soon</span>
-        Project V
-      </a>
-    </div>
   </div>
 
   <!-- Scroll Indicator -->
@@ -1932,7 +1898,7 @@
   }
 
   .hero-title {
-    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-size: clamp(1.5rem, 8vw, 3rem);
     font-weight: 400;
     line-height: 1.1;
     margin-bottom: 1.5rem;

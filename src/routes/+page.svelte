@@ -220,20 +220,20 @@
   <!-- Hero Section -->
   <HeroSection {scrollY} />
 
-  <!-- Mission Statement -->
-  <MissionStatement />
-
   <!-- Featured Project Section -->
   <FeaturedProject 
     bind:projectSection={projectSection}
     animationProgress={projectAnimationProgress} 
   />
 
-  <!-- Spaceship 3D scroll section -->
-  <SpaceshipScroll />
+  <!-- Mission Statement -->
+  <MissionStatement />
 
   <!-- Newsletter -->
   <NewsletterSection />
+  
+  <!-- Spaceship 3D scroll section -->
+  <SpaceshipScroll />
 
   <!-- Blog Section -->
   <BlogSection blogs={data.blogs} />
@@ -243,7 +243,7 @@
 
   <!-- Job Postings -->
   <JobsSection jobs={data.jobs} />
-  
+
   <!-- Next Project Section -->
   <NextProject 
     bind:nextProjectSection={nextProjectSection}
