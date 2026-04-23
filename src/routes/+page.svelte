@@ -243,12 +243,12 @@
 
   <!-- Blog Section -->
   <BlogSection blogs={data.blogs} />
+  
+  <!-- Solar System Section -->
+  <SolarSystem />
 
   <!-- Job Postings -->
   <JobsSection jobs={data.jobs} />
-
-  <!-- Solar System Section -->
-  <SolarSystem />
   
   <!-- Our Story Section -->
   <OurStorySection 
