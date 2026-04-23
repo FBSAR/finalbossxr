@@ -18,6 +18,7 @@
   import NextProject from '$lib/components/landing/NextProject.svelte';
   import BlogSection from '$lib/components/landing/BlogSection.svelte';
   import JobsSection from '$lib/components/landing/JobsSection.svelte';
+  import SolarSystem from '$lib/components/landing/SolarSystem.svelte';
   // HIDDEN: Kickstarter campaign ended
   // import KickstarterPromo from '$lib/components/landing/KickstarterPromo.svelte';
   import OurStorySection from '$lib/components/landing/OurStorySection.svelte';
@@ -245,6 +246,9 @@
 
   <!-- Job Postings -->
   <JobsSection jobs={data.jobs} />
+
+  <!-- Solar System Section -->
+  <SolarSystem />
   
   <!-- Our Story Section -->
   <OurStorySection 
