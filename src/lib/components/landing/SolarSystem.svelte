@@ -354,6 +354,77 @@
       new THREE.Vector3(-128, -38, 118),
     ]);
 
+    // Asteroid belt: rocky debris disk between Mars (33) and Jupiter (52)
+    // Positioned at orbital distance 42 with slight thickness
+    const asteroidBeltDistance = 42;
+    const asteroidCount = 2000;
+    const asteroidPos = new Float32Array(asteroidCount * 3);
+    const asteroidSz = new Float32Array(asteroidCount);
+    const asteroidColor = new Float32Array(asteroidCount * 3);
+
+    for (let i = 0; i < asteroidCount; i++) {
+      // Torus distribution: angle around sun + radial offset + vertical spread
+      const angle = Math.random() * Math.PI * 2;
+      const radialSpread = (Math.random() - 0.5) * 6; // ±3 units from belt distance
+      const distance = asteroidBeltDistance + radialSpread;
+      const verticalSpread = (Math.random() - 0.5) * 4; // ±2 units vertical for disk thickness
+      const tilt = (Math.random() - 0.5) * 0.4; // slight tilt from orbital plane
+
+      asteroidPos[i * 3] = distance * Math.cos(angle);
+      asteroidPos[i * 3 + 1] = verticalSpread;
+      asteroidPos[i * 3 + 2] = distance * Math.sin(angle);
+
+      // Size varies for visual interest (0.15 to 0.6 units)
+      asteroidSz[i] = 0.15 + Math.random() * 0.45;
+
+      // Color variation: brownish/gray rocky colors
+      const hue = 0.05 + Math.random() * 0.15; // brown to tan range
+      const grayFactor = 0.6 + Math.random() * 0.3; // 60-90% gray tint
+      asteroidColor[i * 3] = 0.4 + grayFactor * 0.35; // R
+      asteroidColor[i * 3 + 1] = 0.3 + grayFactor * 0.25; // G
+      asteroidColor[i * 3 + 2] = 0.25 + grayFactor * 0.2; // B
+    }
+
+    const asteroidGeo = new THREE.BufferGeometry();
+    asteroidGeo.setAttribute('position', new THREE.BufferAttribute(asteroidPos, 3));
+    asteroidGeo.setAttribute('size', new THREE.BufferAttribute(asteroidSz, 1));
+    asteroidGeo.setAttribute('color', new THREE.BufferAttribute(asteroidColor, 3));
+
+    const asteroidMat = new THREE.ShaderMaterial({
+      uniforms: {},
+      vertexShader: /* glsl */`
+        attribute float size;
+        varying vec3 vColor;
+        void main() {
+          vColor = color;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = size * (180.0 / -mv.z);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: /* glsl */`
+        varying vec3 vColor;
+        void main() {
+          vec2 uv = gl_PointCoord - 0.5;
+          float d = length(uv);
+          if (d > 0.5) discard;
+          // Slightly crater-like appearance with soft edges
+          float a = smoothstep(0.5, 0.15, d) * 0.85;
+          gl_FragColor = vec4(vColor, a);
+        }
+      `,
+      vertexColors: true,
+      transparent: true,
+      depthWrite: false,
+    });
+
+    const asteroidPoints = new THREE.Points(asteroidGeo, asteroidMat);
+
+    // Create orbital pivot for scroll-driven rotation (like planets)
+    const asteroidBeltPivot = new THREE.Group();
+    asteroidBeltPivot.add(asteroidPoints);
+    scene.add(asteroidBeltPivot);
+
     // Build planets
     const planetMeshes = PLANET_DEFS.map((p) => {
       const tex = p.tex();
@@ -505,6 +576,10 @@
           (ringMesh.material as THREE.ShaderMaterial).uniforms.uRingCenter.value.copy(saturnWorldPos);
         }
       });
+
+      // Update asteroid belt: orbit between Mars and Jupiter speeds
+      // Speed of 0.57 is midway between Mars (0.70) and Jupiter (0.45)
+      asteroidBeltPivot.rotation.y = scrollProgress * Math.PI * 2 * 0.57;
 
       // Scroll-driven comet flight across the system.
       // Invert so it moves forward as user scrolls down.
