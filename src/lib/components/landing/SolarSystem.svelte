@@ -174,15 +174,17 @@
   }
 
   // ----- Planet definitions --------------------------------------------------
+  // startAngle: initial orbit position in radians (distributes planets around the sun)
+  // speed: visual orbital speed — how many full 2π rotations over a complete scroll
   const PLANET_DEFS = [
-    { name:'Mercury', radius:0.7,  distance:12,  speed:4.15,  tilt:0.03, tex:makeMercuryTex },
-    { name:'Venus',   radius:1.6,  distance:18,  speed:1.62,  tilt:3.10, tex:makeVenusTex },
-    { name:'Earth',   radius:1.8,  distance:25,  speed:1.0,   tilt:0.41, tex:makeEarthTex },
-    { name:'Mars',    radius:1.0,  distance:33,  speed:0.53,  tilt:0.44, tex:makeMarsTex },
-    { name:'Jupiter', radius:6.0,  distance:52,  speed:0.084, tilt:0.05, tex:makeJupiterTex },
-    { name:'Saturn',  radius:4.8,  distance:70,  speed:0.034, tilt:0.47, tex:makeSaturnTex, rings:true },
-    { name:'Uranus',  radius:2.8,  distance:87,  speed:0.012, tilt:1.71, tex:makeUranusTex },
-    { name:'Neptune', radius:2.6,  distance:101, speed:0.006, tilt:0.49, tex:makeNeptuneTex },
+    { name:'Mercury', radius:0.7,  distance:12,  speed:2.80, startAngle:0.50, tilt:0.03, tex:makeMercuryTex },
+    { name:'Venus',   radius:1.6,  distance:18,  speed:1.75, startAngle:1.40, tilt:3.10, tex:makeVenusTex },
+    { name:'Earth',   radius:1.8,  distance:25,  speed:1.00, startAngle:2.80, tilt:0.41, tex:makeEarthTex },
+    { name:'Mars',    radius:1.0,  distance:33,  speed:0.70, startAngle:4.50, tilt:0.44, tex:makeMarsTex },
+    { name:'Jupiter', radius:6.0,  distance:52,  speed:0.45, startAngle:1.00, tilt:0.05, tex:makeJupiterTex },
+    { name:'Saturn',  radius:4.8,  distance:70,  speed:0.30, startAngle:3.20, tilt:0.47, tex:makeSaturnTex, rings:true },
+    { name:'Uranus',  radius:2.8,  distance:87,  speed:0.20, startAngle:5.00, tilt:1.71, tex:makeUranusTex },
+    { name:'Neptune', radius:2.6,  distance:101, speed:0.15, startAngle:2.00, tilt:0.49, tex:makeNeptuneTex },
   ];
 
   onMount(() => {
@@ -196,31 +198,71 @@
     renderer.setClearColor(0x06060f, 1);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(55, W / H, 0.1, 2000);
-    camera.position.set(110, 110, 110);
+    // Wider FOV and closer camera to see all 8 planets including outer ones
+    const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 3000);
+    camera.position.set(95, 95, 95);
     camera.lookAt(0, 0, 0);
 
-    // Lighting — sun is the primary light source
-    scene.add(new THREE.AmbientLight(0xffffff, 0.15));
-    const sunLight = new THREE.PointLight(0xfff4cc, 4, 800);
+    // Lighting — sun-only model for true light/dark terminator
+    // Near-zero ambient: dark side of planets stays genuinely dark
+    scene.add(new THREE.AmbientLight(0x111133, 0.06));
+    // Sun PointLight at origin — sole meaningful light source
+    // High intensity + large range so even Neptune is lit
+    const sunLight = new THREE.PointLight(0xfff4cc, 9.0, 1400, 1.2);
     scene.add(sunLight);
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
-    fillLight.position.set(-1, 1, 1);
-    scene.add(fillLight);
 
-    // Stars
-    const starPos = new Float32Array(3000 * 3);
-    for (let i = 0; i < 3000; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      const r = 400 + Math.random() * 200;
-      starPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
-      starPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-      starPos[i*3+2] = r * Math.cos(phi);
+    // Parallax stars with vertical scroll effect
+    const STAR_COUNT = 2400;
+    const starPos = new Float32Array(STAR_COUNT * 3);
+    const starSz  = new Float32Array(STAR_COUNT);
+    for (let i = 0; i < STAR_COUNT; i++) {
+      starPos[i*3]   = (Math.random() - 0.5) * 300;  // x spread
+      starPos[i*3+1] = (Math.random() - 0.5) * 400;  // y (depth range for parallax)
+      starPos[i*3+2] = -(Math.random() * 100 + 50);  // z: -50 to -150
+      starSz[i] = Math.random() * 1.5 + 0.4;
     }
     const starGeo = new THREE.BufferGeometry();
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.6, sizeAttenuation: true })));
+    starGeo.setAttribute('size', new THREE.BufferAttribute(starSz, 1));
+    const starMat = new THREE.ShaderMaterial({
+      uniforms: { uParallaxY: { value: 0 } },
+      vertexShader: /* glsl */`
+        attribute float size;
+        uniform float uParallaxY;
+        varying float vDepth;
+        void main() {
+          // Depth: near=-50 (depth=0), far=-150 (depth=1)
+          float depth = clamp((-position.z - 50.0) / 100.0, 0.0, 1.0);
+          vDepth = depth;
+          // Near stars shift more, far stars barely move
+          vec3 pos = position;
+          pos.y += uParallaxY * (1.0 - depth * 0.85);
+          vec4 mv = modelViewMatrix * vec4(pos, 1.0);
+          gl_PointSize = size * (180.0 / -mv.z);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: /* glsl */`
+        varying float vDepth;
+        void main() {
+          vec2 uv = gl_PointCoord - 0.5;
+          float d = length(uv);
+          if (d > 0.5) discard;
+          float a = smoothstep(0.5, 0.08, d) * 0.85;
+          // Color gradient: white far → cyan mid → green near
+          vec3 far  = vec3(1.0, 1.0, 1.0);
+          vec3 mid  = vec3(0.4, 0.9, 1.0);
+          vec3 near = vec3(0.0, 1.0, 0.4);
+          vec3 col = mix(far, mid, smoothstep(0.2, 0.6, vDepth));
+          col = mix(col, near, smoothstep(0.65, 1.0, vDepth));
+          gl_FragColor = vec4(col, a);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+    });
+    const starPoints = new THREE.Points(starGeo, starMat);
+    scene.add(starPoints);
 
     // Sun
     const sunMesh = new THREE.Mesh(
@@ -241,7 +283,8 @@
       tex.colorSpace = THREE.SRGBColorSpace;
 
       const geo = new THREE.SphereGeometry(p.radius, 64, 64);
-      const mat = new THREE.MeshStandardMaterial({ map: tex, metalness: 0.05, roughness: 0.85 });
+      // Increase roughness for sharper light/dark terminator, lower metalness for more surface detail
+      const mat = new THREE.MeshStandardMaterial({ map: tex, metalness: 0.02, roughness: 0.95 });
       const mesh = new THREE.Mesh(geo, mat);
       mesh.rotation.z = p.tilt;
 
@@ -320,10 +363,12 @@
     const animate = () => {
       rafId = requestAnimationFrame(animate);
 
+      // Update parallax shader with vertical scroll progress
+      (starMat as THREE.ShaderMaterial).uniforms.uParallaxY.value = scrollProgress * 120;
+
       planetMeshes.forEach(({ mesh, orbitPivot, planet }) => {
-        // Orbit angle driven by scroll
-        const angle = scrollProgress * Math.PI * 2 * planet.speed;
-        orbitPivot.rotation.y = angle;
+        // Orbit: startAngle offsets initial position, scroll drives the rest
+        orbitPivot.rotation.y = planet.startAngle + scrollProgress * Math.PI * 2 * planet.speed;
         // Self-rotation
         mesh.rotation.y += 0.003;
       });
