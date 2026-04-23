@@ -25,14 +25,14 @@
   let characters = [
     {
         name: 'Captain Phoenix',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/phoenix_photo.PNG',
-        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/NewPhoenix.mp4',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/finalbossxr-cosmic-character-headshots/Cap_Phoenix_Website_Headshot.png',
+        video: '',
         title: 'The Captain',
         special: 'Piercing Shots - These shots continue their momentum after hitting 1 object.',
         description: "A battle-hardened SSDF veteran, driven by the loss of her family in the alien attack. A brilliant tactician, she defends the solar system with unmatched skill, but her inner turmoil risks overwhelming her, as she battles between vengeance and hope.",
     },
     {
-        name: 'Riley',
+        name: 'Riley Maasai',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/riley_photo.PNG',
         title: 'The Engineer',
         video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/RileyGesture.mp4',
@@ -344,19 +344,29 @@
           <!-- Left column - Video/Image -->
           <div class="flex-shrink-0 relative z-10">
             <div class="relative">
-              <video
-                autoplay
-                playsinline 
-                muted
-                loop
-                on:loadedmetadata={handleVideoLoad}
-                class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-colors duration-300"
-                poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
-                preload="none"
-              >
-                <source src="{character.video}" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
+              {#if character.video}
+                <video
+                  autoplay
+                  playsinline 
+                  muted
+                  loop
+                  on:loadedmetadata={handleVideoLoad}
+                  class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-colors duration-300"
+                  poster="https://placehold.co/80x80/1f2937/ffffff?text=Video+Poster"
+                  preload="none"
+                >
+                  <source src="{character.video}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              {:else}
+                <img
+                  src="{character.photo}"
+                  alt="{character.name}"
+                  class="h-24 w-24 lg:h-36 lg:w-36 rounded-xl object-cover ring-2 ring-white/20 group-hover:ring-[#FFD700]/50 transition-colors duration-300"
+                  loading="lazy"
+                  decoding="async"
+                />
+              {/if}
               <!-- Character number badge -->
               <div class="absolute -top-2 -left-2 w-7 h-7 bg-gradient-to-br from-[#FFD700] to-[#FFA500] rounded-full flex items-center justify-center text-black font-bold text-sm shadow-lg">
                 {index + 1}
@@ -367,7 +377,7 @@
           <!-- Right column - Character Info -->
           <div class="flex-1 relative z-10 flex flex-col justify-center">
             <div class="flex items-center gap-2 mb-1">
-              <h1 class="text-2xl lg:text-4xl gold-header-text tracking-tight">{character.name}</h1>
+              <h1 class="text-2xl lg:text-4xl gradient-text tracking-tight">{character.name}</h1>
             </div>
             <h2 class="text-lg lg:text-xl green-header-text font-medium mb-2">{character.title}</h2>
             
