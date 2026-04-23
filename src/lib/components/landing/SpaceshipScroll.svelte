@@ -229,6 +229,49 @@
 
     scene.add(new THREE.Points(fireGeo, fireMat));
 
+    // --- Laser bolts & explosions ---
+    const LASER_SPEED = 28; // units per second
+
+    const laserBoltMat = new THREE.MeshBasicMaterial({ color: 0x00ff88 });
+
+    type LaserTarget = {
+      asteroidIdx: number;
+      triggerProgress: number;
+      state: 'idle' | 'firing' | 'exploded';
+      laserMesh: THREE.Mesh;
+      laserX: number;
+      laserY: number;
+      laserZ: number;
+      debris: Array<{ mesh: THREE.Mesh; mat: THREE.MeshBasicMaterial; vx: number; vy: number; vz: number; life: number }>;
+      flashLight: THREE.PointLight;
+      flashT: number;
+    };
+
+    // Target asteroid indices: 2 (y=0.4, nearly dead-ahead) and 5 (y=1.2)
+    const TARGET_DEFS = [
+      { asteroidIdx: 2, triggerProgress: 0.37 },
+      { asteroidIdx: 5, triggerProgress: 0.44 },
+    ];
+
+    const laserTargets: LaserTarget[] = TARGET_DEFS.map(({ asteroidIdx, triggerProgress }) => {
+      const laserMesh = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.07, 0.07), laserBoltMat);
+      laserMesh.visible = false;
+      scene.add(laserMesh);
+
+      const flashLight = new THREE.PointLight(0xff6600, 0, 14);
+      scene.add(flashLight);
+
+      const debris = Array.from({ length: 10 }, () => {
+        const mat = new THREE.MeshBasicMaterial({ color: 0xff8822, transparent: true, opacity: 1.0 });
+        const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(0.14, 0), mat);
+        mesh.visible = false;
+        scene.add(mesh);
+        return { mesh, mat, vx: 0, vy: 0, vz: 0, life: 0 };
+      });
+
+      return { asteroidIdx, triggerProgress, state: 'idle' as const, laserMesh, laserX: 0, laserY: 0, laserZ: 0, debris, flashLight, flashT: 0 };
+    });
+
     // --- Scroll tracking (natural flow, no sticky trap) ---
     const X_START = -20;
     const X_END   =  20;
@@ -281,8 +324,69 @@
       // Asteroids: move right → left (negative X) as progress increases
       for (const a of asteroids) {
         a.mesh.position.x = a.startX - smoothProgress * a.travel;
-        // Spin driven by scroll delta (feels physical)
         a.mesh.rotateOnAxis(a.rotAxis, delta * a.rotSpeed);
+      }
+
+      // --- Laser bolt & explosion update ---
+      for (const lt of laserTargets) {
+        const target = asteroids[lt.asteroidIdx];
+
+        if (smoothProgress < lt.triggerProgress - 0.005) {
+          // Scrolled back past trigger — full reset
+          if (lt.state !== 'idle') {
+            lt.state = 'idle';
+            lt.laserMesh.visible = false;
+            target.mesh.visible = true;
+            lt.flashLight.intensity = 0;
+            for (const d of lt.debris) d.mesh.visible = false;
+          }
+        } else if (lt.state === 'idle' && smoothProgress >= lt.triggerProgress) {
+          // Fire!
+          lt.state = 'firing';
+          lt.laserX = ship.position.x + 4.8;
+          lt.laserY = ship.position.y;
+          lt.laserZ = target.mesh.position.z;
+          lt.laserMesh.position.set(lt.laserX, lt.laserY, lt.laserZ);
+          lt.laserMesh.visible = true;
+        } else if (lt.state === 'firing') {
+          lt.laserX += LASER_SPEED * frameDt;
+          lt.laserMesh.position.x = lt.laserX;
+
+          if (lt.laserX >= target.mesh.position.x - target.mesh.scale.x * 0.5) {
+            // HIT
+            lt.state = 'exploded';
+            lt.laserMesh.visible = false;
+            target.mesh.visible = false;
+            lt.flashT = 0;
+            const ax = target.mesh.position.x;
+            const ay = target.mesh.position.y;
+            const az = target.mesh.position.z;
+            lt.flashLight.position.set(ax, ay, az);
+            lt.flashLight.intensity = 18;
+            for (const d of lt.debris) {
+              d.mesh.visible = true;
+              d.mesh.position.set(ax, ay, az);
+              d.vx = (Math.random() - 0.5) * 9;
+              d.vy = (Math.random() - 0.5) * 9;
+              d.vz = (Math.random() - 0.5) * 9;
+              d.life = 0;
+            }
+          }
+        } else if (lt.state === 'exploded') {
+          lt.flashT += frameDt;
+          lt.flashLight.intensity = Math.max(0, 18 * (1 - lt.flashT * 5));
+          for (const d of lt.debris) {
+            if (d.life < 0.75) {
+              d.life += frameDt;
+              d.mesh.position.x += d.vx * frameDt;
+              d.mesh.position.y += d.vy * frameDt;
+              d.mesh.position.z += d.vz * frameDt;
+              d.mat.opacity = 1 - d.life / 0.75;
+            } else {
+              d.mesh.visible = false;
+            }
+          }
+        }
       }
 
       // Engine light
@@ -353,6 +457,11 @@
       renderer.dispose();
       fireGeo.dispose();
       fireMat.dispose();
+      laserBoltMat.dispose();
+      for (const lt of laserTargets) {
+        lt.laserMesh.geometry.dispose();
+        for (const d of lt.debris) { d.mesh.geometry.dispose(); d.mat.dispose(); }
+      }
     };
   });
 </script>
