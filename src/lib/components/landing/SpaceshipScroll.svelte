@@ -125,6 +125,52 @@
 
     scene.add(ship);
 
+    // --- Stars (custom shader: white far → purple → green near) ---
+    const STAR_COUNT = 1800;
+    const starPos  = new Float32Array(STAR_COUNT * 3);
+    const starSz   = new Float32Array(STAR_COUNT);
+    for (let i = 0; i < STAR_COUNT; i++) {
+      starPos[i * 3]     = (Math.random() - 0.5) * 220;
+      starPos[i * 3 + 1] = (Math.random() - 0.5) * 100;
+      starPos[i * 3 + 2] = -(Math.random() * 60 + 20); // z -20 to -80
+      starSz[i] = Math.random() * 1.2 + 0.3;
+    }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute('size',     new THREE.BufferAttribute(starSz, 1));
+    const starMat = new THREE.ShaderMaterial({
+      uniforms: {},
+      vertexShader: /* glsl */`
+        attribute float size;
+        varying float vDepth;
+        void main() {
+          vDepth = clamp((-position.z - 20.0) / 60.0, 0.0, 1.0);
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = size * (160.0 / -mv.z);
+          gl_Position  = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: /* glsl */`
+        varying float vDepth;
+        void main() {
+          vec2 uv = gl_PointCoord - 0.5;
+          float d = length(uv);
+          if (d > 0.5) discard;
+          float a = smoothstep(0.5, 0.08, d) * 0.88;
+          vec3 far  = vec3(1.0, 1.0, 1.0);
+          vec3 mid  = vec3(0.54, 0.17, 0.89);
+          vec3 near = vec3(0.0,  0.77, 0.0);
+          vec3 col  = mix(far, mid, smoothstep(0.3, 0.65, vDepth));
+          col        = mix(col, near, smoothstep(0.65, 1.0, vDepth));
+          gl_FragColor = vec4(col, a);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+    });
+    const starPoints = new THREE.Points(starGeo, starMat);
+    scene.add(starPoints);
+
     // --- Asteroids ---
     // Each flies right → left as scroll progresses (opposite of ship)
     const asteroidMat = new THREE.MeshStandardMaterial({
@@ -389,6 +435,9 @@
         }
       }
 
+      // Stars drift slightly with ship for subtle parallax
+      starPoints.position.x = ship.position.x * 0.05;
+
       // Engine light
       engineGlow.position.set(ship.position.x - 3.2, ship.position.y, 0);
 
@@ -457,6 +506,8 @@
       renderer.dispose();
       fireGeo.dispose();
       fireMat.dispose();
+      starGeo.dispose();
+      starMat.dispose();
       laserBoltMat.dispose();
       for (const lt of laserTargets) {
         lt.laserMesh.geometry.dispose();
