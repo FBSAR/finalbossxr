@@ -212,34 +212,46 @@
     scene.add(sunLight);
 
     // Parallax stars with vertical scroll effect
-    const STAR_COUNT = 2400;
-    const starPos = new Float32Array(STAR_COUNT * 3);
-    const starSz  = new Float32Array(STAR_COUNT);
+    // Stars distributed on two concentric spherical shells so they fill the
+    // entire sky evenly from the camera's isometric perspective.
+    // Shell A (far, depth=1): radius 550–650 — barely moves with parallax
+    // Shell B (near, depth=0): radius 250–350 — shifts more with parallax
+    const STAR_COUNT = 3000;
+    const starPos  = new Float32Array(STAR_COUNT * 3);
+    const starSz   = new Float32Array(STAR_COUNT);
+    const starDepth = new Float32Array(STAR_COUNT);
     for (let i = 0; i < STAR_COUNT; i++) {
-      starPos[i*3]   = (Math.random() - 0.5) * 300;  // x spread
-      starPos[i*3+1] = (Math.random() - 0.5) * 400;  // y (depth range for parallax)
-      starPos[i*3+2] = -(Math.random() * 100 + 50);  // z: -50 to -150
-      starSz[i] = Math.random() * 1.5 + 0.4;
+      const isNear = i < STAR_COUNT * 0.35;          // 35% near, 65% far
+      const r = isNear
+        ? 250 + Math.random() * 100
+        : 500 + Math.random() * 150;
+      const theta = Math.random() * Math.PI * 2;
+      const phi   = Math.acos(2 * Math.random() - 1);
+      starPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      starPos[i*3+2] = r * Math.cos(phi);
+      starSz[i]      = Math.random() * (isNear ? 2.0 : 1.2) + 0.3;
+      starDepth[i]   = isNear ? 0.0 : 1.0;
     }
     const starGeo = new THREE.BufferGeometry();
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    starGeo.setAttribute('size', new THREE.BufferAttribute(starSz, 1));
+    starGeo.setAttribute('size',     new THREE.BufferAttribute(starSz, 1));
+    starGeo.setAttribute('depth',    new THREE.BufferAttribute(starDepth, 1));
     const starMat = new THREE.ShaderMaterial({
       uniforms: { uParallaxY: { value: 0 } },
       vertexShader: /* glsl */`
         attribute float size;
+        attribute float depth;   // 0=near (shifts most), 1=far (barely moves)
         uniform float uParallaxY;
         varying float vDepth;
         void main() {
-          // Depth: near=-50 (depth=0), far=-150 (depth=1)
-          float depth = clamp((-position.z - 50.0) / 100.0, 0.0, 1.0);
           vDepth = depth;
-          // Near stars shift more, far stars barely move
           vec3 pos = position;
-          pos.y += uParallaxY * (1.0 - depth * 0.85);
+          // Near shell shifts up with scroll, far shell barely moves
+          pos.y += uParallaxY * (1.0 - depth * 0.9);
           vec4 mv = modelViewMatrix * vec4(pos, 1.0);
-          gl_PointSize = size * (180.0 / -mv.z);
-          gl_Position = projectionMatrix * mv;
+          gl_PointSize = size * (220.0 / -mv.z);
+          gl_Position  = projectionMatrix * mv;
         }
       `,
       fragmentShader: /* glsl */`
@@ -248,13 +260,9 @@
           vec2 uv = gl_PointCoord - 0.5;
           float d = length(uv);
           if (d > 0.5) discard;
-          float a = smoothstep(0.5, 0.08, d) * 0.85;
-          // Color gradient: white far → cyan mid → green near
-          vec3 far  = vec3(1.0, 1.0, 1.0);
-          vec3 mid  = vec3(0.4, 0.9, 1.0);
-          vec3 near = vec3(0.0, 1.0, 0.4);
-          vec3 col = mix(far, mid, smoothstep(0.2, 0.6, vDepth));
-          col = mix(col, near, smoothstep(0.65, 1.0, vDepth));
+          float a = smoothstep(0.5, 0.05, d) * 0.88;
+          // Far stars: pure white. Near stars: slightly warm/blue tint.
+          vec3 col = mix(vec3(0.7, 0.85, 1.0), vec3(1.0, 1.0, 1.0), vDepth);
           gl_FragColor = vec4(col, a);
         }
       `,
@@ -262,6 +270,9 @@
       depthWrite: false,
     });
     const starPoints = new THREE.Points(starGeo, starMat);
+    // Keep the starfield centered on camera so the background is evenly filled.
+    starPoints.frustumCulled = false;
+    starPoints.position.copy(camera.position);
     scene.add(starPoints);
 
     // Sun
@@ -407,8 +418,10 @@
     const animate = () => {
       rafId = requestAnimationFrame(animate);
 
-      // Update parallax shader with vertical scroll progress
-      (starMat as THREE.ShaderMaterial).uniforms.uParallaxY.value = scrollProgress * 120;
+      // Camera-locked star dome prevents one-sided empty regions.
+      starPoints.position.copy(camera.position);
+      // Update parallax shader with vertical scroll progress.
+      (starMat as THREE.ShaderMaterial).uniforms.uParallaxY.value = scrollProgress * 90;
 
       planetMeshes.forEach(({ mesh, orbitPivot, planet, ringMesh }) => {
         // Orbit: startAngle offsets initial position, scroll drives the rest
