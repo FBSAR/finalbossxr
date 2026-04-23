@@ -1,11 +1,18 @@
-import { getDb, addSummaryColumnToJobs, addStatusColumnsToApplications } from '$lib/db';
+import { getDb } from '$lib/db';
 import { sendNewsletterEmail, sendJobApplicationAcceptanceEmail, sendJobApplicationRejectionEmail, sendApplicationResponseNotificationEmail } from '$lib/email';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 const ALLOWED_ADMINS = ['eddie@finalbossxr.com', 'keith@finalbossxr.com'];
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ cookies, setHeaders }) => {
+  // Set cache control headers to prevent caching
+  setHeaders({
+    'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
+
   const adminEmail = cookies.get('admin_auth');
   console.log('Dashboard load - adminEmail from cookie:', adminEmail);
   const isAuthenticated = adminEmail && ALLOWED_ADMINS.includes(adminEmail);
@@ -18,20 +25,19 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   const db = getDb();
   
-  // Ensure jobs table has summary column
-  await addSummaryColumnToJobs();
-  
-  // Ensure job_applications table has status columns
-  await addStatusColumnsToApplications();
-  
   // Fetch job applications (without resume binary data for performance)
-  const jobApplications = await db`
-    SELECT id, job_id, job_title, name, email, phone, linkedin, portfolio, 
-           experience, why_join, resume_filename, status, response_message, 
-           response_sent_at, created_at, updated_at
-    FROM job_applications
-    ORDER BY created_at DESC
-  `;
+  let jobApplications: any[] = [];
+  try {
+    jobApplications = await db`
+      SELECT id, job_id, job_title, name, email, phone, linkedin, portfolio, 
+             experience, why_join, resume_filename, status, response_message, 
+             response_sent_at, created_at, updated_at
+      FROM job_applications
+      ORDER BY created_at DESC
+    `;
+  } catch (e) {
+    console.error('Error fetching job applications:', e);
+  }
 
   // Fetch blogs
   let blogs: any[] = [];
@@ -160,8 +166,8 @@ export const actions: Actions = {
     const excerpt = data.get('excerpt') as string;
     const content = data.get('content') as string;
     const feature_image_url = data.get('feature_image_url') as string || null;
-    const published = data.get('published') === 'true';
-    const featured = data.get('featured') === 'true';
+    const published = data.get('published') === 'on';
+    const featured = data.get('featured') === 'on';
 
     const db = getDb();
     
@@ -204,30 +210,35 @@ export const actions: Actions = {
     const excerpt = data.get('excerpt') as string;
     const content = data.get('content') as string;
     const feature_image_url = data.get('feature_image_url') as string || null;
-    const published = data.get('published') === 'true';
-    const featured = data.get('featured') === 'true';
+    const published = data.get('published') === 'on';
+    const featured = data.get('featured') === 'on';
 
-    const db = getDb();
-    
-    // Check if trying to feature this blog while another is already featured
-    if (featured) {
-      const existingFeatured = await db`SELECT id, title FROM blogs WHERE featured = true AND id != ${id} LIMIT 1`;
-      if (existingFeatured.length > 0) {
-        return fail(400, { 
-          error: true, 
-          message: `Cannot feature this blog. "${existingFeatured[0].title}" is already featured. Please unfeature it first.` 
-        });
+    try {
+      const db = getDb();
+      
+      // Check if trying to feature this blog while another is already featured
+      if (featured) {
+        const existingFeatured = await db`SELECT id, title FROM blogs WHERE featured = true AND id != ${id} LIMIT 1`;
+        if (existingFeatured.length > 0) {
+          return fail(400, { 
+            error: true, 
+            message: `Cannot feature this blog. "${existingFeatured[0].title}" is already featured. Please unfeature it first.` 
+          });
+        }
       }
-    }
-    
-    await db`
-      UPDATE blogs 
-      SET title = ${title}, slug = ${slug}, excerpt = ${excerpt}, content = ${content},
-          feature_image_url = ${feature_image_url}, published = ${published}, featured = ${featured}, updated_at = NOW()
-      WHERE id = ${id}
-    `;
+      
+      await db`
+        UPDATE blogs 
+        SET title = ${title}, slug = ${slug}, excerpt = ${excerpt}, content = ${content},
+            feature_image_url = ${feature_image_url}, published = ${published}, featured = ${featured}, updated_at = NOW()
+        WHERE id = ${id}
+      `;
 
-    return { success: true, message: 'Blog updated' };
+      return { success: true, message: 'Blog updated' };
+    } catch (e) {
+      console.error('updateBlog error:', e);
+      return fail(500, { error: true, message: 'Failed to update blog. Please try again.' });
+    }
   },
 
   deleteBlog: async ({ request, cookies }) => {

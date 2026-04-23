@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { invalidateAll } from '$app/navigation';
   import { onMount } from 'svelte';
   
   export let data;
@@ -25,9 +26,12 @@
   let draftForm = { subject: '', content: '', status: 'draft', scheduled_at: '' };
   let sendingNewsletterIds: Set<number> = new Set();
   
-  // Local reactive copy of subscribers (to avoid page reload on delete)
+  // Local reactive copies — allow optimistic updates without waiting for server round-trip
   let subscribers = data.subscribers;
-  $: subscribers = data.subscribers; // Keep in sync if data changes from elsewhere
+  $: subscribers = data.subscribers;
+
+  let blogs = data.blogs;
+  $: blogs = data.blogs;
   
   // Section collapsed states
   let subscribersExpanded = true;
@@ -329,7 +333,7 @@
     <header class="dash-header">
       <div class="header-left">
         <h1 class="gradient-text">⚡ Admin Dashboard</h1>
-        <span class="stat">{data.jobApplications.length} Apps • {data.blogs.length} Blogs • {subscribers.length} Subscribers</span>
+        <span class="stat">{data.jobApplications.length} Apps • {blogs.length} Blogs • {subscribers.length} Subscribers</span>
       </div>
       <div class="header-right">
         <span class="admin-email">{data.adminEmail}</span>
@@ -354,7 +358,7 @@
       <button class:active={activeTab === 'blogs'} on:click={() => activeTab = 'blogs'}>
         <span class="tab-icon">📝</span>
         <span class="tab-text">Blogs</span>
-        <span class="tab-count">({data.blogs.length})</span>
+        <span class="tab-count">({blogs.length})</span>
       </button>
       <button class:active={activeTab === 'newsletter'} on:click={() => activeTab = 'newsletter'}>
         <span class="tab-icon">📧</span>
@@ -543,11 +547,11 @@
         <button class="btn-primary" on:click={() => openBlogModal()}>+ New Blog</button>
       </div>
       
-      {#if data.blogs.length === 0}
+      {#if blogs.length === 0}
         <div class="empty-state">No blogs yet. Create your first post!</div>
       {:else}
         <div class="blog-grid">
-          {#each data.blogs as blog}
+          {#each blogs as blog}
             <div class="blog-card">
               <div class="blog-meta">
                 {#if blog.published}<span class="tag green">Published</span>{:else}<span class="tag">Draft</span>{/if}
@@ -936,14 +940,20 @@
           isSubmitting = true;
           return async ({ result, update }) => {
             if (result.type === 'success') {
+              // Revalidate ALL data FIRST before updating UI
+              await invalidateAll();
+              // THEN update the page with fresh data
+              await update();
+              // NOW close modal and show success toast
               closeDraftModal();
               showToast(editingDraft ? 'Draft updated!' : 'Draft created!', 'success');
             } else if (result.type === 'failure') {
               const data = result.data;
               const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
               showToast(errorMessage, 'error');
+              // Still update the page even on failure
+              await update();
             }
-            await update();
             isSubmitting = false;
           };
         }}>
@@ -999,18 +1009,39 @@
         <div class="modal-body">
           <form method="POST" action={editingBlog ? '?/updateBlog' : '?/createBlog'} use:enhance={() => {
             isSubmitting = true;
+            const blogBeingEdited = editingBlog ? { ...editingBlog } : null;
             return async ({ result, update }) => {
-              if (result.type === 'success') {
-                closeBlogModal();
-                showToast(editingBlog ? 'Blog updated successfully!' : 'Blog created successfully!', 'success');
-              } else if (result.type === 'failure') {
-                // Show error toast but keep modal open
-                const data = result.data;
-                const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
-                showToast(errorMessage, 'error');
+              try {
+                if (result.type === 'success') {
+                  if (blogBeingEdited) {
+                    // Optimistically update local blogs list immediately — no waiting on server cache
+                    const idx = blogs.findIndex((b) => b.id === blogBeingEdited.id);
+                    if (idx !== -1) {
+                      blogs[idx] = { ...blogs[idx], ...blogForm, updated_at: new Date().toISOString() };
+                      blogs = [...blogs];
+                    }
+                  } else {
+                    // For creates, just trigger a full reload since we need the new DB-assigned id
+                    await invalidateAll();
+                  }
+                  closeBlogModal();
+                  showToast(blogBeingEdited ? 'Blog updated successfully!' : 'Blog created successfully!', 'success');
+                  // Background sync to ensure local state eventually matches server
+                  update({ reset: false });
+                } else if (result.type === 'failure') {
+                  const failData = result.data;
+                  const errorMessage = failData && typeof failData === 'object' && 'message' in failData ? String(failData.message) : 'An error occurred';
+                  showToast(errorMessage, 'error');
+                  await update({ reset: false });
+                } else if (result.type === 'error') {
+                  showToast(result.error?.message || 'Server error — please try again', 'error');
+                  await update({ reset: false });
+                }
+              } catch (e) {
+                showToast('Unexpected error — please try again', 'error');
+              } finally {
+                isSubmitting = false;
               }
-              await update();
-              isSubmitting = false;
             };
           }}>
           {#if editingBlog}
@@ -1179,6 +1210,11 @@
             isSubmitting = true;
           return async ({ result, update }) => {
             if (result.type === 'success') {
+              // Revalidate ALL data FIRST before updating UI
+              await invalidateAll();
+              // THEN update the page with fresh data
+              await update();
+              // NOW close modal and show success toast
               closeJobModal();
               showToast(editingJob ? 'Job updated successfully!' : 'Job created successfully!', 'success');
             } else if (result.type === 'failure') {
@@ -1186,8 +1222,9 @@
               const data = result.data;
               const errorMessage = data && typeof data === 'object' && 'message' in data ? String(data.message) : 'An error occurred';
               showToast(errorMessage, 'error');
+              // Still update the page even on failure
+              await update();
             }
-            await update();
             isSubmitting = false;
           };
         }} class="job-form">

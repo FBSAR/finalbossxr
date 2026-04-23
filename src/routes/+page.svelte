@@ -260,7 +260,6 @@
     onTimelineClick={scrollToTimeline}
   />
 
-  <!-- HIDDEN: Kickstarter campaign ended -->
   <!-- <KickstarterPromo /> -->
 
   <section class="contact-section" aria-label="Contact Us">

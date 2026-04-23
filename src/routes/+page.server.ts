@@ -11,7 +11,11 @@ const DISCORD_WEBHOOK_URL = env.DISCORD_CONTACT_FORM_HOOK_URL;
 /**
  * Loads the featured blog post, the 2 most recent blog posts, and all published jobs from the database
  */
-export async function load() {
+export async function load({ setHeaders }: { setHeaders: (headers: Record<string, string>) => void }) {
+	// Prevent CDN from caching this page — blog/job data must always be fresh
+	setHeaders({
+		'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0'
+	});
 	try {
 		const sql = neon(env.DATABASE_URL);
 		
