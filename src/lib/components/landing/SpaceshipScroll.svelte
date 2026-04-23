@@ -180,8 +180,56 @@
         rotSpeed: d.rotSpeed,
       };
     });
-    // Progress = how far the section has passed through the viewport
-    // 0 = section bottom just entered; 1 = section top just left
+
+    // --- Fire / thruster particles (world space, additive blending) ---
+    const FIRE_N = 120;
+    type FP = { x: number; y: number; z: number; vx: number; vy: number; vz: number; life: number; maxLife: number; sz: number };
+    const fp: FP[] = Array.from({ length: FIRE_N }, () => ({ x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, life: 999, maxLife: 0.4, sz: 0.3 }));
+
+    const fpPos  = new Float32Array(FIRE_N * 3);
+    const fpLife = new Float32Array(FIRE_N);
+    const fpSize = new Float32Array(FIRE_N);
+    fpPos.fill(-9999); // hide all until spawned
+
+    const fireGeo = new THREE.BufferGeometry();
+    fireGeo.setAttribute('position', new THREE.BufferAttribute(fpPos, 3));
+    fireGeo.setAttribute('pLife',    new THREE.BufferAttribute(fpLife, 1));
+    fireGeo.setAttribute('pSize',    new THREE.BufferAttribute(fpSize, 1));
+
+    const fireMat = new THREE.ShaderMaterial({
+      uniforms: {},
+      vertexShader: /* glsl */`
+        attribute float pLife;
+        attribute float pSize;
+        varying float vLife;
+        void main() {
+          vLife = pLife;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = pSize * (180.0 / -mv.z) * (1.0 - pLife * 0.55);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: /* glsl */`
+        varying float vLife;
+        void main() {
+          vec2 c = gl_PointCoord - 0.5;
+          float d = length(c);
+          if (d > 0.5) discard;
+          float a = smoothstep(0.5, 0.04, d) * (1.0 - vLife);
+          // white/yellow core → orange → deep red
+          vec3 col = mix(vec3(1.0, 0.96, 0.75), vec3(1.0, 0.35, 0.0), min(1.0, vLife * 2.2));
+          col = mix(col, vec3(0.45, 0.01, 0.0), max(0.0, vLife * 3.5 - 2.5));
+          gl_FragColor = vec4(col, a * 0.95);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+
+    scene.add(new THREE.Points(fireGeo, fireMat));
+
+    // --- Scroll tracking (natural flow, no sticky trap) ---
     const X_START = -20;
     const X_END   =  20;
     let smoothProgress = 0;
@@ -209,11 +257,14 @@
 
     const clock = new THREE.Clock();
     let prevSmooth = 0;
+    let lastT = 0;
     let rafId: number;
 
     function animate() {
       rafId = requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
+      const frameDt = Math.min(t - lastT, 0.05); // cap at 50ms to avoid jumps on tab restore
+      lastT = t;
 
       smoothProgress += (targetProgress - smoothProgress) * 0.08;
       const delta = smoothProgress - prevSmooth;
@@ -237,10 +288,55 @@
       // Engine light
       engineGlow.position.set(ship.position.x - 3.2, ship.position.y, 0);
 
-      // Exhaust pulse
+      // Exhaust pulse (static cone kept but small — fire particles take over)
       const spd = Math.abs(delta) * 500;
-      exhaust.scale.x = 1 + spd * 0.3;
-      exhaustMat.opacity = 0.55 + Math.sin(t * 7) * 0.15;
+      exhaust.scale.x = 1 + spd * 0.15;
+      exhaustMat.opacity = 0.25 + Math.sin(t * 7) * 0.08;
+
+      // --- Fire particle spawn + update ---
+      const scrollSpeed = Math.abs(delta);
+      // Always spawn a small idle flame; burst more when scrolling
+      const toSpawn = 3 + Math.floor(scrollSpeed * 1400);
+      const tailX = ship.position.x - 3.85;
+      const tailY = ship.position.y;
+
+      let spawned = 0;
+      for (let i = 0; i < FIRE_N && spawned < toSpawn; i++) {
+        if (fp[i].life >= fp[i].maxLife) {
+          fp[i].x       = tailX + (Math.random() - 0.5) * 0.28;
+          fp[i].y       = tailY + (Math.random() - 0.5) * 0.35;
+          fp[i].z       = (Math.random() - 0.5) * 0.35;
+          fp[i].vx      = -(0.5 + Math.random() * 1.2 + scrollSpeed * 90);
+          fp[i].vy      = (Math.random() - 0.5) * 0.55;
+          fp[i].vz      = (Math.random() - 0.5) * 0.55;
+          fp[i].maxLife = 0.22 + Math.random() * 0.32;
+          fp[i].sz      = 0.38 + Math.random() * 0.55 + scrollSpeed * 70;
+          fp[i].life    = 0;
+          spawned++;
+        }
+      }
+
+      for (let i = 0; i < FIRE_N; i++) {
+        if (fp[i].life < fp[i].maxLife) {
+          fp[i].life += frameDt;
+          fp[i].x    += fp[i].vx * frameDt;
+          fp[i].y    += fp[i].vy * frameDt;
+          fp[i].z    += fp[i].vz * frameDt;
+          const t01 = fp[i].life / fp[i].maxLife;
+          fpPos[i * 3]     = fp[i].x;
+          fpPos[i * 3 + 1] = fp[i].y;
+          fpPos[i * 3 + 2] = fp[i].z;
+          fpLife[i] = t01;
+          fpSize[i] = fp[i].sz;
+        } else {
+          fpPos[i * 3] = -9999;
+          fpLife[i] = 1;
+          fpSize[i] = 0;
+        }
+      }
+      (fireGeo.attributes.position as THREE.BufferAttribute).needsUpdate = true;
+      (fireGeo.attributes.pLife    as THREE.BufferAttribute).needsUpdate = true;
+      (fireGeo.attributes.pSize    as THREE.BufferAttribute).needsUpdate = true;
 
       // Camera parallax
       camera.position.x = ship.position.x * 0.035;
@@ -255,6 +351,8 @@
       window.removeEventListener('scroll', onScroll);
       ro.disconnect();
       renderer.dispose();
+      fireGeo.dispose();
+      fireMat.dispose();
     };
   });
 </script>
