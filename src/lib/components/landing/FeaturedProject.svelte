@@ -246,6 +246,7 @@
           </div>
           <div class="iphone-home-indicator"></div>
         </div>
+        <div class="iphone-caption">Alpha Demo - Still in Development</div>
         
         <!-- Glow effect behind iPhone -->
         <div class="iphone-glow"></div>
@@ -699,6 +700,8 @@
   .iphone-container {
     position: relative;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     perspective: 1000px;
     will-change: opacity, transform;
@@ -822,6 +825,25 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .iphone-caption {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.78);
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: 768px) {
+    .iphone-caption {
+      font-size: 0.88rem;
+      max-width: 220px;
+    }
   }
 
   .iphone-home-indicator {
