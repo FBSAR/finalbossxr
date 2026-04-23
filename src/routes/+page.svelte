@@ -235,12 +235,6 @@
   <!-- Newsletter -->
   <NewsletterSection />
 
-  <!-- Next Project Section -->
-  <NextProject 
-    bind:nextProjectSection={nextProjectSection}
-    animationProgress={nextProjectAnimationProgress} 
-  />
-
   <!-- Blog Section -->
   <BlogSection blogs={data.blogs} />
   
@@ -249,6 +243,12 @@
 
   <!-- Job Postings -->
   <JobsSection jobs={data.jobs} />
+  
+  <!-- Next Project Section -->
+  <NextProject 
+    bind:nextProjectSection={nextProjectSection}
+    animationProgress={nextProjectAnimationProgress} 
+  />
   
   <!-- Our Story Section -->
   <OurStorySection 

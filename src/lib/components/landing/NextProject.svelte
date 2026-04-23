@@ -41,9 +41,7 @@
         </h2>
         
         <p class="next-project-description">
-          A groundbreaking XR productivity platform designed to transform how teams 
-          collaborate in spatial environments. Seamlessly blend physical and digital 
-          workspaces with intuitive gesture controls and AI-powered assistance.
+          Coming Soon.
         </p>
       </div>
 
@@ -67,18 +65,18 @@
                 </feMerge>
               </filter>
               <linearGradient id="bridgeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#8a2be2" />
-                <stop offset="50%" stop-color="#cc1a1a" />
+                <stop offset="0%" stop-color="#00c400" />
+                <stop offset="50%" stop-color="#00ff00" />
                 <stop offset="100%" stop-color="#00c400" />
               </linearGradient>
             </defs>
             
-            <!-- Left Lens Frame — Purple -->
-            <rect x="10" y="20" width="70" height="40" rx="8" fill="none" stroke="#8a2be2" stroke-width="2" filter="url(#glassesGlow)" />
+            <!-- Left Lens Frame — Green -->
+            <rect x="10" y="20" width="70" height="40" rx="8" fill="none" stroke="#00c400" stroke-width="2" filter="url(#glassesGlow)" />
             <!-- Left Lens -->
-            <rect x="14" y="24" width="62" height="32" rx="6" fill="rgba(138, 43, 226, 0.1)" stroke="rgba(138, 43, 226, 0.5)" stroke-width="1" />
+            <rect x="14" y="24" width="62" height="32" rx="6" fill="rgba(0, 196, 0, 0.1)" stroke="rgba(0, 196, 0, 0.5)" stroke-width="1" />
             <!-- Left Lens Reflection -->
-            <path d="M20 28 L30 28 L25 35 Z" fill="rgba(138, 43, 226, 0.3)" />
+            <path d="M20 28 L30 28 L25 35 Z" fill="rgba(0, 196, 0, 0.3)" />
             
             <!-- Right Lens Frame — Green -->
             <rect x="120" y="20" width="70" height="40" rx="8" fill="none" stroke="#00c400" stroke-width="2" filter="url(#glassesGlow)" />
@@ -90,33 +88,27 @@
             <!-- Bridge — Purple → Red → Green gradient -->
             <path d="M80 35 Q100 25 120 35" fill="none" stroke="url(#bridgeGradient)" stroke-width="4" />
             
-            <!-- Left Temple Arm — Purple -->
-            <path d="M10 30 L0 28 Q-5 27 -5 32 L-5 35" fill="none" stroke="#8a2be2" stroke-width="3" />
+            <!-- Left Temple Arm — Green -->
+            <path d="M10 30 L0 28 Q-5 27 -5 32 L-5 35" fill="none" stroke="#00c400" stroke-width="3" />
             
             <!-- Right Temple Arm — Green -->
             <path d="M190 30 L200 28 Q205 27 205 32 L205 35" fill="none" stroke="#00c400" stroke-width="3" />
             
-            <!-- Tech Details - Left — Red indicator dot -->
-            <circle cx="25" cy="55" r="3" fill="#cc1a1a">
-              <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
-            </circle>
-            <rect x="60" y="52" width="15" height="6" rx="2" fill="rgba(138, 43, 226, 0.6)" />
+            <!-- Tech Details - Left -->
+            <rect x="60" y="52" width="15" height="6" rx="2" fill="rgba(0, 196, 0, 0.6)" />
             
-            <!-- Tech Details - Right — Red indicator dot -->
-            <circle cx="175" cy="55" r="3" fill="#cc1a1a">
-              <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" begin="0.5s" />
-            </circle>
+            <!-- Tech Details - Right -->
             <rect x="125" y="52" width="15" height="6" rx="2" fill="rgba(0, 196, 0, 0.6)" />
             
-            <!-- HUD Elements (animated) — Left: Purple, Right: Green -->
+            <!-- HUD Elements (animated) — All Green -->
             <g class="hud-elements" opacity="0.7">
-              <rect x="20" y="32" width="20" height="2" rx="1" fill="#8a2be2">
+              <rect x="20" y="32" width="20" height="2" rx="1" fill="#00c400">
                 <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" />
               </rect>
-              <rect x="20" y="38" width="15" height="2" rx="1" fill="#8a2be2">
+              <rect x="20" y="38" width="15" height="2" rx="1" fill="#00c400">
                 <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" begin="0.5s" />
               </rect>
-              <rect x="20" y="44" width="25" height="2" rx="1" fill="#8a2be2">
+              <rect x="20" y="44" width="25" height="2" rx="1" fill="#00c400">
                 <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s" repeatCount="indefinite" begin="1s" />
               </rect>
               
@@ -131,8 +123,8 @@
               </rect>
             </g>
             
-            <!-- Scanning line — Left: Purple, Right: Green -->
-            <rect x="14" y="24" width="62" height="2" rx="1" fill="rgba(138, 43, 226, 0.5)">
+            <!-- Scanning lines — Both Green -->
+            <rect x="14" y="24" width="62" height="2" rx="1" fill="rgba(0, 196, 0, 0.5)">
               <animate attributeName="y" values="24;52;24" dur="2s" repeatCount="indefinite" />
             </rect>
             <rect x="124" y="24" width="62" height="2" rx="1" fill="rgba(0, 196, 0, 0.5)">
