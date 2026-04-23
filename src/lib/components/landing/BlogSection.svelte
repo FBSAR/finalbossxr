@@ -287,7 +287,11 @@
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    color: #00c400;
+    padding: 0.65rem 1.4rem;
+    background: rgba(138, 43, 226, 0.15);
+    border: 1px solid rgba(138, 43, 226, 0.5);
+    border-radius: 0.75rem;
+    color: #a855f7;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -296,7 +300,9 @@
 
   .featured-blog-link:hover {
     gap: 1rem;
-    color: #00ff00;
+    background: rgba(138, 43, 226, 0.3);
+    border-color: rgba(168, 85, 247, 0.8);
+    color: #c084fc;
   }
 
   /* Blog Grid (for other posts) */
