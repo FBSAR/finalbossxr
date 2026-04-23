@@ -7,7 +7,7 @@
   
   // Reactive video play/pause based on progress
   $: if (projectVideo) {
-    if (animationProgress > 0.2 && animationProgress < 0.9) {
+    if (animationProgress > 0.2) {
       projectVideo.play().catch(() => {});
     } else {
       projectVideo.pause();
