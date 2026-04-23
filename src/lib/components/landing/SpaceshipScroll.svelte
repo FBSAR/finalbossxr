@@ -444,6 +444,21 @@
       osc.stop(audioCtx.currentTime + 0.3);
     }
 
+    // Projects a 3D world position to a CSS-animated +100 score popup
+    function spawnScorePopup(wx: number, wy: number, wz: number) {
+      const vec = new THREE.Vector3(wx, wy, wz);
+      vec.project(camera);
+      const px = ( vec.x * 0.5 + 0.5) * W;
+      const py = (-vec.y * 0.5 + 0.5) * H;
+      const el = document.createElement('div');
+      el.className = 'score-popup';
+      el.textContent = '+100';
+      el.style.left = `${px}px`;
+      el.style.top  = `${py}px`;
+      section.appendChild(el);
+      el.addEventListener('animationend', () => el.remove(), { once: true });
+    }
+
     function playExplosion() {
       if (!audioCtx || !masterGainNode) return;
       const now = audioCtx.currentTime;
@@ -603,6 +618,7 @@
             // HIT
             lt.state = 'exploded';
             playExplosion();
+            spawnScorePopup(target.mesh.position.x, target.mesh.position.y, target.mesh.position.z);
             lt.laserMesh.visible = false;
             target.mesh.visible = false;
             lt.flashT = 0;
@@ -738,6 +754,7 @@
       starGeo.dispose();
       starMat.dispose();
       laserBoltMat.dispose();
+      section.querySelectorAll('.score-popup').forEach(el => el.remove());
       for (const lt of laserTargets) {
         lt.laserMesh.geometry.dispose();
         for (const d of lt.debris) { d.mesh.geometry.dispose(); d.mat.dispose(); }
@@ -762,6 +779,31 @@
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  :global(.score-popup) {
+    position: absolute;
+    pointer-events: none;
+    font-family: 'Jersey 10', 'Courier New', monospace;
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: #FFD700;
+    text-shadow:
+      0 0 6px  #FFD700,
+      0 0 14px #ff8800,
+      0 0 28px #ff4400;
+    letter-spacing: 0.05em;
+    transform: translateX(-50%);
+    animation: scoreFloat 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    z-index: 20;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  @keyframes scoreFloat {
+    0%   { opacity: 0;   transform: translateX(-50%) translateY(0)     scale(0.4); }
+    12%  { opacity: 1;   transform: translateX(-50%) translateY(-6px)  scale(1.45); }
+    100% { opacity: 0;   transform: translateX(-50%) translateY(-68px) scale(0.95); }
   }
 
   @media (max-width: 768px) {
