@@ -139,13 +139,18 @@
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
     starGeo.setAttribute('size',     new THREE.BufferAttribute(starSz, 1));
     const starMat = new THREE.ShaderMaterial({
-      uniforms: {},
+      uniforms: { uParallaxX: { value: 0 } },
       vertexShader: /* glsl */`
         attribute float size;
+        uniform float uParallaxX;
         varying float vDepth;
         void main() {
-          vDepth = clamp((-position.z - 20.0) / 60.0, 0.0, 1.0);
-          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          float depth = clamp((-position.z - 20.0) / 60.0, 0.0, 1.0);
+          vDepth = depth;
+          // Near stars (depth≈0) shift the most, far stars (depth≈1) barely move
+          vec3 pos = position;
+          pos.x += uParallaxX * (1.0 - depth * 0.9);
+          vec4 mv = modelViewMatrix * vec4(pos, 1.0);
           gl_PointSize = size * (160.0 / -mv.z);
           gl_Position  = projectionMatrix * mv;
         }
@@ -435,8 +440,9 @@
         }
       }
 
-      // Stars drift slightly with ship for subtle parallax
-      starPoints.position.x = ship.position.x * 0.05;
+      // Per-depth horizontal parallax driven by scroll progress
+      // Near stars (depth=0) shift 55 units, far stars (depth=1) shift ~5.5 units
+      starMat.uniforms.uParallaxX.value = -smoothProgress * 55;
 
       // Engine light
       engineGlow.position.set(ship.position.x - 3.2, ship.position.y, 0);
