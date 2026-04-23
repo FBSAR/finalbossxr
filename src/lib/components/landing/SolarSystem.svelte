@@ -288,6 +288,72 @@
     );
     scene.add(coronaMesh);
 
+    // Comet (scroll-driven): icy nucleus + layered blue ion tail
+    const cometGroup = new THREE.Group();
+    const cometCoreMat = new THREE.MeshStandardMaterial({
+      color: 0xe9fbff,
+      emissive: 0x63c7ff,
+      emissiveIntensity: 1.25,
+      roughness: 0.2,
+      metalness: 0.0,
+    });
+    const cometCore = new THREE.Mesh(
+      new THREE.SphereGeometry(1.1, 20, 20),
+      cometCoreMat
+    );
+    cometGroup.add(cometCore);
+
+    const cometTailOuter = new THREE.Mesh(
+      new THREE.ConeGeometry(2.0, 18, 24, 1, true),
+      new THREE.MeshBasicMaterial({
+        color: 0x2b8dff,
+        transparent: true,
+        opacity: 0.33,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending,
+      })
+    );
+    // Default cone axis is +Y. Rotate so the tip points +Z (trail behind comet body).
+    cometTailOuter.rotation.x = Math.PI / 2;
+    cometTailOuter.position.z = 8;
+    cometGroup.add(cometTailOuter);
+
+    const cometTailInner = new THREE.Mesh(
+      new THREE.ConeGeometry(1.0, 14, 20, 1, true),
+      new THREE.MeshBasicMaterial({
+        color: 0x7fdcff,
+        transparent: true,
+        opacity: 0.62,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending,
+      })
+    );
+    cometTailInner.rotation.x = Math.PI / 2;
+    cometTailInner.position.z = 6.6;
+    cometGroup.add(cometTailInner);
+
+    const cometGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(2.6, 16, 16),
+      new THREE.MeshBasicMaterial({
+        color: 0x4ab8ff,
+        transparent: true,
+        opacity: 0.28,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+      })
+    );
+    cometGroup.add(cometGlow);
+    scene.add(cometGroup);
+
+    const cometPath = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(150, 58, -130),
+      new THREE.Vector3(48, 20, -22),
+      new THREE.Vector3(-18, 8, 18),
+      new THREE.Vector3(-128, -38, 118),
+    ]);
+
     // Build planets
     const planetMeshes = PLANET_DEFS.map((p) => {
       const tex = p.tex();
@@ -413,6 +479,9 @@
     };
 
     const saturnWorldPos = new THREE.Vector3();
+    const cometPos = new THREE.Vector3();
+    const cometAhead = new THREE.Vector3();
+    const cometClock = new THREE.Clock();
 
     let rafId: number;
     const animate = () => {
@@ -436,6 +505,19 @@
           (ringMesh.material as THREE.ShaderMaterial).uniforms.uRingCenter.value.copy(saturnWorldPos);
         }
       });
+
+      // Scroll-driven comet flight across the system.
+      // Invert so it moves forward as user scrolls down.
+      const cometT = 1 - THREE.MathUtils.clamp(scrollProgress, 0, 1);
+      cometPath.getPointAt(cometT, cometPos);
+      cometPath.getPointAt(Math.min(cometT + 0.002, 1), cometAhead);
+      cometGroup.position.copy(cometPos);
+      cometGroup.lookAt(cometAhead);
+
+      // Subtle pulsing makes the comet feel energetic.
+      const pulse = 0.5 + 0.5 * Math.sin(cometClock.getElapsedTime() * 5.5);
+      cometCoreMat.emissiveIntensity = 1.1 + pulse * 0.8;
+      (cometGlow.material as THREE.MeshBasicMaterial).opacity = 0.2 + pulse * 0.16;
 
       renderer.render(scene, camera);
     };
