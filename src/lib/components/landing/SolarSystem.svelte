@@ -349,8 +349,8 @@
 
     const cometPath = new THREE.CatmullRomCurve3([
       new THREE.Vector3(150, 58, -130),
-      new THREE.Vector3(48, 20, -22),
-      new THREE.Vector3(-18, 8, 18),
+      new THREE.Vector3(100, 72, -60),
+      new THREE.Vector3(35, 80, 35),
       new THREE.Vector3(-128, -38, 118),
     ]);
 
