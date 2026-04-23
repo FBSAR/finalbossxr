@@ -298,32 +298,74 @@
       let ringMesh: THREE.Mesh | null = null;
       if (p.rings) {
         const ringGeo = new THREE.RingGeometry(p.radius * 1.35, p.radius * 2.4, 128);
-        // Fix UV mapping so the gradient runs radially
-        const pos = ringGeo.attributes.position;
-        const uv  = ringGeo.attributes.uv;
-        const v3  = new THREE.Vector3();
+        // Radial UV: u=0 inner edge, u=1 outer edge
+        const rPos = ringGeo.attributes.position;
+        const rUv  = ringGeo.attributes.uv;
+        const rv3  = new THREE.Vector3();
         const inner = p.radius * 1.35, outer = p.radius * 2.4;
-        for (let i = 0; i < pos.count; i++) {
-          v3.fromBufferAttribute(pos, i);
-          uv.setXY(i, (v3.length() - inner) / (outer - inner), 0);
+        for (let i = 0; i < rPos.count; i++) {
+          rv3.fromBufferAttribute(rPos, i);
+          rUv.setXY(i, (rv3.length() - inner) / (outer - inner), 0);
         }
         const ringCanvas = document.createElement('canvas');
         ringCanvas.width = 256; ringCanvas.height = 1;
         const rctx = ringCanvas.getContext('2d')!;
         const grad = rctx.createLinearGradient(0, 0, 256, 0);
-        grad.addColorStop(0.0, 'rgba(200,180,120,0)');
-        grad.addColorStop(0.1, 'rgba(210,190,130,0.7)');
-        grad.addColorStop(0.35,'rgba(180,160,100,0.9)');
-        grad.addColorStop(0.5, 'rgba(150,130,80,0.5)');
-        grad.addColorStop(0.65,'rgba(180,160,100,0.85)');
-        grad.addColorStop(0.85,'rgba(160,140,90,0.6)');
-        grad.addColorStop(1.0, 'rgba(140,120,70,0)');
+        grad.addColorStop(0.0,  'rgba(200,180,120,0)');
+        grad.addColorStop(0.1,  'rgba(210,190,130,0.75)');
+        grad.addColorStop(0.35, 'rgba(185,165,105,0.92)');
+        grad.addColorStop(0.5,  'rgba(155,135,82,0.55)');
+        grad.addColorStop(0.65, 'rgba(185,165,105,0.88)');
+        grad.addColorStop(0.85, 'rgba(165,145,92,0.65)');
+        grad.addColorStop(1.0,  'rgba(140,120,70,0)');
         rctx.fillStyle = grad; rctx.fillRect(0,0,256,1);
         const ringTex = new THREE.CanvasTexture(ringCanvas);
         ringTex.colorSpace = THREE.SRGBColorSpace;
-        const ringMat = new THREE.MeshBasicMaterial({
-          map: ringTex, side: THREE.DoubleSide,
-          transparent: true, depthWrite: false,
+
+        // Custom shader: per-fragment angular lighting based on direction to sun.
+        // ~85% of the ring is fully lit; only a small arc directly behind Saturn
+        // (opposite the sun) falls into shadow. Face-normal is ignored entirely,
+        // so the ring never "blinks" dark when viewed edge-on.
+        const ringMat = new THREE.ShaderMaterial({
+          uniforms: {
+            uMap:       { value: ringTex },
+            uRingCenter: { value: new THREE.Vector3() },
+          },
+          vertexShader: /* glsl */`
+            varying vec2  vUv;
+            varying vec3  vWorldPos;
+            void main() {
+              vUv       = uv;
+              vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: /* glsl */`
+            uniform sampler2D uMap;
+            uniform vec3      uRingCenter;
+            varying vec2 vUv;
+            varying vec3 vWorldPos;
+            void main() {
+              vec4 tex = texture2D(uMap, vUv);
+              if (tex.a < 0.01) discard;
+              // Direction from ring centre to sun (sun sits at world origin 0,0,0)
+              vec3 toSun  = normalize(-uRingCenter);
+              // Direction from ring centre to this fragment (projected into ring plane)
+              vec3 toFrag = normalize(vWorldPos - uRingCenter);
+              // dot = 1: fragment faces sun; dot = -1: directly opposite
+              float facing = dot(toSun, toFrag);
+              // Shadow arc: only fragments with facing < -0.72 (≈ 44° arc,
+              // roughly 12% of circumference) receive any shadow.
+              // The transition is soft (smoothstep width ≈ 0.22).
+              float shadow = smoothstep(-0.72, -0.94, facing);
+              // Even in deepest shadow keep a small bounce-light term
+              float brightness = mix(1.0, 0.12, shadow);
+              gl_FragColor = vec4(tex.rgb * brightness, tex.a);
+            }
+          `,
+          side: THREE.DoubleSide,
+          transparent: true,
+          depthWrite: true,   // prevents disappearing from depth-sort artifacts
         });
         ringMesh = new THREE.Mesh(ringGeo, ringMat);
         ringMesh.rotation.x = Math.PI / 2.2;
@@ -359,6 +401,8 @@
       renderer.setSize(W, H);
     };
 
+    const saturnWorldPos = new THREE.Vector3();
+
     let rafId: number;
     const animate = () => {
       rafId = requestAnimationFrame(animate);
@@ -366,11 +410,18 @@
       // Update parallax shader with vertical scroll progress
       (starMat as THREE.ShaderMaterial).uniforms.uParallaxY.value = scrollProgress * 120;
 
-      planetMeshes.forEach(({ mesh, orbitPivot, planet }) => {
+      planetMeshes.forEach(({ mesh, orbitPivot, planet, ringMesh }) => {
         // Orbit: startAngle offsets initial position, scroll drives the rest
         orbitPivot.rotation.y = planet.startAngle + scrollProgress * Math.PI * 2 * planet.speed;
         // Self-rotation
         mesh.rotation.y += 0.003;
+
+        // Update Saturn ring shader with current world position so the
+        // sun-direction lighting is always correct after orbiting.
+        if (ringMesh) {
+          mesh.getWorldPosition(saturnWorldPos);
+          (ringMesh.material as THREE.ShaderMaterial).uniforms.uRingCenter.value.copy(saturnWorldPos);
+        }
       });
 
       renderer.render(scene, camera);
