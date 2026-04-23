@@ -323,6 +323,201 @@
       return { asteroidIdx, triggerProgress, state: 'idle' as const, laserMesh, laserX: 0, laserY: 0, laserZ: 0, debris, flashLight, flashT: 0 };
     });
 
+    // --- Web Audio (procedural, no external files) ---
+    // AudioContext created on first scroll interaction to satisfy autoplay policy
+    let audioCtx: AudioContext | null = null;
+    let masterGainNode: GainNode | null = null;
+    let engineGainNode: GainNode | null = null;
+    let engineOsc: OscillatorNode | null = null;
+    let engineWhineOsc: OscillatorNode | null = null;
+    let engineWhineGain: GainNode | null = null;
+    let engineNoise: AudioBufferSourceNode | null = null;
+    let engineNoiseGain: GainNode | null = null;
+    let audioReady = false;
+    let sectionVisible = false;
+
+    function initAudio() {
+      if (audioReady) return;
+      audioReady = true;
+      try {
+        audioCtx = new AudioContext();
+
+        // --- Engine: low sawtooth + filtered noise ---
+        masterGainNode = audioCtx.createGain();
+        // Set gain immediately based on whether section is already visible
+        masterGainNode.gain.value = sectionVisible ? 0.55 : 0;
+        masterGainNode.connect(audioCtx.destination);
+
+        // --- Layer 1: deep bass rumble (audible on laptop speakers) ---
+        engineOsc = audioCtx.createOscillator();
+        engineOsc.type = 'sine';
+        engineOsc.frequency.value = 85;
+        const engineFilter = audioCtx.createBiquadFilter();
+        engineFilter.type = 'lowpass';
+        engineFilter.frequency.value = 220;
+        engineFilter.Q.value = 0.8;
+        engineGainNode = audioCtx.createGain();
+        engineGainNode.gain.value = 0.22; // audible idle hum
+        engineOsc.connect(engineFilter);
+        engineFilter.connect(engineGainNode);
+        engineGainNode.connect(masterGainNode!);
+        engineOsc.start();
+
+        // --- Layer 2: spacecraft whine (220 Hz sine — clearly audible mid range) ---
+        engineWhineOsc = audioCtx.createOscillator();
+        engineWhineOsc.type = 'sine';
+        engineWhineOsc.frequency.value = 220;
+        const whineFilter = audioCtx.createBiquadFilter();
+        whineFilter.type = 'bandpass';
+        whineFilter.frequency.value = 220;
+        whineFilter.Q.value = 3.0;
+        engineWhineGain = audioCtx.createGain();
+        engineWhineGain.gain.value = 0.08;
+        engineWhineOsc.connect(whineFilter);
+        whineFilter.connect(engineWhineGain);
+        engineWhineGain.connect(masterGainNode!);
+        engineWhineOsc.start();
+
+        // --- Layer 3: noise texture (mid-range so it's audible) ---
+        const NOISE_SECONDS = 2;
+        const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * NOISE_SECONDS, audioCtx.sampleRate);
+        const nd = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+        engineNoise = audioCtx.createBufferSource();
+        engineNoise.buffer = noiseBuffer;
+        engineNoise.loop = true;
+        const noiseFilter = audioCtx.createBiquadFilter();
+        noiseFilter.type = 'bandpass';
+        noiseFilter.frequency.value = 350;
+        noiseFilter.Q.value = 0.9;
+        engineNoiseGain = audioCtx.createGain();
+        engineNoiseGain.gain.value = 0.06;
+        engineNoise.connect(noiseFilter);
+        noiseFilter.connect(engineNoiseGain);
+        engineNoiseGain.connect(masterGainNode!);
+        engineNoise.start();
+      } catch (_) {
+        audioReady = false;
+      }
+    }
+
+    // Initialise on first scroll to resume a suspended context (Chrome autoplay policy)
+    const initAudioOnScroll = () => {
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      else initAudio();
+    };
+    window.addEventListener('scroll', initAudioOnScroll, { passive: true, once: true });
+
+    // Fade audio in/out based on section visibility
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        sectionVisible = entries[0].isIntersecting;
+        // Kick off audio init the moment the user scrolls into the section
+        if (sectionVisible) initAudio();
+        if (masterGainNode && audioCtx) {
+          const now = audioCtx.currentTime;
+          masterGainNode.gain.cancelScheduledValues(now);
+          masterGainNode.gain.setValueAtTime(masterGainNode.gain.value, now);
+          masterGainNode.gain.linearRampToValueAtTime(
+            sectionVisible ? 0.55 : 0,
+            now + 0.4
+          );
+        }
+      },
+      { threshold: 0.1 }
+    );
+    visibilityObserver.observe(outer);
+
+    function playLaser() {
+      if (!audioCtx || !masterGainNode) return;
+      const g = audioCtx.createGain();
+      g.gain.setValueAtTime(0.45, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.28);
+      g.connect(masterGainNode);
+      // Descending frequency sweep: 900 → 160 Hz
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(160, audioCtx.currentTime + 0.28);
+      osc.connect(g);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.3);
+    }
+
+    function playExplosion() {
+      if (!audioCtx || !masterGainNode) return;
+      const now = audioCtx.currentTime;
+      const sr  = audioCtx.sampleRate;
+
+      // --- 1. Initial sharp crack (impact transient) ---
+      // Short broadband noise burst with fast attack & decay — the "hit"
+      const crackLen = Math.floor(sr * 0.06);
+      const crackBuf = audioCtx.createBuffer(1, crackLen, sr);
+      const crackData = crackBuf.getChannelData(0);
+      for (let i = 0; i < crackLen; i++) crackData[i] = (Math.random() * 2 - 1);
+      const crackSrc = audioCtx.createBufferSource();
+      crackSrc.buffer = crackBuf;
+      const crackHP = audioCtx.createBiquadFilter();
+      crackHP.type = 'highpass';
+      crackHP.frequency.value = 800;
+      const crackGain = audioCtx.createGain();
+      crackGain.gain.setValueAtTime(0.0, now);
+      crackGain.gain.linearRampToValueAtTime(0.9, now + 0.003);
+      crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      crackSrc.connect(crackHP);
+      crackHP.connect(crackGain);
+      crackGain.connect(masterGainNode);
+      crackSrc.start(now);
+
+      // --- 2. Gravel rumble (mid-frequency filtered noise, slow decay) ---
+      // Mimics the sound of rock fragments tumbling/skittering
+      const rumbleLen = Math.floor(sr * 1.1);
+      const rumbleBuf = audioCtx.createBuffer(1, rumbleLen, sr);
+      const rd = rumbleBuf.getChannelData(0);
+      // Granular texture: short random bursts rather than pure white noise
+      for (let i = 0; i < rumbleLen; i++) {
+        const grain = Math.sin(i * 0.08) * Math.sin(i * 0.031) * Math.sin(i * 0.17);
+        rd[i] = (Math.random() * 2 - 1) * 0.6 + grain * 0.4;
+      }
+      const rumbleSrc = audioCtx.createBufferSource();
+      rumbleSrc.buffer = rumbleBuf;
+      // Two bandpass filters in series to carve out the "gritty mid" range
+      const bp1 = audioCtx.createBiquadFilter();
+      bp1.type = 'bandpass';
+      bp1.frequency.value = 340;
+      bp1.Q.value = 0.8;
+      const bp2 = audioCtx.createBiquadFilter();
+      bp2.type = 'bandpass';
+      bp2.frequency.value = 620;
+      bp2.Q.value = 1.2;
+      const rumbleGain = audioCtx.createGain();
+      // Fast attack, then a long slow tail — rocks keep skittering
+      rumbleGain.gain.setValueAtTime(0.0, now);
+      rumbleGain.gain.linearRampToValueAtTime(0.55, now + 0.04);
+      rumbleGain.gain.setValueAtTime(0.55, now + 0.08);
+      rumbleGain.gain.exponentialRampToValueAtTime(0.12, now + 0.5);
+      rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
+      rumbleSrc.connect(bp1);
+      bp1.connect(bp2);
+      bp2.connect(rumbleGain);
+      rumbleGain.connect(masterGainNode);
+      rumbleSrc.start(now);
+
+      // --- 3. Deep thud (sub-bass sine, very short) ---
+      // Physical weight of a heavy rock fracturing
+      const thudOsc = audioCtx.createOscillator();
+      thudOsc.type = 'sine';
+      thudOsc.frequency.setValueAtTime(72, now);
+      thudOsc.frequency.exponentialRampToValueAtTime(28, now + 0.18);
+      const thudGain = audioCtx.createGain();
+      thudGain.gain.setValueAtTime(0.5, now);
+      thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      thudOsc.connect(thudGain);
+      thudGain.connect(masterGainNode);
+      thudOsc.start(now);
+      thudOsc.stop(now + 0.2);
+    }
+
     // --- Scroll tracking (natural flow, no sticky trap) ---
     const X_START = -20;
     const X_END   =  20;
@@ -394,6 +589,7 @@
         } else if (lt.state === 'idle' && smoothProgress >= lt.triggerProgress) {
           // Fire!
           lt.state = 'firing';
+          playLaser();
           lt.laserX = ship.position.x + 4.8;
           lt.laserY = ship.position.y;
           lt.laserZ = target.mesh.position.z;
@@ -406,6 +602,7 @@
           if (lt.laserX >= target.mesh.position.x - target.mesh.scale.x * 0.5) {
             // HIT
             lt.state = 'exploded';
+            playExplosion();
             lt.laserMesh.visible = false;
             target.mesh.visible = false;
             lt.flashT = 0;
@@ -443,6 +640,24 @@
       // Per-depth horizontal parallax driven by scroll progress
       // Near stars (depth=0) shift 55 units, far stars (depth=1) shift ~5.5 units
       starMat.uniforms.uParallaxX.value = -smoothProgress * 55;
+
+      // Engine sound: scale gain with scroll speed so throttling feels physical
+      if (engineGainNode && engineNoiseGain && engineWhineGain && audioCtx) {
+        const scrollSpeed = Math.abs(delta);
+        const k = 1 - Math.exp(-frameDt * 8);
+        // Bass rumble: idle 0.22, boosts to 0.5 on fast scroll
+        const targetBass  = 0.22 + Math.min(scrollSpeed * 200, 0.28);
+        // Whine: idle 0.08, rises with speed for a turbine spool-up feel
+        const targetWhine = 0.08 + Math.min(scrollSpeed * 120, 0.18);
+        // Noise texture: idle 0.06, slight boost on scroll
+        const targetNoise = 0.06 + Math.min(scrollSpeed * 80,  0.12);
+        engineGainNode.gain.value      += (targetBass  - engineGainNode.gain.value)      * k;
+        engineWhineGain.gain.value     += (targetWhine - engineWhineGain.gain.value)     * k;
+        engineNoiseGain.gain.value     += (targetNoise - engineNoiseGain.gain.value)     * k;
+        // Slight pitch rise on acceleration
+        if (engineOsc)      engineOsc.frequency.value      = 85  + scrollSpeed * 35;
+        if (engineWhineOsc) engineWhineOsc.frequency.value = 220 + scrollSpeed * 80;
+      }
 
       // Engine light
       engineGlow.position.set(ship.position.x - 3.2, ship.position.y, 0);
@@ -508,7 +723,15 @@
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', initAudioOnScroll);
+      visibilityObserver.disconnect();
       ro.disconnect();
+      try {
+        engineOsc?.stop();
+        engineWhineOsc?.stop();
+        engineNoise?.stop();
+        audioCtx?.close();
+      } catch (_) {}
       renderer.dispose();
       fireGeo.dispose();
       fireMat.dispose();
