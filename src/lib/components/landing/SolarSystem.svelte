@@ -204,11 +204,11 @@
     camera.lookAt(0, 0, 0);
 
     // Lighting — sun-only model for true light/dark terminator
-    // Near-zero ambient: dark side of planets stays genuinely dark
-    scene.add(new THREE.AmbientLight(0x111133, 0.06));
-    // Sun PointLight at origin — sole meaningful light source
-    // High intensity + large range so even Neptune is lit
-    const sunLight = new THREE.PointLight(0xfff4cc, 9.0, 1400, 1.2);
+    // Very low ambient: dark side stays dark but not pitch black
+    scene.add(new THREE.AmbientLight(0x111133, 0.18));
+    // Sun PointLight at origin — decay=0 so ALL planets receive equal light.
+    // The day/night split comes purely from surface normal angle (Lambert), not falloff.
+    const sunLight = new THREE.PointLight(0xfff4cc, 3.5, 0, 0);
     scene.add(sunLight);
 
     // Parallax stars with vertical scroll effect
@@ -283,8 +283,8 @@
       tex.colorSpace = THREE.SRGBColorSpace;
 
       const geo = new THREE.SphereGeometry(p.radius, 64, 64);
-      // Increase roughness for sharper light/dark terminator, lower metalness for more surface detail
-      const mat = new THREE.MeshStandardMaterial({ map: tex, metalness: 0.02, roughness: 0.95 });
+      // roughness: lower = punchier highlights on lit side; metalness near 0 for rocky/gas look
+      const mat = new THREE.MeshStandardMaterial({ map: tex, metalness: 0.02, roughness: 0.70 });
       const mesh = new THREE.Mesh(geo, mat);
       mesh.rotation.z = p.tilt;
 
