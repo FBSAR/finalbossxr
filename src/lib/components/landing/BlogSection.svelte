@@ -238,7 +238,7 @@
 
   .featured-badge {
     position: absolute;
-    top: 1rem;
+    bottom: 1rem;
     right: 1rem;
     display: inline-block;
     padding: 0.5rem 1rem;
