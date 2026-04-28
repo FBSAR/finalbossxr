@@ -1,5 +1,6 @@
 <script lang="ts">
-  import XRAbstractArt from '$lib/components/XRAbstractArt.svelte';
+  import XRAbstractArt3D from '$lib/components/XRAbstractArt3D.svelte';
+  import HeroShapes3D from '$lib/components/landing/HeroShapes3D.svelte';
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
 
@@ -1149,37 +1150,20 @@
         tabindex={shape.draggable ? 0 : -1}
         aria-label={shape.draggable ? `Drag ${shape.type} shape to center` : undefined}
       >
-        <div 
-          class="geo-shape {shape.type}"
-          style="
-            width: 100%;
-            height: 100%;
-            --shape-color: {shape.color};
-          "
-        ></div>
-      </div>
-    {:else}
-      <!-- Absorbed shape animation -->
-      <div 
-        class="geo-shape-wrapper absorbed"
-        style="
-          left: 50%;
-          top: 35%;
-          width: {shape.size}px;
-          height: {shape.size}px;
-        "
-      >
-        <div 
-          class="geo-shape {shape.type}"
-          style="
-            width: 100%;
-            height: 100%;
-            --shape-color: {shape.color};
-          "
-        ></div>
       </div>
     {/if}
   {/each}
+
+
+
+  <!-- 3D Shapes Overlay (draggable gold shapes only) -->
+  <HeroShapes3D
+    shapes={shapes.filter(s => s.draggable)}
+    {shapeTransforms}
+    {draggedShapeId}
+    {flyingShapeId}
+    {isSupernova}
+  />
 
   <!-- Subtle Cursor Glow -->
   <div 
@@ -1199,7 +1183,7 @@
       bind:this={xrArtElement}
       style="--reaction-intensity: {reactionIntensity};"
     >
-      <XRAbstractArt size="lg" interactive={!isMobile} />
+      <XRAbstractArt3D size="lg" interactive={!isMobile} />
       <!-- Drop Zone Indicator -->
       <div class="drop-zone" class:active={xrArtReacting}></div>
       <!-- Golden Aura - Super Saiyan State -->
@@ -1315,46 +1299,11 @@
   .geo-shape-wrapper.draggable {
     pointer-events: auto;
     cursor: grab;
-    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
-  }
-  
-  .geo-shape-wrapper.draggable .geo-shape {
-    border: 2px solid rgba(255, 215, 0, 0.7) !important;
-    box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.2);
-  }
-  
-  .geo-shape-wrapper.draggable:hover {
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.5));
-  }
-  
-  .geo-shape-wrapper.draggable:hover .geo-shape {
-    border-color: rgba(255, 215, 0, 1) !important;
   }
   
   .geo-shape-wrapper.dragging {
     cursor: grabbing;
-    filter: brightness(1.5) drop-shadow(0 0 30px rgba(0, 196, 0, 0.8));
     transition: none;
-  }
-  
-  .geo-shape-wrapper.absorbed {
-    animation: absorb 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    pointer-events: none;
-  }
-  
-  @keyframes absorb {
-    0% {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-    50% {
-      opacity: 0.8;
-      transform: translate(-50%, -50%) scale(0.5) rotate(180deg);
-    }
-    100% {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0) rotate(360deg);
-    }
   }
 
   @media (max-width: 768px) {
@@ -1366,7 +1315,6 @@
     .geo-shape-wrapper.draggable {
       opacity: 1;
       cursor: pointer;
-      animation: mobileTapPulse 2s ease-in-out infinite;
       transform: translate(-50%, -50%) scale(0.75) translateZ(0) !important;
     }
     
@@ -1375,148 +1323,10 @@
     }
     
     .geo-shape-wrapper.draggable.flying {
-      filter: brightness(2) drop-shadow(0 0 20px rgba(0, 196, 0, 0.8)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.5));
       animation: none;
       pointer-events: none;
       z-index: 100;
     }
-  }
-
-  @keyframes mobileTapPulse {
-    0%, 100% {
-      filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
-    }
-    50% {
-      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 40px rgba(255, 215, 0, 0.5));
-    }
-  }
-
-  .geo-shape {
-    position: relative;
-    pointer-events: none;
-    will-change: transform, filter;
-    backface-visibility: hidden;
-  }
-
-  .geo-shape.hexagon {
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    background: var(--shape-color);
-    border: 2px solid rgba(0, 196, 0, 0.2);
-    animation: hexagonPulse 20s linear infinite, hexagonGlow 3s ease-in-out infinite;
-  }
-
-  .geo-shape.hexagon::before {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    background: transparent;
-    border: 1px solid rgba(0, 196, 0, 0.3);
-  }
-
-  .geo-shape.triangle {
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    background: var(--shape-color);
-    animation: trianglePulse 25s linear infinite, triangleGlow 4s ease-in-out infinite;
-  }
-
-  .geo-shape.triangle::before {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    background: transparent;
-    border: 1px solid rgba(0, 196, 0, 0.25);
-  }
-
-  .geo-shape.square {
-    background: var(--shape-color);
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    animation: squarePulse 15s linear infinite, squareGlow 3.5s ease-in-out infinite;
-  }
-
-  .geo-shape.square::before {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    background: transparent;
-    border: 1px solid rgba(255, 215, 0, 0.15);
-  }
-
-  .geo-shape.diamond {
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    background: var(--shape-color);
-    animation: diamondPulse 18s linear infinite, diamondGlow 4.5s ease-in-out infinite;
-  }
-
-  .geo-shape.diamond::before {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    background: transparent;
-    border: 1px solid rgba(0, 196, 0, 0.2);
-  }
-
-  .geo-shape.circle {
-    border-radius: 50%;
-    background: var(--shape-color);
-    border: 1px solid rgba(138, 43, 226, 0.15);
-    animation: circleGlow 5s ease-in-out infinite;
-  }
-
-  .geo-shape.circle::before {
-    content: '';
-    position: absolute;
-    inset: 6px;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px solid rgba(138, 43, 226, 0.1);
-  }
-
-  @keyframes hexagonPulse {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes trianglePulse {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
-  }
-
-  @keyframes squarePulse {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes diamondPulse {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
-  }
-
-  @keyframes hexagonGlow {
-    0%, 100% { filter: drop-shadow(0 0 3px rgba(0, 196, 0, 0.2)); }
-    50% { filter: drop-shadow(0 0 12px rgba(0, 196, 0, 0.6)) drop-shadow(0 0 25px rgba(0, 196, 0, 0.3)); }
-  }
-
-  @keyframes triangleGlow {
-    0%, 100% { filter: drop-shadow(0 0 3px rgba(0, 196, 0, 0.15)); }
-    50% { filter: drop-shadow(0 0 10px rgba(0, 196, 0, 0.5)) drop-shadow(0 0 20px rgba(0, 196, 0, 0.25)); }
-  }
-
-  @keyframes squareGlow {
-    0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.15)); }
-    50% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 22px rgba(255, 215, 0, 0.25)); }
-  }
-
-  @keyframes diamondGlow {
-    0%, 100% { filter: drop-shadow(0 0 3px rgba(0, 196, 0, 0.15)); }
-    50% { filter: drop-shadow(0 0 12px rgba(0, 196, 0, 0.55)) drop-shadow(0 0 24px rgba(0, 196, 0, 0.28)); }
-  }
-
-  @keyframes circleGlow {
-    0%, 100% { filter: drop-shadow(0 0 3px rgba(138, 43, 226, 0.15)); }
-    50% { filter: drop-shadow(0 0 14px rgba(138, 43, 226, 0.5)) drop-shadow(0 0 28px rgba(138, 43, 226, 0.25)); }
   }
 
   .cursor-glow {
