@@ -189,6 +189,26 @@ export async function subscribeToNewsletter(email: string, name?: string | null)
 }
 
 /**
+ * Unsubscribe an email from the newsletter.
+ * Returns { found: boolean } indicating whether the email existed.
+ */
+export async function unsubscribeFromNewsletter(email: string): Promise<{ found: boolean }> {
+    const sql = getDb();
+
+    const result = await sql`
+        UPDATE email_list
+        SET subscribed_to_newsletter = false,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE LOWER(email) = LOWER(${email.trim()})
+    `;
+
+    // neon returns rowCount on UPDATE
+    const affected = (result as unknown as { rowCount?: number }).rowCount ?? 0;
+    console.log(`📧 Unsubscribe request for ${email}: ${affected > 0 ? 'found and updated' : 'not found'}`);
+    return { found: affected > 0 };
+}
+
+/**
  * Adds the summary column to jobs table if it doesn't exist.
  */
 export async function addSummaryColumnToJobs() {

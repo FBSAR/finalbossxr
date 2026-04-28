@@ -654,6 +654,9 @@ export async function sendNewsletterEmail(data: NewsletterEmailData) {
                             <p style="color: #666666; font-size: 14px; line-height: 1.6; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 You're receiving this because you subscribed to our newsletter. <a href="https://finalbossxr.com" style="color: #007a00; text-decoration: none;">finalbossxr.com</a>
                             </p>
+                            <p style="color: #999999; font-size: 13px; margin: 0 0 8px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                                <a href="https://finalbossxr.com/newsletter/unsubscribe" style="color: #999999; text-decoration: underline;">Unsubscribe</a> from this mailing list
+                            </p>
                             <p style="color: #999999; font-size: 12px; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
                                 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
                             </p>
@@ -678,6 +681,7 @@ ${content}
 Visit us at finalbossxr.com
 
 You're receiving this because you subscribed to our newsletter.
+Unsubscribe: https://finalbossxr.com/newsletter/unsubscribe
 
 © ${new Date().getFullYear()} Final Boss Studios. All rights reserved.
     `;
