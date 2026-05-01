@@ -25,7 +25,7 @@
   let characters = [
     {
         name: 'Captain Phoenix',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/finalbossxr-cosmic-character-headshots/Cap_Phoenix_Website_Headshot.png',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/character_headshots/Cap_Phoenix_Website_Headshot.png',
         video: '',
         title: 'The Captain',
         special: 'Piercing Shots - These shots continue their momentum after hitting 1 object.',
@@ -33,9 +33,9 @@
     },
     {
         name: 'Riley Maasai',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/riley_photo.PNG',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/character_headshots/Riley_Website_Headshot.png',
         title: 'The Engineer',
-        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/RileyGesture.mp4',
+        video: '',
         special: 'Repair Portal - Fix portals simply by flying through it.',
         description: "A young, improvisational genius who can turn scraps into solutions, from asteroid defenses to alien tech. Their rebellious nature and unconventional methods often clash with Phoenix's strict command, challenging them to find common ground and work as a team.",
     },
