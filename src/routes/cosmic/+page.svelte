@@ -507,6 +507,11 @@
 <style>
   :global(html) {
     scroll-behavior: smooth;
+    background: var(--dark-purple-gradient);
+  }
+
+  :global(body) {
+    background: var(--dark-purple-gradient);
   }
 
   .glow-text {

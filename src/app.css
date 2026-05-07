@@ -4,7 +4,7 @@
 
 /* Inter var removed — Raleway is the primary body font. Fallback to system sans-serif. */
 
-body {
+html, body {
   background: #111;
 }
 
