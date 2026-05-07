@@ -3,7 +3,8 @@ import { neon } from '@neondatabase/serverless';
 import { DATABASE_URL } from '$env/static/private';
 import { error } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, setHeaders }) => {
+  setHeaders({ 'cache-control': 'no-store, no-cache, must-revalidate, max-age=0' });
   const sql = neon(DATABASE_URL);
   const { slug } = params;
   

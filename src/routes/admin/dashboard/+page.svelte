@@ -563,7 +563,7 @@
                 <span class="date">{new Date(blog.created_at).toLocaleDateString()}</span>
                 <div class="blog-actions">
                   {#if !blog.published}
-                    <a href="/blog/draft/{blog.slug}" target="_blank" class="btn-sm" style="text-decoration:none;display:inline-block;">👁 Preview</a>
+                    <a href="/blog/draft/{blog.slug}?t={Date.now()}" target="_blank" class="btn-sm" style="text-decoration:none;display:inline-block;">👁 Preview</a>
                   {/if}
                   <button class="btn-sm" on:click={() => openBlogModal(blog)}>Edit</button>
                   <form method="POST" action="?/deleteBlog" use:enhance={() => {
