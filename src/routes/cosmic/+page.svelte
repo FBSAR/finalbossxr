@@ -41,9 +41,9 @@
     },
     {
         name: 'Johnny Sparks',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/johnny_photo.PNG',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/character_headshots/Johhny_Website_Headshot.png',
         title: 'The Rookie',
-        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/JohnnySparksIntroGesture.mp4',
+        video: '',
         special: 'Health Regeneration - Player Ship’s Shield regenerates every [X amount of time]',
         description: "A newly minted graduate, Sparky is naive but full of courage and optimism. Despite their inexperience, they bring a fresh perspective and a contagious positive spirit, which could be the spark the resistance needs. An exceptional VR/AR gamer with a determination reminiscent of a young Leon Kennedy.",
     },
