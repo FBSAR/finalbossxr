@@ -394,7 +394,9 @@
     {/each}
     </div>
   {/if}
-  <div class="w-11/12 lg:w-1/2 mx-auto mt-4 p-4 rounded-lg border-2 border-[#FFD700]/50 bg-[#FFD700]/10 backdrop-blur-lg">
+
+  <!-- We're hiring -->
+  <!-- <div class="w-11/12 lg:w-1/2 mx-auto mt-4 p-4 rounded-lg border-2 border-[#FFD700]/50 bg-[#FFD700]/10 backdrop-blur-lg">
     <div class="flex items-start gap-3">
       <div>
         <h1 class="text-[#FFD700] text-sm lg:text-3xl mb-1">We're Hiring!</h1>
@@ -419,7 +421,7 @@
         </a>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- Spacer -->
   <div class="h-20 border-b-8 border-[#ffffff10]"></div>
