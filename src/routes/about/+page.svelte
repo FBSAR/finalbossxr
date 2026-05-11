@@ -75,7 +75,19 @@
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/fbs-richard.png',
         title: 'Sound Design / 3D Modeling & Printing',
         linkedin: 'https://www.linkedin.com/in/richard-davis-iii-300703240/'
-      }
+      },
+      {
+        name: 'Jessee Horton',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/jesse_image.png',
+        title: 'Game Developer',
+        linkedin: 'https://www.linkedin.com/in/jessee-horton-719088173/'
+      },
+      // {
+      //   name: 'Abu Bangurah',
+      //   photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/team-photos/fbs-richard.png',
+      //   title: 'Sound Design / 3D Modeling & Printing',
+      //   linkedin: 'https://www.linkedin.com/in/richard-davis-iii-300703240/'
+      // }
   ]
 </script>
 <main>
