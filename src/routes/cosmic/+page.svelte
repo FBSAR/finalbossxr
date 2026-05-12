@@ -128,21 +128,20 @@
     </video>
     <!-- Dark overlay for better text readability -->
     <div class="hidden lg:block absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/0"></div>
-    
-    <div class="relative z-10 w-11/12 lg:w-10/12 flex flex-col mx-auto py-12 lg:py-24 h-full justify-center">
+    <div class="relative z-10 w-11/12 max-w-[1000px] mx-auto flex flex-col py-12 lg:py-24 h-full justify-center">
 
       <!-- Unified Hero Card -->
       <div class="header-card backdrop-blur-xl bg-black/40 lg:bg-white/5 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
         
         <!-- Flex container: Logo + Info (stacked on mobile, side-by-side on desktop) -->
-        <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-8">
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-4">
           
           <!-- Logo Section -->
-          <div class="w-full lg:w-1/3 flex items-center justify-center p-6 lg:p-8 bg-gradient-to-b from-black/20 to-transparent lg:bg-none">
+          <div class="w-full lg:w-auto lg:max-w-[280px] flex items-center justify-center p-3 lg:p-5 bg-gradient-to-b from-black/20 to-transparent lg:bg-none">
             <div class="relative flex-shrink-0">
               <img 
                 src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.webp" 
-                class="w-48 lg:w-56 mx-auto drop-shadow-2xl" 
+                class="w-36 lg:w-44 mx-auto drop-shadow-2xl" 
                 alt="Cosmic Collisions Logo"
                 fetchpriority="high"
                 decoding="async"
@@ -153,9 +152,7 @@
           </div>
 
           <!-- Info Section -->
-          <div class="w-full lg:max-w-xl space-y-5 p-6 lg:p-8 lg:pr-8">
-            
-            <!-- Platform Badge -->
+          <div class="w-full lg:flex-1 space-y-5 p-4 lg:p-5 lg:pr-6">
             <div class="flex items-center gap-3">
               <div class="flex items-center gap-2 px-4 py-2 bg-[#00c400]/10 border border-[#00c400]/30 rounded-full">
                 <svg fill="#00c400" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 512 512">
