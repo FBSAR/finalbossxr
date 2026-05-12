@@ -186,6 +186,9 @@
               <Button href="/leaderboards" color="none" class="flex-1 justify-center bg-[#1b023d] hover:bg-[#2d0a5e] text-white border border-purple-900/50">Leaderboards</Button>
               <Button href="#demo" color="dark" class="flex-1 justify-center border border-white/20 hover:border-[#00c400]/50">Play Demo</Button>
             </div>
+            <p class="text-[0.75rem] text-gray-400 mt-3">
+              Character artwork and styling done by <a href="https://rejenasmiley.altervista.org/" target="_blank" rel="noreferrer" class="text-[#00c400] underline">Rejena Antoine</a>.
+            </p>
           </div>
 
         </div>
