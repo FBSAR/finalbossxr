@@ -57,9 +57,8 @@
     },
     {
         name: 'AI Wraith',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/wraith_photo.PNG',
-        title: 'The AI',
-        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/WraithGesture.mp4',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/character_headshots/Wraith_Website_Headshot.png',
+        video: '',
         special: 'Speed Increase - Temporary Speed Increase',
         description: "Wraith, once a counterpart to Reaper, remains loyal to humanity. Operating in the shadows, Wraith uses its cyber capabilities to protect the solar system, quietly neutralizing threats and countering Reaper's plans. A silent guardian, it provides vital intelligence to the SSDF, ensuring the galaxy's survival.",
     },
