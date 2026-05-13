@@ -2749,18 +2749,22 @@
 
   .subscriber-info {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
   }
 
   .subscriber-email {
     color: #e0e0e0;
     font-size: 0.875rem;
+    white-space: nowrap;
   }
 
   .subscriber-name {
     color: #888;
     font-size: 0.75rem;
+    white-space: nowrap;
   }
 
   .subscriber-meta {
