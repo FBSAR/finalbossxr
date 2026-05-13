@@ -137,7 +137,7 @@
         <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-4">
           
           <!-- Logo Section -->
-          <div class="w-full lg:w-[320px] flex items-center justify-center p-3 lg:p-5 bg-gradient-to-b from-black/20 to-transparent lg:bg-none">
+          <div class="w-full lg:w-[320px] flex items-center justify-center p-4 lg:p-5 bg-gradient-to-b from-black/20 to-transparent lg:bg-none">
             <div class="relative flex-shrink-0">
               <img 
                 src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.webp" 
