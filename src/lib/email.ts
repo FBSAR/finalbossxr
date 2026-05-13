@@ -70,6 +70,7 @@
  */
 
 import nodemailer from 'nodemailer';
+import { marked } from 'marked';
 import { EMAIL_SERVER, EMAIL_PORT, EMAIL_USERNAME, EMAIL_PASSWORD, ADMIN_EMAIL_01, ADMIN_EMAIL_02 } from '$env/static/private';
 
 // Create reusable transporter using SMTP
@@ -85,6 +86,50 @@ const transporter = nodemailer.createTransport({
     greetingTimeout: 10000,
     socketTimeout: 10000
 });
+
+function renderNewsletterMarkdown(content: string) {
+    const renderer = new marked.Renderer();
+
+    renderer.image = (token: any) => {
+        const { href, title, text } = token;
+        let altText = text || '';
+        let caption = '';
+        let heightAttr = '';
+
+        const heightMatch = text?.match(/\{height=([^}]+)\}/);
+        if (heightMatch) {
+            heightAttr = ` height="${heightMatch[1]}"`;
+        }
+
+        const pipeIndex = text?.indexOf('|') ?? -1;
+        if (pipeIndex !== -1 && text) {
+            altText = text.substring(0, pipeIndex).trim();
+            caption = text.substring(pipeIndex + 1).trim();
+            if (heightMatch) {
+                caption = caption.replace(/\s*\{height=[^}]+\}/, '').trim();
+            }
+        } else if (heightMatch && text) {
+            altText = text.replace(/\s*\{height=[^}]+\}/, '').trim();
+        }
+
+        const titleAttr = title ? ` title="${title}"` : '';
+        const img = `<img src="${href}" alt="${altText}"${titleAttr}${heightAttr} style="display:block; max-width:100%; height:auto; border:none; outline:none; text-decoration:none;" />`;
+
+        if (caption) {
+            return `<div style="margin: 16px 0; text-align:center;">${img}<div style="font-size:13px; color:#888; margin-top:8px;">${caption}</div></div>`;
+        }
+
+        return `<div style="margin: 16px 0;">${img}</div>`;
+    };
+
+    marked.setOptions({
+        gfm: true,
+        breaks: true,
+        renderer
+    });
+
+    return marked(content || '');
+}
 
 // Shared email styles - minimal resets only; all design uses inline styles + bgcolor attributes
 const getEmailStyles = () => `
@@ -636,7 +681,7 @@ export async function sendNewsletterEmail(data: NewsletterEmailData) {
                         <td bgcolor="#ffffff" style="background-color: #ffffff; padding: 32px 40px 24px;">
                             <p style="color: #1d1d1f; font-size: 16px; line-height: 1.6; margin: 0 0 16px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${greeting},</p>
                             <div style="color: #444444; font-size: 16px; line-height: 1.8; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                                ${content.split('\n').map(p => p.trim() ? `<p style="margin: 0 0 16px; color: #444444; font-size: 16px; line-height: 1.8; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">${p}</p>` : '').join('')}
+                                ${renderNewsletterMarkdown(content)}
                             </div>
                         </td>
                     </tr>

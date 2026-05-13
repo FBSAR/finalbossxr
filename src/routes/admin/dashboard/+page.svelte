@@ -25,6 +25,7 @@
   let editingDraft: any = null;
   let draftForm = { subject: '', content: '', status: 'draft', scheduled_at: '' };
   let sendingNewsletterIds: Set<number> = new Set();
+  let testingNewsletterIds: Set<number> = new Set();
   
   // Local reactive copies — allow optimistic updates without waiting for server round-trip
   let subscribers = data.subscribers;
@@ -38,6 +39,7 @@
   let draftsExpanded = true;
   let archivedExpanded = false;
   let markdownHelpExpanded = false;
+  let emailMarkdownHelpExpanded = false;
   let archivedPage = 1;
   const ARCHIVED_PER_PAGE = 30;
   
@@ -765,7 +767,11 @@
                 <div class="draft-actions">
                   {#if draft.status !== 'sent'}
                     <form method="POST" action="?/sendTestNewsletter" use:enhance={() => {
+                      testingNewsletterIds.add(draft.id);
+                      testingNewsletterIds = testingNewsletterIds;
                       return async ({ result, update }) => {
+                        testingNewsletterIds.delete(draft.id);
+                        testingNewsletterIds = testingNewsletterIds;
                         if (result.type === 'success') {
                           // @ts-ignore
                           showToast(result.data?.message || 'Test email sent!', 'success');
@@ -776,7 +782,18 @@
                       };
                     }} style="display:inline;">
                       <input type="hidden" name="id" value={draft.id} />
-                      <button type="submit" class="btn-sm btn-test">🧪 Test</button>
+                      <button 
+                        type="submit" 
+                        class="btn-sm btn-test" 
+                        class:sending={testingNewsletterIds.has(draft.id)}
+                        disabled={testingNewsletterIds.has(draft.id)}
+                      >
+                        {#if testingNewsletterIds.has(draft.id)}
+                          <span class="spinner"></span> Testing...
+                        {:else}
+                          🧪 Test
+                        {/if}
+                      </button>
                     </form>
                     <form method="POST" action="?/sendNewsletter" use:enhance={() => {
                       sendingNewsletterIds.add(draft.id);
@@ -981,7 +998,83 @@
           </div>
           
           <div class="form-row">
-            <label for="draft-content">Content</label>
+            <div class="markdown-label-group">
+              <label for="draft-content">Content (Markdown)</label>
+              <button 
+                type="button" 
+                class="markdown-toggle-btn" 
+                on:click={() => emailMarkdownHelpExpanded = !emailMarkdownHelpExpanded}
+                title="Toggle markdown syntax guide"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Email Markdown Guide
+              </button>
+            </div>
+            {#if emailMarkdownHelpExpanded}
+              <div class="markdown-guide">
+                <p style="margin: 0 0 1rem 0; font-size: 0.9rem; color: #aaa;">✅ Email-safe markdown (all formats work in email clients):</p>
+                <div class="markdown-guide-grid">
+                  <div class="markdown-guide-item">
+                    <strong>Bold</strong>
+                    <code>**text**</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Italic</strong>
+                    <code>*text*</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Heading 1</strong>
+                    <code># Heading</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Heading 2</strong>
+                    <code>## Heading</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Heading 3</strong>
+                    <code>### Heading</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Link</strong>
+                    <code>[text](url)</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>List</strong>
+                    <code>- item</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Numbered List</strong>
+                    <code>1. item</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Quote</strong>
+                    <code>&gt; quote</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Line Break</strong>
+                    <code>---</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Strikethrough</strong>
+                    <code>~~text~~</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Inline Code</strong>
+                    <code>`code`</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Image</strong>
+                    <code>![alt](url)</code>
+                  </div>
+                  <div class="markdown-guide-item">
+                    <strong>Image w/ Caption</strong>
+                    <code>![alt | caption](url)</code>
+                  </div>
+                </div>
+              </div>
+            {/if}
             <textarea id="draft-content" name="content" bind:value={draftForm.content} rows="12" required placeholder="Write your newsletter content here..."></textarea>
           </div>
           
@@ -2903,7 +2996,8 @@
     pointer-events: none;
   }
 
-  .btn-send .spinner {
+  .btn-send .spinner,
+  .btn-test .spinner {
     display: inline-block;
     width: 12px;
     height: 12px;
@@ -2911,8 +3005,15 @@
     border-top-color: #60a5fa;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin-right: 4px;
+    margin-right: 8px;
     vertical-align: middle;
+  }
+
+  .btn-send.sending,
+  .btn-test.sending {
+    opacity: 0.75;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 
   @keyframes spin {
