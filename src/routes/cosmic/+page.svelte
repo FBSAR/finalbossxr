@@ -56,7 +56,7 @@
         description: "An ethereal avian species with shimmering iridescent wings, hailing from a solar system bathed in twilight. With an innate grasp of astrophysics, Xylo navigates space with unmatched precision. Discovered after crash-landing on Earth, Xylo's gentle nature and otherworldly beauty quickly transformed initial fear into awe.",
     },
     {
-        name: 'AI Wraith',
+        name: 'Wraith.AI',
         photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/character_headshots/Wraith_Website_Headshot.png',
         video: '',
         special: 'Speed Increase - Temporary Speed Increase',
@@ -137,7 +137,7 @@
         <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-4">
           
           <!-- Logo Section -->
-          <div class="w-full lg:w-auto lg:max-w-[280px] flex items-center justify-center p-3 lg:p-5 bg-gradient-to-b from-black/20 to-transparent lg:bg-none">
+          <div class="w-full lg:w-[320px] flex items-center justify-center p-3 lg:p-5 bg-gradient-to-b from-black/20 to-transparent lg:bg-none">
             <div class="relative flex-shrink-0">
               <img 
                 src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/logos/CC_LogoAnimated.webp" 
