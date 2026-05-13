@@ -764,6 +764,20 @@
                 </div>
                 <div class="draft-actions">
                   {#if draft.status !== 'sent'}
+                    <form method="POST" action="?/sendTestNewsletter" use:enhance={() => {
+                      return async ({ result, update }) => {
+                        if (result.type === 'success') {
+                          // @ts-ignore
+                          showToast(result.data?.message || 'Test email sent!', 'success');
+                        } else {
+                          // @ts-ignore
+                          showToast(result.data?.message || 'Failed to send test email', 'error');
+                        }
+                      };
+                    }} style="display:inline;">
+                      <input type="hidden" name="id" value={draft.id} />
+                      <button type="submit" class="btn-sm btn-test">🧪 Test</button>
+                    </form>
                     <form method="POST" action="?/sendNewsletter" use:enhance={() => {
                       sendingNewsletterIds.add(draft.id);
                       sendingNewsletterIds = sendingNewsletterIds;
@@ -2905,6 +2919,18 @@
     to {
       transform: rotate(360deg);
     }
+  }
+
+  .btn-test {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+  }
+
+  .btn-test:hover {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(245, 158, 11, 0.2) 100%);
+    border-color: rgba(245, 158, 11, 0.6);
+    color: #fcd34d;
   }
 
   .btn-archive {

@@ -395,6 +395,43 @@ export const actions: Actions = {
     return { success: true, message: `Newsletter sent to ${successCount} subscribers!` };
   },
 
+  sendTestNewsletter: async ({ request, cookies }) => {
+    const adminEmail = cookies.get('admin_auth');
+    if (!adminEmail || !ALLOWED_ADMINS.includes(adminEmail)) {
+      throw redirect(303, '/admin');
+    }
+
+    const data = await request.formData();
+    const draftId = data.get('id');
+    const db = getDb();
+
+    // Get the draft
+    const drafts = await db`SELECT * FROM newsletter_drafts WHERE id = ${draftId}`;
+    if (drafts.length === 0) {
+      return fail(404, { error: true, message: 'Draft not found' });
+    }
+    const draft = drafts[0];
+
+    // Send test email to the admin's email
+    try {
+      const result = await sendNewsletterEmail({
+        subject: `[TEST] ${draft.subject}`,
+        content: draft.content,
+        recipientEmail: adminEmail,
+        recipientName: adminEmail.split('@')[0]
+      });
+
+      if (result.success) {
+        return { success: true, message: `Test email sent to ${adminEmail}` };
+      } else {
+        return fail(500, { error: true, message: 'Failed to send test email' });
+      }
+    } catch (error) {
+      console.error('Error sending test email:', error);
+      return fail(500, { error: true, message: 'Failed to send test email' });
+    }
+  },
+
   archiveNewsletter: async ({ request, cookies }) => {
     const adminEmail = cookies.get('admin_auth');
     if (!adminEmail || !ALLOWED_ADMINS.includes(adminEmail)) {
