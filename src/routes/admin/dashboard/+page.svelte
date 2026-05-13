@@ -677,53 +677,7 @@
   <!-- Newsletter Tab -->
   {#if activeTab === 'newsletter'}
     <div class="section newsletter-section stacked">
-      <!-- Subscribers Section -->
-      <div class="newsletter-panel" class:collapsed={!subscribersExpanded}>
-        <button class="panel-header collapsible-header" on:click={() => subscribersExpanded = !subscribersExpanded}>
-          <div class="header-left-content">
-            <span class="collapse-icon" class:expanded={subscribersExpanded}>{subscribersExpanded ? '▼' : '▶'}</span>
-            <h2>📧 Email Subscribers</h2>
-          </div>
-          <span class="subscriber-count">{subscribers.length} subscribers</span>
-        </button>
-        
-        {#if subscribersExpanded}
-          {#if subscribers.length === 0}
-            <div class="empty-state">No subscribers yet</div>
-          {:else}
-            <div class="subscribers-list">
-              {#each subscribers as sub}
-                <div class="subscriber-card">
-                  <div class="subscriber-info">
-                    <span class="subscriber-email">{sub.email}</span>
-                    {#if sub.name}<span class="subscriber-name">{sub.name}</span>{/if}
-                    <span class="subscriber-meta">
-                      <span class="source-badge">{sub.source || 'website'}</span>
-                      <span class="sub-date">{new Date(sub.created_at).toLocaleDateString()}</span>
-                    </span>
-                  </div>
-                  <form method="POST" action="?/deleteSubscriber" use:enhance={({ formData }) => {
-                    const deletedId = Number(formData.get('id'));
-                    return async ({ result }) => {
-                      if (result.type === 'success') {
-                        // Update local state without page reload
-                        subscribers = subscribers.filter(s => s.id !== deletedId);
-                        showToast('Subscriber removed', 'success');
-                      } else {
-                        showToast('Failed to remove subscriber', 'error');
-                      }
-                    };
-                  }}>
-                    <input type="hidden" name="id" value={sub.id} />
-                    <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Remove this subscriber?')}>🗑</button>
-                  </form>
-                </div>
-              {/each}
-            </div>
-          {/if}
-        {/if}
-      </div>
-
+    
       <!-- Drafts Section -->
       <div class="newsletter-panel" class:collapsed={!draftsExpanded}>
         <div class="panel-header collapsible-header">
@@ -860,6 +814,53 @@
             {/each}
           </div>
         {/if}
+        {/if}
+      </div>
+
+      <!-- Subscribers Section -->
+      <div class="newsletter-panel" class:collapsed={!subscribersExpanded}>
+        <button class="panel-header collapsible-header" on:click={() => subscribersExpanded = !subscribersExpanded}>
+          <div class="header-left-content">
+            <span class="collapse-icon" class:expanded={subscribersExpanded}>{subscribersExpanded ? '▼' : '▶'}</span>
+            <h2>📧 Email Subscribers</h2>
+          </div>
+          <span class="subscriber-count">{subscribers.length} subscribers</span>
+        </button>
+        
+        {#if subscribersExpanded}
+          {#if subscribers.length === 0}
+            <div class="empty-state">No subscribers yet</div>
+          {:else}
+            <div class="subscribers-list">
+              {#each subscribers as sub}
+                <div class="subscriber-card">
+                  <div class="subscriber-info">
+                    <span class="subscriber-email">{sub.email}</span>
+                    {#if sub.name}<span class="subscriber-name">{sub.name}</span>{/if}
+                    <span class="subscriber-meta">
+                      <span class="source-badge">{sub.source || 'website'}</span>
+                      <span class="sub-date">{new Date(sub.created_at).toLocaleDateString()}</span>
+                    </span>
+                  </div>
+                  <form method="POST" action="?/deleteSubscriber" use:enhance={({ formData }) => {
+                    const deletedId = Number(formData.get('id'));
+                    return async ({ result }) => {
+                      if (result.type === 'success') {
+                        // Update local state without page reload
+                        subscribers = subscribers.filter(s => s.id !== deletedId);
+                        showToast('Subscriber removed', 'success');
+                      } else {
+                        showToast('Failed to remove subscriber', 'error');
+                      }
+                    };
+                  }}>
+                    <input type="hidden" name="id" value={sub.id} />
+                    <button type="submit" class="btn-sm btn-danger" on:click={(e) => confirmDelete(e, 'Remove this subscriber?')}>🗑</button>
+                  </form>
+                </div>
+              {/each}
+            </div>
+          {/if}
         {/if}
       </div>
 
