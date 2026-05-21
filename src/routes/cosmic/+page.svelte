@@ -187,7 +187,7 @@
               <Button href="#demo" color="dark" class="flex-1 justify-center border border-white/20 hover:border-[#00c400]/50">Play Demo</Button>
             </div>
             <p class="text-[0.75rem] text-gray-400 mt-3">
-              Character artwork and styling done by <a href="https://rejenasmiley.altervista.org/" target="_blank" rel="noreferrer" class="text-[#00c400] underline">Rejena Antoine</a>.
+              Character artwork and styling done by <a href="https://rejenasmiley.altervista.org/" target="_blank" rel="noreferrer" class="text-[#00c400] underline">Rejena Smiley</a>.
             </p>
           </div>
 
