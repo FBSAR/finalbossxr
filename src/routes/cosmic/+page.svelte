@@ -49,9 +49,9 @@
     },
     {
         name: 'Xylo',
-        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/xylo_photo.PNG',
+        photo: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/character_headshots/Xylo_Website_Headshot.png',
         title: 'The Alien',
-        video: 'https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/characters/concepts/Character+Videos/XyloGesture.mp4',
+        video: '',
         special: 'Defense - Can destroy asteroids colliding into them, with no damage to the ship.',
         description: "An ethereal avian species with shimmering iridescent wings, hailing from a solar system bathed in twilight. With an innate grasp of astrophysics, Xylo navigates space with unmatched precision. Discovered after crash-landing on Earth, Xylo's gentle nature and otherworldly beauty quickly transformed initial fear into awe.",
     },
