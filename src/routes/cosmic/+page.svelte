@@ -433,8 +433,26 @@
       style="background-image: url('https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/Illustration/Final_Cap_Ship.jpg'); transform: scaleX(-1);
              background-position-x: 0%; background-position-y: 60%; background-size: contain;">
     </div>
-    <!-- Dark overlay for better text readability + left edge blend -->
+    <!-- Dark overlay for better text readability + left edge blend (Desktop only) -->
     <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-black via-black/80 via-black/40 to-transparent"></div>
+
+    <!-- Mobile Image (no parallax, separate from text) -->
+    <div class="block lg:hidden w-full pt-12">
+      <div class="w-11/12 mx-auto">
+        <div class="relative overflow-hidden rounded-2xl">
+          <img
+            src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/Illustration/Final_Cap_Ship.jpg"
+            alt="Captain Phoenix's Ship"
+            class="w-full rounded-2xl"
+            style="transform: scaleX(-1);"
+            loading="lazy"
+            decoding="async"
+          />
+          <!-- Dark gradient on the left of the image to blend -->
+          <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent pointer-events-none rounded-2xl"></div>
+        </div>
+      </div>
+    </div>
     
     <div class="relative z-10 w-11/12 lg:w-10/12 mx-auto py-12 lg:py-20 flex items-center min-h-[50vh] lg:min-h-[60vh]">
       
