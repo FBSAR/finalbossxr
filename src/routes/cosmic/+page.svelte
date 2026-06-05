@@ -427,18 +427,14 @@
 
     <!-- Lore -->
   <div class="relative w-full overflow-hidden min-h-[50vh] lg:min-h-[60vh]">
-    <!-- Background Video (Desktop only) -->
-    <video
-      class="hidden lg:block absolute inset-0 w-full h-full object-cover"
-      src="https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/videos/SpaceAnimatedVideo.mp4"
-      autoplay
-      loop
-      playsinline 
-      muted
-      preload="none">
-    </video>
-    <!-- Dark overlay for better text readability -->
-    <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent"></div>
+    <!-- Background Image (Desktop only) -->
+    <div
+      class="hidden lg:block absolute inset-0 bg-cover bg-no-repeat"
+      style="background-image: url('https://finalbossxr.s3.us-east-1.amazonaws.com/cosmic/Illustration/Final_Cap_Ship.jpg'); transform: scaleX(-1);
+             background-position-x: 0%; background-position-y: 60%; background-size: contain;">
+    </div>
+    <!-- Dark overlay for better text readability + left edge blend -->
+    <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-black via-black/80 via-black/40 to-transparent"></div>
     
     <div class="relative z-10 w-11/12 lg:w-10/12 mx-auto py-12 lg:py-20 flex items-center min-h-[50vh] lg:min-h-[60vh]">
       
