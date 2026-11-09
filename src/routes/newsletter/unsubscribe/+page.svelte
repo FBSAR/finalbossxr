@@ -102,7 +102,7 @@
                 placeholder="your@email.com"
                 bind:value={email}
                 required
-                class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#00c400] focus:bg-white/15 transition-colors"
+                class="fb-input w-full px-4 py-3"
               />
             </div>
 

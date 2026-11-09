@@ -12,8 +12,6 @@
     let userAnswer = '';
     let hasAttempted = false;
     
-    const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
-    
     function generateChallenge() {
         // Generate random numbers between 1 and 10
         num1 = Math.floor(Math.random() * 10) + 1;
@@ -85,18 +83,19 @@
         </div>
         
         <div class="answer-input">
-            <FloatingLabelInput
-                bind:value={userAnswer}
-                name="captcha"
-                type="text"
-                inputmode="numeric"
-                pattern="[0-9]*"
-                class="{inputClass} captcha-input"
-                style="filled"
-                maxlength={3}
-            >
-                Your answer
-            </FloatingLabelInput>
+            <div class="fb-field">
+                <FloatingLabelInput
+                    bind:value={userAnswer}
+                    name="captcha"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    style="filled"
+                    maxlength={3}
+                >
+                    Your answer
+                </FloatingLabelInput>
+            </div>
             
             {#if hasAttempted}
                 <span class="validation-icon" class:valid={isValid} class:invalid={!isValid}>
@@ -212,7 +211,7 @@
         max-width: 180px;
     }
     
-    .answer-input :global(.captcha-input) {
+    .answer-input :global(input) {
         text-align: center;
         font-size: 1.125rem;
         font-weight: bold;

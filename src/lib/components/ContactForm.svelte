@@ -6,8 +6,6 @@
     export let isLoading = false;
     let captchaValid = false;
 
-    // TailwindCSS Classes
-    const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';   
     // Contact Form Submission
     let contactInfo = {
       name: '',
@@ -85,41 +83,44 @@
       <div class="contact-card w-full lg:w-1/2 mx-auto bg-white/10 p-4 border-white/20 lg:border-2 rounded-lg">
         <Badge color="yellow" class="mb-4">Please fill out entire form</Badge>
         <form method="POST" on:submit|preventDefault={handleSubmit}>
-          <FloatingLabelInput 
-            maxlength={100}
-            bind:value={contactInfo.name}
-            name="name"
-            class="{inputClass} mb-2"
-            style="filled" 
-            type="text"
-          >
-            First & Last Name
-          </FloatingLabelInput>
+          <div class="fb-field mb-2">
+            <FloatingLabelInput
+              maxlength={100}
+              bind:value={contactInfo.name}
+              name="name"
+              style="filled"
+              type="text"
+            >
+              First & Last Name
+            </FloatingLabelInput>
+          </div>
           
           <div class="h-4"></div>
           
-          <FloatingLabelInput
-            maxlength={100}
-            bind:value={contactInfo.email}
-            name="email"
-            class="{inputClass} mb-2"
-            style="filled" 
-            color="base" 
-            type="email"
-          >
-            Email
-          </FloatingLabelInput> 
+          <div class="fb-field mb-2">
+            <FloatingLabelInput
+              maxlength={100}
+              bind:value={contactInfo.email}
+              name="email"
+              style="filled"
+              color="base"
+              type="email"
+            >
+              Email
+            </FloatingLabelInput>
+          </div>
           
           <div class="h-4"></div>
           
-          <Textarea 
-            maxlength={500}
-            bind:value={contactInfo.message}
-            name="message"
-            class={inputClass}
-            placeholder="Your message" 
-            rows={6}  
-          />
+          <div class="fb-field">
+            <Textarea
+              maxlength={500}
+              bind:value={contactInfo.message}
+              name="message"
+              placeholder="Your message"
+              rows={6}
+            />
+          </div>
           
           <!-- Honeypot field - hidden from humans, bots will fill it -->
           <div class="honeypot" aria-hidden="true">

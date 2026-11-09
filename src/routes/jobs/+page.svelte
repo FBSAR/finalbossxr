@@ -1,4 +1,4 @@
-<script lang="ts">
+In<script lang="ts">
   import { Badge, FloatingLabelInput, Textarea, Fileupload } from 'flowbite-svelte';
   import { showSuccessToast, showErrorToast } from '$lib/stores/toastStore';
   import { fly } from 'svelte/transition';
@@ -51,9 +51,6 @@
   $: if (resumeFiles && resumeFiles.length > 0) {
     applicationData.resume = resumeFiles[0];
   }
-
-  // Input styling
-  const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
 
   // Select a job and move to application slide
   function selectJob(job: typeof jobs[0]) {
@@ -299,64 +296,69 @@
               <div class="form-section">
                 <h3 class="form-section-title">Personal Information</h3>
                 <div class="form-grid">
-                  <FloatingLabelInput
-                    maxlength={100}
-                    bind:value={applicationData.name}
-                    name="name"
-                    class={inputClass}
-                    style="filled"
-                    type="text"
-                  >
-                    Full Name *
-                  </FloatingLabelInput>
+                  <div class="fb-field">
+                    <FloatingLabelInput
+                      maxlength={100}
+                      bind:value={applicationData.name}
+                      name="name"
+                      style="filled"
+                      type="text"
+                    >
+                      Full Name *
+                    </FloatingLabelInput>
+                  </div>
 
-                  <FloatingLabelInput
-                    maxlength={100}
-                    bind:value={applicationData.email}
-                    name="email"
-                    class={inputClass}
-                    style="filled"
-                    type="email"
-                  >
-                    Email Address *
-                  </FloatingLabelInput>
+                  <div class="fb-field">
+                    <FloatingLabelInput
+                      maxlength={100}
+                      bind:value={applicationData.email}
+                      name="email"
+                      style="filled"
+                      type="email"
+                    >
+                      Email Address *
+                    </FloatingLabelInput>
+                  </div>
 
-                  <FloatingLabelInput
-                    maxlength={16}
-                    bind:value={applicationData.phone}
-                    name="phone"
-                    class={inputClass}
-                    style="filled"
-                    type="tel"
-                    placeholder="(xxx) xxx - xxxx"
-                    on:input={formatPhoneNumber}
-                  >
-                    Phone Number
-                  </FloatingLabelInput>
+                  <div class="fb-field">
+                    <FloatingLabelInput
+                      maxlength={16}
+                      bind:value={applicationData.phone}
+                      name="phone"
+                      style="filled"
+                      type="tel"
+                      placeholder="(xxx) xxx - xxxx"
+                      on:input={formatPhoneNumber}
+                    >
+                      Phone Number
+                    </FloatingLabelInput>
+                  </div>
 
-                  <FloatingLabelInput
-                    maxlength={200}
-                    bind:value={applicationData.linkedin}
-                    name="linkedin"
-                    class={inputClass}
-                    style="filled"
-                    type="url"
-                  >
-                    LinkedIn Profile
-                  </FloatingLabelInput>
+                  <div class="fb-field">
+                    <FloatingLabelInput
+                      maxlength={200}
+                      bind:value={applicationData.linkedin}
+                      name="linkedin"
+                      style="filled"
+                      type="url"
+                    >
+                      LinkedIn Profile
+                    </FloatingLabelInput>
+                  </div>
                 </div>
 
                 <div class="mt-4">
-                  <FloatingLabelInput
-                    maxlength={200}
-                    bind:value={applicationData.portfolio}
-                    name="portfolio"
-                    class={inputClass}
-                    style="filled"
-                    type="url"
-                  >
-                    Portfolio / GitHub URL
-                  </FloatingLabelInput>
+                  <div class="fb-field">
+                    <FloatingLabelInput
+                      maxlength={200}
+                      bind:value={applicationData.portfolio}
+                      name="portfolio"
+                      style="filled"
+                      type="url"
+                    >
+                      Portfolio / GitHub URL
+                    </FloatingLabelInput>
+                  </div>
                 </div>
               </div>
 
@@ -371,15 +373,16 @@
                       {applicationData.experience.length}/1000
                     </span>
                   </div>
-                  <Textarea
-                    id="experience"
-                    maxlength={1000}
-                    bind:value={applicationData.experience}
-                    name="experience"
-                    class="textarea-white"
-                    placeholder="Tell us about your background, skills, and relevant projects..."
-                    rows={4}
-                  />
+                  <div class="fb-field">
+                    <Textarea
+                      id="experience"
+                      maxlength={1000}
+                      bind:value={applicationData.experience}
+                      name="experience"
+                      placeholder="Tell us about your background, skills, and relevant projects..."
+                      rows={4}
+                    />
+                  </div>
                   <span class="field-hint">Minimum 50 characters recommended</span>
                 </div>
 
@@ -390,15 +393,16 @@
                       {applicationData.whyJoin.length}/1000
                     </span>
                   </div>
-                  <Textarea
-                    id="whyJoin"
-                    maxlength={1000}
-                    bind:value={applicationData.whyJoin}
-                    name="whyJoin"
-                    class="textarea-white"
-                    placeholder="What excites you about working with us..."
-                    rows={4}
-                  />
+                  <div class="fb-field">
+                    <Textarea
+                      id="whyJoin"
+                      maxlength={1000}
+                      bind:value={applicationData.whyJoin}
+                      name="whyJoin"
+                      placeholder="What excites you about working with us..."
+                      rows={4}
+                    />
+                  </div>
                   <span class="field-hint">Minimum 50 characters recommended</span>
                 </div>
               </div>
@@ -1266,28 +1270,10 @@
     box-shadow: 0 0 0 3px rgba(0, 255, 0, 0.1) !important;
   }
 
-  /* Override Tailwind focus classes on textarea */
-  :global(.focus\:bg-white\/20:focus) {
-    background-color: white !important;
-  }
-
-  /* Custom textarea class for application form */
-  :global(.textarea-white) {
-    background-color: white !important;
-    color: black !important;
-  }
-
-  :global(.textarea-white:focus) {
-    background-color: white !important;
-    color: black !important;
-    border-color: #00ff00 !important;
-  }
-
   /* Input Fields - Green Border on Focus */
   :global(input:focus) {
     border-color: #00ff00 !important;
     outline: none !important;
-    border-width: 2px !important;
   }
 
   :global(input[type="text"]:focus),

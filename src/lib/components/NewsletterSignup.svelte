@@ -17,8 +17,6 @@
     let isSubscribed = false;
     let captchaValid = false;
 
-    const inputClass = 'focus:bg-white/20 focus:border-2 focus:border-[#00FF00]';
-
     function toggleExpand() {
         isExpanded = !isExpanded;
     }
@@ -103,27 +101,29 @@
                 transition:slide={{ duration: 300 }}
             >
                 <div class="expandable-inputs">
-                    <FloatingLabelInput
-                        bind:value={name}
-                        name="name"
-                        type="text"
-                        class={inputClass}
-                        style="filled"
-                        maxlength={100}
-                    >
-                        Full Name
-                    </FloatingLabelInput>
+                    <div class="fb-field">
+                        <FloatingLabelInput
+                            bind:value={name}
+                            name="name"
+                            type="text"
+                            style="filled"
+                            maxlength={100}
+                        >
+                            Full Name
+                        </FloatingLabelInput>
+                    </div>
                     
-                    <FloatingLabelInput
-                        bind:value={email}
-                        name="email"
-                        type="email"
-                        class={inputClass}
-                        style="filled"
-                        maxlength={100}
-                    >
-                        Email *
-                    </FloatingLabelInput>
+                    <div class="fb-field">
+                        <FloatingLabelInput
+                            bind:value={email}
+                            name="email"
+                            type="email"
+                            style="filled"
+                            maxlength={100}
+                        >
+                            Email *
+                        </FloatingLabelInput>
+                    </div>
                 </div>
                 
                 <!-- Bot Protection CAPTCHA - Only show when email is filled -->
@@ -157,16 +157,17 @@
     {:else if variant === 'inline'}
         <form class="newsletter-form inline" on:submit={handleSubmit}>
             <div class="inline-wrapper">
-                <FloatingLabelInput
-                    bind:value={email}
-                    name="email"
-                    type="email"
-                    class={inputClass}
-                    style="filled"
-                    maxlength={100}
-                >
-                    {placeholder}
-                </FloatingLabelInput>
+                <div class="fb-field">
+                    <FloatingLabelInput
+                        bind:value={email}
+                        name="email"
+                        type="email"
+                        style="filled"
+                        maxlength={100}
+                    >
+                        {placeholder}
+                    </FloatingLabelInput>
+                </div>
             </div>
             <!-- Bot Protection CAPTCHA - Only show when email is filled -->
             {#if email}
@@ -191,29 +192,31 @@
         <!-- Stacked variant -->
         <form class="newsletter-form stacked" on:submit={handleSubmit}>
             {#if showName}
-                <FloatingLabelInput
-                    bind:value={name}
-                    name="name"
-                    type="text"
-                    class="{inputClass} my-4"
-                    style="filled"
-                    maxlength={100}
-                >
-                    Name (optional)
-                </FloatingLabelInput>
+                <div class="fb-field my-4">
+                    <FloatingLabelInput
+                        bind:value={name}
+                        name="name"
+                        type="text"
+                        style="filled"
+                        maxlength={100}
+                    >
+                        Name (optional)
+                    </FloatingLabelInput>
+                </div>
             {/if}
             <!-- Spacer -->
             <div class="my-2"></div>
-            <FloatingLabelInput
-                bind:value={email}
-                name="email"
-                type="email"
-                class="{inputClass} my-4"
-                style="filled"
-                maxlength={100}
-            >
-                {placeholder}
-            </FloatingLabelInput>
+            <div class="fb-field my-4">
+                <FloatingLabelInput
+                    bind:value={email}
+                    name="email"
+                    type="email"
+                    style="filled"
+                    maxlength={100}
+                >
+                    {placeholder}
+                </FloatingLabelInput>
+            </div>
             <!-- Spacer -->
             <div class="my-2"></div>
             <!-- Bot Protection CAPTCHA - Only show when email is filled -->
@@ -288,7 +291,7 @@
             gap: 1rem;
         }
 
-        .expandable-inputs :global(.floating-label-input) {
+        .expandable-inputs .fb-field {
             flex: 1;
         }
     }
@@ -345,7 +348,7 @@
         align-items: flex-start;
     }
 
-    .inline-wrapper :global(.floating-label-input) {
+    .inline-wrapper .fb-field {
         flex: 1;
     }
 
