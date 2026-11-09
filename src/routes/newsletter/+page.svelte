@@ -7,7 +7,7 @@
   <meta name="description" content="Subscribe to the Final Boss Studios newsletter for the latest updates on our projects." />
 </svelte:head>
 
-<main class="relative min-h-screen w-full flex flex-col items-center justify-center px-4 py-20 lg:py-32 overflow-hidden">
+<main class="relative min-h-screen w-full flex flex-col items-center justify-center px-4 py-10 lg:pb-32 overflow-hidden">
 
   <!-- Content -->
   <div class="relative z-10 w-full max-w-2xl">
@@ -42,7 +42,7 @@
     <!-- Newsletter Signup Card -->
     <div class="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 lg:p-12 shadow-2xl">
       <div class="mb-8">
-        <h2 class="text-xl lg:text-2xl font-semibold text-white mb-2">
+        <h2 class="text-xl lg:text-2xl text-white mb-2">
           Subscribe to Our Newsletter
         </h2>
         <p class="text-gray-400 text-sm lg:text-base">

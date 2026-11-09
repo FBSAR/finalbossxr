@@ -111,7 +111,7 @@
                         style="filled"
                         maxlength={100}
                     >
-                        Name (optional)
+                        Full Name
                     </FloatingLabelInput>
                     
                     <FloatingLabelInput
