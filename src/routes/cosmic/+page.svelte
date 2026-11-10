@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
   // HIDDEN: Contact form temporarily disabled
   // import ContactForm from '$lib/components/ContactForm.svelte';
   // HIDDEN: Kickstarter campaign ended
@@ -16,12 +16,105 @@
   function testerLink() {
        window.open('https://forms.gle/SWN4pGnP4crNx78e7', '_blank');
   }
+
+  // ---------------------------------------------------------------------------
+  // Demo download links
+  // The QR images are pre-generated static assets (same approach as
+  // static/qr-newsletter.svg) so this page needs no QR library at runtime.
+  // To regenerate after changing a URL:
+  //   npx --yes qrcode -o static/qr-testflight.svg "https://testflight.apple.com/join/FYcWW7qk"
+  //   npx --yes qrcode -o static/qr-android.svg "https://groups.google.com/g/cosmic-collisions-testers"
+  // ---------------------------------------------------------------------------
+  const DEMO_LINKS = {
+    ios: {
+      name: 'iOS · TestFlight',
+      url: 'https://testflight.apple.com/join/FYcWW7qk',
+      qr: '/qr-testflight.svg',
+      qrAlt: 'QR code that opens the Cosmic Collisions TestFlight invite',
+      hint: 'Point your iPhone camera at the code, then tap the TestFlight invite link. Requires the TestFlight app.',
+    },
+    android: {
+      name: 'Android · APK',
+      url: 'https://groups.google.com/g/cosmic-collisions-testers',
+      qr: '/qr-android.svg',
+      qrAlt: 'QR code that opens the Cosmic Collisions Android tester group',
+      hint: 'Scan with your Android camera, join the tester group, then download the APK.',
+    },
+  } as const;
+
+  type DemoPlatform = keyof typeof DEMO_LINKS;
+  type DemoLink = (typeof DEMO_LINKS)[DemoPlatform];
+
+  let qrModalOpen = false;
+  let activeQr: DemoLink = DEMO_LINKS.ios;
+  let qrModalTitleEl: HTMLHeadingElement | null = null;
+  let copied = false;
+  let copyTimer: ReturnType<typeof setTimeout> | undefined;
+
+  /** Desktop visitors get a QR modal so the link lands on their phone. */
+  function isDesktopViewport(): boolean {
+    if (typeof window === 'undefined') return false;
+    if (typeof window.matchMedia === 'function') {
+      return window.matchMedia('(min-width: 1024px)').matches;
+    }
+    return window.innerWidth >= 1024;
+  }
+
+  function openQrModal(platform: DemoPlatform) {
+    activeQr = DEMO_LINKS[platform];
+    copied = false;
+    qrModalOpen = true;
+    tick().then(() => qrModalTitleEl?.focus());
+  }
+
+  function closeQrModal() {
+    qrModalOpen = false;
+  }
+
+  function handleDownloadClick(platform: DemoPlatform) {
+    if (isDesktopViewport()) {
+      openQrModal(platform);
+      return;
+    }
+    window.open(DEMO_LINKS[platform].url, '_blank');
+  }
+
+  function handleQrModalKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && qrModalOpen) {
+      closeQrModal();
+    }
+  }
+
+  async function copyQrLink() {
+    try {
+      await navigator.clipboard.writeText(activeQr.url);
+      copied = true;
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(() => (copied = false), 2000);
+    } catch {
+      copied = false;
+    }
+  }
+
   function iosTesterLink() {
-       window.open('https://testflight.apple.com/join/FYcWW7qk', '_blank');
+    handleDownloadClick('ios');
   }
+
   function androidTesterLink() {
-       window.open('https://groups.google.com/g/cosmic-collisions-testers', '_blank');
+    handleDownloadClick('android');
   }
+
+  // Lock background scrolling while the modal is open
+  $: if (typeof document !== 'undefined') {
+    document.body.style.overflow = qrModalOpen ? 'hidden' : '';
+  }
+
+  onDestroy(() => {
+    clearTimeout(copyTimer);
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+    }
+  });
   let characters = [
     {
         name: 'Captain Phoenix',
@@ -112,6 +205,9 @@
     }
   }
 </script>
+
+<svelte:window on:keydown={handleQrModalKeydown} />
+
 <main>
 
   <!-- Header -->
@@ -516,6 +612,94 @@
 
     <div class="h-10 lg:h-32"></div>
   </div> -->
+
+  <!-- QR Code Modal (desktop demo downloads) -->
+  {#if qrModalOpen}
+    <div
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      role="presentation"
+      on:click|self={closeQrModal}
+    >
+      <!-- Backdrop -->
+      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" aria-hidden="true" on:click={closeQrModal}></div>
+
+      <!-- Dialog -->
+      <div
+        class="qr-modal relative z-10 w-full max-w-md overflow-hidden rounded-2xl border border-white/15 bg-[#12081f] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)]"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="qr-modal-title"
+      >
+        <button
+          type="button"
+          class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/50 text-gray-300 transition-colors hover:border-[#00c400]/50 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c400]"
+          aria-label="Close download dialog"
+          on:click={closeQrModal}
+        >
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="space-y-4 p-6 text-center lg:p-8">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#00c400]">{activeQr.name}</p>
+          <h2
+            id="qr-modal-title"
+            bind:this={qrModalTitleEl}
+            tabindex="-1"
+            class="gradient-text text-2xl font-bold focus:outline-none lg:text-3xl"
+          >
+            Scan to download
+          </h2>
+          <p class="text-sm text-gray-400">{activeQr.hint}</p>
+
+          <!-- QR Code -->
+          <div class="mx-auto w-full max-w-[260px] rounded-xl bg-white p-3 ring-1 ring-white/20 shadow-lg">
+            <img
+              src={activeQr.qr}
+              alt={activeQr.qrAlt}
+              width="1024"
+              height="1024"
+              class="h-auto w-full"
+              decoding="async"
+            />
+          </div>
+
+          <!-- Fallback link -->
+          <div class="space-y-2">
+            <p class="text-xs text-gray-400">QR not working? Open this link on your phone:</p>
+            <a
+              href={activeQr.url}
+              target="_blank"
+              rel="noreferrer"
+              class="block break-all rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-xs text-[#00c400] underline transition-colors hover:border-[#00c400]/50 hover:text-[#00FF00]"
+            >
+              {activeQr.url}
+            </a>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex flex-col gap-2 pt-1 sm:flex-row">
+            <Button
+              on:click={copyQrLink}
+              color="none"
+              class="flex-1 justify-center border border-white/20 bg-black/50 text-white transition-all duration-200 hover:border-[#00c400]/50 hover:bg-[#1b023d]"
+            >
+              {copied ? 'Link copied' : 'Copy link'}
+            </Button>
+            <a
+              href={activeQr.url}
+              target="_blank"
+              rel="noreferrer"
+              class="flex-1 justify-center rounded-lg border border-white/20 bg-black/50 px-4 py-2 text-center text-sm text-white transition-all duration-200 hover:border-[#00c400]/50 hover:bg-[#1b023d]"
+            >
+              Open on this device
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {/if}
 </main>
 <style>
   :global(html) {
@@ -544,6 +728,28 @@
 
   .phone-mockup {
     transition: all 400ms ease-out;
+  }
+
+  /* QR download modal */
+  @keyframes qr-modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .qr-modal {
+    animation: qr-modal-in 200ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .qr-modal {
+      animation: none;
+    }
   }
 
   .phone-mockup:hover {

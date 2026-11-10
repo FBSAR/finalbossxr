@@ -658,4 +658,98 @@ describe('Cosmic Page', () => {
       expect(kickstarterSection).toBeInTheDocument();
     });
   });
+
+  describe('Download QR Modal', () => {
+    const IOS_URL = 'https://testflight.apple.com/join/FYcWW7qk';
+    const ANDROID_URL = 'https://groups.google.com/g/cosmic-collisions-testers';
+
+    function setViewport(isDesktop: boolean) {
+      vi.spyOn(window, 'matchMedia').mockImplementation(
+        (query: string) =>
+          ({
+            matches: isDesktop,
+            media: query,
+            onchange: null,
+            addListener: vi.fn(),
+            removeListener: vi.fn(),
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
+            dispatchEvent: vi.fn(),
+          }) as unknown as MediaQueryList
+      );
+    }
+
+    it('should show a QR code modal instead of navigating on desktop (iOS)', async () => {
+      setViewport(true);
+      render(CosmicPage);
+
+      await fireEvent.click(screen.getByRole('button', { name: /download via testflight/i }));
+
+      const dialog = screen.getByRole('dialog');
+      expect(dialog).toBeInTheDocument();
+      expect(window.open).not.toHaveBeenCalled();
+
+      const qr = dialog.querySelector('img[src="/qr-testflight.svg"]');
+      expect(qr).toBeInTheDocument();
+      expect(qr?.getAttribute('alt')).toMatch(/testflight/i);
+      expect(dialog.textContent).toContain(IOS_URL);
+    });
+
+    it('should show a QR code modal instead of navigating on desktop (Android)', async () => {
+      setViewport(true);
+      render(CosmicPage);
+
+      await fireEvent.click(screen.getByRole('button', { name: /download android apk/i }));
+
+      const dialog = screen.getByRole('dialog');
+      expect(dialog).toBeInTheDocument();
+      expect(window.open).not.toHaveBeenCalled();
+
+      const qr = dialog.querySelector('img[src="/qr-android.svg"]');
+      expect(qr).toBeInTheDocument();
+      expect(dialog.textContent).toContain(ANDROID_URL);
+    });
+
+    it('should provide a fallback link with the download URL', async () => {
+      setViewport(true);
+      render(CosmicPage);
+
+      await fireEvent.click(screen.getByRole('button', { name: /download via testflight/i }));
+
+      const fallbackLink = screen.getByRole('link', { name: IOS_URL });
+      expect(fallbackLink).toHaveAttribute('href', IOS_URL);
+    });
+
+    it('should close the modal when the close button is pressed', async () => {
+      setViewport(true);
+      render(CosmicPage);
+
+      await fireEvent.click(screen.getByRole('button', { name: /download android apk/i }));
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+      await fireEvent.click(screen.getByRole('button', { name: /close download dialog/i }));
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    it('should close the modal when Escape is pressed', async () => {
+      setViewport(true);
+      render(CosmicPage);
+
+      await fireEvent.click(screen.getByRole('button', { name: /download via testflight/i }));
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+      await fireEvent.keyDown(window, { key: 'Escape' });
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    it('should open the store link directly on mobile viewports', async () => {
+      setViewport(false);
+      render(CosmicPage);
+
+      await fireEvent.click(screen.getByRole('button', { name: /download android apk/i }));
+
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(window.open).toHaveBeenCalledWith(ANDROID_URL, '_blank');
+    });
+  });
 });
